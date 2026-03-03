@@ -1,4 +1,5 @@
-import Hero from "../pages/Hero"
+import Hero from "../pages/Home/Hero"
+import WhatYouLookingFor from "../pages/Home/WhatYouLookinFor";
 import Navbar from "./Navbar";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
         <>
             <Navbar />
             <Hero />
+            <WhatYouLookingFor/>
         </>
     )
 };

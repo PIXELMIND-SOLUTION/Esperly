@@ -1,48 +1,37 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { FiMenu, FiX, FiArrowRight, FiChevronDown } from "react-icons/fi";
+import { FiMenu, FiX, FiArrowRight, FiChevronDown, FiSearch, FiTrendingUp, FiBookOpen, FiUsers, FiStar } from "react-icons/fi";
 
-/* ─────────────────────────────────────────────
-   DATA
-───────────────────────────────────────────── */
 const popularCourses = [
-  { name: "Full Stack Development", tag: "Hot" },
-  { name: "Data Science", tag: "Popular" },
-  { name: "UI/UX Design", tag: null },
-  { name: "Digital Marketing", tag: null },
-  { name: "Python Programming", tag: "New" },
-  { name: "Spoken English", tag: null },
-  { name: "Graphic Design", tag: null },
-  { name: "React Development", tag: "Popular" },
+  { name: "Full Stack Development", tag: "Hot", students: "2.5k", icon: "💻" },
+  { name: "Data Science", tag: "Popular", students: "3.1k", icon: "📊" },
+  { name: "UI/UX Design", tag: null, students: "1.8k", icon: "🎨" },
+  { name: "Digital Marketing", tag: null, students: "2.2k", icon: "📱" },
+  { name: "Python Programming", tag: "New", students: "4.2k", icon: "🐍" },
+  { name: "Spoken English", tag: null, students: "5.1k", icon: "🗣️" },
+  { name: "Graphic Design", tag: null, students: "1.4k", icon: "🖌️" },
+  { name: "React Development", tag: "Popular", students: "3.7k", icon: "⚛️" },
 ];
 
 const categories = [
-  { name: "School Tuitions", icon: "📚" },
-  { name: "Programming", icon: "💻" },
-  { name: "Design", icon: "🎨" },
-  { name: "Business", icon: "📈" },
-  { name: "Languages", icon: "🌐" },
-  { name: "Exam Preparation", icon: "✏️" },
+  { name: "School Tuitions", icon: "📚", count: "45+ courses" },
+  { name: "Programming", icon: "💻", count: "32+ courses" },
+  { name: "Design", icon: "🎨", count: "28+ courses" },
+  { name: "Business", icon: "📈", count: "23+ courses" },
+  { name: "Languages", icon: "🌐", count: "19+ courses" },
+  { name: "Exam Preparation", icon: "✏️", count: "16+ courses" },
 ];
 
 const navLinks = [
   { name: "Home", path: "/" },
   { name: "Teachers", path: "/teachers" },
   { name: "Contact", path: "/contact" },
+  { name: "About Us", path: "/aboutus"}
 ];
 
-/* ─────────────────────────────────────────────
-   ANIMATIONS
-───────────────────────────────────────────── */
-
-// Mega menu container — unrolls from top like a scroll
 const megaMenuVariants = {
-  hidden: {
-    clipPath: "inset(0% 0% 100% 0%)",
-    opacity: 0,
-    y: -12,
-  },
+  hidden: { clipPath: "inset(0% 0% 100% 0%)", opacity: 0, y: -12 },
   visible: {
     clipPath: "inset(0% 0% 0% 0%)",
     opacity: 1,
@@ -51,244 +40,135 @@ const megaMenuVariants = {
       duration: 0.45,
       ease: [0.22, 1, 0.36, 1],
       staggerChildren: 0.04,
-      delayChildren: 0.1,
-    },
+      delayChildren: 0.1
+    }
   },
   exit: {
     clipPath: "inset(0% 0% 100% 0%)",
     opacity: 0,
     y: -8,
-    transition: { duration: 0.3, ease: [0.55, 0, 1, 0.45] },
+    transition: { duration: 0.3, ease: [0.55, 0, 1, 0.45] }
   },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
-/* ─────────────────────────────────────────────
-   NAVBAR
-───────────────────────────────────────────── */
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [courseMenu, setCourseMenu] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [recentSearches, setRecentSearches] = useState([
+    "React Development",
+    "Data Science",
+    "UI/UX Design"
+  ]);
   const menuRef = useRef();
   const timeoutRef = useRef();
+  const searchInputRef = useRef();
+  const mobileSearchInputRef = useRef();
 
-  /* Scroll detection for navbar glass effect */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Delayed close for hover intent */
+  useEffect(() => {
+    if (searchOpen) {
+      if (window.innerWidth >= 768) {
+        searchInputRef.current?.focus();
+      } else {
+        mobileSearchInputRef.current?.focus();
+      }
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [searchOpen]);
+
   const handleMouseEnter = () => {
     clearTimeout(timeoutRef.current);
     setCourseMenu(true);
   };
+
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => setCourseMenu(false), 120);
   };
 
-  /* Close dropdown when clicked outside */
   useEffect(() => {
     const handler = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setCourseMenu(false);
-      }
+      if (menuRef.current && !menuRef.current.contains(e.target)) setCourseMenu(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const allSearchResults = [
+    ...popularCourses.map(c => ({ ...c, type: "course" })),
+    ...categories.map(c => ({ name: c.name, icon: c.icon, count: c.count, type: "category" }))
+  ].filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  const trendingSearches = [
+    "Full Stack Development",
+    "Python Programming",
+    "Data Science",
+    "React Development",
+    "Digital Marketing"
+  ];
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query && !recentSearches.includes(query)) {
+      setRecentSearches(prev => [query, ...prev].slice(0, 5));
+    }
+  };
+
+  const popularCoursesForMobile = popularCourses.slice(0, 6);
+
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-        .nav-root { font-family: 'DM Sans', sans-serif; }
-        .logo-text { font-family: 'DM Serif Display', serif; }
-
-        .nav-link-pill {
-          position: relative;
-          padding: 6px 16px;
-          border-radius: 100px;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #374151;
-          cursor: pointer;
-          transition: color 0.2s;
-          letter-spacing: 0.01em;
-        }
-        .nav-link-pill::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: 100px;
-          background: #f0fdfa;
-          opacity: 0;
-          transition: opacity 0.2s;
-          z-index: -1;
-        }
-        .nav-link-pill:hover::after { opacity: 1; }
-        .nav-link-pill:hover { color: #0d9488; }
-        .nav-link-pill.active {
-          color: #0d9488;
-          font-weight: 600;
-        }
-        .nav-link-pill.active::after { opacity: 1; }
-
-        .course-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 9px 14px;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: background 0.18s, color 0.18s;
-          font-size: 0.875rem;
-          color: #374151;
-        }
-        .course-item:hover {
-          background: #f0fdfa;
-          color: #0d9488;
-        }
-        .course-item:hover .arrow-icon { opacity: 1; transform: translateX(0); }
-        .arrow-icon {
-          opacity: 0;
-          transform: translateX(-6px);
-          transition: opacity 0.18s, transform 0.18s;
-          color: #14b8a6;
-          flex-shrink: 0;
-        }
-
-        .cat-item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 9px 14px;
-          border-radius: 10px;
-          cursor: pointer;
-          font-size: 0.875rem;
-          color: #374151;
-          transition: background 0.18s, color 0.18s;
-        }
-        .cat-item:hover {
-          background: #f0fdfa;
-          color: #0d9488;
-        }
-
-        .tag-badge {
-          font-size: 10px;
-          font-weight: 700;
-          padding: 2px 7px;
-          border-radius: 100px;
-          background: #ccfbf1;
-          color: #0d9488;
-          letter-spacing: 0.04em;
-          flex-shrink: 0;
-        }
-        .tag-badge.hot { background: #fef3c7; color: #d97706; }
-
-        .enroll-btn {
-          position: relative;
-          overflow: hidden;
-          padding: 9px 22px;
-          border-radius: 100px;
-          font-weight: 600;
-          font-size: 0.875rem;
-          color: white;
-          background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-          box-shadow: 0 2px 16px rgba(20,184,166,0.35);
-          transition: box-shadow 0.2s, transform 0.18s;
-          cursor: pointer;
-          border: none;
-          letter-spacing: 0.02em;
-        }
-        .enroll-btn:hover {
-          box-shadow: 0 4px 24px rgba(20,184,166,0.5);
-          transform: translateY(-1px);
-        }
-        .enroll-btn::before {
-          content: '';
-          position: absolute;
-          top: 0; left: -100%;
-          width: 60%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-          transition: left 0.4s ease;
-        }
-        .enroll-btn:hover::before { left: 150%; }
-
-        .divider-v {
-          width: 1px;
-          background: linear-gradient(to bottom, transparent, #e5e7eb, transparent);
-          align-self: stretch;
-        }
-
-        /* Mobile sidebar */
-        .mobile-link {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 12px 16px;
-          border-radius: 12px;
-          font-size: 0.9rem;
-          font-weight: 500;
-          color: #374151;
-          cursor: pointer;
-          transition: background 0.18s, color 0.18s;
-          margin-bottom: 4px;
-          text-decoration: none;
-        }
-        .mobile-link:hover, .mobile-link.active {
-          background: #f0fdfa;
-          color: #0d9488;
-        }
-      `}</style>
-
-      {/* ═══════════════ NAVBAR ═══════════════ */}
       <header
-        className="nav-root sticky top-0 z-50"
-        style={{
-          background: scrolled ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.75)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderBottom: scrolled ? "1px solid #e5e7eb" : "1px solid rgba(229,231,235,0.5)",
-          boxShadow: scrolled ? "0 2px 24px rgba(0,0,0,0.06)" : "none",
-          transition: "all 0.35s ease",
-        }}
+        className={`nav-root sticky top-0 z-50 transition-all duration-300 font-sans ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md border-b border-[#A6192E]/20 shadow-lg shadow-[#A6192E]/5"
+            : "bg-white/75 backdrop-blur-md border-b border-[#A6192E]/10"
+        }`}
+        style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
-        <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between gap-6">
-
-          {/* ── Logo ── */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[60px] sm:h-[68px] flex items-center justify-between gap-4">
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-2.5 shrink-0"
+            className="flex items-center gap-2 shrink-0"
           >
-            {/* Icon mark */}
-            <div style={{
-              width: 34, height: 34, borderRadius: 10,
-              background: "linear-gradient(135deg, #5eead4, #0d9488)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 2px 12px rgba(20,184,166,0.35)",
-            }}>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M3 9L9 3L15 9V15H3V9Z" fill="white" opacity="0.9"/>
-                <circle cx="9" cy="9" r="2.5" fill="white"/>
-              </svg>
+            <div className="w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-lg sm:rounded-[10px] flex items-center justify-center shadow-lg shadow-[#A6192E]/30 overflow-hidden">
+              <img
+                src="/logo1.png"
+                alt="Esperly Logo"
+                className="object-contain"
+              />
             </div>
-            <span className="logo-text text-2xl" style={{ color: "#0f4c45", letterSpacing: "-0.02em" }}>
+            <span
+              className="logo-text text-xl sm:text-2xl font-bold text-[#A6192E] drop-shadow-[0_2px_6px_rgba(166,25,46,0.2)] tracking-tight"
+              style={{
+                fontFamily: "'DM Serif Display', serif",
+              }}
+            >
               Esperly
             </span>
           </motion.div>
 
-          {/* ── Desktop Nav ── */}
+          {/* Desktop Navigation */}
           <motion.nav
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -296,17 +176,23 @@ const Navbar = () => {
             className="hidden md:flex items-center gap-1 relative"
             ref={menuRef}
           >
-            {navLinks.map((link, i) => (
+            {navLinks.map((link) => (
               <NavLink key={link.path} to={link.path}>
                 {({ isActive }) => (
-                  <div className={`nav-link-pill ${isActive ? "active" : ""}`}>
+                  <div
+                    className={`nav-link-pill relative px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-colors duration-200 ${
+                      isActive
+                        ? "text-[#A6192E] font-semibold after:opacity-100"
+                        : "text-gray-700"
+                    } after:content-[''] after:absolute after:inset-0 after:rounded-full after:bg-[#A6192E]/10 after:opacity-0 after:transition-opacity after:duration-200 after:-z-10 hover:after:opacity-100 hover:text-[#A6192E]`}
+                  >
                     {link.name}
                   </div>
                 )}
               </NavLink>
             ))}
 
-            <div className="divider-v mx-1" />
+            <div className="w-px bg-gradient-to-b from-transparent via-[#A6192E]/30 to-transparent self-stretch mx-1" />
 
             {/* Courses trigger */}
             <div
@@ -314,21 +200,18 @@ const Navbar = () => {
               onMouseLeave={handleMouseLeave}
               className="relative"
             >
-              <div
-                className="nav-link-pill flex items-center gap-1.5"
-                style={{ userSelect: "none" }}
-              >
+              <div className="nav-link-pill relative px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-colors duration-200 text-gray-700 flex items-center gap-1.5 after:content-[''] after:absolute after:inset-0 after:rounded-full after:bg-[#A6192E]/10 after:opacity-0 after:transition-opacity after:duration-200 after:-z-10 hover:after:opacity-100 hover:text-[#A6192E]">
                 Courses
                 <motion.span
                   animate={{ rotate: courseMenu ? 180 : 0 }}
                   transition={{ duration: 0.25 }}
-                  style={{ display: "flex", color: "#9ca3af" }}
+                  className="flex text-[#A6192E]"
                 >
                   <FiChevronDown size={14} />
                 </motion.span>
               </div>
 
-              {/* ── MEGA MENU ── */}
+              {/* Mega Menu - Desktop only */}
               <AnimatePresence>
                 {courseMenu && (
                   <motion.div
@@ -338,58 +221,44 @@ const Navbar = () => {
                     exit="exit"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    style={{
-                      position: "fixed",
-                      left: 0,
-                      top: 68,
-                      width: "100%",
-                      zIndex: 40,
-                      pointerEvents: "auto",
-                      originY: 0,
-                    }}
+                    className="fixed left-0 top-[60px] sm:top-[68px] w-full z-40 pointer-events-auto origin-top hidden lg:block"
                   >
-                    {/* Backdrop */}
-                    <div style={{
-                      background: "rgba(15,76,69,0.04)",
-                      backdropFilter: "blur(4px)",
-                      paddingTop: 8,
-                      paddingBottom: 32,
-                    }}>
+                    <div className="bg-[#A6192E]/10 backdrop-blur-sm pt-2 pb-8">
                       <div className="max-w-7xl mx-auto px-6">
-                        <div style={{
-                          background: "rgba(255,255,255,0.98)",
-                          borderRadius: 24,
-                          border: "1px solid rgba(94,234,212,0.3)",
-                          boxShadow: "0 24px 64px rgba(15,76,69,0.12), 0 4px 16px rgba(0,0,0,0.06)",
-                          padding: "32px 36px",
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1px 1fr 1px 320px",
-                          gap: 0,
-                        }}>
-
-                          {/* ── Column 1: Popular Courses ── */}
-                          <motion.div variants={itemVariants} style={{ paddingRight: 32 }}>
-                            <p style={{
-                              fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-                              color: "#0d9488", textTransform: "uppercase", marginBottom: 16,
-                            }}>
+                        <div className="bg-white rounded-2xl border border-[#A6192E]/20 shadow-2xl shadow-[#A6192E]/20 p-8 grid grid-cols-[1fr,1px,1fr,1px,320px] gap-0">
+                          {/* Column 1: Popular Courses */}
+                          <motion.div variants={itemVariants} className="pr-8">
+                            <p className="text-[10px] font-bold tracking-[0.1em] text-[#A6192E] uppercase mb-4">
                               Popular Courses
                             </p>
-                            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                            <div className="flex flex-col gap-0.5">
                               {popularCourses.map((c, i) => (
                                 <motion.div
                                   key={i}
                                   variants={itemVariants}
-                                  className="course-item"
+                                  className="flex items-center justify-between px-3.5 py-2 rounded-lg cursor-pointer transition-all duration-200 text-sm text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E] group"
                                 >
-                                  <span>{c.name}</span>
-                                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                  <div className="flex items-center gap-2">
+                                    <span>{c.icon}</span>
+                                    <span>{c.name}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
                                     {c.tag && (
-                                      <span className={`tag-badge ${c.tag === "Hot" ? "hot" : ""}`}>
+                                      <span
+                                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                                          c.tag === "Hot"
+                                            ? "bg-red-100 text-[#A6192E]"
+                                            : "bg-[#A6192E]/10 text-[#A6192E]"
+                                        }`}
+                                      >
                                         {c.tag}
                                       </span>
                                     )}
-                                    <FiArrowRight size={13} className="arrow-icon" />
+                                    <span className="text-xs text-[#A6192E]/60">{c.students}</span>
+                                    <FiArrowRight
+                                      size={13}
+                                      className="opacity-0 -translate-x-1.5 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 text-[#A6192E]"
+                                    />
                                   </div>
                                 </motion.div>
                               ))}
@@ -397,105 +266,62 @@ const Navbar = () => {
                           </motion.div>
 
                           {/* Divider */}
-                          <div style={{ background: "linear-gradient(to bottom, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent)", margin: "0 4px" }} />
+                          <div className="bg-gradient-to-b from-transparent via-[#A6192E]/30 to-transparent mx-1" />
 
-                          {/* ── Column 2: Categories ── */}
-                          <motion.div variants={itemVariants} style={{ paddingLeft: 32, paddingRight: 32 }}>
-                            <p style={{
-                              fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-                              color: "#0d9488", textTransform: "uppercase", marginBottom: 16,
-                            }}>
+                          {/* Column 2: Categories */}
+                          <motion.div variants={itemVariants} className="px-8">
+                            <p className="text-[10px] font-bold tracking-[0.1em] text-[#A6192E] uppercase mb-4">
                               Browse by Category
                             </p>
-                            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                            <div className="flex flex-col gap-0.5">
                               {categories.map((c, i) => (
-                                <motion.div key={i} variants={itemVariants} className="cat-item">
-                                  <span style={{ fontSize: 18 }}>{c.icon}</span>
-                                  <span>{c.name}</span>
+                                <motion.div
+                                  key={i}
+                                  variants={itemVariants}
+                                  className="flex items-center justify-between px-3.5 py-2 rounded-lg cursor-pointer transition-all duration-200 text-sm text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
+                                >
+                                  <div className="flex items-center gap-2.5">
+                                    <span className="text-lg">{c.icon}</span>
+                                    <span>{c.name}</span>
+                                  </div>
+                                  <span className="text-xs text-[#A6192E]/60">{c.count}</span>
                                 </motion.div>
                               ))}
                             </div>
                           </motion.div>
 
                           {/* Divider */}
-                          <div style={{ background: "linear-gradient(to bottom, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent)", margin: "0 4px" }} />
+                          <div className="bg-gradient-to-b from-transparent via-[#A6192E]/30 to-transparent mx-1" />
 
-                          {/* ── Column 3: CTA Card ── */}
-                          <motion.div variants={itemVariants} style={{ paddingLeft: 32 }}>
-                            <div style={{
-                              background: "linear-gradient(145deg, #0d9488 0%, #0f766e 50%, #0f4c45 100%)",
-                              borderRadius: 18,
-                              padding: "28px 24px",
-                              height: "100%",
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-between",
-                              position: "relative",
-                              overflow: "hidden",
-                            }}>
-                              {/* Decorative circles */}
-                              <div style={{
-                                position: "absolute", top: -30, right: -30,
-                                width: 100, height: 100, borderRadius: "50%",
-                                background: "rgba(255,255,255,0.08)",
-                              }} />
-                              <div style={{
-                                position: "absolute", bottom: -20, left: -20,
-                                width: 80, height: 80, borderRadius: "50%",
-                                background: "rgba(255,255,255,0.06)",
-                              }} />
+                          {/* Column 3: CTA Card */}
+                          <motion.div variants={itemVariants} className="pl-8">
+                            <div className="bg-gradient-to-br from-[#A6192E] to-[#8B1527] rounded-lg p-7 h-full flex flex-col justify-between relative overflow-hidden">
+                              <div className="absolute top-[-30px] right-[-30px] w-[100px] h-[100px] rounded-full bg-white/10" />
+                              <div className="absolute bottom-[-20px] left-[-20px] w-[80px] h-[80px] rounded-full bg-white/5" />
 
-                              <div style={{ position: "relative" }}>
-                                <div style={{
-                                  display: "inline-flex", alignItems: "center", gap: 6,
-                                  background: "rgba(255,255,255,0.15)",
-                                  borderRadius: 100, padding: "4px 12px",
-                                  marginBottom: 14,
-                                }}>
-                                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#5eead4" }} />
-                                  <span style={{ fontSize: "11px", color: "#ccfbf1", fontWeight: 600, letterSpacing: "0.06em" }}>
+                              <div className="relative">
+                                <div className="inline-flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 mb-3">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                                  <span className="text-[11px] text-white font-semibold tracking-wider">
                                     10,000+ STUDENTS
                                   </span>
                                 </div>
-
-                                <h3 className="logo-text" style={{
-                                  fontSize: "1.4rem", color: "white", lineHeight: 1.25,
-                                  marginBottom: 10,
-                                }}>
+                                <h3
+                                  className="logo-text text-2xl text-white leading-tight mb-2"
+                                  style={{ fontFamily: "'DM Serif Display', serif" }}
+                                >
                                   Start Learning<br />Today
                                 </h3>
-                                <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.55 }}>
+                                <p className="text-xs text-white/70 leading-relaxed">
                                   Join thousands of students upgrading their skills with expert-led courses.
                                 </p>
                               </div>
 
-                              <button
-                                style={{
-                                  marginTop: 20,
-                                  background: "white",
-                                  color: "#0d9488",
-                                  fontWeight: 700,
-                                  fontSize: "0.85rem",
-                                  padding: "10px 20px",
-                                  borderRadius: 100,
-                                  border: "none",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  gap: 6,
-                                  transition: "transform 0.2s, box-shadow 0.2s",
-                                  boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-                                  position: "relative",
-                                }}
-                                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.2)"; }}
-                                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.15)"; }}
-                              >
+                              <button className="mt-5 bg-white text-[#A6192E] font-bold text-sm px-5 py-2.5 rounded-full flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl relative">
                                 Browse All Courses <FiArrowRight size={14} />
                               </button>
                             </div>
                           </motion.div>
-
                         </div>
                       </div>
                     </div>
@@ -505,135 +331,362 @@ const Navbar = () => {
             </div>
           </motion.nav>
 
-          {/* ── CTA ── */}
+          {/* Right Section */}
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="hidden md:flex items-center gap-3"
+            className="flex items-center gap-2 sm:gap-3"
           >
+            {/* Search Button - Desktop & Mobile */}
             <button
-              style={{
-                fontSize: "0.85rem", fontWeight: 500, color: "#0d9488",
-                background: "none", border: "none", cursor: "pointer",
-                padding: "8px 12px", borderRadius: 100,
-                transition: "background 0.2s",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "#f0fdfa"}
-              onMouseLeave={e => e.currentTarget.style.background = "none"}
+              onClick={() => setSearchOpen(true)}
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#A6192E]/10 flex items-center justify-center cursor-pointer text-[#A6192E] transition-all duration-200 hover:bg-[#A6192E]/20 hover:scale-105"
             >
+              <FiSearch size={16} className="sm:w-[18px] sm:h-[18px]" />
+            </button>
+
+            {/* Desktop Buttons */}
+            <button className="hidden sm:block text-sm font-medium text-gray-700 px-3 py-2 rounded-full transition-colors duration-200 hover:bg-[#A6192E]/10 hover:text-[#A6192E]">
               Sign In
             </button>
-            <button className="enroll-btn">Enroll Now</button>
-          </motion.div>
+            <button className="hidden sm:block relative overflow-hidden px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm text-white bg-gradient-to-br from-[#A6192E] to-[#8B1527] shadow-lg shadow-[#A6192E]/30 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:transition-all before:duration-700 hover:before:left-full">
+              Enroll Now
+            </button>
 
-          {/* ── Mobile Hamburger ── */}
-          <button
-            onClick={() => setOpen(true)}
-            className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl"
-            style={{ background: "#f0fdfa", color: "#0d9488", border: "none", cursor: "pointer" }}
-          >
-            <FiMenu size={20} />
-          </button>
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setOpen(true)}
+              className="md:hidden flex items-center justify-center w-8 h-8 rounded-xl bg-[#A6192E]/10 text-[#A6192E] border-none cursor-pointer"
+            >
+              <FiMenu size={18} />
+            </button>
+          </motion.div>
         </div>
       </header>
 
-      {/* ═══════════════ MOBILE SIDEBAR ═══════════════ */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-50">
-            {/* Backdrop */}
+          <div className="fixed inset-0 z-50 md:hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              style={{ position: "absolute", inset: 0, background: "rgba(15,76,69,0.3)", backdropFilter: "blur(4px)" }}
+              className="absolute inset-0 bg-[#A6192E]/30 backdrop-blur-sm"
             />
-
-            {/* Drawer */}
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 32 }}
-              className="nav-root"
-              style={{
-                position: "absolute", left: 0, top: 0,
-                height: "100%", width: 300,
-                background: "white",
-                boxShadow: "4px 0 40px rgba(0,0,0,0.12)",
-                padding: "28px 20px",
-                overflowY: "auto",
-              }}
+              className="absolute left-0 top-0 h-full w-[85%] max-w-[320px] bg-white shadow-2xl shadow-[#A6192E]/20 p-5 sm:p-7 overflow-y-auto font-sans"
             >
-              {/* Header */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{
-                    width: 30, height: 30, borderRadius: 8,
-                    background: "linear-gradient(135deg, #5eead4, #0d9488)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
-                      <path d="M3 9L9 3L15 9V15H3V9Z" fill="white" opacity="0.9"/>
-                      <circle cx="9" cy="9" r="2.5" fill="white"/>
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#A6192E] to-[#8B1527] flex items-center justify-center">
+                    <svg width="14" height="14" viewBox="0 0 18 18" fill="none">
+                      <path d="M3 9L9 3L15 9V15H3V9Z" fill="white" opacity="0.9" />
+                      <circle cx="9" cy="9" r="2.5" fill="white" />
                     </svg>
                   </div>
-                  <span className="logo-text" style={{ fontSize: "1.3rem", color: "#0f4c45" }}>Esperly</span>
+                  <span
+                    className="logo-text text-xl text-[#A6192E]"
+                    style={{ fontFamily: "'DM Serif Display', serif" }}
+                  >
+                    Esperly
+                  </span>
                 </div>
                 <button
                   onClick={() => setOpen(false)}
-                  style={{
-                    background: "#f3f4f6", border: "none", borderRadius: 10,
-                    width: 34, height: 34, display: "flex", alignItems: "center",
-                    justifyContent: "center", cursor: "pointer", color: "#374151",
-                  }}
+                  className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center cursor-pointer text-gray-700"
                 >
                   <FiX size={18} />
                 </button>
               </div>
 
-              {/* Links */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {/* Mobile Search Bar */}
+              <div className="mb-6">
+                <div
+                  onClick={() => {
+                    setOpen(false);
+                    setSearchOpen(true);
+                  }}
+                  className="flex items-center gap-3 px-4 py-3 bg-[#A6192E]/5 rounded-xl border border-[#A6192E]/20 cursor-pointer"
+                >
+                  <FiSearch className="text-[#A6192E]" size={18} />
+                  <span className="text-sm text-[#A6192E]/60 flex-1">Search courses...</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-0.5">
                 {navLinks.map((link) => (
-                  <NavLink key={link.path} to={link.path} className="mobile-link" onClick={() => setOpen(false)}>
+                  <NavLink key={link.path} to={link.path} onClick={() => setOpen(false)}>
                     {({ isActive }) => (
-                      <div className={`mobile-link ${isActive ? "active" : ""}`} style={{ width: "100%", textDecoration: "none" }}>
+                      <div
+                        className={`flex items-center gap-2.5 px-4 py-3 rounded-lg font-medium cursor-pointer transition-all duration-200 mb-1 ${
+                          isActive
+                            ? "bg-[#A6192E]/10 text-[#A6192E]"
+                            : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
+                        }`}
+                      >
                         {link.name}
                       </div>
                     )}
                   </NavLink>
                 ))}
-                <div className="mobile-link" style={{ color: "#374151" }}>Courses</div>
+
+                {/* Mobile Courses Section */}
+                <div className="mt-4">
+                  <p className="text-xs font-semibold text-[#A6192E] uppercase tracking-wider px-4 mb-2">
+                    Popular Courses
+                  </p>
+                  {popularCoursesForMobile.map((course, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer hover:bg-[#A6192E]/5 transition-colors"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span>{course.icon}</span>
+                        <span className="text-sm text-gray-700">{course.name}</span>
+                      </div>
+                      {course.tag && (
+                        <span
+                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                            course.tag === "Hot"
+                              ? "bg-red-100 text-[#A6192E]"
+                              : "bg-[#A6192E]/10 text-[#A6192E]"
+                          }`}
+                        >
+                          {course.tag}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Divider */}
-              <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #e5e7eb, transparent)", margin: "20px 0" }} />
+              <div className="h-px bg-gradient-to-r from-transparent via-[#A6192E]/30 to-transparent my-5" />
 
-              {/* Mobile CTA */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <button
-                  style={{
-                    padding: "12px", borderRadius: 14, border: "1.5px solid #e5e7eb",
-                    background: "white", color: "#0d9488", fontWeight: 600, fontSize: "0.9rem",
-                    cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
-                  }}
-                >
+              <div className="flex flex-col gap-2.5">
+                <button className="py-3 rounded-lg border-2 border-[#A6192E]/20 bg-white text-[#A6192E] font-semibold text-sm cursor-pointer">
                   Sign In
                 </button>
-                <button className="enroll-btn" style={{ padding: "12px", borderRadius: 14, width: "100%", fontFamily: "'DM Sans', sans-serif" }}>
+                <button className="py-3 rounded-lg bg-gradient-to-br from-[#A6192E] to-[#8B1527] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30">
                   Enroll Now
                 </button>
               </div>
 
-              {/* Bottom tagline */}
-              <p style={{ marginTop: 32, fontSize: "11px", color: "#9ca3af", textAlign: "center", letterSpacing: "0.05em" }}>
+              <p className="mt-8 text-[11px] text-gray-400 text-center tracking-widest">
                 LEARN · GROW · SUCCEED
               </p>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Fullscreen Search Overlay - Responsive */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-[#A6192E]/5 overflow-y-auto"
+          >
+            {/* Search Header */}
+            <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-[#A6192E]/20 z-10">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex-1 flex items-center gap-3 sm:gap-4 bg-white rounded-full px-4 sm:px-6 py-3 sm:py-4 shadow-lg shadow-[#A6192E]/5 border border-[#A6192E]/20">
+                    <FiSearch className="text-[#A6192E] flex-shrink-0" size={20} />
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Search for courses, categories, topics..."
+                      value={searchQuery}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder-[#A6192E]/40 text-sm sm:text-base"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="text-[#A6192E]/60 hover:text-[#A6192E] transition-colors"
+                      >
+                        <FiX size={18} />
+                      </button>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setSearchOpen(false)}
+                    className="px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium text-[#A6192E] hover:text-[#8B1527] transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Search Content */}
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+              {searchQuery ? (
+                /* Search Results */
+                <div>
+                  <p className="text-xs sm:text-sm text-[#A6192E]/80 mb-4">
+                    Found {allSearchResults.length} results for "{searchQuery}"
+                  </p>
+                  <div className="space-y-2">
+                    {allSearchResults.length > 0 ? (
+                      allSearchResults.map((item, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-md hover:shadow-lg transition-all cursor-pointer border border-[#A6192E]/10 hover:border-[#A6192E]/30"
+                        >
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <span className="text-2xl sm:text-3xl">{item.icon}</span>
+                            <div className="flex-1">
+                              <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                                {item.name}
+                              </h3>
+                              <div className="flex items-center gap-3 mt-1">
+                                <span className="text-xs sm:text-sm text-[#A6192E]/80 capitalize">
+                                  {item.type}
+                                </span>
+                                {item.students && (
+                                  <span className="text-xs text-[#A6192E]/60">
+                                    • {item.students} students
+                                  </span>
+                                )}
+                                {item.count && (
+                                  <span className="text-xs text-[#A6192E]/60">
+                                    • {item.count}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <FiArrowRight className="text-[#A6192E]/40 text-xl sm:text-2xl" />
+                          </div>
+                        </motion.div>
+                      ))
+                    ) : (
+                      <div className="text-center py-12 sm:py-16">
+                        <div className="text-6xl sm:text-7xl mb-4">🔍</div>
+                        <h3 className="text-lg sm:text-xl font-semibold text-[#A6192E] mb-2">
+                          No results found
+                        </h3>
+                        <p className="text-sm sm:text-base text-[#A6192E]/80">
+                          Try different keywords or browse categories
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                /* Search Suggestions */
+                <div className="space-y-6 sm:space-y-8">
+                  {/* Recent Searches */}
+                  {recentSearches.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                        <FiTrendingUp className="text-[#A6192E]" /> Recent Searches
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {recentSearches.map((search, i) => (
+                          <button
+                            key={i}
+                            onClick={() => handleSearch(search)}
+                            className="px-4 py-2 bg-white rounded-full text-sm text-[#A6192E] shadow-sm hover:shadow-md transition-all border border-[#A6192E]/20"
+                          >
+                            {search}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Trending Searches */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                      <FiStar className="text-[#A6192E]" /> Trending Now
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                      {trendingSearches.map((search, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSearch(search)}
+                          className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
+                        >
+                          <span className="text-sm sm:text-base text-gray-800">{search}</span>
+                          <span className="text-xs text-[#A6192E]/60">#{i + 1}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Popular Categories */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                      <FiBookOpen className="text-[#A6192E]" /> Popular Categories
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                      {categories.map((cat, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSearch(cat.name)}
+                          className="flex flex-col items-center gap-2 p-4 sm:p-5 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
+                        >
+                          <span className="text-2xl sm:text-3xl">{cat.icon}</span>
+                          <span className="text-xs sm:text-sm font-medium text-gray-800 text-center">
+                            {cat.name}
+                          </span>
+                          <span className="text-[10px] sm:text-xs text-[#A6192E]/60">{cat.count}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Featured Courses */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                      <FiUsers className="text-[#A6192E]" /> Featured Courses
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {popularCourses.slice(0, 4).map((course, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSearch(course.name)}
+                          className="flex items-center gap-3 p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
+                        >
+                          <span className="text-2xl">{course.icon}</span>
+                          <div className="flex-1 text-left">
+                            <p className="text-sm sm:text-base font-medium text-gray-800">
+                              {course.name}
+                            </p>
+                            <p className="text-xs text-[#A6192E]/60">{course.students} students</p>
+                          </div>
+                          {course.tag && (
+                            <span
+                              className={`text-[10px] font-bold px-2 py-1 rounded-full ${
+                                course.tag === "Hot"
+                                  ? "bg-red-100 text-[#A6192E]"
+                                  : "bg-[#A6192E]/10 text-[#A6192E]"
+                              }`}
+                            >
+                              {course.tag}
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
