@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { FiMenu, FiX, FiArrowRight, FiChevronDown, FiSearch, FiTrendingUp, FiBookOpen, FiUsers, FiStar } from "react-icons/fi";
 
@@ -71,6 +71,8 @@ const Navbar = () => {
   const timeoutRef = useRef();
   const searchInputRef = useRef();
   const mobileSearchInputRef = useRef();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -317,7 +319,7 @@ const Navbar = () => {
                                 </p>
                               </div>
 
-                              <button className="mt-5 bg-white text-[#A6192E] font-bold text-sm px-5 py-2.5 rounded-full flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl relative">
+                              <button onClick={() => navigate('/category')} className="mt-5 bg-white text-[#A6192E] font-bold text-sm px-5 py-2.5 rounded-full flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl relative">
                                 Browse All Courses <FiArrowRight size={14} />
                               </button>
                             </div>
@@ -493,7 +495,7 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-[#A6192E]/5 overflow-y-auto"
+            className="fixed inset-0 z-[100] bg-[#f5526a] overflow-y-auto"
           >
             {/* Search Header */}
             <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-[#A6192E]/20 z-10">
@@ -591,8 +593,8 @@ const Navbar = () => {
                   {/* Recent Searches */}
                   {recentSearches.length > 0 && (
                     <div>
-                      <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
-                        <FiTrendingUp className="text-[#A6192E]" /> Recent Searches
+                      <h3 className="text-sm font-semibold text-[#fff] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                        <FiTrendingUp className="text-[#fff]" /> Recent Searches
                       </h3>
                       <div className="flex flex-wrap gap-2">
                         {recentSearches.map((search, i) => (
@@ -610,8 +612,8 @@ const Navbar = () => {
 
                   {/* Trending Searches */}
                   <div>
-                    <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
-                      <FiStar className="text-[#A6192E]" /> Trending Now
+                    <h3 className="text-sm font-semibold text-[#fff] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                      <FiStar className="text-[#fff]" /> Trending Now
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                       {trendingSearches.map((search, i) => (
@@ -629,8 +631,8 @@ const Navbar = () => {
 
                   {/* Popular Categories */}
                   <div>
-                    <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
-                      <FiBookOpen className="text-[#A6192E]" /> Popular Categories
+                    <h3 className="text-sm font-semibold text-[#fff] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                      <FiBookOpen className="text-[#fff]" /> Popular Categories
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                       {categories.map((cat, i) => (
@@ -651,8 +653,8 @@ const Navbar = () => {
 
                   {/* Featured Courses */}
                   <div>
-                    <h3 className="text-sm font-semibold text-[#A6192E] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
-                      <FiUsers className="text-[#A6192E]" /> Featured Courses
+                    <h3 className="text-sm font-semibold text-[#fff] uppercase tracking-wider mb-3 sm:mb-4 flex items-center gap-2">
+                      <FiUsers className="text-[#fff]" /> Featured Courses
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {popularCourses.slice(0, 4).map((course, i) => (

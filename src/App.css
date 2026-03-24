@@ -1,0 +1,24 @@
+/* Hide default cursor */
+html, body, * {
+  cursor: none !important;
+}
+
+* {
+  user-select: text !important;
+}
+
+/* Remove focus outline (optional) */
+:focus {
+  outline: none !important;
+}
+
+/* ✅ Selection color (FINAL FIX) */
+::selection {
+  background-color: #8B1527;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: #8B1527;
+  color: #fff;
+}
