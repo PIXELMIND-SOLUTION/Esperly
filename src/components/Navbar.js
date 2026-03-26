@@ -56,7 +56,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
-const Navbar = () => {
+const Navbar = ({ onOpenModal }) => {
   const [open, setOpen] = useState(false);
   const [courseMenu, setCourseMenu] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -349,7 +349,7 @@ const Navbar = () => {
             </button>
 
             {/* Desktop Buttons */}
-            <button className="hidden sm:block text-sm font-medium text-gray-700 px-3 py-2 rounded-full transition-colors duration-200 hover:bg-[#A6192E]/10 hover:text-[#A6192E]">
+            <button  onClick={onOpenModal} className="hidden sm:block text-sm font-medium text-gray-700 px-3 py-2 rounded-full transition-colors duration-200 hover:bg-[#A6192E]/10 hover:text-[#A6192E]">
               Sign In
             </button>
             <button className="hidden sm:block relative overflow-hidden px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm text-white bg-gradient-to-br from-[#A6192E] to-[#8B1527] shadow-lg shadow-[#A6192E]/30 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:transition-all before:duration-700 hover:before:left-full">
@@ -472,7 +472,7 @@ const Navbar = () => {
               <div className="h-px bg-gradient-to-r from-transparent via-[#A6192E]/30 to-transparent my-5" />
 
               <div className="flex flex-col gap-2.5">
-                <button className="py-3 rounded-lg border-2 border-[#A6192E]/20 bg-white text-[#A6192E] font-semibold text-sm cursor-pointer">
+                <button  onClick={onOpenModal} className="py-3 rounded-lg border-2 border-[#A6192E]/20 bg-white text-[#A6192E] font-semibold text-sm cursor-pointer">
                   Sign In
                 </button>
                 <button className="py-3 rounded-lg bg-gradient-to-br from-[#A6192E] to-[#8B1527] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30">
