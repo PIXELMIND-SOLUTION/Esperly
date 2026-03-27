@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../../components/Navbar";
+import LoginModal from "../../modals/LoginModal";
 
 const generateCourseData = (sub) => ({
     instructor: {
@@ -151,6 +152,7 @@ const CurriculumItem = ({ item, accent, delay }) => {
 };
 
 export default function CourseDetail({ course, category, onBack }) {
+    const [openModal, setOpenModal] = useState(false);
     const accent = course.categoryAccent || category?.accent || "#A6192E";
     const data = generateCourseData(course);
     const [enrolled, setEnrolled] = useState(false);
@@ -158,7 +160,7 @@ export default function CourseDetail({ course, category, onBack }) {
 
     return (
         <>
-            <Navbar />
+            <Navbar onOpenModal={() => setOpenModal(true)} />
             <div className="bg-cream min-h-screen">
                 {/* Hero Banner */}
                 <div className="relative h-[260px] sm:h-[320px] lg:h-[420px] overflow-hidden">
@@ -525,6 +527,10 @@ export default function CourseDetail({ course, category, onBack }) {
                     </div>
                 </div>
             </div>
+            <LoginModal
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+            />
         </>
     );
 }

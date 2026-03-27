@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Navbar from "../../components/Navbar";
+import LoginModal from "../../modals/LoginModal";
 
 /* ─── COLOUR TOKENS (matching stationery theme) ─────────────────────────────────────────── */
 const PAPER = "#F9F5ED";   // aged cream paper
@@ -156,6 +157,7 @@ const Highlight = ({ children, color = "#FFEB3B", style = {} }) => (
 
 /* ─── CONTACT FORM COMPONENT ────────────────────────────────────────── */
 const Contact = () => {
+    const [openModal, setOpenModal] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -246,7 +248,7 @@ const Contact = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar onOpenModal={() => setOpenModal(true)} />
             <section style={{
                 background: PAPER2,
                 padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
@@ -849,6 +851,10 @@ const Contact = () => {
         }
       `}</style>
             </section>
+            <LoginModal
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+            />
         </>
     );
 };

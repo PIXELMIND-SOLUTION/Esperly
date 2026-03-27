@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { CATEGORIES } from "../../data/categories";
 import Navbar from "../../components/Navbar";
+import LoginModal from "../../modals/LoginModal";
 
 const CategoryCard = React.memo(({ cat, index, onClick }) => {
   const [hov, setHov] = React.useState(false);
@@ -87,12 +88,13 @@ const CategoryCard = React.memo(({ cat, index, onClick }) => {
 });
 
 export default function Category({ onSelectCategory }) {
+  const [openModal, setOpenModal] = useState(false);
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: "-5% 0px" });
 
   return (
     <>
-      <Navbar />
+      <Navbar onOpenModal={() => setOpenModal(true)} />
       <section
         ref={sectionRef}
         className="relative bg-cream py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 overflow-hidden min-h-screen"
@@ -211,6 +213,10 @@ export default function Category({ onSelectCategory }) {
           </div>
         </div>
       </section>
+      <LoginModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+      />
     </>
   );
 }

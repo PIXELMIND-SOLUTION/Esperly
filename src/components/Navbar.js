@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { FiMenu, FiX, FiArrowRight, FiChevronDown, FiSearch, FiTrendingUp, FiBookOpen, FiUsers, FiStar } from "react-icons/fi";
+import EnrollModal from "../modals/EnrollModal";
+import LoginModal from "../modals/LoginModal";
 
 const popularCourses = [
   { name: "Full Stack Development", tag: "Hot", students: "2.5k", icon: "💻" },
@@ -27,7 +29,7 @@ const navLinks = [
   { name: "Home", path: "/" },
   { name: "Teachers", path: "/teachers" },
   { name: "Contact", path: "/contact" },
-  { name: "About Us", path: "/aboutus"}
+  { name: "About Us", path: "/aboutus" }
 ];
 
 const megaMenuVariants = {
@@ -56,7 +58,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
-const Navbar = ({ onOpenModal }) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [courseMenu, setCourseMenu] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -71,6 +73,11 @@ const Navbar = ({ onOpenModal }) => {
   const timeoutRef = useRef();
   const searchInputRef = useRef();
   const mobileSearchInputRef = useRef();
+
+  const [openModal, setOpenModal] = useState(false);
+
+
+  const [open1, setOpen1] = useState(false);
 
   const navigate = useNavigate();
 
@@ -138,11 +145,10 @@ const Navbar = ({ onOpenModal }) => {
   return (
     <>
       <header
-        className={`nav-root sticky top-0 z-50 transition-all duration-300 font-sans ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md border-b border-[#A6192E]/20 shadow-lg shadow-[#A6192E]/5"
-            : "bg-white/75 backdrop-blur-md border-b border-[#A6192E]/10"
-        }`}
+        className={`nav-root sticky top-0 z-50 transition-all duration-300 font-sans ${scrolled
+          ? "bg-white/95 backdrop-blur-md border-b border-[#A6192E]/20 shadow-lg shadow-[#A6192E]/5"
+          : "bg-white/75 backdrop-blur-md border-b border-[#A6192E]/10"
+          }`}
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[60px] sm:h-[68px] flex items-center justify-between gap-4">
@@ -152,6 +158,7 @@ const Navbar = ({ onOpenModal }) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             className="flex items-center gap-2 shrink-0"
+            onClick={() => navigate("/")}
           >
             <div className="w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-lg sm:rounded-[10px] flex items-center justify-center shadow-lg shadow-[#A6192E]/30 overflow-hidden">
               <img
@@ -182,11 +189,10 @@ const Navbar = ({ onOpenModal }) => {
               <NavLink key={link.path} to={link.path}>
                 {({ isActive }) => (
                   <div
-                    className={`nav-link-pill relative px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-colors duration-200 ${
-                      isActive
-                        ? "text-[#A6192E] font-semibold after:opacity-100"
-                        : "text-gray-700"
-                    } after:content-[''] after:absolute after:inset-0 after:rounded-full after:bg-[#A6192E]/10 after:opacity-0 after:transition-opacity after:duration-200 after:-z-10 hover:after:opacity-100 hover:text-[#A6192E]`}
+                    className={`nav-link-pill relative px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-colors duration-200 ${isActive
+                      ? "text-[#A6192E] font-semibold after:opacity-100"
+                      : "text-gray-700"
+                      } after:content-[''] after:absolute after:inset-0 after:rounded-full after:bg-[#A6192E]/10 after:opacity-0 after:transition-opacity after:duration-200 after:-z-10 hover:after:opacity-100 hover:text-[#A6192E]`}
                   >
                     {link.name}
                   </div>
@@ -247,11 +253,10 @@ const Navbar = ({ onOpenModal }) => {
                                   <div className="flex items-center gap-2">
                                     {c.tag && (
                                       <span
-                                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                                          c.tag === "Hot"
-                                            ? "bg-red-100 text-[#A6192E]"
-                                            : "bg-[#A6192E]/10 text-[#A6192E]"
-                                        }`}
+                                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${c.tag === "Hot"
+                                          ? "bg-red-100 text-[#A6192E]"
+                                          : "bg-[#A6192E]/10 text-[#A6192E]"
+                                          }`}
                                       >
                                         {c.tag}
                                       </span>
@@ -349,10 +354,10 @@ const Navbar = ({ onOpenModal }) => {
             </button>
 
             {/* Desktop Buttons */}
-            <button  onClick={onOpenModal} className="hidden sm:block text-sm font-medium text-gray-700 px-3 py-2 rounded-full transition-colors duration-200 hover:bg-[#A6192E]/10 hover:text-[#A6192E]">
+            <button onClick={() => setOpenModal(true)} className="hidden sm:block text-sm font-medium text-gray-700 px-3 py-2 rounded-full transition-colors duration-200 hover:bg-[#A6192E]/10 hover:text-[#A6192E]">
               Sign In
             </button>
-            <button className="hidden sm:block relative overflow-hidden px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm text-white bg-gradient-to-br from-[#A6192E] to-[#8B1527] shadow-lg shadow-[#A6192E]/30 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:transition-all before:duration-700 hover:before:left-full">
+            <button onClick={() => setOpen1(true)} className="hidden sm:block relative overflow-hidden px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm text-white bg-gradient-to-br from-[#A6192E] to-[#8B1527] shadow-lg shadow-[#A6192E]/30 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:transition-all before:duration-700 hover:before:left-full">
               Enroll Now
             </button>
 
@@ -427,11 +432,10 @@ const Navbar = ({ onOpenModal }) => {
                   <NavLink key={link.path} to={link.path} onClick={() => setOpen(false)}>
                     {({ isActive }) => (
                       <div
-                        className={`flex items-center gap-2.5 px-4 py-3 rounded-lg font-medium cursor-pointer transition-all duration-200 mb-1 ${
-                          isActive
-                            ? "bg-[#A6192E]/10 text-[#A6192E]"
-                            : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
-                        }`}
+                        className={`flex items-center gap-2.5 px-4 py-3 rounded-lg font-medium cursor-pointer transition-all duration-200 mb-1 ${isActive
+                          ? "bg-[#A6192E]/10 text-[#A6192E]"
+                          : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
+                          }`}
                       >
                         {link.name}
                       </div>
@@ -455,11 +459,10 @@ const Navbar = ({ onOpenModal }) => {
                       </div>
                       {course.tag && (
                         <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                            course.tag === "Hot"
-                              ? "bg-red-100 text-[#A6192E]"
-                              : "bg-[#A6192E]/10 text-[#A6192E]"
-                          }`}
+                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${course.tag === "Hot"
+                            ? "bg-red-100 text-[#A6192E]"
+                            : "bg-[#A6192E]/10 text-[#A6192E]"
+                            }`}
                         >
                           {course.tag}
                         </span>
@@ -472,10 +475,10 @@ const Navbar = ({ onOpenModal }) => {
               <div className="h-px bg-gradient-to-r from-transparent via-[#A6192E]/30 to-transparent my-5" />
 
               <div className="flex flex-col gap-2.5">
-                <button  onClick={onOpenModal} className="py-3 rounded-lg border-2 border-[#A6192E]/20 bg-white text-[#A6192E] font-semibold text-sm cursor-pointer">
+                <button onClick={() => setOpenModal(true)} className="py-3 rounded-lg border-2 border-[#A6192E]/20 bg-white text-[#A6192E] font-semibold text-sm cursor-pointer">
                   Sign In
                 </button>
-                <button className="py-3 rounded-lg bg-gradient-to-br from-[#A6192E] to-[#8B1527] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30">
+                <button onClick={() => setOpen1(true)} className="py-3 rounded-lg bg-gradient-to-br from-[#A6192E] to-[#8B1527] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30">
                   Enroll Now
                 </button>
               </div>
@@ -672,11 +675,10 @@ const Navbar = ({ onOpenModal }) => {
                           </div>
                           {course.tag && (
                             <span
-                              className={`text-[10px] font-bold px-2 py-1 rounded-full ${
-                                course.tag === "Hot"
-                                  ? "bg-red-100 text-[#A6192E]"
-                                  : "bg-[#A6192E]/10 text-[#A6192E]"
-                              }`}
+                              className={`text-[10px] font-bold px-2 py-1 rounded-full ${course.tag === "Hot"
+                                ? "bg-red-100 text-[#A6192E]"
+                                : "bg-[#A6192E]/10 text-[#A6192E]"
+                                }`}
                             >
                               {course.tag}
                             </span>
@@ -691,6 +693,13 @@ const Navbar = ({ onOpenModal }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <LoginModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+      />
+
+      <EnrollModal isOpen={open1} onClose={() => setOpen1(false)} />
     </>
   );
 };

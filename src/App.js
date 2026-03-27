@@ -8,6 +8,8 @@ import Category from "./pages/category/Category";
 import CourseDetail from "./pages/category/CourseDetails";
 import Subcategory from "./pages/category/SubCategory";
 import RollingPencil from "./views/RollingPencil";
+import Teachers from "./pages/teacher/Teachers";
+import BusBanner from "./views/BusBanner";
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -49,10 +51,12 @@ function App() {
     <div className="cursor-none">
       <CustomCursor />
       <RollingPencil/>
+      <BusBanner/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/teachers" element={<Teachers/>} />
         <Route 
           path="/category" 
           element={

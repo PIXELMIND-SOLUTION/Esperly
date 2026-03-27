@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../../components/Navbar";
+import LoginModal from "../../modals/LoginModal";
 
 const SubCard = React.memo(({ sub, accent, delay, onClick }) => {
     const [hov, setHov] = useState(false);
@@ -144,6 +145,7 @@ const FilterBar = ({ active, onChange, accent }) => {
 };
 
 export default function Subcategory({ category, onBack, onSelectCourse }) {
+    const [openModal, setOpenModal] = useState(false);
     const [filter, setFilter] = useState("All");
     const { accent, icon, title, tagline, subcategories } = category;
 
@@ -154,7 +156,7 @@ export default function Subcategory({ category, onBack, onSelectCourse }) {
 
     return (
         <>
-            <Navbar />
+            <Navbar onOpenModal={() => setOpenModal(true)} />
             <section className="relative bg-cream min-h-screen py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-12 overflow-hidden">
                 {/* Ruled lines */}
                 <div className="absolute inset-0 pointer-events-none">
@@ -305,6 +307,10 @@ export default function Subcategory({ category, onBack, onSelectCourse }) {
                     </div>
                 </div>
             </section>
+            <LoginModal
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+            />
         </>
     );
 }
