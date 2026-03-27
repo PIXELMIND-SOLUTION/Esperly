@@ -1,120 +1,146 @@
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 import { useLocation } from "react-router-dom";
 
 const CustomCursor = () => {
   const cursorOuter = useRef(null);
   const cursorInner = useRef(null);
-  const location = useLocation(); // 👈 detect route change
+  const location = useLocation();
 
   useEffect(() => {
-    let mouse = { x: -100, y: -100 };
-    let isStuck = false;
-
     const outer = cursorOuter.current;
     const inner = cursorInner.current;
+    if (!outer || !inner) return;
 
-    const updateMouse = (e) => {
+    let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let pos = { x: mouse.x, y: mouse.y };
+
+    let isStuck = false;
+    let rafId;
+
+    // 🔥 SMOOTH FOLLOW (LERP)
+    const lerp = (start, end, factor) => start + (end - start) * factor;
+
+    const animate = () => {
+      pos.x = lerp(pos.x, mouse.x, 0.15);
+      pos.y = lerp(pos.y, mouse.y, 0.15);
+
+      if (!isStuck) {
+        outer.style.transform = `translate(${pos.x - 20}px, ${pos.y - 20}px)`;
+      }
+
+      inner.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%)`;
+
+      rafId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    const handleMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
 
-    const animate = () => {
-      if (!outer || !inner) return;
+    window.addEventListener("mousemove", handleMouseMove);
 
-      const rect = outer.getBoundingClientRect(); // ✅ dynamic
-
-      gsap.set(inner, {
-        x: mouse.x,
-        y: mouse.y,
-      });
-
-      if (!isStuck) {
-        gsap.to(outer, {
-          duration: 0.15,
-          x: mouse.x - rect.width / 2,
-          y: mouse.y - rect.height / 2,
-        });
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-    window.addEventListener("mousemove", updateMouse);
-
-    // 🔥 Re-select elements after route change
-    const targets = document.querySelectorAll("button, a");
-
+    /* =========================
+       HOVER EFFECT
+    ========================= */
     const handleEnter = (e) => {
       isStuck = true;
       const rect = e.currentTarget.getBoundingClientRect();
 
-      gsap.to(outer, {
-        duration: 0.2,
-        x: rect.left,
-        y: rect.top,
-        width: rect.width,
-        height: rect.height,
-        borderRadius: 10,
-        backgroundColor: "rgba(14, 94, 105, 0.2)",
-      });
+      outer.style.transition = "all 0.2s ease";
+      outer.style.width = `${rect.width}px`;
+      outer.style.height = `${rect.height}px`;
+      outer.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+      outer.style.borderRadius = "10px";
+      outer.style.backgroundColor = "rgba(166,25,46,0.12)";
+
+      inner.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%) scale(2)`;
     };
 
     const handleLeave = () => {
       isStuck = false;
 
-      gsap.to(outer, {
-        duration: 0.2,
-        width: 40,
-        height: 40,
-        borderRadius: "50%",
-        backgroundColor: "transparent",
-      });
+      outer.style.transition = "all 0.2s ease";
+      outer.style.width = "40px";
+      outer.style.height = "40px";
+      outer.style.borderRadius = "50%";
+      outer.style.backgroundColor = "transparent";
+
+      inner.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%) scale(1)`;
     };
 
-    targets.forEach((el) => {
+    /* =========================
+       CLICK EFFECT
+    ========================= */
+    const handleDown = () => {
+      inner.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%) scale(1.6)`;
+      outer.style.transform = `translate(${pos.x - 20}px, ${pos.y - 20}px) scale(0.85)`;
+    };
+
+    const handleUp = () => {
+      inner.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%) scale(1)`;
+
+      if (!isStuck) {
+        outer.style.transform = `translate(${pos.x - 20}px, ${pos.y - 20}px) scale(1)`;
+      }
+    };
+
+    /* =========================
+       TARGET ELEMENTS
+    ========================= */
+    const elements = document.querySelectorAll(
+      "button, a, input, textarea, select, .cursor-pointer, .card"
+    );
+
+    elements.forEach((el) => {
       el.addEventListener("mouseenter", handleEnter);
       el.addEventListener("mouseleave", handleLeave);
     });
 
-    const handleDown = () => {
-      gsap.to(inner, { scale: 2, duration: 0.15 });
-    };
-
-    const handleUp = () => {
-      gsap.to(inner, { scale: 1, duration: 0.15 });
-    };
-
     window.addEventListener("mousedown", handleDown);
     window.addEventListener("mouseup", handleUp);
 
-    // ✅ CLEANUP (VERY IMPORTANT)
+    document.body.style.cursor = "none";
+    document.documentElement.style.cursor = "none";
+
     return () => {
-      window.removeEventListener("mousemove", updateMouse);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleDown);
       window.removeEventListener("mouseup", handleUp);
 
-      targets.forEach((el) => {
+      elements.forEach((el) => {
         el.removeEventListener("mouseenter", handleEnter);
         el.removeEventListener("mouseleave", handleLeave);
       });
+
+      document.body.style.cursor = "";
+      document.documentElement.style.cursor = "";
     };
-  }, [location]); // 👈 re-run on page change
+  }, [location]);
 
   return (
     <>
-      {/* Outer Cursor */}
+      {/* OUTER CURSOR */}
       <div
         ref={cursorOuter}
-        className="fixed top-0 left-0 w-10 h-10 border border-[#A6192E] rounded-full pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 w-10 h-10 border-2 border-[#A6192E] rounded-full pointer-events-none z-[9999]"
+        style={{
+          willChange: "transform",
+          transition: "all 0.15s ease",
+        }}
       />
 
-      {/* Inner Cursor */}
+      {/* INNER CURSOR */}
       <div
         ref={cursorInner}
         className="fixed top-0 left-0 w-3 h-3 bg-[#A6192E] rounded-full pointer-events-none z-[9999]"
-        style={{ transform: "translate(-50%, -50%)" }}
+        style={{
+          willChange: "transform",
+          transition: "transform 0.1s ease",
+        }}
       />
     </>
   );

@@ -87,7 +87,7 @@ const LoginModal = ({ isOpen = false, onClose }) => {
 
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 z-[8888] bg-black/75 backdrop-blur-sm flex items-center justify-center p-6 animate-fadeIn"
+        className="fixed inset-0 z-[8888] bg-black/40 backdrop-blur-sm flex items-center justify-center p-6 animate-fadeIn"
         onClick={(e) => e.target === e.currentTarget && closeModal()}
       >
         {/* Notebook Container */}
@@ -126,7 +126,7 @@ const LoginModal = ({ isOpen = false, onClose }) => {
             <div className="absolute -right-1 top-2 bottom-2 w-3 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 rounded-r-md shadow-md" />
             
             {/* Main Notebook Content */}
-            <div className="relative bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 rounded-lg shadow-xl overflow-hidden">
+            <div className="relative rounded-lg shadow-xl overflow-hidden" style={{ background: "#f4e4bc" }}>
               
               {/* Torn Paper Edge Effect */}
               <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-transparent to-amber-100/50 pointer-events-none" />
@@ -147,7 +147,7 @@ const LoginModal = ({ isOpen = false, onClose }) => {
                 <div className="text-center mb-6 relative">
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-gradient-to-r from-amber-300/30 to-amber-400/30 rounded-full blur-md" />
                   <div className="relative inline-block">
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-rose-400/20 blur-xl" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-rose-400/20" />
                     <h1 className="relative text-3xl md:text-4xl font-bold bg-gradient-to-r from-rose-800 via-amber-800 to-rose-800 bg-clip-text text-transparent font-['Playfair_Display']">
                       The Grand Ledger
                     </h1>
@@ -163,7 +163,7 @@ const LoginModal = ({ isOpen = false, onClose }) => {
                 </div>
 
                 {/* Form Area with Lined Paper Effect */}
-                <div className="relative bg-white/80 rounded-lg p-6 shadow-inner">
+                <div className="relative bg-white/90 rounded-lg p-6 shadow-inner">
                   {/* Lined Paper Lines */}
                   <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
                     {[...Array(15)].map((_, i) => (

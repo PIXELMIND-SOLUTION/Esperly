@@ -1,3 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * {
+    cursor: none;
+  }
+  
+  html, body {
+    @apply bg-cream;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-stone/10;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-rust/50 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-rust;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .ruled-lines {
+    @apply absolute inset-0 pointer-events-none overflow-hidden;
+  }
+  
+  .ruled-line {
+    @apply absolute left-0 right-0 h-px bg-stone/30;
+  }
+  
+  .ruled-vertical {
+    @apply absolute top-0 bottom-0 w-px bg-rust/20 left-[clamp(32px,5vw,64px)];
+  }
+}
