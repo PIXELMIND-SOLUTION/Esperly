@@ -737,7 +737,7 @@ const Navbar = () => {
                           key={i}
                           className="flex flex-col items-center gap-2 p-4 sm:p-5 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
                           onClick={() => {
-                            navigate(`/category/${c.name.toLowerCase()}`);
+                            navigate(`/category/${cat.name.toLowerCase()}`);
                             handleSearch(cat.name);
                           }}
                         >
