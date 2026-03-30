@@ -12,6 +12,7 @@ import RollingPencil from "./views/RollingPencil";
 import Teachers from "./pages/teacher/Teachers";
 import BusBanner from "./views/BusBanner";
 import ScrollToTop from "./views/ScrollToTop";
+import Layout from "./AfterLogin/views/Layout";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -68,6 +69,16 @@ const App = () => {
         <Route path="/category" element={<Category />} />
         <Route path="/category/:categoryId" element={<Subcategory onSelectCourse={handleCourseSelect} />} />
         <Route path="/course-detail/:courseId" element={<CourseDetail />} />
+
+        {/* <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/teachers" element={<Teachers />} />
+            <Route path="/aboutus" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </Layout> */}
       </Routes>
     </div>
   );

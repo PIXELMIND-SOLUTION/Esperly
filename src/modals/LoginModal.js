@@ -36,14 +36,14 @@ const LoginModal = ({ isOpen = false, onClose }) => {
       {/* 📓 NOTEBOOK BACKGROUND */}
       <div className="absolute inset-0 pointer-events-none opacity-30 bg-[repeating-linear-gradient(white,white_28px,#e5e7eb_29px)]" />
 
-      {/* 📝 STICKY NOTE */}
+      {/* 📝 MAIN STICKY */}
       <div
         className={`relative w-full max-w-sm sm:max-w-md p-6 rounded-lg shadow-[0_25px_60px_rgba(0,0,0,0.3)] ${getTheme()}`}
       >
         {/* 📌 PIN */}
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full shadow-md" />
 
-        {/* 📎 PAPER CLIP */}
+        {/* 📎 CLIP */}
         <div className="absolute -top-2 left-4 text-xl rotate-12">📎</div>
 
         {/* ❌ CLOSE */}
@@ -57,37 +57,44 @@ const LoginModal = ({ isOpen = false, onClose }) => {
         {/* ================= ROLE ================= */}
         {step === "role" && (
           <>
-            <h2 className="text-xl font-bold text-gray-800 mb-5 text-center">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
               Choose Your Role
             </h2>
 
-            <div className="space-y-3">
-              <button
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+              {/* 🟦 TEACHER */}
+              <div
                 onClick={() => {
                   setRole("teacher");
                   setStep("login");
                 }}
-                className="w-full py-2 bg-blue-500 text-white rounded shadow-md hover:scale-[1.02]"
+                className="cursor-pointer bg-blue-200 p-4 rounded-lg shadow-lg rotate-[-3deg] hover:rotate-0 hover:scale-105 transition-all"
               >
-                👨‍🏫 Teacher
-              </button>
+                <div className="text-2xl mb-2">👨‍🏫</div>
+                <p className="font-semibold text-gray-800">Teacher</p>
+              </div>
 
-              <button
+              {/* 🟩 STUDENT */}
+              <div
                 onClick={() => {
                   setRole("student");
                   setStep("login");
                 }}
-                className="w-full py-2 bg-green-500 text-white rounded shadow-md hover:scale-[1.02]"
+                className="cursor-pointer bg-green-200 p-4 rounded-lg shadow-lg rotate-[2deg] hover:rotate-0 hover:scale-105 transition-all"
               >
-                🎓 Student
-              </button>
+                <div className="text-2xl mb-2">🎓</div>
+                <p className="font-semibold text-gray-800">Student</p>
+              </div>
 
-              <button
+              {/* 🟪 REGISTER */}
+              <div
                 onClick={() => setStep("register")}
-                className="w-full py-2 bg-purple-500 text-white rounded shadow-md hover:scale-[1.02]"
+                className="cursor-pointer bg-purple-200 p-4 rounded-lg shadow-lg rotate-[-2deg] hover:rotate-0 hover:scale-105 transition-all"
               >
-                📝 Register
-              </button>
+                <div className="text-2xl mb-2">📝</div>
+                <p className="font-semibold text-gray-800">Register</p>
+              </div>
             </div>
           </>
         )}
