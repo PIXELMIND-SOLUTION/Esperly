@@ -4,28 +4,10 @@ import Navbar from "../../components/Navbar";
 import LoginModal from "../../modals/LoginModal";
 import Footer from "../../components/Footer";
 
-/* ─── COLOUR TOKENS (matching stationery theme) ─────────────────────────────────────────── */
-const PAPER = "#F9F5ED";   // aged cream paper
-const PAPER2 = "#F2EBD9";   // slightly darker paper
-const PAPER3 = "#EDE3CC";   // notepaper
-const RULED = "#D6CEBA";   // ruled line colour
-const INK = "#1C1209";   // dark ink
-const INK2 = "#3A2E1A";   // medium ink
-const FADED = "#7A6E5A";   // faded ink / muted
-const RED = "#A6192E";   // Primary theme color
-const RED2 = "#C8203A";   // secondary red
-const PENCIL = "#8C7B6B";   // pencil graphite
-const CLIP = "#9E9E9E";   // paperclip metal
-const CLIP2 = "#BDBDBD";   // paperclip highlight
-const YELLOW = "#F5C842";   // sticky note yellow
-const BLUE = "#3B6FA0";   // blue pen ink
-const GREEN = "#2E7D52";   // green highlighter
-const TAPE = "rgba(200,195,170,0.55)"; // scotch tape
-
 /* ─── SVG DECORATIONS ────────────────────────────────────────── */
 
 /* Paperclip SVG */
-const Paperclip = ({ size = 48, color = CLIP, rotate = 0, style = {} }) => (
+const Paperclip = ({ size = 48, color = "#9E9E9E", rotate = 0, style = {} }) => (
     <svg
         width={size} height={size * 2.2}
         viewBox="0 0 24 52"
@@ -41,7 +23,7 @@ const Paperclip = ({ size = 48, color = CLIP, rotate = 0, style = {} }) => (
         />
         <path
             d="M12 4 C6 4 4 8 4 12 L4 40 C4 46 8 50 12 50 C16 50 20 46 20 40 L20 14 C20 10 18 7 14 7 C10 7 8 10 8 14 L8 38 C8 41 10 43 12 43 C14 43 16 41 16 38 L16 16"
-            stroke={CLIP2}
+            stroke="#BDBDBD"
             strokeWidth="0.8"
             strokeLinecap="round"
             strokeDasharray="2 4"
@@ -59,101 +41,85 @@ const PenSVG = ({ size = 120, rotate = -15, style = {} }) => (
         fill="none"
         style={{ transform: `rotate(${rotate}deg)`, ...style }}
     >
-        <rect x="30" y="5" width="150" height="20" rx="10" fill={RED} />
-        <rect x="30" y="5" width="150" height="20" rx="10" stroke={RED2} strokeWidth="1" />
+        <rect x="30" y="5" width="150" height="20" rx="10" fill="#A6192E" />
+        <rect x="30" y="5" width="150" height="20" rx="10" stroke="#C8203A" strokeWidth="1" />
         <rect x="35" y="7" width="140" height="5" rx="3" fill="rgba(255,255,255,0.15)" />
-        <rect x="155" y="3" width="5" height="22" rx="2" fill={CLIP} stroke={CLIP2} strokeWidth="0.5" />
-        <circle cx="157.5" cy="25" r="3" fill={CLIP} />
-        <rect x="45" y="5" width="30" height="20" rx="2" fill={RED2} opacity="0.5" />
+        <rect x="155" y="3" width="5" height="22" rx="2" fill="#9E9E9E" stroke="#BDBDBD" strokeWidth="0.5" />
+        <circle cx="157.5" cy="25" r="3" fill="#9E9E9E" />
+        <rect x="45" y="5" width="30" height="20" rx="2" fill="#C8203A" opacity="0.5" />
         {[0, 3, 6, 9, 12, 15, 18, 21, 24, 27].map(x => (
-            <line key={x} x1={47 + x} y1="5" x2={47 + x} y2="25" stroke={RED2} strokeWidth="0.5" opacity="0.5" />
+            <line key={x} x1={47 + x} y1="5" x2={47 + x} y2="25" stroke="#C8203A" strokeWidth="0.5" opacity="0.5" />
         ))}
         <polygon points="30,8 30,22 8,15" fill="#C0C0C0" />
         <polygon points="15,11 15,19 8,15" fill="#888" />
         <line x1="8" y1="15" x2="30" y2="10" stroke="#999" strokeWidth="0.5" />
         <line x1="8" y1="15" x2="30" y2="20" stroke="#999" strokeWidth="0.5" />
-        <rect x="178" y="5" width="22" height="20" rx="10" fill={RED2} />
+        <rect x="178" y="5" width="22" height="20" rx="10" fill="#C8203A" />
     </svg>
 );
 
 /* Washi tape strip */
-const WashiTape = ({ width = 60, height = 18, color = TAPE, rotate = -2, style = {} }) => (
-    <div style={{
-        width, height,
-        background: color,
-        borderLeft: "1px solid rgba(180,170,140,0.3)",
-        borderRight: "1px solid rgba(180,170,140,0.3)",
-        transform: `rotate(${rotate}deg)`,
-        position: "absolute",
-        ...style,
-    }} />
+const WashiTape = ({ width = 60, height = 18, color = "rgba(200,195,170,0.55)", rotate = -2, style = {} }) => (
+    <div className="absolute"
+        style={{
+            width, height,
+            backgroundColor: color,
+            borderLeft: "1px solid rgba(180,170,140,0.3)",
+            borderRight: "1px solid rgba(180,170,140,0.3)",
+            transform: `rotate(${rotate}deg)`,
+            ...style,
+        }}
+    />
 );
 
 /* Ruled paper lines overlay */
 const RuledLines = ({ count = 20, topOffset = 60, gap = 26 }) => (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {Array.from({ length: count }, (_, i) => (
-            <div key={i} style={{
-                position: "absolute",
-                left: 0, right: 0,
-                top: topOffset + i * gap,
-                height: 1,
-                background: RULED,
-                opacity: 0.55,
-            }} />
+            <div key={i} className="absolute left-0 right-0"
+                style={{
+                    top: topOffset + i * gap,
+                    height: 1,
+                    backgroundColor: "#D6CEBA",
+                    opacity: 0.55,
+                }}
+            />
         ))}
         {/* Red margin line */}
-        <div style={{
-            position: "absolute",
-            top: 0, bottom: 0,
-            left: "clamp(40px,6vw,72px)",
-            width: 1.5,
-            background: RED,
-            opacity: 0.25,
-        }} />
+        <div className="absolute top-0 bottom-0 w-[1.5px] opacity-25"
+            style={{
+                left: "clamp(40px,6vw,72px)",
+                backgroundColor: "#A6192E",
+            }}
+        />
     </div>
 );
 
 /* Stamp / badge */
-const Stamp = ({ text, color = RED, rotate = -8, style = {} }) => (
-    <div style={{
-        display: "inline-block",
-        border: `2.5px solid ${color}`,
-        borderRadius: 4,
-        padding: "3px 10px",
-        fontFamily: "monospace",
-        fontSize: "clamp(9px,1vw,11px)",
-        color,
-        letterSpacing: "0.18em",
-        textTransform: "uppercase",
-        fontWeight: 700,
-        transform: `rotate(${rotate}deg)`,
-        opacity: 0.75,
-        ...style,
-    }}>
+const Stamp = ({ text, color = "#A6192E", rotate = -8, style = {} }) => (
+    <div className="inline-block rounded-[4px] font-mono uppercase font-bold tracking-[0.18em]"
+        style={{
+            border: `2.5px solid ${color}`,
+            padding: "3px 10px",
+            fontSize: "clamp(9px,1vw,11px)",
+            color,
+            transform: `rotate(${rotate}deg)`,
+            opacity: 0.75,
+            ...style,
+        }}
+    >
         {text}
     </div>
 );
 
 /* Hand-drawn underline SVG */
-const ScribbleUnderline = ({ color = RED, width = "100%", style = {} }) => (
+const ScribbleUnderline = ({ color = "#A6192E", width = "100%", style = {} }) => (
     <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ width, height: 12, display: "block", ...style }}>
         <path
             d="M2 8 C30 4, 60 11, 100 7 C140 3, 170 10, 198 6"
             stroke={color} strokeWidth="2.5" fill="none" strokeLinecap="round"
         />
     </svg>
-);
-
-/* Highlighter mark */
-const Highlight = ({ children, color = "#FFEB3B", style = {} }) => (
-    <span style={{
-        background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)`,
-        paddingBottom: 2,
-        ...style,
-    }}>
-        {children}
-    </span>
 );
 
 /* ─── CONTACT FORM COMPONENT ────────────────────────────────────────── */
@@ -176,7 +142,6 @@ const Contact = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        // Clear error for this field when user starts typing
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: "" }));
         }
@@ -226,7 +191,6 @@ const Contact = () => {
 
         setIsSubmitting(true);
 
-        // Simulate API call
         try {
             await new Promise(resolve => setTimeout(resolve, 1500));
             console.log("Form submitted:", formData);
@@ -250,147 +214,104 @@ const Contact = () => {
     return (
         <>
             <Navbar onOpenModal={() => setOpenModal(true)} />
-            <section style={{
-                background: PAPER2,
-                padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
-                position: "relative",
-                overflow: "hidden",
-            }}>
+            <section className="relative overflow-hidden"
+                style={{
+                    backgroundColor: "#F2EBD9",
+                    padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
+                }}
+            >
                 {/* Background ruled lines */}
                 <RuledLines count={40} topOffset={0} gap={26} />
 
                 {/* Decorative elements */}
-                <div style={{ position: "absolute", top: "5%", right: "5%", opacity: 0.12 }} aria-hidden>
+                <div className="absolute top-[5%] right-[5%] opacity-12 pointer-events-none" aria-hidden>
                     <PenSVG size={140} rotate={-8} />
                 </div>
 
-                <div style={{ position: "absolute", bottom: "8%", left: "3%", opacity: 0.1 }} aria-hidden>
-                    <Paperclip size={32} color={CLIP} rotate={-15} />
+                <div className="absolute bottom-[8%] left-[3%] opacity-10 pointer-events-none" aria-hidden>
+                    <Paperclip size={32} color="#9E9E9E" rotate={-15} />
                 </div>
 
-                <div style={{ position: "absolute", top: "15%", left: "2%", opacity: 0.08 }}>
-                    <Paperclip size={24} color={CLIP2} rotate={25} />
+                <div className="absolute top-[15%] left-[2%] opacity-8 pointer-events-none">
+                    <Paperclip size={24} color="#BDBDBD" rotate={25} />
                 </div>
 
                 {/* Dot grid decoration */}
-                <svg style={{ position: "absolute", right: "6%", bottom: "12%", opacity: 0.08 }} width="120" height="120">
+                <svg className="absolute right-[6%] bottom-[12%] opacity-8 pointer-events-none" width="120" height="120">
                     {Array.from({ length: 6 }, (_, r) =>
                         Array.from({ length: 6 }, (_, c) => (
-                            <circle key={`${r}-${c}`} cx={c * 18 + 9} cy={r * 18 + 9} r="1.2" fill={RED} />
+                            <circle key={`${r}-${c}`} cx={c * 18 + 9} cy={r * 18 + 9} r="1.2" fill="#A6192E" />
                         ))
                     )}
                 </svg>
 
-                <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
+                <div className="max-w-[1100px] mx-auto relative z-[2]">
                     {/* Header Section */}
                     <motion.div
                         ref={formRef}
                         initial={{ opacity: 0, y: 32 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                        style={{ textAlign: "center", marginBottom: "clamp(40px,6vw,64px)" }}
+                        className="text-center mb-[clamp(40px,6vw,64px)]"
                     >
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 12 }}>
-                            <div style={{ width: 20, height: 2, background: RED }} />
-                            <span style={{
-                                fontFamily: "monospace",
-                                fontSize: "clamp(9px,1.1vw,12px)",
-                                color: RED,
-                                letterSpacing: "0.28em",
-                                textTransform: "uppercase",
-                            }}>
+                        <div className="flex items-center justify-center gap-3 mb-3">
+                            <div className="w-5 h-[2px] bg-[#A6192E]" />
+                            <span className="font-mono text-[clamp(9px,1.1vw,12px)] text-[#A6192E] tracking-[0.28em] uppercase">
                                 Get In Touch
                             </span>
-                            <div style={{ width: 20, height: 2, background: RED }} />
+                            <div className="w-5 h-[2px] bg-[#A6192E]" />
                         </div>
 
-                        <h2 style={{
-                            fontFamily: "Fraunces, Georgia, serif",
-                            fontSize: "clamp(28px,4.5vw,54px)",
-                            fontWeight: 900,
-                            color: INK,
-                            lineHeight: 1.05,
-                            letterSpacing: "-0.02em",
-                            marginBottom: 10,
-                        }}>
+                        <h2 className="font-['Fraunces',Georgia,serif] text-[clamp(28px,4.5vw,54px)] font-black text-[#1C1209] leading-[1.05] tracking-tight mb-2.5">
                             Write to Us on{" "}
-                            <span style={{ color: RED, fontStyle: "italic", position: "relative" }}>
+                            <span className="text-[#A6192E] italic relative">
                                 Paper
-                                <ScribbleUnderline color={RED} width="100%" style={{ marginTop: 2 }} />
+                                <ScribbleUnderline color="#A6192E" width="100%" style={{ marginTop: 2 }} />
                             </span>
                         </h2>
 
-                        <p style={{
-                            fontFamily: "DM Serif Display, Georgia, serif",
-                            fontSize: "clamp(12px,1.3vw,15px)",
-                            color: FADED,
-                            lineHeight: 1.75,
-                            maxWidth: 520,
-                            margin: "0 auto",
-                        }}>
+                        <p className="font-['DM_Serif_Display',Georgia,serif] text-[clamp(12px,1.3vw,15px)] text-[#7A6E5A] leading-relaxed max-w-[520px] mx-auto">
                             Have a question? Want to start your learning journey?<br />
                             Drop us a message and we'll get back to you within 24 hours.
                         </p>
 
-                        <div style={{ marginTop: 16 }}>
-                            <Stamp text="Quick Response" color={GREEN} rotate={-3} />
+                        <div className="mt-4">
+                            <Stamp text="Quick Response" color="#2E7D52" rotate={-3} />
                         </div>
                     </motion.div>
 
                     {/* Form and Info Grid */}
-                    <div style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(2, 1fr)",
-                        gap: "clamp(24px,4vw,48px)",
-                        alignItems: "start",
-                    }}>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(24px,4vw,48px)] items-start">
                         {/* Left Column - Contact Info Cards */}
                         <motion.div
                             initial={{ opacity: 0, x: -40 }}
                             animate={inView ? { opacity: 1, x: 0 } : {}}
                             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <div style={{
-                                background: PAPER,
-                                border: `1px solid ${RULED}`,
-                                borderRadius: 3,
-                                padding: "clamp(24px,3vw,32px)",
-                                position: "relative",
-                                marginBottom: 24,
-                                boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
-                            }}>
+                            <div className="relative mb-6 rounded-[3px] p-[clamp(24px,3vw,32px)]"
+                                style={{
+                                    backgroundColor: "#F9F5ED",
+                                    border: `1px solid #D6CEBA`,
+                                    boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
+                                }}
+                            >
                                 <WashiTape
-                                    width={48} height={14} color={TAPE} rotate={-2}
+                                    width={48} height={14} color="rgba(200,195,170,0.55)" rotate={-2}
                                     style={{ top: -8, left: "50%", transform: "translateX(-50%) rotate(-2deg)" }}
                                 />
 
-                                <div style={{ position: "absolute", top: 12, right: 12, opacity: 0.3 }}>
-                                    <Paperclip size={24} color={CLIP} rotate={-10} />
+                                <div className="absolute top-3 right-3 opacity-30">
+                                    <Paperclip size={24} color="#9E9E9E" rotate={-10} />
                                 </div>
 
-                                <div style={{ marginBottom: 20 }}>
-                                    <div style={{
-                                        fontSize: 32,
-                                        marginBottom: 12,
-                                        color: RED,
-                                    }}>
+                                <div className="mb-5">
+                                    <div className="text-3xl mb-3 text-[#A6192E]">
                                         📬
                                     </div>
-                                    <h3 style={{
-                                        fontFamily: "Fraunces, Georgia, serif",
-                                        fontSize: "clamp(16px,1.8vw,20px)",
-                                        fontWeight: 700,
-                                        color: INK,
-                                        marginBottom: 8,
-                                    }}>
+                                    <h3 className="font-['Fraunces',Georgia,serif] text-[clamp(16px,1.8vw,20px)] font-bold text-[#1C1209] mb-2">
                                         Send us a letter
                                     </h3>
-                                    <p style={{
-                                        fontFamily: "Georgia, serif",
-                                        fontSize: "clamp(12px,1.2vw,14px)",
-                                        color: FADED,
-                                        lineHeight: 1.6,
-                                    }}>
+                                    <p className="font-serif text-[clamp(12px,1.2vw,14px)] text-[#7A6E5A] leading-relaxed">
                                         123 Esperly Lane<br />
                                         Tech City, TC 12345<br />
                                         India
@@ -398,75 +319,42 @@ const Contact = () => {
                                 </div>
                             </div>
 
-                            <div style={{
-                                background: PAPER,
-                                border: `1px solid ${RULED}`,
-                                borderRadius: 3,
-                                padding: "clamp(24px,3vw,32px)",
-                                position: "relative",
-                                marginBottom: 24,
-                                boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
-                            }}>
-                                <div style={{ marginBottom: 20 }}>
-                                    <div style={{
-                                        fontSize: 32,
-                                        marginBottom: 12,
-                                        color: BLUE,
-                                    }}>
+                            <div className="relative mb-6 rounded-[3px] p-[clamp(24px,3vw,32px)]"
+                                style={{
+                                    backgroundColor: "#F9F5ED",
+                                    border: `1px solid #D6CEBA`,
+                                    boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
+                                }}
+                            >
+                                <div className="mb-5">
+                                    <div className="text-3xl mb-3 text-[#3B6FA0]">
                                         ✉️
                                     </div>
-                                    <h3 style={{
-                                        fontFamily: "Fraunces, Georgia, serif",
-                                        fontSize: "clamp(16px,1.8vw,20px)",
-                                        fontWeight: 700,
-                                        color: INK,
-                                        marginBottom: 8,
-                                    }}>
+                                    <h3 className="font-['Fraunces',Georgia,serif] text-[clamp(16px,1.8vw,20px)] font-bold text-[#1C1209] mb-2">
                                         Email us
                                     </h3>
-                                    <p style={{
-                                        fontFamily: "Georgia, serif",
-                                        fontSize: "clamp(12px,1.2vw,14px)",
-                                        color: FADED,
-                                        lineHeight: 1.6,
-                                    }}>
+                                    <p className="font-serif text-[clamp(12px,1.2vw,14px)] text-[#7A6E5A] leading-relaxed">
                                         hello@esperly.com<br />
                                         support@esperly.com
                                     </p>
                                 </div>
                             </div>
 
-                            <div style={{
-                                background: PAPER,
-                                border: `1px solid ${RULED}`,
-                                borderRadius: 3,
-                                padding: "clamp(24px,3vw,32px)",
-                                position: "relative",
-                                boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
-                            }}>
-                                <div style={{ marginBottom: 20 }}>
-                                    <div style={{
-                                        fontSize: 32,
-                                        marginBottom: 12,
-                                        color: GREEN,
-                                    }}>
+                            <div className="relative rounded-[3px] p-[clamp(24px,3vw,32px)]"
+                                style={{
+                                    backgroundColor: "#F9F5ED",
+                                    border: `1px solid #D6CEBA`,
+                                    boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
+                                }}
+                            >
+                                <div className="mb-5">
+                                    <div className="text-3xl mb-3 text-[#2E7D52]">
                                         📞
                                     </div>
-                                    <h3 style={{
-                                        fontFamily: "Fraunces, Georgia, serif",
-                                        fontSize: "clamp(16px,1.8vw,20px)",
-                                        fontWeight: 700,
-                                        color: INK,
-                                        marginBottom: 8,
-                                    }}>
+                                    <h3 className="font-['Fraunces',Georgia,serif] text-[clamp(16px,1.8vw,20px)] font-bold text-[#1C1209] mb-2">
                                         Call us
                                     </h3>
-                                    <p style={{
-                                        fontFamily: "Georgia, serif",
-                                        fontSize: "clamp(12px,1.2vw,14px)",
-                                        color: FADED,
-                                        lineHeight: 1.6,
-                                    }}>
+                                    <p className="font-serif text-[clamp(12px,1.2vw,14px)] text-[#7A6E5A] leading-relaxed">
                                         +91 12345 67890<br />
                                         Mon-Fri, 9am - 6pm IST
                                     </p>
@@ -480,50 +368,41 @@ const Contact = () => {
                             animate={inView ? { opacity: 1, x: 0 } : {}}
                             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <div style={{
-                                background: PAPER,
-                                border: `1px solid ${RULED}`,
-                                borderRadius: 3,
-                                padding: "clamp(28px,4vw,44px)",
-                                position: "relative",
-                                boxShadow: "4px 6px 24px rgba(0,0,0,0.12)",
-                            }}>
+                            <div className="relative rounded-[3px] p-[clamp(28px,4vw,44px)]"
+                                style={{
+                                    backgroundColor: "#F9F5ED",
+                                    border: `1px solid #D6CEBA`,
+                                    boxShadow: "4px 6px 24px rgba(0,0,0,0.12)",
+                                }}
+                            >
                                 {/* Decorative tape at top */}
                                 <WashiTape
-                                    width={72} height={16} color={TAPE} rotate={3}
+                                    width={72} height={16} color="rgba(200,195,170,0.55)" rotate={3}
                                     style={{ top: -12, left: "30%", transform: "translateX(-30%) rotate(3deg)" }}
                                 />
                                 <WashiTape
-                                    width={64} height={16} color={TAPE} rotate={-2}
+                                    width={64} height={16} color="rgba(200,195,170,0.55)" rotate={-2}
                                     style={{ top: -10, right: "20%", transform: "translateX(20%) rotate(-2deg)" }}
                                 />
 
                                 {/* Ruled lines inside form */}
-                                <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", borderRadius: 3 }}>
+                                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[3px]">
                                     {Array.from({ length: 25 }, (_, i) => (
-                                        <div key={i} style={{
-                                            position: "absolute",
-                                            left: 0, right: 0,
-                                            top: 52 + i * 28,
-                                            height: 1,
-                                            background: RULED,
-                                            opacity: 0.35,
-                                        }} />
+                                        <div key={i} className="absolute left-0 right-0"
+                                            style={{
+                                                top: 52 + i * 28,
+                                                height: 1,
+                                                backgroundColor: "#D6CEBA",
+                                                opacity: 0.35,
+                                            }}
+                                        />
                                     ))}
                                 </div>
 
-                                <form onSubmit={handleSubmit} style={{ position: "relative", zIndex: 1 }}>
+                                <form onSubmit={handleSubmit} className="relative z-[1]">
                                     {/* Name Field */}
-                                    <div style={{ marginBottom: 20 }}>
-                                        <label style={{
-                                            display: "block",
-                                            fontFamily: "monospace",
-                                            fontSize: "clamp(10px,1vw,12px)",
-                                            color: INK2,
-                                            letterSpacing: "0.1em",
-                                            marginBottom: 6,
-                                            textTransform: "uppercase",
-                                        }}>
+                                    <div className="mb-5">
+                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
                                             Full Name *
                                         </label>
                                         <input
@@ -531,43 +410,23 @@ const Contact = () => {
                                             name="name"
                                             value={formData.name}
                                             onChange={handleChange}
+                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
                                             style={{
-                                                width: "100%",
-                                                background: "transparent",
-                                                border: `1px solid ${errors.name ? RED : RULED}`,
-                                                borderRadius: 2,
+                                                border: `1px solid ${errors.name ? "#A6192E" : "#D6CEBA"}`,
                                                 padding: "12px 14px",
-                                                fontFamily: "Georgia, serif",
-                                                fontSize: "clamp(12px,1.2vw,14px)",
-                                                color: INK,
-                                                transition: "border-color 0.2s",
-                                                outline: "none",
                                             }}
                                             placeholder="Your name"
                                         />
                                         {errors.name && (
-                                            <p style={{
-                                                color: RED,
-                                                fontSize: "clamp(10px,0.9vw,11px)",
-                                                marginTop: 4,
-                                                fontFamily: "monospace",
-                                            }}>
+                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.name}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Email Field */}
-                                    <div style={{ marginBottom: 20 }}>
-                                        <label style={{
-                                            display: "block",
-                                            fontFamily: "monospace",
-                                            fontSize: "clamp(10px,1vw,12px)",
-                                            color: INK2,
-                                            letterSpacing: "0.1em",
-                                            marginBottom: 6,
-                                            textTransform: "uppercase",
-                                        }}>
+                                    <div className="mb-5">
+                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
                                             Email Address *
                                         </label>
                                         <input
@@ -575,43 +434,23 @@ const Contact = () => {
                                             name="email"
                                             value={formData.email}
                                             onChange={handleChange}
+                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
                                             style={{
-                                                width: "100%",
-                                                background: "transparent",
-                                                border: `1px solid ${errors.email ? RED : RULED}`,
-                                                borderRadius: 2,
+                                                border: `1px solid ${errors.email ? "#A6192E" : "#D6CEBA"}`,
                                                 padding: "12px 14px",
-                                                fontFamily: "Georgia, serif",
-                                                fontSize: "clamp(12px,1.2vw,14px)",
-                                                color: INK,
-                                                transition: "border-color 0.2s",
-                                                outline: "none",
                                             }}
                                             placeholder="hello@esperly.com"
                                         />
                                         {errors.email && (
-                                            <p style={{
-                                                color: RED,
-                                                fontSize: "clamp(10px,0.9vw,11px)",
-                                                marginTop: 4,
-                                                fontFamily: "monospace",
-                                            }}>
+                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.email}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Phone Field */}
-                                    <div style={{ marginBottom: 20 }}>
-                                        <label style={{
-                                            display: "block",
-                                            fontFamily: "monospace",
-                                            fontSize: "clamp(10px,1vw,12px)",
-                                            color: INK2,
-                                            letterSpacing: "0.1em",
-                                            marginBottom: 6,
-                                            textTransform: "uppercase",
-                                        }}>
+                                    <div className="mb-5">
+                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
                                             Phone Number *
                                         </label>
                                         <input
@@ -619,43 +458,23 @@ const Contact = () => {
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleChange}
+                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
                                             style={{
-                                                width: "100%",
-                                                background: "transparent",
-                                                border: `1px solid ${errors.phone ? RED : RULED}`,
-                                                borderRadius: 2,
+                                                border: `1px solid ${errors.phone ? "#A6192E" : "#D6CEBA"}`,
                                                 padding: "12px 14px",
-                                                fontFamily: "Georgia, serif",
-                                                fontSize: "clamp(12px,1.2vw,14px)",
-                                                color: INK,
-                                                transition: "border-color 0.2s",
-                                                outline: "none",
                                             }}
                                             placeholder="+91 12345 67890"
                                         />
                                         {errors.phone && (
-                                            <p style={{
-                                                color: RED,
-                                                fontSize: "clamp(10px,0.9vw,11px)",
-                                                marginTop: 4,
-                                                fontFamily: "monospace",
-                                            }}>
+                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.phone}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Subject Field */}
-                                    <div style={{ marginBottom: 20 }}>
-                                        <label style={{
-                                            display: "block",
-                                            fontFamily: "monospace",
-                                            fontSize: "clamp(10px,1vw,12px)",
-                                            color: INK2,
-                                            letterSpacing: "0.1em",
-                                            marginBottom: 6,
-                                            textTransform: "uppercase",
-                                        }}>
+                                    <div className="mb-5">
+                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
                                             Subject *
                                         </label>
                                         <input
@@ -663,43 +482,23 @@ const Contact = () => {
                                             name="subject"
                                             value={formData.subject}
                                             onChange={handleChange}
+                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
                                             style={{
-                                                width: "100%",
-                                                background: "transparent",
-                                                border: `1px solid ${errors.subject ? RED : RULED}`,
-                                                borderRadius: 2,
+                                                border: `1px solid ${errors.subject ? "#A6192E" : "#D6CEBA"}`,
                                                 padding: "12px 14px",
-                                                fontFamily: "Georgia, serif",
-                                                fontSize: "clamp(12px,1.2vw,14px)",
-                                                color: INK,
-                                                transition: "border-color 0.2s",
-                                                outline: "none",
                                             }}
                                             placeholder="What is this regarding?"
                                         />
                                         {errors.subject && (
-                                            <p style={{
-                                                color: RED,
-                                                fontSize: "clamp(10px,0.9vw,11px)",
-                                                marginTop: 4,
-                                                fontFamily: "monospace",
-                                            }}>
+                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.subject}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Message Field */}
-                                    <div style={{ marginBottom: 24 }}>
-                                        <label style={{
-                                            display: "block",
-                                            fontFamily: "monospace",
-                                            fontSize: "clamp(10px,1vw,12px)",
-                                            color: INK2,
-                                            letterSpacing: "0.1em",
-                                            marginBottom: 6,
-                                            textTransform: "uppercase",
-                                        }}>
+                                    <div className="mb-6">
+                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
                                             Your Message *
                                         </label>
                                         <textarea
@@ -707,28 +506,15 @@ const Contact = () => {
                                             value={formData.message}
                                             onChange={handleChange}
                                             rows={5}
+                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200 resize-y"
                                             style={{
-                                                width: "100%",
-                                                background: "transparent",
-                                                border: `1px solid ${errors.message ? RED : RULED}`,
-                                                borderRadius: 2,
+                                                border: `1px solid ${errors.message ? "#A6192E" : "#D6CEBA"}`,
                                                 padding: "12px 14px",
-                                                fontFamily: "Georgia, serif",
-                                                fontSize: "clamp(12px,1.2vw,14px)",
-                                                color: INK,
-                                                transition: "border-color 0.2s",
-                                                outline: "none",
-                                                resize: "vertical",
                                             }}
                                             placeholder="Write your message here..."
                                         />
                                         {errors.message && (
-                                            <p style={{
-                                                color: RED,
-                                                fontSize: "clamp(10px,0.9vw,11px)",
-                                                marginTop: 4,
-                                                fontFamily: "monospace",
-                                            }}>
+                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.message}
                                             </p>
                                         )}
@@ -741,28 +527,21 @@ const Contact = () => {
                                             whileHover={{ scale: 1.02, y: -2 }}
                                             whileTap={{ scale: 0.98 }}
                                             disabled={isSubmitting}
+                                            className="w-full rounded-[3px] font-['Fraunces',Georgia,serif] font-bold tracking-[0.02em] cursor-pointer transition-opacity duration-200"
                                             style={{
-                                                width: "100%",
-                                                background: RED,
+                                                backgroundColor: "#A6192E",
                                                 color: "#fff",
                                                 border: "none",
-                                                borderRadius: 3,
                                                 padding: "clamp(12px,1.5vw,16px)",
-                                                fontFamily: "Fraunces, Georgia, serif",
                                                 fontSize: "clamp(12px,1.4vw,15px)",
-                                                fontWeight: 700,
-                                                cursor: isSubmitting ? "not-allowed" : "pointer",
-                                                letterSpacing: "0.02em",
-                                                boxShadow: `2px 4px 12px ${RED}80`,
-                                                position: "relative",
+                                                boxShadow: `2px 4px 12px #A6192E80`,
                                                 opacity: isSubmitting ? 0.7 : 1,
-                                                transition: "opacity 0.2s",
                                             }}
                                         >
                                             {isSubmitting ? (
-                                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                                                <span className="flex items-center justify-center gap-2">
                                                     <span>Sending...</span>
-                                                    <span style={{ display: "inline-block", width: 14, height: 14, border: "2px solid white", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.6s linear infinite" }} />
+                                                    <span className="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                                                 </span>
                                             ) : (
                                                 "Send Message →"
@@ -775,20 +554,13 @@ const Contact = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: -10 }}
                                             animate={{ opacity: 1, y: 0 }}
+                                            className="mt-4 p-3 rounded-[3px] text-center"
                                             style={{
-                                                marginTop: 16,
-                                                padding: "12px",
-                                                background: `${GREEN}15`,
-                                                border: `1px solid ${GREEN}`,
-                                                borderRadius: 3,
-                                                textAlign: "center",
+                                                backgroundColor: "#2E7D5215",
+                                                border: `1px solid #2E7D52`,
                                             }}
                                         >
-                                            <p style={{
-                                                color: GREEN,
-                                                fontFamily: "monospace",
-                                                fontSize: "clamp(10px,1vw,12px)",
-                                            }}>
+                                            <p className="text-[#2E7D52] font-mono text-[clamp(10px,1vw,12px)]">
                                                 ✓ Message sent successfully! We'll get back to you soon.
                                             </p>
                                         </motion.div>
@@ -798,20 +570,13 @@ const Contact = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: -10 }}
                                             animate={{ opacity: 1, y: 0 }}
+                                            className="mt-4 p-3 rounded-[3px] text-center"
                                             style={{
-                                                marginTop: 16,
-                                                padding: "12px",
-                                                background: `${RED}15`,
-                                                border: `1px solid ${RED}`,
-                                                borderRadius: 3,
-                                                textAlign: "center",
+                                                backgroundColor: "#A6192E15",
+                                                border: `1px solid #A6192E`,
                                             }}
                                         >
-                                            <p style={{
-                                                color: RED,
-                                                fontFamily: "monospace",
-                                                fontSize: "clamp(10px,1vw,12px)",
-                                            }}>
+                                            <p className="text-[#A6192E] font-mono text-[clamp(10px,1vw,12px)]">
                                                 ✗ Something went wrong. Please try again.
                                             </p>
                                         </motion.div>
@@ -819,26 +584,14 @@ const Contact = () => {
                                 </form>
 
                                 {/* Bottom stamp */}
-                                <div style={{
-                                    position: "absolute",
-                                    bottom: 16,
-                                    right: 20,
-                                    opacity: 0.5,
-                                }}>
-                                    <Stamp text="Confidential" color={BLUE} rotate={4} style={{ fontSize: 7 }} />
+                                <div className="absolute bottom-4 right-5 opacity-50">
+                                    <Stamp text="Confidential" color="#3B6FA0" rotate={4} style={{ fontSize: 7 }} />
                                 </div>
                             </div>
 
                             {/* Note about response time */}
-                            <div style={{
-                                marginTop: 16,
-                                textAlign: "center",
-                                fontFamily: "monospace",
-                                fontSize: "clamp(9px,0.9vw,11px)",
-                                color: FADED,
-                                fontStyle: "italic",
-                            }}>
-                                <span style={{ display: "inline-block", marginRight: 6 }}>⏱️</span>
+                            <div className="mt-4 text-center font-mono text-[clamp(9px,0.9vw,11px)] text-[#7A6E5A] italic">
+                                <span className="inline-block mr-1.5">⏱️</span>
                                 Usually replies within 24 hours
                             </div>
                         </motion.div>
@@ -847,12 +600,15 @@ const Contact = () => {
 
                 {/* Add keyframe animation for spinner */}
                 <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                    .animate-spin {
+                        animation: spin 0.6s linear infinite;
+                    }
+                `}</style>
             </section>
-            <Footer/>
+            <Footer />
             <LoginModal
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}
