@@ -7,6 +7,7 @@ import WhatWeTeach from "../pages/Home/WhatWeTeach";
 import Navbar from "./Navbar";
 
 const Home = () => {
+    const [openModal, setOpenModal] = useState(false);
     return (
         <>
             <Navbar onOpenModal={() => setOpenModal(true)} />
