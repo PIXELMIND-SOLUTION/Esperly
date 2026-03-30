@@ -546,6 +546,7 @@ const Navbar = () => {
                     <div
                       key={i}
                       className="flex items-center justify-between px-4 py-2.5 rounded-lg cursor-pointer hover:bg-[#A6192E]/5 transition-colors"
+                      onClick={() => { navigate(`/course-detail/full-stack-dev`); setOpen(false); }}
                     >
                       <div className="flex items-center gap-2">
                         <span>{course.icon}</span>
