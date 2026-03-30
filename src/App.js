@@ -58,7 +58,7 @@ const App = () => {
     <div className="cursor-none">
       <ScrollToTop />
       <CustomCursor />
-      <RollingPencil />
+      {/* <RollingPencil /> */}
       <BusBanner />
       <Routes>
         <Route path="/" element={<Home />} />

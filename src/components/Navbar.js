@@ -379,7 +379,7 @@ const Navbar = () => {
                                   key={i}
                                   variants={itemVariants}
                                   className="flex items-center justify-between px-3.5 py-2 rounded-lg cursor-pointer transition-all duration-200 text-sm text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
-                                  onClick={() => navigate(`/category/${i.id}`)}
+                                  onClick={() => navigate(`/category/${c.name.toLowerCase()}`)}
                                 >
                                   <div className="flex items-center gap-2.5">
                                     <span className="text-lg">{c.icon}</span>
@@ -737,7 +737,7 @@ const Navbar = () => {
                           key={i}
                           className="flex flex-col items-center gap-2 p-4 sm:p-5 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
                           onClick={() => {
-                            navigate(`/category/${i.id}`);
+                            navigate(`/category/${c.name.toLowerCase()}`);
                             handleSearch(cat.name);
                           }}
                         >
