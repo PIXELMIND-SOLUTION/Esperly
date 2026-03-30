@@ -69,7 +69,7 @@ const popularCourses = [
 const categories = [
   {
     id: "math",
-    name: "Mathematics",
+    name: "math",
     icon: "📐",
     count: "42 topics",
   },
@@ -645,6 +645,14 @@ const Navbar = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.05 }}
                           className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-md hover:shadow-lg transition-all cursor-pointer border border-[#A6192E]/10 hover:border-[#A6192E]/30"
+                          onClick={() => {
+                            if (item.type === "course") {
+                              navigate(`/course-detail/full-stack-dev`);
+                            } else {
+                              navigate(`/category/${item.name.toLowerCase().replace(/ /g, '-')}`);
+                            }
+                            setOpen(false);
+                          }}
                         >
                           <div className="flex items-center gap-3 sm:gap-4">
                             <span className="text-2xl sm:text-3xl">{item.icon}</span>

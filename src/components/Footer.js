@@ -408,7 +408,7 @@ const Footer = () => {
                         fontSize: 18,
                       }}
                     >
-                      📖
+                     <img src="/logo4.png" alt="Esperly Logo" style={{ width: 30, height: 30 }} />
                     </div>
                     <div>
                       <h2
