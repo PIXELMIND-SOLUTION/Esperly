@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Navbar from "../../components/Navbar";
 import LoginModal from "../../modals/LoginModal";
+import Footer from "../../components/Footer";
 
 /* ─── COLOUR TOKENS (matching stationery theme) ─────────────────────────────────────────── */
 const PAPER = "#F9F5ED";   // aged cream paper
@@ -851,6 +852,7 @@ const Contact = () => {
         }
       `}</style>
             </section>
+            <Footer/>
             <LoginModal
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}

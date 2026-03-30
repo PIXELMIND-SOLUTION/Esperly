@@ -5,24 +5,116 @@ import { FiMenu, FiX, FiArrowRight, FiChevronDown, FiSearch, FiTrendingUp, FiBoo
 import EnrollModal from "../modals/EnrollModal";
 import LoginModal from "../modals/LoginModal";
 
+
 const popularCourses = [
-  { name: "Full Stack Development", tag: "Hot", students: "2.5k", icon: "💻" },
-  { name: "Data Science", tag: "Popular", students: "3.1k", icon: "📊" },
-  { name: "UI/UX Design", tag: null, students: "1.8k", icon: "🎨" },
-  { name: "Digital Marketing", tag: null, students: "2.2k", icon: "📱" },
-  { name: "Python Programming", tag: "New", students: "4.2k", icon: "🐍" },
-  { name: "Spoken English", tag: null, students: "5.1k", icon: "🗣️" },
-  { name: "Graphic Design", tag: null, students: "1.4k", icon: "🖌️" },
-  { name: "React Development", tag: "Popular", students: "3.7k", icon: "⚛️" },
+  {
+    id: "sub1",
+    name: "Fundamentals",
+    tag: "Beginner",
+    icon: "🌱",
+    students: 8400,
+  },
+  {
+    id: "sub2",
+    name: "Core Concepts",
+    tag: "Beginner",
+    icon: "🧱",
+    students: 6100,
+  },
+  {
+    id: "sub3",
+    name: "Problem Solving",
+    tag: "Intermediate",
+    icon: "🧩",
+    students: 12300,
+  },
+  {
+    id: "sub4",
+    name: "Applied Practice",
+    tag: "Intermediate",
+    icon: "🔧",
+    students: 9800,
+  },
+  {
+    id: "sub5",
+    name: "Advanced Theory",
+    tag: "Advanced",
+    icon: "🚀",
+    students: 4500,
+  },
+  {
+    id: "sub6",
+    name: "Exam Mastery",
+    tag: "Advanced",
+    icon: "🏆",
+    students: 15200,
+  },
+  {
+    id: "sub7",
+    name: "Quick Revision",
+    tag: "Beginner",
+    icon: "⚡",
+    students: 22000,
+  },
+  {
+    id: "sub8",
+    name: "Project Work",
+    tag: "Advanced",
+    icon: "🗂️",
+    students: 3300,
+  },
 ];
 
+
 const categories = [
-  { name: "School Tuitions", icon: "📚", count: "45+ courses" },
-  { name: "Programming", icon: "💻", count: "32+ courses" },
-  { name: "Design", icon: "🎨", count: "28+ courses" },
-  { name: "Business", icon: "📈", count: "23+ courses" },
-  { name: "Languages", icon: "🌐", count: "19+ courses" },
-  { name: "Exam Preparation", icon: "✏️", count: "16+ courses" },
+  {
+    id: "math",
+    name: "Mathematics",
+    icon: "📐",
+    count: "42 topics",
+  },
+  {
+    id: "science",
+    name: "Science",
+    icon: "🔬",
+    count: "38 topics",
+  },
+  {
+    id: "english",
+    name: "English",
+    icon: "📖",
+    count: "29 topics",
+  },
+  {
+    id: "history",
+    name: "History",
+    icon: "🏛️",
+    count: "33 topics",
+  },
+  {
+    id: "coding",
+    name: "Computer Science",
+    icon: "💻",
+    count: "51 topics",
+  },
+  {
+    id: "physics",
+    name: "Physics",
+    icon: "⚡",
+    count: "27 topics",
+  },
+  {
+    id: "chemistry",
+    name: "Chemistry",
+    icon: "⚗️",
+    count: "24 topics",
+  },
+  {
+    id: "economics",
+    name: "Economics",
+    icon: "📊",
+    count: "19 topics",
+  },
 ];
 
 const navLinks = [
@@ -245,6 +337,7 @@ const Navbar = () => {
                                   key={i}
                                   variants={itemVariants}
                                   className="flex items-center justify-between px-3.5 py-2 rounded-lg cursor-pointer transition-all duration-200 text-sm text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E] group"
+                                  onClick={() => navigate(`/course-detail/full-stack-dev`)}
                                 >
                                   <div className="flex items-center gap-2">
                                     <span>{c.icon}</span>
@@ -286,6 +379,7 @@ const Navbar = () => {
                                   key={i}
                                   variants={itemVariants}
                                   className="flex items-center justify-between px-3.5 py-2 rounded-lg cursor-pointer transition-all duration-200 text-sm text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
+                                  onClick={() => navigate(`/category/${i.id}`)}
                                 >
                                   <div className="flex items-center gap-2.5">
                                     <span className="text-lg">{c.icon}</span>
@@ -641,8 +735,11 @@ const Navbar = () => {
                       {categories.map((cat, i) => (
                         <button
                           key={i}
-                          onClick={() => handleSearch(cat.name)}
                           className="flex flex-col items-center gap-2 p-4 sm:p-5 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
+                          onClick={() => {
+                            navigate(`/category/${i.id}`);
+                            handleSearch(cat.name);
+                          }}
                         >
                           <span className="text-2xl sm:text-3xl">{cat.icon}</span>
                           <span className="text-xs sm:text-sm font-medium text-gray-800 text-center">
@@ -663,8 +760,11 @@ const Navbar = () => {
                       {popularCourses.slice(0, 4).map((course, i) => (
                         <button
                           key={i}
-                          onClick={() => handleSearch(course.name)}
                           className="flex items-center gap-3 p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
+                          onClick={() => {
+                            navigate(`/course-detail/full-stack-dev`);
+                            handleSearch(course.name);
+                          }}
                         >
                           <span className="text-2xl">{course.icon}</span>
                           <div className="flex-1 text-left">

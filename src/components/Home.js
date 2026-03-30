@@ -5,6 +5,7 @@ import Hero from "../pages/Home/Hero"
 import StudentJourney from "../pages/Home/StudentJourney";
 import WhatWeTeach from "../pages/Home/WhatWeTeach";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -16,6 +17,7 @@ const Home = () => {
             <EsperlyExperience />
             {/* <StudentJourney /> */}
             {/* <WhatYouLookingFor/> */}
+            <Footer/>
 
 
             
