@@ -6,6 +6,7 @@ import StudentJourney from "../pages/Home/StudentJourney";
 import WhatWeTeach from "../pages/Home/WhatWeTeach";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import AdScroller from "../pages/Home/AdBanner";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -14,6 +15,7 @@ const Home = () => {
             <Navbar onOpenModal={() => setOpenModal(true)} />
             <Hero />
             <WhatWeTeach />
+            <AdScroller/>
             <EsperlyExperience />
             {/* <StudentJourney /> */}
             {/* <WhatYouLookingFor/> */}

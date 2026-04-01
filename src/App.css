@@ -1,7 +1,7 @@
 /* Hide default cursor */
-html, body, * {
+/* html, body, * {
   cursor: none !important;
-}
+} */
 
 * {
   user-select: text !important;

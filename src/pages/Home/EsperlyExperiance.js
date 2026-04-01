@@ -1203,14 +1203,14 @@ export default function EsperlyStationery() {
       {/* ══════════════════════════════
           FINAL CTA — letter/envelope style
       ══════════════════════════════ */}
-      <section style={{
+      {/* <section style={{
         background: RED,
         padding: "clamp(40px,6vw,80px) clamp(20px,5vw,60px)",
         position: "relative",
         overflow: "hidden",
         textAlign: "center",
       }}>
-        {/* Diagonal envelope lines */}
+        
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.08, pointerEvents: "none" }}>
           {Array.from({ length: 20 }, (_, i) => (
             <line key={i}
@@ -1221,16 +1221,16 @@ export default function EsperlyStationery() {
           ))}
         </svg>
 
-        {/* Corner decorations */}
+      
         <div style={{ position: "absolute", top: 0, left: 0, width: 60, height: 60, borderBottom: "60px solid transparent", borderLeft: `60px solid rgba(255,255,255,0.1)`, pointerEvents: "none" }}/>
         <div style={{ position: "absolute", bottom: 0, right: 0, width: 60, height: 60, borderTop: "60px solid transparent", borderRight: `60px solid rgba(255,255,255,0.1)`, pointerEvents: "none" }}/>
 
-        {/* Pen deco */}
+       
         <div style={{ position: "absolute", right: "3%", top: "20%", opacity: 0.15 }} aria-hidden>
           <PenSVG size={160} rotate={15}/>
         </div>
 
-        {/* Dot grid */}
+      
         <svg style={{ position: "absolute", left: "4%", bottom: "10%", opacity: 0.12 }} width="140" height="140">
           {Array.from({ length: 6 }, (_, r) =>
             Array.from({ length: 6 }, (_, c) => (
@@ -1241,7 +1241,7 @@ export default function EsperlyStationery() {
 
         <div style={{ position: "relative", zIndex: 2, maxWidth: 680, margin: "0 auto" }}>
           <FadeUp>
-            {/* Washi tape pin */}
+          
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
               <WashiTape width={56} height={18} color="rgba(255,255,255,0.3)" rotate={-1} style={{ position: "relative", top: "auto", left: "auto" }}/>
             </div>
@@ -1325,7 +1325,7 @@ export default function EsperlyStationery() {
             </div>
           </FadeUp>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

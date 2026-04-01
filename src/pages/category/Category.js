@@ -102,7 +102,7 @@ const CATEGORIES = [
 /* ─────────────────────────────────────────────
    SVG helpers
 ───────────────────────────────────────────── */
-const Pushpin = ({ color = "#dc2626", size = 28 }) => (
+const Pushpin = ({ color = "#dc2626", size = 22 }) => (
   <svg width={size} height={size * 1.4} viewBox="0 0 24 36" fill="none">
     <circle cx="12" cy="10" r="9" fill={color} />
     <circle cx="12" cy="10" r="5" fill="white" fillOpacity="0.35" />
@@ -114,17 +114,23 @@ const PaperClip = () => (
   <svg width="20" height="52" viewBox="0 0 28 70" fill="none">
     <path
       d="M14 4C8.477 4 4 8.477 4 14v34c0 7.732 6.268 14 14 14s14-6.268 14-14V18"
-      stroke="#9ca3af" strokeWidth="3.5" strokeLinecap="round" fill="none"
+      stroke="#9ca3af"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+      fill="none"
     />
     <path
       d="M14 4C19.523 4 24 8.477 24 14v28c0 5.523-4.477 10-10 10S4 47.523 4 42V18"
-      stroke="#6b7280" strokeWidth="2" strokeLinecap="round" fill="none"
+      stroke="#6b7280"
+      strokeWidth="2"
+      strokeLinecap="round"
+      fill="none"
     />
   </svg>
 );
 
 /* ─────────────────────────────────────────────
-   Sticky note color palette for cards
+   Sticky note color palette
 ───────────────────────────────────────────── */
 const noteColors = [
   { bg: "#fff9c4", fold: "#e6c700" },
@@ -137,161 +143,187 @@ const noteColors = [
   { bg: "#fce7f3", fold: "#f472b6" },
 ];
 
+const ruledBg =
+  "repeating-linear-gradient(transparent, transparent 27px, rgba(243,213,213,0.45) 28px)";
+
 /* ─────────────────────────────────────────────
-   Ruled-line CSS
+   Responsive grid styles injected once
 ───────────────────────────────────────────── */
-const ruledBg = `
-  repeating-linear-gradient(
-    transparent, transparent 27px, rgba(243,213,213,0.45) 28px
-  )
-`;
+const GlobalStyles = () => (
+  <style>{`
+    .cork-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      padding-top: 1.5rem;
+    }
+    @media (min-width: 480px)  { .cork-grid { gap: 1.6rem; } }
+    @media (min-width: 640px)  { .cork-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; } }
+    @media (min-width: 1024px) { .cork-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.5rem; } }
+    /* Top padding so pushpin is never clipped by the corkboard edge */
+    .cork-cell { padding-top: 1.4rem; }
+  `}</style>
+);
 
 /* ─────────────────────────────────────────────
    CategoryCard
 ───────────────────────────────────────────── */
-const CategoryCard = React.memo(({ cat, index, onClick }) => {
-  const [hov, setHov] = useState(false);
-  const nc = noteColors[index % noteColors.length];
-  const rotations = [-3, 2, -1.5, 3, -2, 1, -2.5, 2.5];
-  const rot = rotations[index % rotations.length];
 
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 36, rotate: rot }}
-      animate={{ opacity: 1, y: 0, rotate: rot }}
-      transition={{ duration: 0.55, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ rotate: 0, y: -8, scale: 1.04, zIndex: 20 }}
-      onHoverStart={() => setHov(true)}
-      onHoverEnd={() => setHov(false)}
-      onClick={() => onClick(cat)}
-      className="cursor-pointer relative"
-      style={{ zIndex: hov ? 20 : 1 }}
-      role="button"
-      aria-label={`Explore ${cat.title}`}
-    >
-      {/* Pushpin */}
-      <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
-        <Pushpin color={cat.accent} size={24} />
-      </div>
 
-      {/* Card body */}
-      <div
-        className="relative overflow-hidden"
-        style={{
-          background: nc.bg,
-          border: `1.5px solid ${nc.fold}`,
-          borderRadius: "2px",
-          boxShadow: hov
-            ? `6px 8px 0 ${nc.fold}88, 0 20px 40px rgba(0,0,0,0.18)`
-            : `4px 5px 0 ${nc.fold}55, 0 6px 18px rgba(0,0,0,0.10)`,
-          transition: "box-shadow 0.25s ease",
-        }}
+const CategoryCard = React.memo(
+  ({
+    cat,
+    index,
+    onClick,
+  }) => {
+    const [hov, setHov] = useState(false);
+    const nc = noteColors[index % noteColors.length];
+    const rotations = [-3, 2, -1.5, 3, -2, 1, -2.5, 2.5];
+    const rot = rotations[index % rotations.length];
+
+    return (
+      <motion.article
+        initial={{ opacity: 0, y: 36, rotate: rot }}
+        animate={{ opacity: 1, y: 0, rotate: rot }}
+        transition={{ duration: 0.55, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ rotate: 0, y: -8, scale: 1.04, zIndex: 20 }}
+        onHoverStart={() => setHov(true)}
+        onHoverEnd={() => setHov(false)}
+        onClick={() => onClick(cat)}
+        className="cursor-pointer relative w-full"
+        style={{ zIndex: hov ? 20 : 1 }}
+        role="button"
+        aria-label={`Explore ${cat.title}`}
       >
-        {/* Folded corner */}
-        <div
-          className="absolute bottom-0 right-0 w-8 h-8"
-          style={{
-            background: `linear-gradient(225deg, ${nc.fold}99 50%, transparent 50%)`,
-          }}
-        />
-
-        {/* Image */}
-        <div className="relative h-36 overflow-hidden">
-          <motion.img
-            src={cat.img}
-            alt={cat.title}
-            loading="lazy"
-            animate={{ scale: hov ? 1.1 : 1 }}
-            transition={{ duration: 0.45 }}
-            className="w-full h-full object-cover block"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-          {/* Badge tape */}
-          {cat.badge && (
-            <div
-              className="absolute top-2 left-0 px-3 py-1 text-[9px] font-bold tracking-widest uppercase"
-              style={{
-                background: "rgba(252,211,77,0.85)",
-                color: "#78350f",
-                fontFamily: "'Courier New', monospace",
-                boxShadow: "2px 2px 4px rgba(0,0,0,0.2)",
-                transform: "rotate(-1deg)",
-              }}
-            >
-              {cat.badge}
-            </div>
-          )}
-
-          {/* Icon */}
-          <div className="absolute bottom-2 left-3 text-2xl drop-shadow-lg">{cat.icon}</div>
+        {/* Pushpin */}
+        <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+          <Pushpin color={cat.accent} size={22} />
         </div>
 
-        {/* Text body — ruled lines inside */}
+        {/* Card body */}
         <div
-          className="px-4 py-3 pb-5"
+          className="relative overflow-hidden w-full"
           style={{
-            backgroundImage: ruledBg,
-            backgroundSize: "100% 28px",
+            background: nc.bg,
+            border: `1.5px solid ${nc.fold}`,
+            borderRadius: "2px",
+            boxShadow: hov
+              ? `6px 8px 0 ${nc.fold}88, 0 20px 40px rgba(0,0,0,0.18)`
+              : `4px 5px 0 ${nc.fold}55, 0 6px 18px rgba(0,0,0,0.10)`,
+            transition: "box-shadow 0.25s ease",
           }}
         >
-          {/* Red margin line */}
+          {/* Folded corner */}
           <div
-            className="absolute left-8 top-36 bottom-0 w-px"
-            style={{ background: "rgba(239,68,68,0.3)" }}
+            className="absolute bottom-0 right-0 w-7 h-7 pointer-events-none"
+            style={{ background: `linear-gradient(225deg, ${nc.fold}99 50%, transparent 50%)` }}
           />
 
-          <h3
-            className="pl-4 font-bold leading-tight mb-1"
-            style={{
-              fontFamily: "'Georgia', serif",
-              fontSize: "0.95rem",
-              color: "#1c1917",
-              lineHeight: "28px",
-            }}
-          >
-            {cat.title}
-          </h3>
-          <p
-            className="pl-4 italic"
-            style={{
-              fontFamily: "'Georgia', serif",
-              fontSize: "0.72rem",
-              color: "#78716c",
-              lineHeight: "28px",
-            }}
-          >
-            {cat.tagline}
-          </p>
+          {/* Image — uses aspect-ratio so it scales on all screens */}
+          <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
+            <motion.img
+              src={cat.img}
+              alt={cat.title}
+              loading="lazy"
+              animate={{ scale: hov ? 1.1 : 1 }}
+              transition={{ duration: 0.45 }}
+              className="w-full h-full object-cover block"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-          {/* Footer row */}
-          <div className="pl-4 flex items-center justify-between mt-2">
-            <span
+            {cat.badge && (
+              <div
+                className="absolute top-2 left-0 font-bold tracking-widest uppercase"
+                style={{
+                  background: "rgba(252,211,77,0.85)",
+                  color: "#78350f",
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: "clamp(0.52rem, 1.5vw, 0.68rem)",
+                  boxShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+                  transform: "rotate(-1deg)",
+                  padding: "2px 8px",
+                }}
+              >
+                {cat.badge}
+              </div>
+            )}
+
+            <div
+              className="absolute bottom-2 left-2 drop-shadow-lg"
+              style={{ fontSize: "clamp(1rem, 2.8vw, 1.5rem)" }}
+            >
+              {cat.icon}
+            </div>
+          </div>
+
+          {/* Text body */}
+          <div
+            className="relative px-2 sm:px-3 py-2 pb-4"
+            style={{ backgroundImage: ruledBg, backgroundSize: "100% 28px" }}
+          >
+            {/* Red margin line */}
+            <div
+              className="absolute left-6 sm:left-7 top-0 bottom-0 w-px pointer-events-none"
+              style={{ background: "rgba(239,68,68,0.3)" }}
+            />
+
+            <h3
+              className="pl-3 sm:pl-4 font-bold"
               style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: "0.65rem",
-                color: "#a8a29e",
-                letterSpacing: "0.05em",
+                fontFamily: "'Georgia', serif",
+                fontSize: "clamp(0.7rem, 2vw, 0.92rem)",
+                color: "#1c1917",
+                lineHeight: "28px",
+                margin: 0,
               }}
             >
-              {cat.count}
-            </span>
-            <motion.div
-              animate={{
-                background: hov ? cat.accent : "rgba(0,0,0,0.06)",
-                color: hov ? "#fff" : "#44403c",
+              {cat.title}
+            </h3>
+            <p
+              className="pl-3 sm:pl-4 italic"
+              style={{
+                fontFamily: "'Georgia', serif",
+                fontSize: "clamp(0.58rem, 1.6vw, 0.7rem)",
+                color: "#78716c",
+                lineHeight: "28px",
+                margin: 0,
               }}
-              className="w-6 h-6 rounded-full flex items-center justify-center text-xs border"
-              style={{ borderColor: hov ? cat.accent : "rgba(0,0,0,0.12)", transition: "all 0.2s" }}
             >
-              →
-            </motion.div>
+              {cat.tagline}
+            </p>
+
+            <div className="pl-3 sm:pl-4 flex items-center justify-between mt-1.5">
+              <span
+                style={{
+                  fontFamily: "'Courier New', monospace",
+                  fontSize: "clamp(0.52rem, 1.3vw, 0.63rem)",
+                  color: "#a8a29e",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {cat.count}
+              </span>
+              <motion.div
+                animate={{
+                  background: hov ? cat.accent : "rgba(0,0,0,0.06)",
+                  color: hov ? "#fff" : "#44403c",
+                }}
+                className="w-5 h-5 rounded-full flex items-center justify-center border flex-shrink-0"
+                style={{
+                  borderColor: hov ? cat.accent : "rgba(0,0,0,0.12)",
+                  transition: "all 0.2s",
+                  fontSize: "0.6rem",
+                }}
+              >
+                →
+              </motion.div>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.article>
-  );
-});
+      </motion.article>
+    );
+  }
+);
 
 /* ─────────────────────────────────────────────
    MAIN COMPONENT
@@ -307,25 +339,28 @@ export default function Category() {
 
   return (
     <>
+      <GlobalStyles />
       <Navbar />
+
       <section
         ref={sectionRef}
-        className="relative min-h-screen py-20 px-4 sm:px-8 lg:px-16 overflow-hidden"
+        className="relative min-h-screen overflow-x-hidden"
         style={{
           background: "#fef9f0",
           backgroundImage: `
-          ${ruledBg},
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")
-        `,
+            ${ruledBg},
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")
+          `,
+          padding: "clamp(3rem, 6vw, 5rem) clamp(1rem, 5vw, 4rem)",
         }}
       >
-        {/* Red margin line */}
+        {/* Red margin line — desktop only */}
         <div
           className="absolute left-20 top-0 h-full w-px hidden lg:block"
           style={{ background: "rgba(239,68,68,0.35)" }}
         />
 
-        {/* Hole punches */}
+        {/* Hole punches — desktop only */}
         {[12, 28, 44, 60, 76].map((pct) => (
           <div
             key={pct}
@@ -340,7 +375,7 @@ export default function Category() {
           />
         ))}
 
-        {/* Paperclip on header */}
+        {/* Paperclip — desktop only */}
         <div className="absolute top-14 right-12 opacity-60 hidden lg:block">
           <PaperClip />
         </div>
@@ -352,39 +387,44 @@ export default function Category() {
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16"
+            style={{ marginBottom: "clamp(1.75rem, 5vw, 4rem)" }}
           >
-            {/* Tape-label badge */}
-            <div className="inline-block mb-5">
+            {/* Tape badge */}
+            <div className="inline-block mb-4">
               <div
                 style={{
                   background: "rgba(252,211,77,0.72)",
-                  padding: "5px 20px",
+                  padding: "4px 14px",
                   borderRadius: "2px",
                   transform: "rotate(-1.5deg)",
                   display: "inline-block",
                   boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
                   fontFamily: "'Courier New', monospace",
                   fontWeight: 700,
-                  fontSize: "0.72rem",
+                  fontSize: "clamp(0.56rem, 1.8vw, 0.72rem)",
                   color: "#78350f",
-                  letterSpacing: "0.18em",
+                  letterSpacing: "0.16em",
                 }}
               >
                 DISCOVER · LEARN · GROW
               </div>
             </div>
 
-            <div className="flex items-end justify-between flex-wrap gap-4">
+            {/* Title + count — wraps on narrow viewports */}
+            <div
+              className="flex flex-wrap items-end justify-between"
+              style={{ gap: "0.75rem 1.5rem" }}
+            >
               <div>
                 <h2
                   style={{
                     fontFamily: "'Georgia', serif",
                     fontWeight: 700,
-                    fontSize: "clamp(2rem, 5vw, 3.8rem)",
+                    fontSize: "clamp(1.7rem, 6vw, 3.8rem)",
                     color: "#1c1917",
                     lineHeight: 1.15,
                     letterSpacing: "-0.02em",
+                    margin: 0,
                   }}
                 >
                   All{" "}
@@ -393,23 +433,27 @@ export default function Category() {
                     <svg
                       viewBox="0 0 200 10"
                       className="absolute -bottom-1 left-0 w-full"
-                      style={{ height: "10px" }}
+                      style={{ height: "8px" }}
                       preserveAspectRatio="none"
                     >
                       <path
                         d="M2 7C30 3 60 9 100 5.5C140 2 170 8 198 5"
-                        stroke="#dc2626" strokeWidth="2.8" fill="none" strokeLinecap="round"
+                        stroke="#dc2626"
+                        strokeWidth="2.8"
+                        fill="none"
+                        strokeLinecap="round"
                       />
                     </svg>
                   </span>
                 </h2>
                 <p
-                  className="mt-3 italic"
+                  className="italic"
                   style={{
                     fontFamily: "'Georgia', serif",
-                    fontSize: "1rem",
+                    fontSize: "clamp(0.76rem, 2vw, 1rem)",
                     color: "#78716c",
                     lineHeight: "28px",
+                    margin: "0.5rem 0 0 0",
                   }}
                 >
                   Click any card to explore its topics
@@ -418,7 +462,6 @@ export default function Category() {
 
               {/* Count note */}
               <div
-                className="px-4 py-2 text-xs"
                 style={{
                   background: "#ffd6d6",
                   border: "1.5px solid #f87171",
@@ -428,6 +471,10 @@ export default function Category() {
                   fontFamily: "'Courier New', monospace",
                   color: "#7f1d1d",
                   fontWeight: 600,
+                  fontSize: "clamp(0.58rem, 1.5vw, 0.75rem)",
+                  padding: "5px 12px",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
                 }}
               >
                 {CATEGORIES.length} categories
@@ -435,57 +482,71 @@ export default function Category() {
             </div>
           </motion.div>
 
-          {/* ── Corkboard grid ── */}
+          {/* ── Corkboard ── */}
           {inView && (
             <div
-              className="relative rounded-2xl p-8 sm:p-12"
+              className="relative rounded-xl sm:rounded-2xl"
               style={{
                 background: "#c8a97e",
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0.4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E")`,
-                border: "7px solid #a07850",
-                boxShadow: "inset 0 0 70px rgba(0,0,0,0.18), 0 12px 50px rgba(0,0,0,0.15)",
+                border: "5px solid #a07850",
+                boxShadow:
+                  "inset 0 0 70px rgba(0,0,0,0.18), 0 12px 50px rgba(0,0,0,0.15)",
+                padding: "clamp(0.75rem, 3.5vw, 3rem)",
               }}
             >
               {/* Corkboard label */}
               <div
-                className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-1 text-xs font-bold tracking-widest whitespace-nowrap"
+                className="absolute -top-4 left-1/2 -translate-x-1/2 font-bold tracking-widest whitespace-nowrap"
                 style={{
                   background: "#7f1d1d",
                   color: "#fef9f0",
                   borderRadius: "2px",
                   fontFamily: "'Courier New', monospace",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+                  fontSize: "clamp(0.52rem, 1.5vw, 0.72rem)",
+                  letterSpacing: "0.1em",
+                  padding: "4px clamp(8px, 2vw, 24px)",
                 }}
               >
                 📋 SUBJECT CATALOGUE
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 sm:gap-10 pt-4">
+              {/* Responsive card grid */}
+              <div className="cork-grid">
                 {CATEGORIES.map((cat, i) => (
-                  <CategoryCard key={cat.id} cat={cat} index={i} onClick={handleCategoryClick} />
+                  <div key={cat.id} className="cork-cell">
+                    <CategoryCard cat={cat} index={i} onClick={() => handleCategoryClick(cat)} />
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
           {/* Footer rule */}
-          <div className="flex items-center gap-4 mt-12">
+          <div
+            className="flex items-center gap-3 sm:gap-4"
+            style={{ marginTop: "clamp(1.5rem, 4vw, 3rem)" }}
+          >
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-red-200 to-transparent" />
             <span
               style={{
                 fontFamily: "'Courier New', monospace",
-                fontSize: "0.65rem",
+                fontSize: "clamp(0.52rem, 1.3vw, 0.65rem)",
                 color: "#a8a29e",
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
+                whiteSpace: "nowrap",
               }}
             >
               End of catalogue
             </span>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-red-200 to-transparent" />
           </div>
+
         </div>
       </section>
+
       <Footer />
     </>
   );
