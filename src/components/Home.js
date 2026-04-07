@@ -7,6 +7,10 @@ import WhatWeTeach from "../pages/Home/WhatWeTeach";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AdScroller from "../pages/Home/AdBanner";
+import ExperienceSection from "../pages/Home/ExperianceSection";
+import PillarsSection from "../pages/Home/PillarsSection";
+import TracksSection from "../pages/Home/TracksSection";
+import StoriesSection from "../pages/Home/StoriesSection";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -16,7 +20,11 @@ const Home = () => {
             <Hero />
             <WhatWeTeach />
             <AdScroller/>
-            <EsperlyExperience />
+            <ExperienceSection/>
+            <PillarsSection/>
+            <TracksSection/>
+            <StoriesSection/>
+            {/* <EsperlyExperience /> */}
             {/* <StudentJourney /> */}
             {/* <WhatYouLookingFor/> */}
             <Footer/>

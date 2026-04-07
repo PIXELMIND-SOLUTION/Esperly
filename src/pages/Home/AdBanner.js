@@ -103,7 +103,7 @@ export default function PromotionsBanner() {
           />
 
           {/* OVERLAY */}
-          <div className="absolute inset-0 bg-black/40 flex flex-col justify-center px-6 md:px-12">
+          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-6 md:px-12">
             <h3 className="text-white text-xl md:text-3xl font-bold mb-2">
               {banner.title}
             </h3>
@@ -112,7 +112,7 @@ export default function PromotionsBanner() {
               {banner.subtitle}
             </p>
 
-            <button className="bg-white text-black px-5 py-2 rounded-full w-fit font-semibold hover:scale-105 transition">
+            <button style={{ backgroundColor: "#A6192E" }} className="text-white px-5 py-2 rounded-full font-semibold hover:scale-105 transition">
               {banner.cta}
             </button>
           </div>
