@@ -39,7 +39,7 @@ const LoginModal = ({ isOpen = false, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-md p-3 sm:p-6"
+      className="fixed inset-0 z-[8888] flex items-center justify-center bg-black/40 backdrop-blur-md p-3 sm:p-6"
       onClick={(e) => e.target === e.currentTarget && closeModal()}
     >
       {/* 📓 Notebook Lines */}

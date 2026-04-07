@@ -7,9 +7,6 @@ const CustomCursor = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // ✅ Disable on mobile
-    if (window.innerWidth < 768) return;
-
     const outer = cursorOuter.current;
     const inner = cursorInner.current;
     if (!outer || !inner) return;
@@ -145,8 +142,15 @@ const CustomCursor = () => {
     window.addEventListener("mousedown", handleDown);
     window.addEventListener("mouseup", handleUp);
 
-    document.body.style.cursor = "none";
-    document.documentElement.style.cursor = "none";
+    // ✅ Hide default cursor for ALL elements (including mobile)
+    const style = document.createElement('style');
+    style.id = 'custom-cursor-style';
+    style.textContent = `
+      html, body, body * {
+        cursor: none !important;
+      }
+    `;
+    document.head.appendChild(style);
 
     /* =========================
        CLEANUP (IMPORTANT 🔥)
@@ -163,11 +167,23 @@ const CustomCursor = () => {
         el.removeEventListener("mouseleave", handleLeave);
       });
 
+      // ✅ Remove the style tag and restore default cursor
+      const styleTag = document.getElementById('custom-cursor-style');
+      if (styleTag) {
+        styleTag.remove();
+      }
+      
+      // Restore default cursor for all elements
       document.body.style.cursor = "";
       document.documentElement.style.cursor = "";
+      const allElements = document.querySelectorAll('*');
+      allElements.forEach(el => {
+        el.style.cursor = '';
+      });
     };
-  }, [location]); // 🔥 runs every route change
+  }, [location]);
 
+  // ✅ Always render custom cursor (no mobile check)
   return (
     <>
       {/* OUTER */}

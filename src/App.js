@@ -13,6 +13,7 @@ import Teachers from "./pages/teacher/Teachers";
 import BusBanner from "./views/BusBanner";
 import ScrollToTop from "./views/ScrollToTop";
 import Layout from "./AfterLogin/views/Layout";
+import Sample from "./pages/teacher/sample";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -35,14 +36,6 @@ const App = () => {
   const [selectedCourse, setSelectedCourse] = useState(() => fromSession("selectedCourse"));
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.body.style.cursor = "none";
-    document.documentElement.style.cursor = "none";
-    document.querySelectorAll("*").forEach((el) => {
-      el.style.cursor = "none";
-    });
-  }, []);
-
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
     toSession("selectedCourse", course);
@@ -56,11 +49,11 @@ const App = () => {
   };
 
   return (
-    <div className="cursor-none">
+    <div>
       <ScrollToTop />
       <CustomCursor />
       {/* <RollingPencil /> */}
-      <BusBanner />
+      {/* <BusBanner /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
@@ -69,16 +62,7 @@ const App = () => {
         <Route path="/category" element={<Category />} />
         <Route path="/category/:categoryId" element={<Subcategory onSelectCourse={handleCourseSelect} />} />
         <Route path="/course-detail/:courseId" element={<CourseDetail />} />
-
-        {/* <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/teachers" element={<Teachers />} />
-            <Route path="/aboutus" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </Layout> */}
+        <Route path="/sample" element={<Sample />} />
       </Routes>
     </div>
   );

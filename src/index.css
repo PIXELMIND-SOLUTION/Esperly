@@ -5,9 +5,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* * {
-    cursor: none;
-  } */
   
   html, body {
     @apply bg-cream;
