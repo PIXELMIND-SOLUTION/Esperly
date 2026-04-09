@@ -1,16 +1,16 @@
 import { useState } from "react";
 
 const participants = [
-  { id: 1, name: "Ryder Smith",       initials: "RS", color: "bg-indigo-700",  role: null      },
-  { id: 2, name: "Ashley Thompson",   initials: "AT", color: "bg-emerald-700", role: "Trainer" },
-  { id: 3, name: "Samantha Rower",    initials: "SR", color: "bg-violet-700",  role: null      },
-  { id: 4, name: "Barbara Rowan",     initials: "BR", color: "bg-blue-700",    role: null      },
-  { id: 5, name: "Sebastian Mateo",   initials: "SM", color: "bg-amber-700",   role: null      },
-  { id: 6, name: "Elena Kendric",     initials: "EK", color: "bg-pink-700",    role: null      },
-  { id: 7, name: "Rosalie Orson",     initials: "RO", color: "bg-teal-700",    role: "Trainer" },
-  { id: 8, name: "Sarah Joseph",      initials: "SJ", color: "bg-orange-700",  role: null      },
-  { id: 9, name: "Avery Adan",        initials: "AA", color: "bg-cyan-700",    role: null      },
-  { id: 10, name: "Elias Gayle",      initials: "EG", color: "bg-lime-700",    role: null      },
+  { id: 1, name: "Ryder Smith",       image: "https://randomuser.me/api/portraits/men/1.jpg",  role: null      },
+  { id: 2, name: "Ashley Thompson",   image: "https://randomuser.me/api/portraits/women/2.jpg", role: "Trainer" },
+  { id: 3, name: "Samantha Rower",    image: "https://randomuser.me/api/portraits/women/3.jpg",  role: null      },
+  { id: 4, name: "Barbara Rowan",     image: "https://randomuser.me/api/portraits/women/4.jpg",  role: null      },
+  { id: 5, name: "Sebastian Mateo",   image: "https://randomuser.me/api/portraits/men/5.jpg",   role: null      },
+  { id: 6, name: "Elena Kendric",     image: "https://randomuser.me/api/portraits/women/6.jpg", role: null      },
+  { id: 7, name: "Rosalie Orson",     image: "https://randomuser.me/api/portraits/women/7.jpg", role: "Trainer" },
+  { id: 8, name: "Sarah Joseph",      image: "https://randomuser.me/api/portraits/women/8.jpg",  role: null      },
+  { id: 9, name: "Avery Adan",        image: "https://randomuser.me/api/portraits/men/9.jpg",   role: null      },
+  { id: 10, name: "Elias Gayle",      image: "https://randomuser.me/api/portraits/men/10.jpg",   role: null      },
 ];
 
 /* ── Icons ── */
@@ -42,10 +42,10 @@ const LineIcon    = () => <Icon d="M5 19L19 5" />;
 const PenIcon     = () => <Icon d={["M12 20h9","M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"]} />;
 const EraseIcon   = () => <Icon d={["M20 5H9l-7 7 7 7h11a2 2 0 002-2V7a2 2 0 00-2-2z","M18 9l-6 6"]} />;
 
-/* ── Avatar ── */
+/* ── Avatar with Image ── */
 const Avatar = ({ p, size = "w-10 h-10", text = "text-sm" }) => (
-  <div className={`${size} ${p.color} ${text} rounded-full flex items-center justify-center font-semibold text-white flex-shrink-0`}>
-    {p.initials}
+  <div className={`${size} rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden bg-gradient-to-br from-gray-700 to-gray-800`}>
+    <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
   </div>
 );
 
@@ -193,6 +193,7 @@ const DesktopView = () => {
           <div className="flex-1 p-3 overflow-hidden">
             <div className="w-full h-full bg-white rounded border border-gray-200 overflow-hidden">
               <MathBoard />
+              
             </div>
           </div>
         </div>
@@ -352,7 +353,7 @@ const MobileView = () => {
 export default function ZoomDesign() {
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center p-6">
-      <div className="flex gap-6 items-start flex-wrap justify-center w-full max-w-[1100px]">
+      <div className="flex gap-6 items-start flex-wrap justify-center w-full max-w-7xl">
         <DesktopView />
         <MobileView />
       </div>

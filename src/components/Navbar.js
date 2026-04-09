@@ -2,35 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  FiMenu, FiX, FiArrowRight, FiChevronDown, FiSearch,
-  FiTrendingUp, FiBookOpen, FiUsers, FiStar, FiChevronRight
+  FiMenu, FiX, FiChevronDown, FiChevronRight
 } from "react-icons/fi";
 import EnrollModal from "../modals/EnrollModal";
-import LoginModal from "../modals/LoginModal";
 
 /* ─── Data ──────────────────────────────────────────────────── */
-const popularCourses = [
-  { id: "sub1", name: "Fundamentals",    tag: "Beginner",     icon: "🌱", students: 8400  },
-  { id: "sub2", name: "Core Concepts",   tag: "Beginner",     icon: "🧱", students: 6100  },
-  { id: "sub3", name: "Problem Solving", tag: "Intermediate", icon: "🧩", students: 12300 },
-  { id: "sub4", name: "Applied Practice",tag: "Intermediate", icon: "🔧", students: 9800  },
-  { id: "sub5", name: "Advanced Theory", tag: "Advanced",     icon: "🚀", students: 4500  },
-  { id: "sub6", name: "Exam Mastery",    tag: "Advanced",     icon: "🏆", students: 15200 },
-  { id: "sub7", name: "Quick Revision",  tag: "Beginner",     icon: "⚡", students: 22000 },
-  { id: "sub8", name: "Project Work",    tag: "Advanced",     icon: "🗂️", students: 3300  },
-];
-
-const categories = [
-  { id: "math",      name: "Math",             icon: "📐", count: "42 topics" },
-  { id: "science",   name: "Science",          icon: "🔬", count: "38 topics" },
-  { id: "english",   name: "English",          icon: "📖", count: "29 topics" },
-  { id: "history",   name: "History",          icon: "🏛️", count: "33 topics" },
-  { id: "coding",    name: "Computer Science", icon: "💻", count: "51 topics" },
-  { id: "physics",   name: "Physics",          icon: "⚡", count: "27 topics" },
-  { id: "chemistry", name: "Chemistry",        icon: "⚗️", count: "24 topics" },
-  { id: "economics", name: "Economics",        icon: "📊", count: "19 topics" },
-];
-
 const tuitionsItems = [
   {
     name: "Primary School", icon: "📚", desc: "Grades 1–5", path: "/tuitions/primary",
@@ -105,11 +81,6 @@ const moreItems = [
   { name: "Contact",  icon: "📬", path: "/contact"  },
 ];
 
-const trendingSearches = [
-  "Full Stack Development", "Python Programming",
-  "Data Science", "React Development", "Digital Marketing",
-];
-
 /* ─── Animation variants ────────────────────────────────────── */
 const notebookVariants = {
   hidden:  { opacity: 0, y: -10, scale: 0.98 },
@@ -156,7 +127,7 @@ const NotebookRow = ({ item, onNavigate, onClose, index }) => {
         <div className="w-0.5 h-6 rounded-full bg-[#A6192E]/20 group-hover:bg-[#A6192E]/60 transition-colors duration-150 flex-shrink-0" />
         <span className="text-base leading-none w-5 text-center flex-shrink-0">{item.icon}</span>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-gray-800 group-hover:text-[#A6192E] transition-colors leading-tight truncate">{item.name}</p>
+          <p className="text-[13px] text-gray-800 group-hover:text-[#A6192E] transition-colors leading-tight truncate">{item.name}</p>
           {item.desc && <p className="text-[11px] text-gray-400 mt-0.5 leading-tight truncate">{item.desc}</p>}
         </div>
         {hasChildren && <FiChevronRight size={12} className="text-[#A6192E]/40 group-hover:text-[#A6192E] transition-colors flex-shrink-0" />}
@@ -214,7 +185,7 @@ const NotebookDropdown = ({ items, onNavigate, onClose, label }) => (
               <div key={i} className="w-1.5 h-1.5 rounded-full border border-[#A6192E]/30 bg-white" />
             ))}
           </div>
-          <p className="text-[11px] font-bold text-[#A6192E]/70 uppercase tracking-[0.12em]">{label}</p>
+          <p className="text-[11px] text-[#A6192E]/70 uppercase tracking-[0.12em]">{label}</p>
         </div>
       </div>
       <div className="py-1.5">
@@ -244,7 +215,7 @@ const NavDropdown = ({ label, items, navigate }) => {
   return (
     <div ref={ref} className="relative" onMouseEnter={show} onMouseLeave={hide}>
       <button
-        className={`relative px-3 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200 flex items-center gap-1.5
+        className={`relative px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-all duration-200 flex items-center gap-1.5
           ${open ? "text-white bg-white/20" : "text-white/90 hover:text-white hover:bg-white/15"}`}
       >
         {label}
@@ -263,45 +234,30 @@ const NavDropdown = ({ label, items, navigate }) => {
 
 /* ─── Main Navbar ───────────────────────────────────────────── */
 const Navbar = () => {
-  const [mobileOpen,     setMobileOpen]     = useState(false);
-  const [searchOpen,     setSearchOpen]     = useState(false);
-  const [searchQuery,    setSearchQuery]    = useState("");
-  const [recentSearches, setRecentSearches] = useState(["React Development", "Data Science", "UI/UX Design"]);
-  const [enrollOpen,     setEnrollOpen]     = useState(false);
-  const [loginOpen,      setLoginOpen]      = useState(false);
-  const [mobileExpanded,    setMobileExpanded]    = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [enrollOpen, setEnrollOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState(null);
   const [mobileSubExpanded, setMobileSubExpanded] = useState(null);
 
-  const searchInputRef = useRef();
   const navigate = useNavigate();
 
   /* Lock body scroll when overlays are open */
   useEffect(() => {
-    const locked = mobileOpen || searchOpen;
-    document.body.style.overflow = locked ? "hidden" : "";
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen, searchOpen]);
-
-  useEffect(() => {
-    if (searchOpen) setTimeout(() => searchInputRef.current?.focus(), 100);
-  }, [searchOpen]);
-
-  const allSearchResults = [
-    ...popularCourses.map(c => ({ ...c, type: "course" })),
-    ...categories.map(c => ({ name: c.name, icon: c.icon, count: c.count, type: "category" })),
-  ].filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    if (query && !recentSearches.includes(query)) {
-      setRecentSearches(prev => [query, ...prev].slice(0, 5));
-    }
-  };
+  }, [mobileOpen]);
 
   const closeMobile = () => setMobileOpen(false);
 
-  const toggleMobile    = (section) => { setMobileExpanded(p => p === section ? null : section); setMobileSubExpanded(null); };
-  const toggleMobileSub = (e, key)  => { e.stopPropagation(); setMobileSubExpanded(p => p === key ? null : key); };
+  const toggleMobile = (section) => { 
+    setMobileExpanded(p => p === section ? null : section); 
+    setMobileSubExpanded(null); 
+  };
+  
+  const toggleMobileSub = (e, key) => { 
+    e.stopPropagation(); 
+    setMobileSubExpanded(p => p === key ? null : key); 
+  };
 
   /* ─── Mobile Accordion ──────────────────────────────────── */
   const MobileAccordion = ({ label, items, section }) => (
@@ -389,7 +345,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[60px] sm:h-[68px] flex items-center justify-between gap-4">
 
-          {/* Logo */}
+          {/* Logo - Left side */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
@@ -401,80 +357,55 @@ const Navbar = () => {
               <img src="/logo4.png" alt="Esperly Logo" className="object-contain" />
             </div>
             <span
-              className="text-xl sm:text-2xl font-bold text-white tracking-tight"
+              className="text-xl sm:text-2xl text-white tracking-tight"
               style={{ fontFamily: "'DM Serif Display', serif" }}
             >
               Esperly
             </span>
           </motion.div>
 
-          {/* Desktop nav */}
-          <motion.nav
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
+          {/* Desktop Navigation - Right side */}
+          <motion.div
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden lg:flex items-center gap-0.5"
+            className="hidden lg:flex items-center gap-2"
           >
             <NavLink to="/">
               {({ isActive }) => (
-                <div className={`relative px-3 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200
+                <div className={`relative px-3 py-1.5 rounded-full text-sm cursor-pointer transition-all duration-200
                   ${isActive
-                    ? "text-white bg-white/20 font-semibold"
+                    ? "text-white bg-white/20"
                     : "text-white/90 hover:text-white hover:bg-white/15"
                   }`}
                 >
-                  Hub
+                  HUB
                 </div>
               )}
             </NavLink>
 
-            <NavDropdown label="Tuitions"          items={tuitionsItems}          navigate={navigate} />
-            <NavDropdown label="Learning Boosters" items={learningBoostersItems} navigate={navigate} />
-            <NavDropdown label="Language Tracks"   items={languageTracksItems}   navigate={navigate} />
-            <NavDropdown label="More"              items={moreItems}             navigate={navigate} />
-          </motion.nav>
+            <NavDropdown label="TUITIONS" items={tuitionsItems} navigate={navigate} />
+            <NavDropdown label="LEARNING BOOSTERS" items={learningBoostersItems} navigate={navigate} />
+            <NavDropdown label="LANGUAGE TRACKS" items={languageTracksItems} navigate={navigate} />
+            <NavDropdown label="MORE" items={moreItems} navigate={navigate} />
 
-          {/* Right actions */}
-          <motion.div
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex items-center gap-2 sm:gap-3"
-          >
-            {/* Search */}
-            <button
-              onClick={() => setSearchOpen(true)}
-              aria-label="Search"
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-all duration-200 hover:scale-105"
-            >
-              <FiSearch size={16} className="sm:w-[18px] sm:h-[18px]" />
-            </button>
-
-            {/* Sign In — desktop only */}
-            <button
-              onClick={() => setLoginOpen(true)}
-              className="hidden sm:block text-sm font-medium text-white/90 hover:text-white px-3 py-2 rounded-full transition-colors duration-200 hover:bg-white/15"
-            >
-              Sign In
-            </button>
-
-            {/* Enroll Now — desktop only */}
+            {/* Send Enquiry Button */}
             <button
               onClick={() => setEnrollOpen(true)}
-              className="hidden sm:block relative overflow-hidden px-4 sm:px-5 py-2 rounded-full font-semibold text-xs sm:text-sm text-[#A6192E] bg-white shadow-lg shadow-black/20 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:transition-all before:duration-700 hover:before:left-full"
+              className="ml-2 relative overflow-hidden px-5 py-2 rounded-full font-semibold text-sm text-[#A6192E] bg-white shadow-lg shadow-black/20 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:transition-all before:duration-700 hover:before:left-full"
             >
-              Enroll Now
-            </button>
-
-            {/* Hamburger — mobile/tablet only (hidden on lg+) */}
-            <button
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
-              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all duration-200"
-            >
-              <FiMenu size={20} />
+              SEND ENQUIRY
             </button>
           </motion.div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
+            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all duration-200"
+          >
+            <FiMenu size={20} />
+          </button>
         </div>
       </header>
 
@@ -507,7 +438,7 @@ const Navbar = () => {
                     <div className="w-7 h-7 rounded-lg bg-[#A6192E] flex items-center justify-center overflow-hidden">
                       <img src="/logo1.png" alt="" className="w-full h-full object-contain" />
                     </div>
-                    <span className="text-xl text-[#A6192E] font-bold" style={{ fontFamily: "'DM Serif Display', serif" }}>
+                    <span className="text-xl text-[#A6192E]" style={{ fontFamily: "'DM Serif Display', serif" }}>
                       Esperly
                     </span>
                   </div>
@@ -519,228 +450,43 @@ const Navbar = () => {
                     <FiX size={18} />
                   </button>
                 </div>
-
-                {/* Mobile search trigger */}
-                <button
-                  onClick={() => { closeMobile(); setSearchOpen(true); }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 bg-[#A6192E]/5 rounded-xl border border-[#A6192E]/20 cursor-pointer hover:bg-[#A6192E]/10 transition-colors"
-                >
-                  <FiSearch className="text-[#A6192E]" size={16} />
-                  <span className="text-sm text-[#A6192E]/50">Search courses...</span>
-                </button>
               </div>
 
               {/* Nav items */}
               <div className="px-4 py-3 flex flex-col gap-0.5 flex-1">
                 <NavLink to="/" onClick={closeMobile}>
                   {({ isActive }) => (
-                    <div className={`flex items-center font-bold px-4 py-3 rounded-lg font-medium text-sm cursor-pointer transition-all duration-200
+                    <div className={`flex items-center font-semibold px-4 py-3 rounded-lg text-sm cursor-pointer transition-all duration-200
                       ${isActive ? "bg-[#A6192E]/10 text-[#A6192E]" : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"}`}>
                       Hub
                     </div>
                   )}
                 </NavLink>
 
-                <MobileAccordion label="Tuitions"          items={tuitionsItems}          section="tuitions" />
+                <MobileAccordion label="Tuitions" items={tuitionsItems} section="tuitions" />
                 <MobileAccordion label="Learning Boosters" items={learningBoostersItems} section="boosters" />
-                <MobileAccordion label="Language Tracks"   items={languageTracksItems}   section="language" />
-                <MobileAccordion label="More"              items={moreItems}             section="more"     />
+                <MobileAccordion label="Language Tracks" items={languageTracksItems} section="language" />
+                <MobileAccordion label="More" items={moreItems} section="more" />
               </div>
 
               {/* Divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-[#A6192E]/30 to-transparent mx-5 my-2" />
 
-              {/* CTA buttons */}
-              <div className="px-5 pb-8 flex flex-col gap-2.5">
-                <button
-                  onClick={() => { setLoginOpen(true); closeMobile(); }}
-                  className="py-3 rounded-xl border-2 border-[#A6192E]/25 text-[#A6192E] font-semibold text-sm hover:bg-[#A6192E]/5 transition-colors"
-                >
-                  Sign In
-                </button>
+              {/* Send Enquiry Button in Mobile */}
+              <div className="px-5 pb-8">
                 <button
                   onClick={() => { setEnrollOpen(true); closeMobile(); }}
-                  className="py-3 rounded-xl bg-[#A6192E] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30 hover:bg-[#8B1527] transition-colors"
+                  className="w-full py-3 rounded-xl bg-[#A6192E] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30 hover:bg-[#8B1527] transition-colors"
                 >
-                  Enroll Now
+                  Send Enquiry
                 </button>
-                <p className="mt-3 text-[11px] text-gray-400 text-center tracking-widest">LEARN · GROW · SUCCEED</p>
+                <p className="mt-4 text-[11px] text-gray-400 text-center tracking-widest">LEARN · GROW · SUCCEED</p>
               </div>
             </motion.aside>
           </div>
         )}
       </AnimatePresence>
 
-      {/* ── Fullscreen Search Overlay ── */}
-      <AnimatePresence>
-        {searchOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-[#f5526a] overflow-y-auto"
-          >
-            {/* Search bar */}
-            <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-[#A6192E]/20 z-10">
-              <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 flex items-center gap-3 bg-white rounded-full px-5 py-3 shadow-md border border-[#A6192E]/20">
-                    <FiSearch className="text-[#A6192E] flex-shrink-0" size={18} />
-                    <input
-                      ref={searchInputRef}
-                      type="text"
-                      placeholder="Search for courses, categories, topics..."
-                      value={searchQuery}
-                      onChange={(e) => handleSearch(e.target.value)}
-                      className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder-[#A6192E]/40 text-sm sm:text-base"
-                    />
-                    {searchQuery && (
-                      <button onClick={() => setSearchQuery("")} className="text-[#A6192E]/60 hover:text-[#A6192E]">
-                        <FiX size={16} />
-                      </button>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => setSearchOpen(false)}
-                    className="px-4 py-3 text-sm font-medium text-[#A6192E] hover:text-[#8B1527] transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Search results / suggestions */}
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-              {searchQuery ? (
-                <div>
-                  <p className="text-xs sm:text-sm text-white/80 mb-4">
-                    Found {allSearchResults.length} results for &ldquo;{searchQuery}&rdquo;
-                  </p>
-                  {allSearchResults.length > 0 ? (
-                    <div className="space-y-2">
-                      {allSearchResults.map((item, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: i * 0.04 }}
-                          className="bg-white rounded-2xl p-4 sm:p-5 shadow-md hover:shadow-lg transition-all cursor-pointer border border-[#A6192E]/10 hover:border-[#A6192E]/30"
-                          onClick={() => {
-                            navigate(item.type === "course"
-                              ? `/course-detail/full-stack-dev`
-                              : `/category/${item.name.toLowerCase().replace(/ /g, "-")}`);
-                            setSearchOpen(false);
-                          }}
-                        >
-                          <div className="flex items-center gap-3 sm:gap-4">
-                            <span className="text-2xl sm:text-3xl">{item.icon}</span>
-                            <div className="flex-1">
-                              <h3 className="text-sm sm:text-base font-semibold text-gray-900">{item.name}</h3>
-                              <div className="flex items-center gap-2 mt-0.5">
-                                <span className="text-xs text-[#A6192E]/70 capitalize">{item.type}</span>
-                                {item.students && <span className="text-xs text-[#A6192E]/50">· {item.students.toLocaleString()} students</span>}
-                                {item.count    && <span className="text-xs text-[#A6192E]/50">· {item.count}</span>}
-                              </div>
-                            </div>
-                            <FiArrowRight className="text-[#A6192E]/40" size={18} />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <div className="text-6xl mb-4">🔍</div>
-                      <h3 className="text-lg font-semibold text-white mb-2">No results found</h3>
-                      <p className="text-sm text-white/80">Try different keywords or browse categories</p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-6 sm:space-y-8">
-                  {/* Recent searches */}
-                  {recentSearches.length > 0 && (
-                    <section>
-                      <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
-                        <FiTrendingUp size={14} /> Recent Searches
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {recentSearches.map((s, i) => (
-                          <button key={i} onClick={() => handleSearch(s)}
-                            className="px-4 py-2 bg-white rounded-full text-sm text-[#A6192E] border border-[#A6192E]/20 hover:shadow-md transition-all">
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-
-                  {/* Trending */}
-                  <section>
-                    <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <FiStar size={14} /> Trending Now
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {trendingSearches.map((s, i) => (
-                        <button key={i} onClick={() => handleSearch(s)}
-                          className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10">
-                          <span className="text-sm text-gray-800">{s}</span>
-                          <span className="text-xs text-[#A6192E]/50">#{i + 1}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </section>
-
-                  {/* Categories */}
-                  <section>
-                    <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <FiBookOpen size={14} /> Popular Categories
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                      {categories.map((cat, i) => (
-                        <button key={i}
-                          className="flex flex-col items-center gap-2 p-4 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
-                          onClick={() => { navigate(`/category/${cat.name.toLowerCase()}`); setSearchOpen(false); }}
-                        >
-                          <span className="text-2xl">{cat.icon}</span>
-                          <span className="text-xs font-medium text-gray-800 text-center">{cat.name}</span>
-                          <span className="text-[10px] text-[#A6192E]/60">{cat.count}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </section>
-
-                  {/* Featured courses */}
-                  <section>
-                    <h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <FiUsers size={14} /> Featured Courses
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                      {popularCourses.slice(0, 4).map((course, i) => (
-                        <button key={i}
-                          className="flex items-center gap-3 p-3 sm:p-4 bg-white rounded-xl hover:shadow-md transition-all border border-[#A6192E]/10"
-                          onClick={() => { navigate(`/course-detail/full-stack-dev`); setSearchOpen(false); }}
-                        >
-                          <span className="text-2xl">{course.icon}</span>
-                          <div className="flex-1 text-left">
-                            <p className="text-sm font-medium text-gray-800">{course.name}</p>
-                            <p className="text-xs text-[#A6192E]/60">{course.students.toLocaleString()} students</p>
-                          </div>
-                          <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#A6192E]/10 text-[#A6192E]">
-                            {course.tag}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </section>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <LoginModal  isOpen={loginOpen}  onClose={() => setLoginOpen(false)}  />
       <EnrollModal isOpen={enrollOpen} onClose={() => setEnrollOpen(false)} />
     </>
   );
