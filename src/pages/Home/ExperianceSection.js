@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 
 /* ─── COLOUR TOKENS ─────────────────────────────────────────── */
@@ -15,6 +15,7 @@ const GREEN = "#2E7D52";
 const CLIP = "#9E9E9E";
 const CLIP2 = "#BDBDBD";
 
+/* ─── PAPERCLIP ─────────────────────────────────────────── */
 const Paperclip = ({ size = 48, color = CLIP, rotate = 0, style = {} }) => (
   <svg width={size} height={size * 2.2} viewBox="0 0 24 52" fill="none"
     style={{ transform: `rotate(${rotate}deg)`, ...style }}>
@@ -25,29 +26,81 @@ const Paperclip = ({ size = 48, color = CLIP, rotate = 0, style = {} }) => (
   </svg>
 );
 
+/* ─── COUNTER HOOK ─────────────────────────────────────────── */
+const useCounter = (end, duration = 1500, start = 0, trigger = false) => {
+  const [count, setCount] = useState(start);
+
+  useEffect(() => {
+    if (!trigger) return;
+
+    let startTime;
+    const animate = (time) => {
+      if (!startTime) startTime = time;
+      const progress = time - startTime;
+      const value = Math.min(
+        start + (end - start) * (progress / duration),
+        end
+      );
+      setCount(Math.floor(value));
+
+      if (progress < duration) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration, start, trigger]);
+
+  return count;
+};
+
+/* ─── METRIC CHIP ─────────────────────────────────────────── */
 const MetricChip = ({ m, index }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-5% 0px" });
+  const inView = useInView(ref, { once: true });
+
   const colors = [RED, BLUE, GREEN, RED];
   const c = colors[index % colors.length];
 
+  // extract numeric part
+  const numericValue = parseInt(m.value.replace(/[^0-9]/g, "")) || 0;
+  const counter = useCounter(numericValue, 1200, 0, inView);
+
+  const displayValue = m.value.includes("%")
+    ? `${counter}%`
+    : m.value.includes("₹")
+    ? `₹${counter}`
+    : m.value.includes("★")
+    ? `${(counter / 10).toFixed(1)}★`
+    : m.value.includes("×")
+    ? `${counter}×`
+    : counter;
+
   return (
-    <motion.div ref={ref}
+    <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{
+        y: -6,
+        scale: 1.03,
+        boxShadow: `0px 10px 25px ${c}40`,
+      }}
+      transition={{ duration: 0.4 }}
       style={{
         background: PAPER,
         border: `1px solid ${RULED}`,
         borderRadius: 3,
-        padding: "clamp(16px,2vw,22px) clamp(14px,1.8vw,18px)",
+        padding: "clamp(16px,2vw,22px)",
         textAlign: "center",
         position: "relative",
         overflow: "hidden",
-        boxShadow: `2px 3px 14px ${c}18`,
+        cursor: "pointer",
       }}
     >
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: c }} />
+
+      {/* ruled lines */}
       {Array.from({ length: 5 }, (_, i) => (
         <div key={i} style={{
           position: "absolute", left: 0, right: 0,
@@ -55,60 +108,85 @@ const MetricChip = ({ m, index }) => {
           background: RULED, opacity: 0.6,
         }} />
       ))}
+
       <div style={{
-        fontFamily: "monospace", fontSize: 11, color: c,
-        letterSpacing: "0.15em", position: "absolute",
-        top: 8, right: 10, opacity: 0.5,
-      }}>{m.symbol}</div>
+        fontFamily: "monospace",
+        fontSize: 11,
+        color: c,
+        letterSpacing: "0.15em",
+        position: "absolute",
+        top: 8,
+        right: 10,
+        opacity: 0.5,
+      }}>
+        {m.symbol}
+      </div>
+
       <p style={{
         fontFamily: "Fraunces, Georgia, serif",
-        fontSize: "clamp(28px,4vw,44px)", fontWeight: 900,
-        color: c, lineHeight: 1, marginBottom: 4, marginTop: 8, position: "relative", zIndex: 1,
-      }}>{m.value}</p>
+        fontSize: "clamp(28px,4vw,44px)",
+        fontWeight: 900,
+        color: c,
+        lineHeight: 1,
+        marginTop: 8,
+      }}>
+        {displayValue}
+      </p>
+
       <p style={{
-        fontFamily: "monospace", fontSize: "clamp(9px,1vw,11px)",
-        color: INK2, letterSpacing: "0.08em", marginBottom: 2,
-        textTransform: "uppercase", position: "relative", zIndex: 1,
-      }}>{m.label}</p>
+        fontFamily: "monospace",
+        fontSize: "clamp(9px,1vw,11px)",
+        color: INK2,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+      }}>
+        {m.label}
+      </p>
+
       <p style={{
-        fontSize: "clamp(9px,1vw,10px)", color: FADED,
-        fontFamily: "Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1,
-      }}>{m.sub}</p>
+        fontSize: "clamp(9px,1vw,10px)",
+        color: FADED,
+        fontFamily: "Georgia, serif",
+        fontStyle: "italic",
+      }}>
+        {m.sub}
+      </p>
     </motion.div>
   );
 };
 
+/* ─── DATA ─────────────────────────────────────────── */
 const metrics = [
   { value: "98%", label: "Completion Rate", sub: "vs 12% industry avg", symbol: "★" },
-  { value: "4.9★", label: "Mentor Rating", sub: "across 500+ mentors", symbol: "✓" },
+  { value: "49", label: "Mentor Rating", sub: "across 500+ mentors", symbol: "✓" },
   { value: "3×", label: "Faster Progress", sub: "than self-study", symbol: "↑" },
-  { value: "₹18L", label: "Avg First Package", sub: "for placed students", symbol: "₹" },
+  { value: "18", label: "Avg Package (LPA)", sub: "for placed students", symbol: "₹" },
 ];
 
+/* ─── MAIN SECTION ─────────────────────────────────────────── */
 export default function ExperienceSection() {
   return (
     <div style={{
       background: PAPER3,
       borderTop: `2px solid ${RULED}`,
       borderBottom: `2px solid ${RULED}`,
-      padding: "clamp(20px,3vw,36px) clamp(24px,5vw,64px)",
+      padding: "clamp(20px,3vw,36px)",
       position: "relative",
       overflow: "hidden",
     }}>
-      {/* Decorative elements */}
-      <div style={{ position: "absolute", top: -40, left: "20%", width: 120, height: 120, borderRadius: "50%", background: `radial-gradient(circle, ${RED}18, transparent)`, filter: "blur(30px)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: -40, right: "25%", width: 100, height: 100, borderRadius: "50%", background: `radial-gradient(circle, ${BLUE}18, transparent)`, filter: "blur(25px)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", top: 8, right: 24, opacity: 0.25 }}>
-        <Paperclip size={22} color={CLIP} rotate={-8} />
+        <Paperclip size={22} rotate={-8} />
       </div>
-      
+
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-        <div className="metrics-grid" style={{
+        <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "clamp(10px, 1.8vw, 20px)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: "16px",
         }}>
-          {metrics.map((m, i) => <MetricChip m={m} index={i} key={i} />)}
+          {metrics.map((m, i) => (
+            <MetricChip key={i} m={m} index={i} />
+          ))}
         </div>
       </div>
     </div>

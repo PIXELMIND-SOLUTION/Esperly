@@ -3,6 +3,7 @@ import { motion, useInView } from "motion/react";
 import Navbar from "../../components/Navbar";
 import LoginModal from "../../modals/LoginModal";
 import Footer from "../../components/Footer";
+import NavImage from "../../components/NavImage";
 
 /* ─── SVG DECORATIONS ────────────────────────────────────────── */
 
@@ -214,6 +215,7 @@ const Contact = () => {
     return (
         <>
             <Navbar onOpenModal={() => setOpenModal(true)} />
+            <NavImage />
             <section className="relative overflow-hidden"
                 style={{
                     backgroundColor: "#F2EBD9",

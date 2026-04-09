@@ -11,26 +11,30 @@ import ExperienceSection from "../pages/Home/ExperianceSection";
 import PillarsSection from "../pages/Home/PillarsSection";
 import TracksSection from "../pages/Home/TracksSection";
 import StoriesSection from "../pages/Home/StoriesSection";
+import NavImage from "./NavImage";
+import ZoomDesign from "../pages/Home/ZoomDesign";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
     return (
         <>
             <Navbar onOpenModal={() => setOpenModal(true)} />
+            <NavImage />
             <Hero />
             <WhatWeTeach />
-            <AdScroller/>
-            <ExperienceSection/>
-            <PillarsSection/>
-            <TracksSection/>
-            <StoriesSection/>
+            <ZoomDesign/>
+            <AdScroller />
+            <ExperienceSection />
+            <PillarsSection />
+            <TracksSection />
+            <StoriesSection />
             {/* <EsperlyExperience /> */}
             {/* <StudentJourney /> */}
             {/* <WhatYouLookingFor/> */}
-            <Footer/>
+            <Footer />
 
 
-            
+
         </>
     )
 };

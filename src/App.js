@@ -51,7 +51,7 @@ const App = () => {
   return (
     <div>
       <ScrollToTop />
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       {/* <RollingPencil /> */}
       {/* <BusBanner /> */}
       <Routes>
