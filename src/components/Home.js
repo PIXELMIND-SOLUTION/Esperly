@@ -8,11 +8,17 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AdScroller from "../pages/Home/AdBanner";
 import ExperienceSection from "../pages/Home/ExperianceSection";
-import PillarsSection from "../pages/Home/PillarsSection";
+import Pillars from "../pages/Home/Pillars";
 import TracksSection from "../pages/Home/TracksSection";
 import StoriesSection from "../pages/Home/StoriesSection";
 import NavImage from "./NavImage";
 import ZoomDesign from "../pages/Home/ZoomDesign";
+import HeroPage from "../Homescreen/Heropage";
+import PillarsPage from "../Homescreen/PillarsPage";
+import BookDesign from "../Homescreen/BookDesign";
+import MeetScreen from "../Homescreen/MeetScreen";
+import MeetImg from "../Homescreen/MeetImg";
+import JourneyPage from "../Homescreen/JourneyPage";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -20,14 +26,20 @@ const Home = () => {
         <>
             <Navbar onOpenModal={() => setOpenModal(true)} />
             <NavImage />
-            <Hero />
-            <WhatWeTeach />
+            {/* <Hero /> */}
+            <HeroPage/>
+            <PillarsPage />
+            <BookDesign/>
+            <MeetImg/>
+            <JourneyPage/>
+            {/* <MeetScreen/> */}
+            {/* <WhatWeTeach />
             <ZoomDesign/>
             <AdScroller />
             <ExperienceSection />
             <PillarsSection />
             <TracksSection />
-            <StoriesSection />
+            <StoriesSection /> */}
             {/* <EsperlyExperience /> */}
             {/* <StudentJourney /> */}
             {/* <WhatYouLookingFor/> */}
