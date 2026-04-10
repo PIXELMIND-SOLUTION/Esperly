@@ -19,6 +19,9 @@ import BookDesign from "../Homescreen/BookDesign";
 import MeetScreen from "../Homescreen/MeetScreen";
 import MeetImg from "../Homescreen/MeetImg";
 import JourneyPage from "../Homescreen/JourneyPage";
+import ExperianceCount from "../Homescreen/ExperianceCount";
+import TrustAndSupport from "../Homescreen/ExpertTrack";
+import Testimonioals from "../Homescreen/Testimonials";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -31,15 +34,18 @@ const Home = () => {
             <PillarsPage />
             <BookDesign />
             <JourneyPage />
+            <ExperianceCount/>
             <MeetImg />
+            <TrustAndSupport/>
+            <Testimonioals/>
             {/* <MeetScreen/> */}
             {/* <WhatWeTeach />
             <ZoomDesign/>
             <AdScroller />
             <ExperienceSection />
             <PillarsSection />
-            <TracksSection />
-            <StoriesSection /> */}
+            <TracksSection /> */}
+            {/* <StoriesSection /> */}
             {/* <EsperlyExperience /> */}
             {/* <StudentJourney /> */}
             {/* <WhatYouLookingFor/> */}

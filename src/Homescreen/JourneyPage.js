@@ -382,7 +382,7 @@ export default function NotebookJourney() {
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
-          <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4 flex-wrap">
+          <div className="flex items-center justify-start gap-2 md:gap-3 mb-3 md:mb-4 flex-wrap">
             <div className="w-6 md:w-8 h-[2px] bg-[#A6192E]" />
             <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-[#A6192E]">
               Your Path to Success

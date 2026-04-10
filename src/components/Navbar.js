@@ -28,7 +28,7 @@ const Navbar = () => {
 
   /* Shared active/inactive classes */
   const navLinkClass = ({ isActive }) =>
-    `relative px-3 py-1.5 rounded-full text-sm cursor-pointer transition-all duration-200 ${
+    `relative px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-all duration-200 ${
       isActive
         ? "text-white bg-white/20"
         : "text-white/90 hover:text-white hover:bg-white/15"
