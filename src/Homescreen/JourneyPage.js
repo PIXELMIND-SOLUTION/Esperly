@@ -463,7 +463,7 @@ export default function NotebookJourney() {
       </div>
 
       {/* Mobile Bottom Navigation Bar */}
-      {isMobile && (
+      {/* {isMobile && (
         <MobileNav
           activeStep={activeStep}
           totalSteps={steps.length}
@@ -471,7 +471,7 @@ export default function NotebookJourney() {
           onPrev={goPrev}
           onStepClick={handleStepClick}
         />
-      )}
+      )} */}
     </section>
   );
 }

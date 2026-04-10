@@ -24,7 +24,7 @@ const Home = () => {
     const [openModal, setOpenModal] = useState(false);
     return (
         <>
-            <Navbar onOpenModal={() => setOpenModal(true)} />
+            <Navbar />
             <NavImage />
             {/* <Hero /> */}
             <HeroPage />
