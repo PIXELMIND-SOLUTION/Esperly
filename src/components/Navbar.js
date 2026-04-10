@@ -3,6 +3,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import EnrollModal from "../modals/EnrollModal";
 
+/* ─── Flat Navigation Links ─────────────────────────────────── */
+// Update `path` values to match your actual route definitions
+const navItems = [
+  { label: "TUITIONS", path: "/tuitions" },
+  { label: "LEARNING BOOSTERS", path: "/boosters" },
+  { label: "LANGUAGE TRACKS", path: "/language" },
+  { label: "MORE", path: "/more" },
+];
+
+/* ─── Main Navbar ───────────────────────────────────────────── */
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [enrollOpen, setEnrollOpen] = useState(false);
@@ -15,6 +25,21 @@ const Navbar = () => {
   }, [mobileOpen]);
 
   const closeMobile = () => setMobileOpen(false);
+
+  /* Shared active/inactive classes */
+  const navLinkClass = ({ isActive }) =>
+    `relative px-3 py-1.5 rounded-full text-sm cursor-pointer transition-all duration-200 ${
+      isActive
+        ? "text-white bg-white/20"
+        : "text-white/90 hover:text-white hover:bg-white/15"
+    }`;
+
+  const mobileLinkClass = ({ isActive }) =>
+    `flex items-center font-semibold px-4 py-3 rounded-lg text-sm cursor-pointer transition-all duration-200 ${
+      isActive
+        ? "bg-[#A6192E]/10 text-[#A6192E]"
+        : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
+    }`;
 
   return (
     <>
@@ -42,19 +67,13 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-2">
-            <NavLink to="/">
-              {({ isActive }) => (
-                <div className={`relative px-3 py-1.5 rounded-full text-sm cursor-pointer transition-all duration-200
-                  ${isActive
-                    ? "text-white bg-white/20"
-                    : "text-white/90 hover:text-white hover:bg-white/15"
-                  }`}
-                >
-                  HUB
-                </div>
-              )}
-            </NavLink>
+          <div className="hidden lg:flex items-center gap-2 flex-wrap">
+            <NavLink to="/" className={navLinkClass}>HUB</NavLink>
+            {navItems.map((item) => (
+              <NavLink key={item.path} to={item.path} className={navLinkClass}>
+                {item.label}
+              </NavLink>
+            ))}
 
             {/* Send Enquiry Button */}
             <button
@@ -113,14 +132,17 @@ const Navbar = () => {
 
             {/* Nav items */}
             <div className="px-4 py-3 flex flex-col gap-0.5 flex-1">
-              <NavLink to="/" onClick={closeMobile}>
-                {({ isActive }) => (
-                  <div className={`flex items-center font-semibold px-4 py-3 rounded-lg text-sm cursor-pointer transition-all duration-200
-                    ${isActive ? "bg-[#A6192E]/10 text-[#A6192E]" : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"}`}>
-                    Hub
-                  </div>
-                )}
-              </NavLink>
+              <NavLink to="/" onClick={closeMobile} className={mobileLinkClass}>Hub</NavLink>
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  onClick={closeMobile}
+                  className={mobileLinkClass}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
             </div>
 
             {/* Divider */}
