@@ -27,11 +27,11 @@ const Home = () => {
             <Navbar onOpenModal={() => setOpenModal(true)} />
             <NavImage />
             {/* <Hero /> */}
-            <HeroPage/>
+            <HeroPage />
             <PillarsPage />
-            <BookDesign/>
-            <MeetImg/>
-            <JourneyPage/>
+            <BookDesign />
+            <JourneyPage />
+            <MeetImg />
             {/* <MeetScreen/> */}
             {/* <WhatWeTeach />
             <ZoomDesign/>
