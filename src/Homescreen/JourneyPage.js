@@ -341,7 +341,7 @@ export default function NotebookJourney() {
         </svg>
       </div>
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="max-w-5xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
           <div className="flex items-center justify-start gap-2 md:gap-3 mb-3 md:mb-4 flex-wrap">
