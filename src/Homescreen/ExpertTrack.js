@@ -195,7 +195,7 @@ const SupportItem = ({ icon, title, desc, color, delay }) => {
       transition={{ duration: 0.56, delay }}
       style={{
         display: "flex", gap: "clamp(12px,1.6vw,18px)", alignItems: "flex-start",
-        background: PAPER2,
+        background: "",
         border: `1px solid ${RULED}`,
         borderLeft: `4px solid ${color}`,
         borderRadius: "0 4px 4px 0",
@@ -269,13 +269,12 @@ export function TrustedSection() {
     <section style={{
       background: PAPER,
       borderTop: `1px solid ${RULED}`,
-      borderBottom: `1px solid ${RULED}`,
       padding: "clamp(40px,6vw,80px) clamp(20px,5vw,60px)",
       position: "relative",
       overflow: "hidden",
       fontFamily: "sans-serif",
     }}>
-      <RuledLines count={30} topOffset={0} gap={26} />
+      <RuledLines count={60} topOffset={0} gap={26} />
 
       {/* Decorative overlays */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -359,15 +358,13 @@ export function TrustedSection() {
 export function SupportSection() {
   return (
     <section style={{
-      background: PAPER2,
-      borderTop: `1px solid ${RULED}`,
-      borderBottom: `1px solid ${RULED}`,
+      background: '',
       padding: "clamp(40px,6vw,80px) clamp(20px,5vw,60px)",
       position: "relative",
       overflow: "hidden",
       fontFamily: "sans-serif",
     }}>
-      <RuledLines count={30} topOffset={0} gap={26} />
+      <RuledLines count={60} topOffset={0} gap={26} />
 
       {/* Decorative overlays */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>

@@ -315,7 +315,7 @@ const HeroPage = () => {
               color: "#3A2A2C",
               fontSize: "clamp(0.88rem, 1.45vw, 1.06rem)",
               lineHeight: 1.88,
-              maxWidth: "600px",
+              maxWidth: "",
               margin: "0 auto",
               fontWeight: 400,
             }}
@@ -325,7 +325,7 @@ const HeroPage = () => {
             own schedule, and with complete support — no matter where they are in the world.
           </motion.p>
 
-          
+
 
           {/* Buttons */}
           <motion.div

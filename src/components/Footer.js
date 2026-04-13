@@ -106,6 +106,7 @@ const Footer = () => {
             <FooterLink>Testimonials</FooterLink>
             <FooterLink>Case studies</FooterLink>
             <FooterLink>Placements</FooterLink>
+            <FooterLink>Refer a friend</FooterLink>
           </div>
 
           {/* COLUMN 5 */}
@@ -114,11 +115,7 @@ const Footer = () => {
               FOR CLIENTS
             </h4>
             <FooterLink>Make an enquiry</FooterLink>
-            <FooterLink>Contact details</FooterLink>
-
-            <h4 className="text-sm font-semibold mt-6 mb-3 uppercase tracking-wide">
-              FOR TUTORS
-            </h4>
+            <FooterLink>Contact details</FooterLink>            
             <FooterLink>Our site for tutors</FooterLink>
             <FooterLink>Current vacancies</FooterLink>
           </div>

@@ -70,7 +70,7 @@ const stepColors = [
 /* ─── NOTEBOOK RULED LINES ─── */
 const RuledLines = () => (
   <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-    {Array.from({ length: 50 }).map((_, i) => (
+    {Array.from({ length: 90 }).map((_, i) => (
       <div
         key={i}
         className="absolute left-0 right-0 h-px"
@@ -267,45 +267,7 @@ const HorizontalProgress = ({ steps, activeIndex, onStepClick }) => {
   );
 };
 
-/* ─── MOBILE BOTTOM NAVIGATION ─── */
-const MobileNav = ({ activeStep, totalSteps, onNext, onPrev, onStepClick }) => {
-  return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t shadow-lg z-50 py-3 px-4">
-      <div className="flex items-center justify-between max-w-md mx-auto">
-        <button
-          onClick={onPrev}
-          disabled={activeStep === 0}
-          className="w-10 h-10 rounded-full border border-[#A6192E] text-[#A6192E] flex items-center justify-center disabled:opacity-30 transition-all"
-        >
-          ←
-        </button>
-        
-        <div className="flex gap-2">
-          {steps.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => onStepClick(idx)}
-              className={`rounded-full transition-all duration-300 h-1.5 ${
-                idx === activeStep ? "w-6 bg-[#A6192E]" : "w-1.5 bg-[#A6192E]/40"
-              }`}
-            />
-          ))}
-        </div>
-        
-        <button
-          onClick={onNext}
-          disabled={activeStep === totalSteps - 1}
-          className="w-10 h-10 rounded-full border border-[#A6192E] text-[#A6192E] flex items-center justify-center disabled:opacity-30 transition-all"
-        >
-          →
-        </button>
-      </div>
-      <p className="text-center text-[10px] font-mono mt-2 text-[#7A6E5A]">
-        Step {activeStep + 1} of {totalSteps}
-      </p>
-    </div>
-  );
-};
+
 
 /* ─── MAIN COMPONENT ─── */
 export default function NotebookJourney() {

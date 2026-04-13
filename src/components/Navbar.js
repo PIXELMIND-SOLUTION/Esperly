@@ -10,7 +10,7 @@ const navItems = [
 ];
 
 const moreItems = [
-  { label: "About Us", path: "/about" },
+  { label: "About Us", path: "/aboutus" },
   { label: "Contact", path: "/contact" },
   { label: "FAQ", path: "/faq" },
 ];
@@ -57,13 +57,13 @@ const Navbar = () => {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <div className="w-9 h-9 rounded-lg overflow-hidden shadow">
+            <div className="w-9 h-9 rounded-lg overflow-hidden">
               <img src="/logo4.png" alt="logo" />
             </div>
 
             <div className="flex flex-col leading-tight">
               <span className="text-xl text-white font-semibold">Esperly</span>
-              <span className="text-[10px] text-white/80">
+              <span className="text-[10px] text-white/80"> {/* [#000000]/70 font-medium tracking-wide bg-white px-1 rounded */}
                 Think. Learn. Excel.
               </span>
             </div>

@@ -107,7 +107,7 @@ const RuledLines = ({ count = 22, gap = 26, accent = RED }) => (
     {Array.from({ length: count }, (_, i) => (
       <div key={i} className="absolute left-0 right-0 h-px" style={{ top: 52 + i * gap, background: RULED, opacity: 0.45 }} />
     ))}
-    <div className="absolute top-0 bottom-0 w-[1.5px]" style={{ left: "clamp(20px,5vw,72px)", background: RED, opacity: 0.18 }} />
+    <div className="absolute top-0 bottom-0 w-[2px]" style={{ left: "clamp(20px,5vw,72px)", background: RED, opacity: 0.18 }} />
   </div>
 );
 
@@ -216,7 +216,7 @@ const LeftPageContent = ({ ch }) => (
 
 /* ─── RIGHT PAGE ─────────────────────────────────────────────── */
 const RightPageContent = ({ ch }) => (
-  <div className="w-full h-full flex flex-col px-6 py-6 relative overflow-hidden" style={{ background: PAPER }}>
+  <div className="w-full h-full flex flex-col px-20 py-6 relative overflow-hidden" style={{ background: PAPER }}>
     <RuledLines count={22} gap={26} accent={ch.accent} />
 
     {/* Top washi */}
