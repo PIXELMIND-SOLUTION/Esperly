@@ -1,163 +1,211 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX, FiChevronDown } from "react-icons/fi";
 import EnrollModal from "../modals/EnrollModal";
 
-/* ─── Flat Navigation Links ─────────────────────────────────── */
-// Update `path` values to match your actual route definitions
 const navItems = [
   { label: "TUITIONS", path: "/tuitions" },
   { label: "LEARNING BOOSTERS", path: "/boosters" },
   { label: "LANGUAGE TRACKS", path: "/language" },
-  { label: "MORE", path: "/more" },
 ];
 
-/* ─── Main Navbar ───────────────────────────────────────────── */
+const moreItems = [
+  { label: "About Us", path: "/about" },
+  { label: "Contact", path: "/contact" },
+  { label: "FAQ", path: "/faq" },
+];
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [enrollOpen, setEnrollOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+
+  const dropdownRef = useRef();
   const navigate = useNavigate();
 
-  /* Lock body scroll when mobile overlay is open */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const closeMobile = () => setMobileOpen(false);
+  /* Close dropdown on outside click */
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setMoreOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  /* Shared active/inactive classes */
   const navLinkClass = ({ isActive }) =>
-    `relative px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-all duration-200 ${
+    `px-3 py-1.5 rounded-full text-sm font-semibold transition-all ${
       isActive
         ? "text-white bg-white/20"
         : "text-white/90 hover:text-white hover:bg-white/15"
     }`;
 
-  const mobileLinkClass = ({ isActive }) =>
-    `flex items-center font-semibold px-4 py-3 rounded-lg text-sm cursor-pointer transition-all duration-200 ${
-      isActive
-        ? "bg-[#A6192E]/10 text-[#A6192E]"
-        : "text-gray-700 hover:bg-[#A6192E]/10 hover:text-[#A6192E]"
-    }`;
-
   return (
     <>
-      {/* ── Header ── */}
-      <header
-        className="sticky top-0 z-50 bg-[#A6192E] transition-shadow duration-300"
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[60px] sm:h-[68px] flex items-center justify-between gap-4">
-          
-          {/* Logo */}
+      {/* HEADER */}
+      <header className="sticky top-0 z-50 bg-[#A6192E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[65px] flex items-center justify-between">
+
+          {/* LOGO */}
           <div
-            className="flex items-center gap-2 shrink-0 cursor-pointer"
+            className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <div className="w-8 h-8 sm:w-[34px] sm:h-[34px] rounded-lg sm:rounded-[10px] flex items-center justify-center overflow-hidden shadow-lg shadow-black/20">
-              <img src="/logo4.png" alt="Esperly Logo" className="object-contain" />
+            <div className="w-9 h-9 rounded-lg overflow-hidden shadow">
+              <img src="/logo4.png" alt="logo" />
             </div>
-            <span
-              className="text-xl sm:text-2xl text-white tracking-tight"
-              style={{ fontFamily: "'DM Serif Display', serif" }}
-            >
-              Esperly
-            </span>
+
+            <div className="flex flex-col leading-tight">
+              <span className="text-xl text-white font-semibold">Esperly</span>
+              <span className="text-[10px] text-white/80">
+                Think. Learn. Excel.
+              </span>
+            </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-2 flex-wrap">
+          {/* DESKTOP NAV */}
+          <div className="hidden lg:flex items-center gap-2">
+
             <NavLink to="/" className={navLinkClass}>HUB</NavLink>
+
             {navItems.map((item) => (
               <NavLink key={item.path} to={item.path} className={navLinkClass}>
                 {item.label}
               </NavLink>
             ))}
 
-            {/* Send Enquiry Button */}
+            {/* 🔥 HOVER DROPDOWN */}
+            <div
+              className="relative"
+              ref={dropdownRef}
+              onMouseEnter={() => setMoreOpen(true)}
+              onMouseLeave={() => setMoreOpen(false)}
+            >
+              <button
+                onClick={() => setMoreOpen(!moreOpen)}
+                className="flex items-center gap-1 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/15 rounded-full"
+              >
+                MORE
+                <FiChevronDown
+                  className={`transition-transform ${moreOpen ? "rotate-180" : ""}`}
+                  size={14}
+                />
+              </button>
+
+              {/* DROPDOWN */}
+              <div
+                className={`absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-50 transition-all duration-200 ${
+                  moreOpen
+                    ? "opacity-100 translate-y-0 visible"
+                    : "opacity-0 translate-y-2 invisible"
+                }`}
+              >
+                {moreItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#A6192E]/10"
+                    onClick={() => setMoreOpen(false)}
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+
+            {/* BUTTON */}
             <button
               onClick={() => setEnrollOpen(true)}
-              className="ml-2 relative overflow-hidden px-5 py-2 rounded-full font-semibold text-sm text-[#A6192E] bg-white shadow-lg shadow-black/20 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-3/5 before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:transition-all before:duration-700 hover:before:left-full"
+              className="ml-2 px-5 py-2 rounded-full bg-white text-[#A6192E] font-semibold text-sm"
             >
               SEND ENQUIRY
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* MOBILE BUTTON */}
           <button
             onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
-            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white transition-all duration-200"
+            className="lg:hidden w-9 h-9 flex items-center justify-center bg-white/20 rounded-lg text-white"
           >
             <FiMenu size={20} />
           </button>
         </div>
       </header>
 
-      {/* ── Mobile Sidebar ── */}
+      {/* MOBILE MENU */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={closeMobile}
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setMobileOpen(false)}
           />
 
-          {/* Drawer */}
-          <aside
-            className="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-white shadow-2xl overflow-y-auto flex flex-col"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            {/* Drawer header */}
-            <div className="sticky top-0 bg-white z-10 px-5 pt-5 pb-3 border-b border-[#A6192E]/10">
-              <div className="flex justify-between items-center mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-[#A6192E] flex items-center justify-center overflow-hidden">
-                    <img src="/logo1.png" alt="" className="w-full h-full object-contain" />
-                  </div>
-                  <span className="text-xl text-[#A6192E]" style={{ fontFamily: "'DM Serif Display', serif" }}>
-                    Esperly
-                  </span>
-                </div>
-                <button
-                  onClick={closeMobile}
-                  aria-label="Close menu"
-                  className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors"
-                >
-                  <FiX size={18} />
-                </button>
+          <aside className="absolute left-0 top-0 h-full w-[85%] max-w-[320px] bg-white p-5">
+
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-lg font-semibold text-[#A6192E]">Esperly</h2>
+                <p className="text-xs text-gray-500">Think. Learn. Excel.</p>
               </div>
+
+              <button onClick={() => setMobileOpen(false)}>
+                <FiX size={20} />
+              </button>
             </div>
 
-            {/* Nav items */}
-            <div className="px-4 py-3 flex flex-col gap-0.5 flex-1">
-              <NavLink to="/" onClick={closeMobile} className={mobileLinkClass}>Hub</NavLink>
+            {/* LINKS */}
+            <div className="flex flex-col gap-2">
+
+              <NavLink to="/" className="py-2" onClick={() => setMobileOpen(false)}>
+                Hub
+              </NavLink>
+
               {navItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  onClick={closeMobile}
-                  className={mobileLinkClass}
+                  className="py-2"
+                  onClick={() => setMobileOpen(false)}
                 >
                   {item.label}
                 </NavLink>
               ))}
+
+              {/* MOBILE DROPDOWN */}
+              <div className="mt-3">
+                <p className="text-sm font-semibold text-gray-500 mb-2">More</p>
+                <div className="bg-gray-50 rounded-lg p-2">
+                  {moreItems.map((item) => (
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      className="block py-2 px-2 text-sm hover:bg-[#A6192E]/10 rounded-md"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {item.label}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Divider */}
-            <div className="h-px bg-gradient-to-r from-transparent via-[#A6192E]/30 to-transparent mx-5 my-2" />
-
-            {/* Send Enquiry Button in Mobile */}
-            <div className="px-5 pb-8">
-              <button
-                onClick={() => { setEnrollOpen(true); closeMobile(); }}
-                className="w-full py-3 rounded-xl bg-[#A6192E] text-white font-semibold text-sm shadow-lg shadow-[#A6192E]/30 hover:bg-[#8B1527] transition-colors"
-              >
-                Send Enquiry
-              </button>
-              <p className="mt-4 text-[11px] text-gray-400 text-center tracking-widest">LEARN · GROW · SUCCEED</p>
-            </div>
+            {/* BUTTON */}
+            <button
+              onClick={() => {
+                setEnrollOpen(true);
+                setMobileOpen(false);
+              }}
+              className="mt-6 w-full py-3 bg-[#A6192E] text-white rounded-lg"
+            >
+              Send Enquiry
+            </button>
           </aside>
         </div>
       )}

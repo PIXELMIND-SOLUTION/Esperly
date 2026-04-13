@@ -1,5 +1,6 @@
 import React from "react";
 import { BsFacebook, BsInstagram, BsLinkedin } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 /* ───────── SOCIAL BUTTON (BRAND HOVER) ───────── */
 const SocialBtn = ({ icon: Icon, type }) => {
@@ -33,6 +34,9 @@ const FooterLink = ({ children }) => (
 
 /* ───────── MAIN FOOTER ───────── */
 const Footer = () => {
+
+  const navigate = useNavigate();
+
   return (
     <footer className="bg-[#A6192E] text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-12">
@@ -42,12 +46,24 @@ const Footer = () => {
 
           {/* COLUMN 1 (BRAND) */}
           <div>
-            <h2 className="text-2xl font-semibold tracking-wide mb-6">
-              ZENTRICSTECH
-            </h2>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              <div className="w-9 h-9 rounded-lg overflow-hidden shadow">
+                <img src="/logo4.png" alt="logo" />
+              </div>
+
+              <div className="flex flex-col leading-tight">
+                <span className="text-xl text-white font-semibold">Esperly</span>
+                <span className="text-[10px] text-white/80">
+                  Think. Learn. Excel.
+                </span>
+              </div>
+            </div>
 
             {/* Social */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex gap-3 mb-6 mt-2">
               <SocialBtn icon={BsFacebook} type="facebook" />
               <SocialBtn icon={BsInstagram} type="instagram" />
               <SocialBtn icon={BsLinkedin} type="linkedin" />
@@ -55,7 +71,7 @@ const Footer = () => {
 
             {/* Address */}
             <p className="text-sm text-white/70 leading-relaxed">
-              © 2026 Zentricstech <br />
+              © 2026 Esperly <br />
               Hyderabad, India
             </p>
           </div>

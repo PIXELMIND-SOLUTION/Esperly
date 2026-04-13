@@ -26,7 +26,7 @@ const RuledLines = ({ count = 20, topOffset = 60, gap = 26 }) => (
     ))}
     <div style={{
       position: "absolute", top: 0, bottom: 0,
-      left: "clamp(40px,6vw,72px)", width: 1.5,
+      left: "clamp(20px,5vw,72px)", width: 1.5,
       background: RED, opacity: 0.2,
     }} />
   </div>

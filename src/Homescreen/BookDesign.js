@@ -105,9 +105,9 @@ const Stamp = ({ text, color = RED, rotate = -8 }) => (
 const RuledLines = ({ count = 22, gap = 26, accent = RED }) => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {Array.from({ length: count }, (_, i) => (
-      <div key={i} className="absolute left-0 right-0 h-px" style={{ top: 52 + i * gap, background: RULED, opacity: 0.35 }} />
+      <div key={i} className="absolute left-0 right-0 h-px" style={{ top: 52 + i * gap, background: RULED, opacity: 0.45 }} />
     ))}
-    <div className="absolute top-0 bottom-0 w-[1.5px]" style={{ left: "clamp(20px,5vw,48px)", background: RED, opacity: 0.12 }} />
+    <div className="absolute top-0 bottom-0 w-[1.5px]" style={{ left: "clamp(20px,5vw,72px)", background: RED, opacity: 0.18 }} />
   </div>
 );
 

@@ -79,7 +79,7 @@ const RuledLines = () => (
     ))}
     <div
       className="absolute top-0 bottom-0 w-[2px]"
-      style={{ left: "clamp(40px, 6vw, 70px)", backgroundColor: "#A6192E", opacity: 0.2 }}
+      style={{ left: "clamp(20px, 5vw, 72px)", backgroundColor: "#A6192E", opacity: 0.2 }}
     />
   </div>
 );
