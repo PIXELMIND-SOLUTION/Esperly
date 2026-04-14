@@ -1,6 +1,6 @@
 const NavImage = () => {
   return (
-    <div className="bg-[#A6192E] w-full">
+    <div className="bg-[#EB6664] w-full">
       <img
         src="/Nav.png"
         alt="Navigation Image"

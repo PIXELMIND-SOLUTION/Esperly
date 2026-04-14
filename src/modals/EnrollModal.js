@@ -73,7 +73,7 @@ const EnrollModal = ({ isOpen, onClose }) => {
 
               <button
                 type="submit"
-                className="w-full bg-[#A6192E] text-white py-2.5 rounded-md text-sm sm:text-base font-medium hover:bg-[#8e1427] transition shadow-md"
+                className="w-full bg-[#EB6664] text-white py-2.5 rounded-md text-sm sm:text-base font-medium hover:bg-[#EB6664] transition shadow-md"
               >
                 Submit
               </button>

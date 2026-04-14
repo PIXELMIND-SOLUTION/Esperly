@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import LoginModal from "../../modals/LoginModal";
 import Footer from "../../components/Footer";
 import NavImage from "../../components/NavImage";
+import Header from "../../components/Header";
 
 /* ─── SVG DECORATIONS ────────────────────────────────────────── */
 
@@ -15,11 +16,11 @@ const CompassSVG = ({ size = 80, rotate = 0, style = {} }) => (
         fill="none"
         style={{ transform: `rotate(${rotate}deg)`, ...style }}
     >
-        <circle cx="20" cy="20" r="18" stroke="#A6192E" strokeWidth="1" strokeDasharray="3 3" opacity="0.3" />
-        <line x1="20" y1="20" x2="20" y2="4" stroke="#A6192E" strokeWidth="1.2" strokeLinecap="round" />
-        <line x1="20" y1="20" x2="36" y2="20" stroke="#A6192E" strokeWidth="1.2" strokeLinecap="round" />
-        <circle cx="20" cy="20" r="2" fill="#A6192E" opacity="0.6" />
-        <path d="M20 4 L17 10 L20 12 L23 10 Z" fill="#A6192E" opacity="0.5" />
+        <circle cx="20" cy="20" r="18" stroke="#EB6664" strokeWidth="1" strokeDasharray="3 3" opacity="0.3" />
+        <line x1="20" y1="20" x2="20" y2="4" stroke="#EB6664" strokeWidth="1.2" strokeLinecap="round" />
+        <line x1="20" y1="20" x2="36" y2="20" stroke="#EB6664" strokeWidth="1.2" strokeLinecap="round" />
+        <circle cx="20" cy="20" r="2" fill="#EB6664" opacity="0.6" />
+        <path d="M20 4 L17 10 L20 12 L23 10 Z" fill="#EB6664" opacity="0.5" />
     </svg>
 );
 
@@ -31,10 +32,10 @@ const ProtractorSVG = ({ size = 100, rotate = 10, style = {} }) => (
         fill="none"
         style={{ transform: `rotate(${rotate}deg)`, ...style }}
     >
-        <path d="M5 30 Q30 5 55 30" stroke="#A6192E" strokeWidth="1.2" fill="none" opacity="0.4" />
-        <line x1="5" y1="30" x2="55" y2="30" stroke="#A6192E" strokeWidth="1" opacity="0.3" />
-        <circle cx="30" cy="30" r="2" fill="#A6192E" opacity="0.5" />
-        <line x1="30" y1="30" x2="30" y2="12" stroke="#A6192E" strokeWidth="0.8" opacity="0.4" />
+        <path d="M5 30 Q30 5 55 30" stroke="#EB6664" strokeWidth="1.2" fill="none" opacity="0.4" />
+        <line x1="5" y1="30" x2="55" y2="30" stroke="#EB6664" strokeWidth="1" opacity="0.3" />
+        <circle cx="30" cy="30" r="2" fill="#EB6664" opacity="0.5" />
+        <line x1="30" y1="30" x2="30" y2="12" stroke="#EB6664" strokeWidth="0.8" opacity="0.4" />
     </svg>
 );
 
@@ -46,11 +47,11 @@ const GraphPaperGrid = ({ size = 20, majorEvery = 5 }) => {
             <svg className="absolute inset-0 w-full h-full">
                 <defs>
                     <pattern id="minorGrid" width={size} height={size} patternUnits="userSpaceOnUse">
-                        <path d={`M ${size} 0 L 0 0 0 ${size}`} fill="none" stroke="#A6192E" strokeWidth="0.4" opacity="0.12" />
+                        <path d={`M ${size} 0 L 0 0 0 ${size}`} fill="none" stroke="#EB6664" strokeWidth="0.4" opacity="0.12" />
                     </pattern>
                     <pattern id="majorGrid" width={size * majorEvery} height={size * majorEvery} patternUnits="userSpaceOnUse">
                         <rect width={size * majorEvery} height={size * majorEvery} fill="url(#minorGrid)" />
-                        <path d={`M ${size * majorEvery} 0 L 0 0 0 ${size * majorEvery}`} fill="none" stroke="#A6192E" strokeWidth="0.8" opacity="0.25" />
+                        <path d={`M ${size * majorEvery} 0 L 0 0 0 ${size * majorEvery}`} fill="none" stroke="#EB6664" strokeWidth="0.8" opacity="0.25" />
                     </pattern>
                 </defs>
                 <rect width="100%" height="100%" fill="url(#majorGrid)" />
@@ -67,12 +68,12 @@ const RulerSVG = ({ width = 120, height = 20, rotate = -5, style = {} }) => (
         fill="none"
         style={{ transform: `rotate(${rotate}deg)`, ...style }}
     >
-        <rect x="2" y="2" width="116" height="16" rx="1" fill="#F5E6D3" stroke="#A6192E" strokeWidth="0.8" opacity="0.7" />
+        <rect x="2" y="2" width="116" height="16" rx="1" fill="#F5E6D3" stroke="#EB6664" strokeWidth="0.8" opacity="0.7" />
         {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(x => (
             <g key={x}>
-                <line x1={x + 6} y1="4" x2={x + 6} y2={x % 20 === 0 ? "16" : "10"} stroke="#A6192E" strokeWidth="0.6" opacity="0.5" />
+                <line x1={x + 6} y1="4" x2={x + 6} y2={x % 20 === 0 ? "16" : "10"} stroke="#EB6664" strokeWidth="0.6" opacity="0.5" />
                 {x % 20 === 0 && x > 0 && x < 100 && (
-                    <text x={x + 4} y="14" fontSize="4" fill="#A6192E" opacity="0.5" fontFamily="monospace">{x / 10}</text>
+                    <text x={x + 4} y="14" fontSize="4" fill="#EB6664" opacity="0.5" fontFamily="monospace">{x / 10}</text>
                 )}
             </g>
         ))}
@@ -84,8 +85,8 @@ const CornerFold = () => (
     <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none z-[3]">
         <svg width="64" height="64" viewBox="0 0 64 64">
             <path d="M64 0 L64 64 L0 64 Z" fill="rgba(166,25,46,0.06)" />
-            <path d="M64 0 L64 64 L0 64 Z" fill="none" stroke="#A6192E" strokeWidth="0.5" opacity="0.2" />
-            <path d="M58 64 L64 58" stroke="#A6192E" strokeWidth="0.5" opacity="0.15" />
+            <path d="M64 0 L64 64 L0 64 Z" fill="none" stroke="#EB6664" strokeWidth="0.5" opacity="0.2" />
+            <path d="M58 64 L64 58" stroke="#EB6664" strokeWidth="0.5" opacity="0.15" />
         </svg>
     </div>
 );
@@ -93,10 +94,10 @@ const CornerFold = () => (
 /* Calculator Button SVG */
 const CalculatorButtons = () => (
     <svg width="40" height="40" viewBox="0 0 40 40" style={{ opacity: 0.15 }}>
-        <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="#A6192E" strokeWidth="1" />
+        <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="#EB6664" strokeWidth="1" />
         {[0, 1, 2].map((row) =>
             [0, 1, 2].map((col) => (
-                <rect key={`${row}-${col}`} x={8 + col * 10} y={12 + row * 8} width="6" height="4" fill="#A6192E" opacity="0.3" />
+                <rect key={`${row}-${col}`} x={8 + col * 10} y={12 + row * 8} width="6" height="4" fill="#EB6664" opacity="0.3" />
             ))
         )}
     </svg>
@@ -244,11 +245,11 @@ const Contact = () => {
 
     return (
         <>
-            <Navbar onOpenModal={() => setOpenModal(true)} />
-            {/* <NavImage /> */}
+            <Header onOpenModal={() => setOpenModal(true)} />
+            <NavImage />
             <section className="relative overflow-hidden"
                 style={{
-                    backgroundColor: "#F7F4EC",
+                    backgroundColor: "#FBF7F2",
                     padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
                 }}
             >
@@ -258,8 +259,8 @@ const Contact = () => {
                 {/* Graph paper blue coordinate axis hint */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
                     <svg className="w-full h-full">
-                        <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#A6192E" strokeWidth="2" />
-                        <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#A6192E" strokeWidth="2" />
+                        <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#EB6664" strokeWidth="2" />
+                        <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#EB6664" strokeWidth="2" />
                     </svg>
                 </div>
 
@@ -284,7 +285,7 @@ const Contact = () => {
                 <svg className="absolute left-[8%] top-[25%] opacity-8 pointer-events-none" width="100" height="100">
                     {Array.from({ length: 7 }, (_, r) =>
                         Array.from({ length: 7 }, (_, c) => (
-                            <circle key={`${r}-${c}`} cx={c * 12 + 6} cy={r * 12 + 6} r="1" fill="#A6192E" />
+                            <circle key={`${r}-${c}`} cx={c * 12 + 6} cy={r * 12 + 6} r="1" fill="#EB6664" />
                         ))
                     )}
                 </svg>
@@ -299,16 +300,16 @@ const Contact = () => {
                         className="text-center mb-[clamp(40px,6vw,64px)]"
                     >
                         <div className="flex items-center justify-center gap-3 mb-3">
-                            <div className="w-6 h-[1.5px] bg-[#A6192E] opacity-50" />
-                            <span className="font-mono text-[clamp(9px,1.1vw,12px)] text-[#A6192E] tracking-[0.28em] uppercase">
+                            <div className="w-6 h-[1.5px] bg-[#EB6664] opacity-50" />
+                            <span className="font-mono text-[clamp(9px,1.1vw,12px)] text-[#EB6664] tracking-[0.28em] uppercase">
                                 Plot Your Course
                             </span>
-                            <div className="w-6 h-[1.5px] bg-[#A6192E] opacity-50" />
+                            <div className="w-6 h-[1.5px] bg-[#EB6664] opacity-50" />
                         </div>
 
                         <h2 className="font-['Fraunces',Georgia,serif] text-[clamp(28px,4.5vw,54px)] font-black text-[#1C1209] leading-[1.05] tracking-tight mb-2.5">
                             Let's{" "}
-                            <span className="text-[#A6192E] italic relative">
+                            <span className="text-[#EB6664] italic relative">
                                 Connect
                             </span>
                         </h2>
@@ -319,10 +320,10 @@ const Contact = () => {
                         </p>
 
                         <div className="mt-4 flex justify-center gap-2">
-                            <span className="inline-block px-3 py-1 border border-[#A6192E]/30 rounded-full text-[9px] font-mono text-[#A6192E]/60">
+                            <span className="inline-block px-3 py-1 border border-[#EB6664]/30 rounded-full text-[9px] font-mono text-[#EB6664]/60">
                                 ✓ Valid Input Required
                             </span>
-                            <span className="inline-block px-3 py-1 border border-[#A6192E]/30 rounded-full text-[9px] font-mono text-[#A6192E]/60">
+                            <span className="inline-block px-3 py-1 border border-[#EB6664]/30 rounded-full text-[9px] font-mono text-[#EB6664]/60">
                                 ⚡ Fast Response
                             </span>
                         </div>
@@ -339,13 +340,13 @@ const Contact = () => {
                             <div className="relative mb-6 p-[clamp(24px,3vw,32px)]"
                                 style={{
                                     backgroundColor: "#FCFAF5",
-                                    border: `1px solid #A6192E20`,
+                                    border: `1px solid #EB666420`,
                                     boxShadow: "2px 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#A6192E15]" />
+                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#EB666415]" />
                                 <div className="mb-4">
-                                    <div className="font-mono text-2xl mb-3 text-[#A6192E] opacity-70">
+                                    <div className="font-mono text-2xl mb-3 text-[#EB6664] opacity-70">
                                         📍
                                     </div>
                                     <h3 className="font-mono text-[clamp(13px,1.5vw,16px)] font-bold text-[#1C1209] mb-2 tracking-tight">
@@ -362,11 +363,11 @@ const Contact = () => {
                             <div className="relative mb-6 p-[clamp(24px,3vw,32px)]"
                                 style={{
                                     backgroundColor: "#FCFAF5",
-                                    border: `1px solid #A6192E20`,
+                                    border: `1px solid #EB666420`,
                                     boxShadow: "2px 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#A6192E15]" />
+                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#EB666415]" />
                                 <div className="mb-4">
                                     <div className="font-mono text-2xl mb-3 text-[#3B6FA0] opacity-70">
                                         @
@@ -384,11 +385,11 @@ const Contact = () => {
                             <div className="relative p-[clamp(24px,3vw,32px)]"
                                 style={{
                                     backgroundColor: "#FCFAF5",
-                                    border: `1px solid #A6192E20`,
+                                    border: `1px solid #EB666420`,
                                     boxShadow: "2px 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#A6192E15]" />
+                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#EB666415]" />
                                 <div className="mb-4">
                                     <div className="font-mono text-2xl mb-3 text-[#2E7D52] opacity-70">
                                         ☎
@@ -413,7 +414,7 @@ const Contact = () => {
                             <div className="relative p-[clamp(28px,4vw,44px)]"
                                 style={{
                                     backgroundColor: "#FCFAF5",
-                                    border: `1px solid #A6192E20`,
+                                    border: `1px solid #EB666420`,
                                     boxShadow: "4px 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
@@ -424,7 +425,7 @@ const Contact = () => {
                                     <div className="mb-5">
                                         <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
                                             Full Name
-                                            <span className="text-[#A6192E] ml-0.5">*</span>
+                                            <span className="text-[#EB6664] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -433,13 +434,13 @@ const Contact = () => {
                                             onChange={handleChange}
                                             className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                borderBottom: `1.5px solid ${errors.name ? "#A6192E" : "#A6192E30"}`,
+                                                borderBottom: `1.5px solid ${errors.name ? "#EB6664" : "#EB666430"}`,
                                                 padding: "10px 4px",
                                             }}
                                             placeholder="your name"
                                         />
                                         {errors.name && (
-                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
+                                            <p className="text-[#EB6664] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.name}
                                             </p>
                                         )}
@@ -449,7 +450,7 @@ const Contact = () => {
                                     <div className="mb-5">
                                         <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
                                             Email Address
-                                            <span className="text-[#A6192E] ml-0.5">*</span>
+                                            <span className="text-[#EB6664] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="email"
@@ -458,13 +459,13 @@ const Contact = () => {
                                             onChange={handleChange}
                                             className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                borderBottom: `1.5px solid ${errors.email ? "#A6192E" : "#A6192E30"}`,
+                                                borderBottom: `1.5px solid ${errors.email ? "#EB6664" : "#EB666430"}`,
                                                 padding: "10px 4px",
                                             }}
                                             placeholder="hello@esperly.com"
                                         />
                                         {errors.email && (
-                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
+                                            <p className="text-[#EB6664] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.email}
                                             </p>
                                         )}
@@ -474,7 +475,7 @@ const Contact = () => {
                                     <div className="mb-5">
                                         <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
                                             Phone Number
-                                            <span className="text-[#A6192E] ml-0.5">*</span>
+                                            <span className="text-[#EB6664] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="tel"
@@ -483,13 +484,13 @@ const Contact = () => {
                                             onChange={handleChange}
                                             className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                borderBottom: `1.5px solid ${errors.phone ? "#A6192E" : "#A6192E30"}`,
+                                                borderBottom: `1.5px solid ${errors.phone ? "#EB6664" : "#EB666430"}`,
                                                 padding: "10px 4px",
                                             }}
                                             placeholder="+91 12345 67890"
                                         />
                                         {errors.phone && (
-                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
+                                            <p className="text-[#EB6664] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.phone}
                                             </p>
                                         )}
@@ -499,7 +500,7 @@ const Contact = () => {
                                     <div className="mb-5">
                                         <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
                                             Subject
-                                            <span className="text-[#A6192E] ml-0.5">*</span>
+                                            <span className="text-[#EB6664] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -508,13 +509,13 @@ const Contact = () => {
                                             onChange={handleChange}
                                             className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                borderBottom: `1.5px solid ${errors.subject ? "#A6192E" : "#A6192E30"}`,
+                                                borderBottom: `1.5px solid ${errors.subject ? "#EB6664" : "#EB666430"}`,
                                                 padding: "10px 4px",
                                             }}
                                             placeholder="what is this regarding?"
                                         />
                                         {errors.subject && (
-                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
+                                            <p className="text-[#EB6664] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.subject}
                                             </p>
                                         )}
@@ -524,7 +525,7 @@ const Contact = () => {
                                     <div className="mb-6">
                                         <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
                                             Your Message
-                                            <span className="text-[#A6192E] ml-0.5">*</span>
+                                            <span className="text-[#EB6664] ml-0.5">*</span>
                                         </label>
                                         <textarea
                                             name="message"
@@ -533,13 +534,13 @@ const Contact = () => {
                                             rows={4}
                                             className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b resize-y"
                                             style={{
-                                                borderBottom: `1.5px solid ${errors.message ? "#A6192E" : "#A6192E30"}`,
+                                                borderBottom: `1.5px solid ${errors.message ? "#EB6664" : "#EB666430"}`,
                                                 padding: "10px 4px",
                                             }}
                                             placeholder="write your message here..."
                                         />
                                         {errors.message && (
-                                            <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
+                                            <p className="text-[#EB6664] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
                                                 ✗ {errors.message}
                                             </p>
                                         )}
@@ -554,7 +555,7 @@ const Contact = () => {
                                             disabled={isSubmitting}
                                             className="w-full font-mono font-semibold tracking-[0.1em] cursor-pointer transition-all duration-200"
                                             style={{
-                                                backgroundColor: "#A6192E",
+                                                backgroundColor: "#EB6664",
                                                 color: "#fff",
                                                 border: "none",
                                                 padding: "clamp(12px,1.5vw,14px)",
@@ -596,11 +597,11 @@ const Contact = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             className="mt-4 p-3 text-center border"
                                             style={{
-                                                backgroundColor: "#A6192E10",
-                                                border: `1px solid #A6192E`,
+                                                backgroundColor: "#EB666410",
+                                                border: `1px solid #EB6664`,
                                             }}
                                         >
-                                            <p className="text-[#A6192E] font-mono text-[clamp(10px,1vw,11px)]">
+                                            <p className="text-[#EB6664] font-mono text-[clamp(10px,1vw,11px)]">
                                                 ✗ Transmission failed. Please try again.
                                             </p>
                                         </motion.div>
@@ -609,7 +610,7 @@ const Contact = () => {
 
                                 {/* Bottom decoration */}
                                 <div className="absolute bottom-3 right-4 opacity-30">
-                                    <span className="font-mono text-[8px] text-[#A6192E]">v.1.0</span>
+                                    <span className="font-mono text-[8px] text-[#EB6664]">v.1.0</span>
                                 </div>
                             </div>
 

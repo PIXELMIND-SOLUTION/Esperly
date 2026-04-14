@@ -4,12 +4,13 @@ import AboutUs from "./AboutUs"
 import WhatWeTeach from "./WhatWeTeach"
 import LoginModal from "../../modals/LoginModal";
 import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 const About = () => {
     const [openModal, setOpenModal] = useState(false);
     return (
         <>
-            <Navbar onOpenModal={() => setOpenModal(true)} />
+            <Header/>
             <AboutUs />
             <WhatWeTeach />
             <Footer/>

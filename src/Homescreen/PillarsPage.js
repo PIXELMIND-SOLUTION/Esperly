@@ -316,7 +316,7 @@ const PillarCard = ({ p, index }) => {
         </div>
         <ScribbleUnderline color={p.accent} style={{ width: "80%", marginBottom: 10 }} />
         <p
-          className="leading-[1.75] mb-[14px]"
+          className="leading-[1.75] mb-[14px] font-mono"
           style={{
             fontFamily: '"DM Serif Display", Georgia, serif',
             fontSize: "clamp(8px, 1.4vw, 13px)",
