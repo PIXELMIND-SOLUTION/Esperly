@@ -24,21 +24,17 @@ const SocialBtn = ({ icon: Icon, type }) => {
 
 /* ───────── LINK ───────── */
 const FooterLink = ({ children }) => (
-  <a
-    href="#"
-    className="block text-white/70 hover:text-white text-sm mb-2 transition"
-  >
+  <a href="#" className="block text-white/70 hover:text-white text-sm mb-2 transition">
     {children}
   </a>
 );
 
 /* ───────── MAIN FOOTER ───────── */
 const Footer = () => {
-
   const navigate = useNavigate();
 
   return (
-    <footer className="bg-[#A6192E] text-white">
+    <footer className="text-white" style={{ backgroundColor: "#EB6664" }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-12">
 
         {/* EVEN GRID */}
@@ -46,30 +42,22 @@ const Footer = () => {
 
           {/* COLUMN 1 (BRAND) */}
           <div>
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => navigate("/")}
-            >
-              <div className="w-9 h-9 rounded-lg overflow-hidden shadow">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
+              <div className="w-9 h-9 rounded-lg overflow-hidden">
                 <img src="/logo4.png" alt="logo" />
               </div>
-
               <div className="flex flex-col leading-tight">
                 <span className="text-xl text-white font-semibold">Esperly</span>
-                <span className="text-[10px] text-white/80">
-                  Think. Learn. Excel.
-                </span>
+                <span className="text-[10px] text-white/80">Think. Learn. Excel.</span>
               </div>
             </div>
 
-            {/* Social */}
             <div className="flex gap-3 mb-6 mt-2">
               <SocialBtn icon={BsFacebook} type="facebook" />
               <SocialBtn icon={BsInstagram} type="instagram" />
               <SocialBtn icon={BsLinkedin} type="linkedin" />
             </div>
 
-            {/* Address */}
             <p className="text-sm text-white/70 leading-relaxed">
               © 2026 Esperly <br />
               Hyderabad, India
@@ -78,9 +66,7 @@ const Footer = () => {
 
           {/* COLUMN 2 */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">
-              THE COMPANY
-            </h4>
+            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">THE COMPANY</h4>
             <FooterLink>Who we are</FooterLink>
             <FooterLink>In the media</FooterLink>
             <FooterLink>Partners</FooterLink>
@@ -89,9 +75,7 @@ const Footer = () => {
 
           {/* COLUMN 3 */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">
-              PRIVATE TUITION
-            </h4>
+            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">PRIVATE TUITION</h4>
             <FooterLink>What we do</FooterLink>
             <FooterLink>How we recruit tutors</FooterLink>
             <FooterLink>Special needs</FooterLink>
@@ -100,9 +84,7 @@ const Footer = () => {
 
           {/* COLUMN 4 */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">
-              CLIENT EXPERIENCE
-            </h4>
+            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">CLIENT EXPERIENCE</h4>
             <FooterLink>Testimonials</FooterLink>
             <FooterLink>Case studies</FooterLink>
             <FooterLink>Placements</FooterLink>
@@ -111,14 +93,37 @@ const Footer = () => {
 
           {/* COLUMN 5 */}
           <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">
-              FOR CLIENTS
-            </h4>
+            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">FOR CLIENTS</h4>
             <FooterLink>Make an enquiry</FooterLink>
-            <FooterLink>Contact details</FooterLink>            
+            <FooterLink>Contact details</FooterLink>
             <FooterLink>Our site for tutors</FooterLink>
             <FooterLink>Current vacancies</FooterLink>
           </div>
+
+        </div>
+      </div>
+
+      {/* BOTTOM BAR */}
+      <div className="border-t border-white/20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-4 flex flex-col items-center gap-2">
+
+          {/* Row 1 — policy links */}
+          <div className="flex items-center gap-1 flex-wrap justify-center">
+            <a href="#" className="text-xs text-white/60 hover:text-white transition">Privacy Policy</a>
+            <span className="text-white/30 text-xs">·</span>
+            <a href="#" className="text-xs text-white/60 hover:text-white transition">Terms & Conditions</a>
+            <span className="text-white/30 text-xs">·</span>
+            <a href="#" className="text-xs text-white/60 hover:text-white transition">Cookie Policy</a>
+            <span className="text-white/30 text-xs">·</span>
+            <a href="#" className="text-xs text-white/60 hover:text-white transition">Support</a>
+          </div>
+
+          <span className="text-white/30 text-xs">·</span>
+
+          {/* Row 2 — licence */}
+          <p className="text-xs text-white/50 text-center">
+            Licensed by Esperly. All rights reserved.
+          </p>
 
         </div>
       </div>

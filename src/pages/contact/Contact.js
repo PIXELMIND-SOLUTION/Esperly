@@ -7,121 +7,151 @@ import NavImage from "../../components/NavImage";
 
 /* ─── SVG DECORATIONS ────────────────────────────────────────── */
 
-/* Paperclip SVG */
-const Paperclip = ({ size = 48, color = "#9E9E9E", rotate = 0, style = {} }) => (
+/* Compass/Geometry Tool SVG */
+const CompassSVG = ({ size = 80, rotate = 0, style = {} }) => (
     <svg
-        width={size} height={size * 2.2}
-        viewBox="0 0 24 52"
+        width={size} height={size}
+        viewBox="0 0 40 40"
         fill="none"
         style={{ transform: `rotate(${rotate}deg)`, ...style }}
     >
-        <path
-            d="M12 4 C6 4 4 8 4 12 L4 40 C4 46 8 50 12 50 C16 50 20 46 20 40 L20 14 C20 10 18 7 14 7 C10 7 8 10 8 14 L8 38 C8 41 10 43 12 43 C14 43 16 41 16 38 L16 16"
-            stroke={color}
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            fill="none"
-        />
-        <path
-            d="M12 4 C6 4 4 8 4 12 L4 40 C4 46 8 50 12 50 C16 50 20 46 20 40 L20 14 C20 10 18 7 14 7 C10 7 8 10 8 14 L8 38 C8 41 10 43 12 43 C14 43 16 41 16 38 L16 16"
-            stroke="#BDBDBD"
-            strokeWidth="0.8"
-            strokeLinecap="round"
-            strokeDasharray="2 4"
-            opacity="0.6"
-            fill="none"
-        />
+        <circle cx="20" cy="20" r="18" stroke="#A6192E" strokeWidth="1" strokeDasharray="3 3" opacity="0.3" />
+        <line x1="20" y1="20" x2="20" y2="4" stroke="#A6192E" strokeWidth="1.2" strokeLinecap="round" />
+        <line x1="20" y1="20" x2="36" y2="20" stroke="#A6192E" strokeWidth="1.2" strokeLinecap="round" />
+        <circle cx="20" cy="20" r="2" fill="#A6192E" opacity="0.6" />
+        <path d="M20 4 L17 10 L20 12 L23 10 Z" fill="#A6192E" opacity="0.5" />
     </svg>
 );
 
-/* Pen SVG */
-const PenSVG = ({ size = 120, rotate = -15, style = {} }) => (
+/* Protractor SVG */
+const ProtractorSVG = ({ size = 100, rotate = 10, style = {} }) => (
     <svg
-        width={size} height={size * 0.14}
-        viewBox="0 0 220 30"
+        width={size} height={size * 0.6}
+        viewBox="0 0 60 35"
         fill="none"
         style={{ transform: `rotate(${rotate}deg)`, ...style }}
     >
-        <rect x="30" y="5" width="150" height="20" rx="10" fill="#A6192E" />
-        <rect x="30" y="5" width="150" height="20" rx="10" stroke="#C8203A" strokeWidth="1" />
-        <rect x="35" y="7" width="140" height="5" rx="3" fill="rgba(255,255,255,0.15)" />
-        <rect x="155" y="3" width="5" height="22" rx="2" fill="#9E9E9E" stroke="#BDBDBD" strokeWidth="0.5" />
-        <circle cx="157.5" cy="25" r="3" fill="#9E9E9E" />
-        <rect x="45" y="5" width="30" height="20" rx="2" fill="#C8203A" opacity="0.5" />
-        {[0, 3, 6, 9, 12, 15, 18, 21, 24, 27].map(x => (
-            <line key={x} x1={47 + x} y1="5" x2={47 + x} y2="25" stroke="#C8203A" strokeWidth="0.5" opacity="0.5" />
+        <path d="M5 30 Q30 5 55 30" stroke="#A6192E" strokeWidth="1.2" fill="none" opacity="0.4" />
+        <line x1="5" y1="30" x2="55" y2="30" stroke="#A6192E" strokeWidth="1" opacity="0.3" />
+        <circle cx="30" cy="30" r="2" fill="#A6192E" opacity="0.5" />
+        <line x1="30" y1="30" x2="30" y2="12" stroke="#A6192E" strokeWidth="0.8" opacity="0.4" />
+    </svg>
+);
+
+/* Graph Paper Grid Component */
+const GraphPaperGrid = ({ size = 20, majorEvery = 5 }) => {
+    return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Minor grid lines */}
+            <svg className="absolute inset-0 w-full h-full">
+                <defs>
+                    <pattern id="minorGrid" width={size} height={size} patternUnits="userSpaceOnUse">
+                        <path d={`M ${size} 0 L 0 0 0 ${size}`} fill="none" stroke="#A6192E" strokeWidth="0.4" opacity="0.12" />
+                    </pattern>
+                    <pattern id="majorGrid" width={size * majorEvery} height={size * majorEvery} patternUnits="userSpaceOnUse">
+                        <rect width={size * majorEvery} height={size * majorEvery} fill="url(#minorGrid)" />
+                        <path d={`M ${size * majorEvery} 0 L 0 0 0 ${size * majorEvery}`} fill="none" stroke="#A6192E" strokeWidth="0.8" opacity="0.25" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#majorGrid)" />
+            </svg>
+        </div>
+    );
+};
+
+/* Ruler SVG */
+const RulerSVG = ({ width = 120, height = 20, rotate = -5, style = {} }) => (
+    <svg
+        width={width} height={height}
+        viewBox="0 0 120 20"
+        fill="none"
+        style={{ transform: `rotate(${rotate}deg)`, ...style }}
+    >
+        <rect x="2" y="2" width="116" height="16" rx="1" fill="#F5E6D3" stroke="#A6192E" strokeWidth="0.8" opacity="0.7" />
+        {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(x => (
+            <g key={x}>
+                <line x1={x + 6} y1="4" x2={x + 6} y2={x % 20 === 0 ? "16" : "10"} stroke="#A6192E" strokeWidth="0.6" opacity="0.5" />
+                {x % 20 === 0 && x > 0 && x < 100 && (
+                    <text x={x + 4} y="14" fontSize="4" fill="#A6192E" opacity="0.5" fontFamily="monospace">{x / 10}</text>
+                )}
+            </g>
         ))}
-        <polygon points="30,8 30,22 8,15" fill="#C0C0C0" />
-        <polygon points="15,11 15,19 8,15" fill="#888" />
-        <line x1="8" y1="15" x2="30" y2="10" stroke="#999" strokeWidth="0.5" />
-        <line x1="8" y1="15" x2="30" y2="20" stroke="#999" strokeWidth="0.5" />
-        <rect x="178" y="5" width="22" height="20" rx="10" fill="#C8203A" />
     </svg>
 );
 
-/* Washi tape strip */
-const WashiTape = ({ width = 60, height = 18, color = "rgba(200,195,170,0.55)", rotate = -2, style = {} }) => (
-    <div className="absolute"
-        style={{
-            width, height,
-            backgroundColor: color,
-            borderLeft: "1px solid rgba(180,170,140,0.3)",
-            borderRight: "1px solid rgba(180,170,140,0.3)",
-            transform: `rotate(${rotate}deg)`,
-            ...style,
-        }}
-    />
+/* Graph Paper Corner Fold Effect */
+const CornerFold = () => (
+    <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none z-[3]">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+            <path d="M64 0 L64 64 L0 64 Z" fill="rgba(166,25,46,0.06)" />
+            <path d="M64 0 L64 64 L0 64 Z" fill="none" stroke="#A6192E" strokeWidth="0.5" opacity="0.2" />
+            <path d="M58 64 L64 58" stroke="#A6192E" strokeWidth="0.5" opacity="0.15" />
+        </svg>
+    </div>
 );
 
-/* Ruled paper lines overlay */
-const RuledLines = ({ count = 20, topOffset = 60, gap = 26 }) => (
+/* Calculator Button SVG */
+const CalculatorButtons = () => (
+    <svg width="40" height="40" viewBox="0 0 40 40" style={{ opacity: 0.15 }}>
+        <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="#A6192E" strokeWidth="1" />
+        {[0, 1, 2].map((row) =>
+            [0, 1, 2].map((col) => (
+                <rect key={`${row}-${col}`} x={8 + col * 10} y={12 + row * 8} width="6" height="4" fill="#A6192E" opacity="0.3" />
+            ))
+        )}
+    </svg>
+);
+
+const UnevenGrid = () => {
+  return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {Array.from({ length: count }, (_, i) => (
-            <div key={i} className="absolute left-0 right-0"
-                style={{
-                    top: topOffset + i * gap,
-                    height: 1,
-                    backgroundColor: "#D6CEBA",
-                    opacity: 0.55,
-                }}
+      <svg className="w-full h-full">
+        <defs>
+          <pattern
+            id="unevenGrid"
+            width="100"   // ⬅️ increased size
+            height="100"  // ⬅️ increased size
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Horizontal lines */}
+            <path
+              d="M0 25 Q50 30 100 25"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
             />
-        ))}
-        {/* Red margin line */}
-        <div className="absolute top-0 bottom-0 w-[1.5px] opacity-25"
-            style={{
-                left: "clamp(40px,6vw,72px)",
-                backgroundColor: "#A6192E",
-            }}
-        />
-    </div>
-);
+            <path
+              d="M0 75 Q50 70 100 75"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
 
-/* Stamp / badge */
-const Stamp = ({ text, color = "#A6192E", rotate = -8, style = {} }) => (
-    <div className="inline-block rounded-[4px] font-mono uppercase font-bold tracking-[0.18em]"
-        style={{
-            border: `2.5px solid ${color}`,
-            padding: "3px 10px",
-            fontSize: "clamp(9px,1vw,11px)",
-            color,
-            transform: `rotate(${rotate}deg)`,
-            opacity: 0.75,
-            ...style,
-        }}
-    >
-        {text}
-    </div>
-);
+            {/* Vertical lines */}
+            <path
+              d="M25 0 Q30 50 25 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M75 0 Q70 50 75 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+          </pattern>
+        </defs>
 
-/* Hand-drawn underline SVG */
-const ScribbleUnderline = ({ color = "#A6192E", width = "100%", style = {} }) => (
-    <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ width, height: 12, display: "block", ...style }}>
-        <path
-            d="M2 8 C30 4, 60 11, 100 7 C140 3, 170 10, 198 6"
-            stroke={color} strokeWidth="2.5" fill="none" strokeLinecap="round"
-        />
-    </svg>
-);
+        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
+      </svg>
+    </div>
+  );
+};
 
 /* ─── CONTACT FORM COMPONENT ────────────────────────────────────────── */
 const Contact = () => {
@@ -215,34 +245,46 @@ const Contact = () => {
     return (
         <>
             <Navbar onOpenModal={() => setOpenModal(true)} />
-            <NavImage />
+            {/* <NavImage /> */}
             <section className="relative overflow-hidden"
                 style={{
-                    backgroundColor: "#F2EBD9",
+                    backgroundColor: "#F7F4EC",
                     padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
                 }}
             >
-                {/* Background ruled lines */}
-                <RuledLines count={40} topOffset={0} gap={26} />
+                {/* Graph Paper Grid Background */}
+                <UnevenGrid size={16} majorEvery={5} />
+
+                {/* Graph paper blue coordinate axis hint */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+                    <svg className="w-full h-full">
+                        <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#A6192E" strokeWidth="2" />
+                        <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#A6192E" strokeWidth="2" />
+                    </svg>
+                </div>
 
                 {/* Decorative elements */}
-                <div className="absolute top-[5%] right-[5%] opacity-12 pointer-events-none" aria-hidden>
-                    <PenSVG size={140} rotate={-8} />
+                <div className="absolute top-[3%] right-[3%] opacity-15 pointer-events-none" aria-hidden>
+                    <CompassSVG size={70} rotate={15} />
                 </div>
 
-                <div className="absolute bottom-[8%] left-[3%] opacity-10 pointer-events-none" aria-hidden>
-                    <Paperclip size={32} color="#9E9E9E" rotate={-15} />
+                <div className="absolute bottom-[6%] left-[2%] opacity-12 pointer-events-none" aria-hidden>
+                    <ProtractorSVG size={90} rotate={-8} />
                 </div>
 
-                <div className="absolute top-[15%] left-[2%] opacity-8 pointer-events-none">
-                    <Paperclip size={24} color="#BDBDBD" rotate={25} />
+                <div className="absolute top-[20%] left-[1%] opacity-10 pointer-events-none">
+                    <RulerSVG width={100} height={16} rotate={-12} />
                 </div>
 
-                {/* Dot grid decoration */}
-                <svg className="absolute right-[6%] bottom-[12%] opacity-8 pointer-events-none" width="120" height="120">
-                    {Array.from({ length: 6 }, (_, r) =>
-                        Array.from({ length: 6 }, (_, c) => (
-                            <circle key={`${r}-${c}`} cx={c * 18 + 9} cy={r * 18 + 9} r="1.2" fill="#A6192E" />
+                <div className="absolute bottom-[15%] right-[4%] opacity-8 pointer-events-none">
+                    <CalculatorButtons />
+                </div>
+
+                {/* Dot grid overlay */}
+                <svg className="absolute left-[8%] top-[25%] opacity-8 pointer-events-none" width="100" height="100">
+                    {Array.from({ length: 7 }, (_, r) =>
+                        Array.from({ length: 7 }, (_, c) => (
+                            <circle key={`${r}-${c}`} cx={c * 12 + 6} cy={r * 12 + 6} r="1" fill="#A6192E" />
                         ))
                     )}
                 </svg>
@@ -257,28 +299,32 @@ const Contact = () => {
                         className="text-center mb-[clamp(40px,6vw,64px)]"
                     >
                         <div className="flex items-center justify-center gap-3 mb-3">
-                            <div className="w-5 h-[2px] bg-[#A6192E]" />
+                            <div className="w-6 h-[1.5px] bg-[#A6192E] opacity-50" />
                             <span className="font-mono text-[clamp(9px,1.1vw,12px)] text-[#A6192E] tracking-[0.28em] uppercase">
-                                Get In Touch
+                                Plot Your Course
                             </span>
-                            <div className="w-5 h-[2px] bg-[#A6192E]" />
+                            <div className="w-6 h-[1.5px] bg-[#A6192E] opacity-50" />
                         </div>
 
                         <h2 className="font-['Fraunces',Georgia,serif] text-[clamp(28px,4.5vw,54px)] font-black text-[#1C1209] leading-[1.05] tracking-tight mb-2.5">
-                            Write to Us on{" "}
+                            Let's{" "}
                             <span className="text-[#A6192E] italic relative">
-                                Paper
-                                <ScribbleUnderline color="#A6192E" width="100%" style={{ marginTop: 2 }} />
+                                Connect
                             </span>
                         </h2>
 
-                        <p className="font-['DM_Serif_Display',Georgia,serif] text-[clamp(12px,1.3vw,15px)] text-[#7A6E5A] leading-relaxed max-w-[520px] mx-auto">
-                            Have a question? Want to start your learning journey?<br />
-                            Drop us a message and we'll get back to you within 24 hours.
+                        <p className="font-mono text-[clamp(11px,1.2vw,13px)] text-[#7A6E5A] leading-relaxed max-w-[520px] mx-auto">
+                            [ x, y ] = coordinates of conversation<br />
+                            Fill out the form below and we'll reach out within 24 hours
                         </p>
 
-                        <div className="mt-4">
-                            <Stamp text="Quick Response" color="#2E7D52" rotate={-3} />
+                        <div className="mt-4 flex justify-center gap-2">
+                            <span className="inline-block px-3 py-1 border border-[#A6192E]/30 rounded-full text-[9px] font-mono text-[#A6192E]/60">
+                                ✓ Valid Input Required
+                            </span>
+                            <span className="inline-block px-3 py-1 border border-[#A6192E]/30 rounded-full text-[9px] font-mono text-[#A6192E]/60">
+                                ⚡ Fast Response
+                            </span>
                         </div>
                     </motion.div>
 
@@ -290,30 +336,22 @@ const Contact = () => {
                             animate={inView ? { opacity: 1, x: 0 } : {}}
                             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <div className="relative mb-6 rounded-[3px] p-[clamp(24px,3vw,32px)]"
+                            <div className="relative mb-6 p-[clamp(24px,3vw,32px)]"
                                 style={{
-                                    backgroundColor: "#F9F5ED",
-                                    border: `1px solid #D6CEBA`,
-                                    boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
+                                    backgroundColor: "#FCFAF5",
+                                    border: `1px solid #A6192E20`,
+                                    boxShadow: "2px 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                <WashiTape
-                                    width={48} height={14} color="rgba(200,195,170,0.55)" rotate={-2}
-                                    style={{ top: -8, left: "50%", transform: "translateX(-50%) rotate(-2deg)" }}
-                                />
-
-                                <div className="absolute top-3 right-3 opacity-30">
-                                    <Paperclip size={24} color="#9E9E9E" rotate={-10} />
-                                </div>
-
-                                <div className="mb-5">
-                                    <div className="text-3xl mb-3 text-[#A6192E]">
-                                        📬
+                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#A6192E15]" />
+                                <div className="mb-4">
+                                    <div className="font-mono text-2xl mb-3 text-[#A6192E] opacity-70">
+                                        📍
                                     </div>
-                                    <h3 className="font-['Fraunces',Georgia,serif] text-[clamp(16px,1.8vw,20px)] font-bold text-[#1C1209] mb-2">
-                                        Send us a letter
+                                    <h3 className="font-mono text-[clamp(13px,1.5vw,16px)] font-bold text-[#1C1209] mb-2 tracking-tight">
+                                        Coordinates
                                     </h3>
-                                    <p className="font-serif text-[clamp(12px,1.2vw,14px)] text-[#7A6E5A] leading-relaxed">
+                                    <p className="font-mono text-[clamp(11px,1.2vw,13px)] text-[#7A6E5A] leading-relaxed">
                                         123 Esperly Lane<br />
                                         Tech City, TC 12345<br />
                                         India
@@ -321,42 +359,44 @@ const Contact = () => {
                                 </div>
                             </div>
 
-                            <div className="relative mb-6 rounded-[3px] p-[clamp(24px,3vw,32px)]"
+                            <div className="relative mb-6 p-[clamp(24px,3vw,32px)]"
                                 style={{
-                                    backgroundColor: "#F9F5ED",
-                                    border: `1px solid #D6CEBA`,
-                                    boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
+                                    backgroundColor: "#FCFAF5",
+                                    border: `1px solid #A6192E20`,
+                                    boxShadow: "2px 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                <div className="mb-5">
-                                    <div className="text-3xl mb-3 text-[#3B6FA0]">
-                                        ✉️
+                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#A6192E15]" />
+                                <div className="mb-4">
+                                    <div className="font-mono text-2xl mb-3 text-[#3B6FA0] opacity-70">
+                                        @
                                     </div>
-                                    <h3 className="font-['Fraunces',Georgia,serif] text-[clamp(16px,1.8vw,20px)] font-bold text-[#1C1209] mb-2">
-                                        Email us
+                                    <h3 className="font-mono text-[clamp(13px,1.5vw,16px)] font-bold text-[#1C1209] mb-2 tracking-tight">
+                                        Send a Signal
                                     </h3>
-                                    <p className="font-serif text-[clamp(12px,1.2vw,14px)] text-[#7A6E5A] leading-relaxed">
+                                    <p className="font-mono text-[clamp(11px,1.2vw,13px)] text-[#7A6E5A] leading-relaxed">
                                         hello@esperly.com<br />
                                         support@esperly.com
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="relative rounded-[3px] p-[clamp(24px,3vw,32px)]"
+                            <div className="relative p-[clamp(24px,3vw,32px)]"
                                 style={{
-                                    backgroundColor: "#F9F5ED",
-                                    border: `1px solid #D6CEBA`,
-                                    boxShadow: "3px 5px 16px rgba(0,0,0,0.08)",
+                                    backgroundColor: "#FCFAF5",
+                                    border: `1px solid #A6192E20`,
+                                    boxShadow: "2px 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                <div className="mb-5">
-                                    <div className="text-3xl mb-3 text-[#2E7D52]">
-                                        📞
+                                <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#A6192E15]" />
+                                <div className="mb-4">
+                                    <div className="font-mono text-2xl mb-3 text-[#2E7D52] opacity-70">
+                                        ☎
                                     </div>
-                                    <h3 className="font-['Fraunces',Georgia,serif] text-[clamp(16px,1.8vw,20px)] font-bold text-[#1C1209] mb-2">
-                                        Call us
+                                    <h3 className="font-mono text-[clamp(13px,1.5vw,16px)] font-bold text-[#1C1209] mb-2 tracking-tight">
+                                        Voice Channel
                                     </h3>
-                                    <p className="font-serif text-[clamp(12px,1.2vw,14px)] text-[#7A6E5A] leading-relaxed">
+                                    <p className="font-mono text-[clamp(11px,1.2vw,13px)] text-[#7A6E5A] leading-relaxed">
                                         +91 12345 67890<br />
                                         Mon-Fri, 9am - 6pm IST
                                     </p>
@@ -370,54 +410,33 @@ const Contact = () => {
                             animate={inView ? { opacity: 1, x: 0 } : {}}
                             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <div className="relative rounded-[3px] p-[clamp(28px,4vw,44px)]"
+                            <div className="relative p-[clamp(28px,4vw,44px)]"
                                 style={{
-                                    backgroundColor: "#F9F5ED",
-                                    border: `1px solid #D6CEBA`,
-                                    boxShadow: "4px 6px 24px rgba(0,0,0,0.12)",
+                                    backgroundColor: "#FCFAF5",
+                                    border: `1px solid #A6192E20`,
+                                    boxShadow: "4px 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8)",
                                 }}
                             >
-                                {/* Decorative tape at top */}
-                                <WashiTape
-                                    width={72} height={16} color="rgba(200,195,170,0.55)" rotate={3}
-                                    style={{ top: -12, left: "30%", transform: "translateX(-30%) rotate(3deg)" }}
-                                />
-                                <WashiTape
-                                    width={64} height={16} color="rgba(200,195,170,0.55)" rotate={-2}
-                                    style={{ top: -10, right: "20%", transform: "translateX(20%) rotate(-2deg)" }}
-                                />
-
-                                {/* Ruled lines inside form */}
-                                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[3px]">
-                                    {Array.from({ length: 25 }, (_, i) => (
-                                        <div key={i} className="absolute left-0 right-0"
-                                            style={{
-                                                top: 52 + i * 28,
-                                                height: 1,
-                                                backgroundColor: "#D6CEBA",
-                                                opacity: 0.35,
-                                            }}
-                                        />
-                                    ))}
-                                </div>
+                                <CornerFold />
 
                                 <form onSubmit={handleSubmit} className="relative z-[1]">
                                     {/* Name Field */}
                                     <div className="mb-5">
-                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
-                                            Full Name *
+                                        <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
+                                            Full Name
+                                            <span className="text-[#A6192E] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={formData.name}
                                             onChange={handleChange}
-                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
+                                            className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                border: `1px solid ${errors.name ? "#A6192E" : "#D6CEBA"}`,
-                                                padding: "12px 14px",
+                                                borderBottom: `1.5px solid ${errors.name ? "#A6192E" : "#A6192E30"}`,
+                                                padding: "10px 4px",
                                             }}
-                                            placeholder="Your name"
+                                            placeholder="your name"
                                         />
                                         {errors.name && (
                                             <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
@@ -428,18 +447,19 @@ const Contact = () => {
 
                                     {/* Email Field */}
                                     <div className="mb-5">
-                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
-                                            Email Address *
+                                        <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
+                                            Email Address
+                                            <span className="text-[#A6192E] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="email"
                                             name="email"
                                             value={formData.email}
                                             onChange={handleChange}
-                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
+                                            className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                border: `1px solid ${errors.email ? "#A6192E" : "#D6CEBA"}`,
-                                                padding: "12px 14px",
+                                                borderBottom: `1.5px solid ${errors.email ? "#A6192E" : "#A6192E30"}`,
+                                                padding: "10px 4px",
                                             }}
                                             placeholder="hello@esperly.com"
                                         />
@@ -452,18 +472,19 @@ const Contact = () => {
 
                                     {/* Phone Field */}
                                     <div className="mb-5">
-                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
-                                            Phone Number *
+                                        <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
+                                            Phone Number
+                                            <span className="text-[#A6192E] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="tel"
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleChange}
-                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
+                                            className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                border: `1px solid ${errors.phone ? "#A6192E" : "#D6CEBA"}`,
-                                                padding: "12px 14px",
+                                                borderBottom: `1.5px solid ${errors.phone ? "#A6192E" : "#A6192E30"}`,
+                                                padding: "10px 4px",
                                             }}
                                             placeholder="+91 12345 67890"
                                         />
@@ -476,20 +497,21 @@ const Contact = () => {
 
                                     {/* Subject Field */}
                                     <div className="mb-5">
-                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
-                                            Subject *
+                                        <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
+                                            Subject
+                                            <span className="text-[#A6192E] ml-0.5">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             name="subject"
                                             value={formData.subject}
                                             onChange={handleChange}
-                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200"
+                                            className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b"
                                             style={{
-                                                border: `1px solid ${errors.subject ? "#A6192E" : "#D6CEBA"}`,
-                                                padding: "12px 14px",
+                                                borderBottom: `1.5px solid ${errors.subject ? "#A6192E" : "#A6192E30"}`,
+                                                padding: "10px 4px",
                                             }}
-                                            placeholder="What is this regarding?"
+                                            placeholder="what is this regarding?"
                                         />
                                         {errors.subject && (
                                             <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
@@ -500,20 +522,21 @@ const Contact = () => {
 
                                     {/* Message Field */}
                                     <div className="mb-6">
-                                        <label className="block font-mono text-[clamp(10px,1vw,12px)] text-[#3A2E1A] tracking-[0.1em] mb-1.5 uppercase">
-                                            Your Message *
+                                        <label className="block font-mono text-[clamp(10px,1vw,11px)] text-[#3A2E1A] tracking-[0.15em] mb-1.5 uppercase">
+                                            Your Message
+                                            <span className="text-[#A6192E] ml-0.5">*</span>
                                         </label>
                                         <textarea
                                             name="message"
                                             value={formData.message}
                                             onChange={handleChange}
-                                            rows={5}
-                                            className="w-full bg-transparent rounded-[2px] font-serif text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-colors duration-200 resize-y"
+                                            rows={4}
+                                            className="w-full bg-transparent font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209] outline-none transition-all duration-200 border-b resize-y"
                                             style={{
-                                                border: `1px solid ${errors.message ? "#A6192E" : "#D6CEBA"}`,
-                                                padding: "12px 14px",
+                                                borderBottom: `1.5px solid ${errors.message ? "#A6192E" : "#A6192E30"}`,
+                                                padding: "10px 4px",
                                             }}
-                                            placeholder="Write your message here..."
+                                            placeholder="write your message here..."
                                         />
                                         {errors.message && (
                                             <p className="text-[#A6192E] text-[clamp(10px,0.9vw,11px)] mt-1 font-mono">
@@ -526,27 +549,26 @@ const Contact = () => {
                                     <div>
                                         <motion.button
                                             type="submit"
-                                            whileHover={{ scale: 1.02, y: -2 }}
+                                            whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
                                             disabled={isSubmitting}
-                                            className="w-full rounded-[3px] font-['Fraunces',Georgia,serif] font-bold tracking-[0.02em] cursor-pointer transition-opacity duration-200"
+                                            className="w-full font-mono font-semibold tracking-[0.1em] cursor-pointer transition-all duration-200"
                                             style={{
                                                 backgroundColor: "#A6192E",
                                                 color: "#fff",
                                                 border: "none",
-                                                padding: "clamp(12px,1.5vw,16px)",
-                                                fontSize: "clamp(12px,1.4vw,15px)",
-                                                boxShadow: `2px 4px 12px #A6192E80`,
+                                                padding: "clamp(12px,1.5vw,14px)",
+                                                fontSize: "clamp(11px,1.2vw,13px)",
                                                 opacity: isSubmitting ? 0.7 : 1,
                                             }}
                                         >
                                             {isSubmitting ? (
                                                 <span className="flex items-center justify-center gap-2">
-                                                    <span>Sending...</span>
-                                                    <span className="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                    <span>SENDING...</span>
+                                                    <span className="inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
                                                 </span>
                                             ) : (
-                                                "Send Message →"
+                                                "SUBMIT →"
                                             )}
                                         </motion.button>
                                     </div>
@@ -556,14 +578,14 @@ const Contact = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: -10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="mt-4 p-3 rounded-[3px] text-center"
+                                            className="mt-4 p-3 text-center border"
                                             style={{
-                                                backgroundColor: "#2E7D5215",
+                                                backgroundColor: "#2E7D5210",
                                                 border: `1px solid #2E7D52`,
                                             }}
                                         >
-                                            <p className="text-[#2E7D52] font-mono text-[clamp(10px,1vw,12px)]">
-                                                ✓ Message sent successfully! We'll get back to you soon.
+                                            <p className="text-[#2E7D52] font-mono text-[clamp(10px,1vw,11px)]">
+                                                ✓ Message delivered! We'll respond within 24 hours.
                                             </p>
                                         </motion.div>
                                     )}
@@ -572,29 +594,29 @@ const Contact = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: -10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="mt-4 p-3 rounded-[3px] text-center"
+                                            className="mt-4 p-3 text-center border"
                                             style={{
-                                                backgroundColor: "#A6192E15",
+                                                backgroundColor: "#A6192E10",
                                                 border: `1px solid #A6192E`,
                                             }}
                                         >
-                                            <p className="text-[#A6192E] font-mono text-[clamp(10px,1vw,12px)]">
-                                                ✗ Something went wrong. Please try again.
+                                            <p className="text-[#A6192E] font-mono text-[clamp(10px,1vw,11px)]">
+                                                ✗ Transmission failed. Please try again.
                                             </p>
                                         </motion.div>
                                     )}
                                 </form>
 
-                                {/* Bottom stamp */}
-                                <div className="absolute bottom-4 right-5 opacity-50">
-                                    <Stamp text="Confidential" color="#3B6FA0" rotate={4} style={{ fontSize: 7 }} />
+                                {/* Bottom decoration */}
+                                <div className="absolute bottom-3 right-4 opacity-30">
+                                    <span className="font-mono text-[8px] text-[#A6192E]">v.1.0</span>
                                 </div>
                             </div>
 
                             {/* Note about response time */}
-                            <div className="mt-4 text-center font-mono text-[clamp(9px,0.9vw,11px)] text-[#7A6E5A] italic">
-                                <span className="inline-block mr-1.5">⏱️</span>
-                                Usually replies within 24 hours
+                            <div className="mt-4 text-center font-mono text-[clamp(9px,0.9vw,10px)] text-[#7A6E5A]">
+                                <span className="inline-block mr-1.5">⏱</span>
+                                avg. response time: 4 hours
                             </div>
                         </motion.div>
                     </div>

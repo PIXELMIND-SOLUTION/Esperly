@@ -2,13 +2,13 @@ import React, { useRef } from "react";
 import { motion, useInView } from "motion/react";
 
 /* ─── COLOUR TOKENS (matching ExpertTrack) ──────────────────── */
-const PAPER   = "#F9F5ED";
+const PAPER   = "#FBF7F2";
 const PAPER2  = "#F2EBD9";
 const PAPER3  = "#EDE3CC";
 const RULED   = "#D6CEBA";
 const INK     = "#1C1209";
 const FADED   = "#7A6E5A";
-const RED     = "#A6192E";
+const RED     = "#EB6664";
 const BLUE    = "#3B6FA0";
 const GREEN   = "#2E7D52";
 const CLIP    = "#9E9E9E";
@@ -31,6 +31,57 @@ const RuledLines = ({ count = 20, topOffset = 60, gap = 26 }) => (
     }} />
   </div>
 );
+
+const UnevenGrid = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="w-full h-full">
+        <defs>
+          <pattern
+            id="unevenGrid"
+            width="100"   // ⬅️ increased size
+            height="100"  // ⬅️ increased size
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Horizontal lines */}
+            <path
+              d="M0 25 Q50 30 100 25"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M0 75 Q50 70 100 75"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+
+            {/* Vertical lines */}
+            <path
+              d="M25 0 Q30 50 25 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M75 0 Q70 50 75 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
+      </svg>
+    </div>
+  );
+};
 
 const ScribbleUnderline = ({ color = RED, width = "100%", style = {} }) => (
   <svg viewBox="0 0 200 12" preserveAspectRatio="none"
@@ -195,7 +246,7 @@ const SupportItem = ({ icon, title, desc, color, delay }) => {
       transition={{ duration: 0.56, delay }}
       style={{
         display: "flex", gap: "clamp(12px,1.6vw,18px)", alignItems: "flex-start",
-        background: "",
+        background: PAPER,
         border: `1px solid ${RULED}`,
         borderLeft: `4px solid ${color}`,
         borderRadius: "0 4px 4px 0",
@@ -269,12 +320,12 @@ export function TrustedSection() {
     <section style={{
       background: PAPER,
       borderTop: `1px solid ${RULED}`,
-      padding: "clamp(40px,6vw,80px) clamp(20px,5vw,60px)",
+      padding: "clamp(40px,6vw,50px) clamp(20px,5vw,50px)",
       position: "relative",
       overflow: "hidden",
       fontFamily: "sans-serif",
     }}>
-      <RuledLines count={60} topOffset={0} gap={26} />
+      <UnevenGrid />
 
       {/* Decorative overlays */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -300,21 +351,21 @@ export function TrustedSection() {
 
         {/* Header */}
         <SlideIn from="left">
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
+          {/* <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
             <div style={{ width: 20, height: 2.5, background: "#A6192E" }} />
-            <span style={{ fontFamily: "monospace", fontSize: "clamp(9px,1vw,12px)", color: "#A6192E", letterSpacing: "0.22em", textTransform: "uppercase" }}>
+            <span style={{ fontFamily: "bold", fontSize: "clamp(9px,1vw,12px)", color: "#A6192E", letterSpacing: "0.22em", textTransform: "uppercase" }}>
               Community Trust
             </span>
-          </div>
+          </div> */}
           <h2 style={{
             fontFamily: "Fraunces, Georgia, serif",
             fontSize: "clamp(24px,3.8vw,48px)", fontWeight: 900,
             color: INK, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: 6,
           }}>
             Trusted by<br />
-            <span style={{ color: "#A6192E", fontStyle: "italic" }}>Teachers & Parents</span>
+            <span style={{ color: "#EB6664", fontStyle: "italic" }}>Teachers & Parents</span>
           </h2>
-          <ScribbleUnderline color="#A6192E" width="clamp(140px,20vw,260px)" style={{ marginBottom: "clamp(12px,1.8vw,20px)" }} />
+          <ScribbleUnderline color="#EB6664" width="clamp(140px,20vw,260px)" style={{ marginBottom: "clamp(12px,1.8vw,20px)" }} />
           <p style={{
             fontFamily: "DM Serif Display, Georgia, serif",
             fontSize: "clamp(12px,1.3vw,15px)", color: FADED,
@@ -358,13 +409,13 @@ export function TrustedSection() {
 export function SupportSection() {
   return (
     <section style={{
-      background: '',
-      padding: "clamp(40px,6vw,80px) clamp(20px,5vw,60px)",
+      background: PAPER,
+      padding: "clamp(40px,6vw,50px) clamp(20px,5vw,50px)",
       position: "relative",
       overflow: "hidden",
       fontFamily: "sans-serif",
     }}>
-      <RuledLines count={60} topOffset={0} gap={26} />
+      <UnevenGrid />
 
       {/* Decorative overlays */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -396,21 +447,21 @@ export function SupportSection() {
         >
           {/* Left — copy + image placeholder */}
           <SlideIn from="left">
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
+            {/* <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
               <div style={{ width: 20, height: 2.5, background: "#A6192E" }} />
-              <span style={{ fontFamily: "monospace", fontSize: "clamp(9px,1vw,12px)", color: "#A6192E", letterSpacing: "0.22em", textTransform: "uppercase" }}>
+              <span style={{ fontFamily: "bold", fontSize: "clamp(9px,1vw,12px)", color: "#A6192E", letterSpacing: "0.22em", textTransform: "uppercase" }}>
                 Always Here
               </span>
-            </div>
+            </div> */}
             <h2 style={{
               fontFamily: "Fraunces, Georgia, serif",
               fontSize: "clamp(24px,3.8vw,48px)", fontWeight: 900,
               color: INK, lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: 6,
             }}>
               Support from<br />
-              <span style={{ color: "#A6192E", fontStyle: "italic" }}>Our Team</span>
+              <span style={{ color: "#EB6664", fontStyle: "italic" }}>Our Team</span>
             </h2>
-            <ScribbleUnderline color="#A6192E" width="clamp(120px,16vw,200px)" style={{ marginBottom: "clamp(12px,1.8vw,20px)" }} />
+            <ScribbleUnderline color="#EB6664" width="clamp(120px,16vw,200px)" style={{ marginBottom: "clamp(12px,1.8vw,20px)" }} />
             <p style={{
               fontFamily: "DM Serif Display, Georgia, serif",
               fontSize: "clamp(12px,1.3vw,15px)", color: FADED,
@@ -472,7 +523,7 @@ export function SupportSection() {
                     whileHover={{ scale: 1.04, rotate: -1 }}
                     whileTap={{ scale: 0.97 }}
                     style={{
-                      background: `linear-gradient(135deg, ${BLUE}, #2A5580)`,
+                      background: `linear-gradient(135deg, #EB6664, #EB6664)`,
                       color: "#fff", border: "none", borderRadius: 3,
                       padding: "clamp(9px,1.2vw,13px) clamp(18px,2.2vw,26px)",
                       fontFamily: "Fraunces, Georgia, serif",

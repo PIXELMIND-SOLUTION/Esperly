@@ -2,14 +2,14 @@ import React, { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 
 /* ─── COLOUR TOKENS (kept for SVG/canvas values Tailwind can't handle) ─── */
-const RED    = "#A6192E";
-const BLUE   = "#3B6FA0";
-const GREEN  = "#2E7D52";
-const TAPE   = "rgba(200,195,170,0.55)";
+const RED = "#EB6664";
+const BLUE = "#3B6FA0";
+const GREEN = "#2E7D52";
+const TAPE = "rgba(200,195,170,0.55)";
 const PENCIL = "#8C7B6B";
-const INK    = "#1C1209";
-const FADED  = "#7A6E5A";
-const RULED  = "#D6CEBA";
+const INK = "#1C1209";
+const FADED = "#111111";
+const RULED = "#D6CEBA";
 
 /* ─── SUB COMPONENTS ────────────────────────────────────────── */
 
@@ -85,6 +85,57 @@ const RuledLines = ({ count = 28, topOffset = 0, gap = 26 }) => (
   </div>
 );
 
+const UnevenGrid = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="w-full h-full">
+        <defs>
+          <pattern
+            id="unevenGrid"
+            width="100"   // ⬅️ increased size
+            height="100"  // ⬅️ increased size
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Horizontal lines */}
+            <path
+              d="M0 25 Q50 30 100 25"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M0 75 Q50 70 100 75"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+
+            {/* Vertical lines */}
+            <path
+              d="M25 0 Q30 50 25 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M75 0 Q70 50 75 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
+      </svg>
+    </div>
+  );
+};
+
 const Bubble = ({ style: s }) => (
   <motion.div
     className="absolute rounded-full pointer-events-none"
@@ -113,10 +164,10 @@ const Bubble = ({ style: s }) => (
 );
 
 const heroBubbles = [
-  { size: "180px", fill: "rgba(166,25,46,0.09)", left: "3%",  top: "8%",  floatY: "-22px", floatX: 12,  dur: 7,   delay: 0,   opacity: 0.4  },
-  { size: "120px", fill: "rgba(166,25,46,0.06)", left: "78%", top: "4%",  floatY: "-28px", floatX: -10, dur: 8.5, delay: 1,   opacity: 0.35 },
-  { size: "85px",  fill: "rgba(166,25,46,0.11)", left: "58%", top: "65%", floatY: "-16px", floatX: 8,   dur: 6,   delay: 2,   opacity: 0.45 },
-  { size: "60px",  fill: "rgba(166,25,46,0.08)", left: "18%", top: "70%", floatY: "-12px", floatX: -6,  dur: 5,   delay: 0.5, opacity: 0.4  },
+  { size: "180px", fill: "rgba(166,25,46,0.09)", left: "3%", top: "8%", floatY: "-22px", floatX: 12, dur: 7, delay: 0, opacity: 0.4 },
+  { size: "120px", fill: "rgba(166,25,46,0.06)", left: "78%", top: "4%", floatY: "-28px", floatX: -10, dur: 8.5, delay: 1, opacity: 0.35 },
+  { size: "85px", fill: "rgba(166,25,46,0.11)", left: "58%", top: "65%", floatY: "-16px", floatX: 8, dur: 6, delay: 2, opacity: 0.45 },
+  { size: "60px", fill: "rgba(166,25,46,0.08)", left: "18%", top: "70%", floatY: "-12px", floatX: -6, dur: 5, delay: 0.5, opacity: 0.4 },
 ];
 
 const PencilSVG = ({ size = 160, rotate = 5 }) => (
@@ -169,14 +220,14 @@ const pillars = [
     body: "At Esperly, every student is paired with a mentor who truly understands their learning journey. Beyond teaching, our mentors guide, motivate, and build confidence — ensuring students feel supported at every step.",
     accent: RED,
     noteBg: "bg-[#FFFDE7]",
-    noteColor: "#FFFDE7",
+    noteColor: "#F5B3B2",
   },
   {
     id: "02",
     icon: "🎯",
     title: "Personalized Learning",
     body: "We believe learning should adapt to the student, not the other way around. Our sessions are thoughtfully tailored to individual learning styles, pace, and goals — creating a more engaging and effective experience.",
-    accent: BLUE,
+    accent: RED,
     noteBg: "bg-[#E3F0FF]",
     noteColor: "#E3F0FF",
   },
@@ -185,7 +236,7 @@ const pillars = [
     icon: "💡",
     title: "Concept Mastery",
     body: "Strong foundations lead to lasting success. We go beyond memorization, helping students deeply understand concepts, apply them with clarity, and develop the confidence to tackle any challenge.",
-    accent: GREEN,
+    accent: RED,
     noteBg: "bg-[#E8F5E9]",
     noteColor: "#E8F5E9",
   },
@@ -196,7 +247,7 @@ const pillars = [
     body: "Growth is best achieved with the right direction. Through regular assessments and detailed feedback, we track progress closely — keeping students and parents informed, involved, and confident in the journey.",
     accent: RED,
     noteBg: "bg-[#FFF3E0]",
-    noteColor: "#FFF3E0",
+    noteColor: "#FFFDE7",
   },
 ];
 
@@ -248,25 +299,27 @@ const PillarCard = ({ p, index }) => {
 
       {/* Content */}
       <div className="p-[clamp(18px,3vw,28px)] relative z-10">
-        <div className="text-[clamp(24px,4vw,32px)] mb-[10px] leading-none">
-          {p.icon}
+        <div className="flex">
+          <div className="text-[clamp(24px,4vw,32px)] mb-[10px] leading-none">
+            {p.icon}
+          </div>
+          <h3
+            className="font-bold leading-[1.25] mb-2"
+            style={{
+              fontFamily: "Fraunces, Georgia, serif",
+              fontSize: "clamp(15px, 2vw, 20px)",
+              color: INK,
+            }}
+          >
+            {p.title}
+          </h3>
         </div>
-        <h3
-          className="font-bold leading-[1.25] mb-2"
-          style={{
-            fontFamily: "Fraunces, Georgia, serif",
-            fontSize: "clamp(15px, 2vw, 20px)",
-            color: INK,
-          }}
-        >
-          {p.title}
-        </h3>
         <ScribbleUnderline color={p.accent} style={{ width: "80%", marginBottom: 10 }} />
         <p
           className="leading-[1.75] mb-[14px]"
           style={{
             fontFamily: '"DM Serif Display", Georgia, serif',
-            fontSize: "clamp(11px, 1.4vw, 13px)",
+            fontSize: "clamp(8px, 1.4vw, 13px)",
             color: FADED,
           }}
         >
@@ -281,13 +334,13 @@ const PillarCard = ({ p, index }) => {
 export default function PillarsSection() {
   return (
     <section
-      className="relative overflow-hidden"
+      className="relative overflow-hidden vh-80"
       style={{
-        padding: "clamp(40px, 7vw, 96px) clamp(16px, 5vw, 60px)",
-        background: "#F9F5ED",
+        padding: "clamp(40px, 7vw, 50px) clamp(16px, 5vw, 50px)",
+        background: "#FBF7F2",
       }}
     >
-      <RuledLines count={30} topOffset={0} gap={26} />
+      <UnevenGrid count={30} topOffset={0} gap={26} />
 
       {/* Decorative blobs */}
       <div className="absolute inset-0 pointer-events-none">
@@ -355,10 +408,10 @@ export default function PillarsSection() {
       <div className="max-w-[1060px] mx-auto relative z-[2]">
         <FadeUp>
           {/* Label row */}
-          <div className="flex items-center gap-[14px] mb-[clamp(8px,1.5vw,14px)] flex-wrap">
+          {/* <div className="flex items-center gap-[14px] mb-[clamp(8px,1.5vw,14px)] flex-wrap">
             <div className="w-5 h-[2.5px] shrink-0" style={{ background: RED }} />
             <span
-              className="font-mono uppercase tracking-[0.22em]"
+              className="font-bold uppercase tracking-[0.22em]"
               style={{
                 fontSize: "clamp(9px, 1.2vw, 12px)",
                 color: RED,
@@ -367,7 +420,7 @@ export default function PillarsSection() {
               What We Offer
             </span>
             <Stamp text="Core" color={BLUE} rotate={3} />
-          </div>
+          </div> */}
 
           {/* Heading */}
           <h2

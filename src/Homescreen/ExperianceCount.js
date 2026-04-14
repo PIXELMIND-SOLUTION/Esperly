@@ -2,14 +2,14 @@ import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 
 /* ─── COLOUR TOKENS ─────────────────────────────────────────── */
-const PAPER = "#F9F5ED";
+const PAPER = "#FBF7F2";
 const PAPER2 = "#F2EBD9";
 const PAPER3 = "#EDE3CC";
 const RULED = "#D6CEBA";
 const INK = "#1C1209";
 const INK2 = "#3A2E1A";
 const FADED = "#7A6E5A";
-const RED = "#A6192E";
+const RED = "#EB6664";
 const BLUE = "#3B6FA0";
 const GREEN = "#2E7D52";
 const CLIP = "#9E9E9E";
@@ -113,6 +113,57 @@ const NotebookBackground = () => {
   );
 };
 
+const UnevenGrid = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="w-full h-full">
+        <defs>
+          <pattern
+            id="unevenGrid"
+            width="100"   // ⬅️ increased size
+            height="100"  // ⬅️ increased size
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Horizontal lines */}
+            <path
+              d="M0 25 Q50 30 100 25"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M0 75 Q50 70 100 75"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+
+            {/* Vertical lines */}
+            <path
+              d="M25 0 Q30 50 25 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M75 0 Q70 50 75 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
+      </svg>
+    </div>
+  );
+};
+
 /* ─── METRIC CHIP ─────────────────────────────────────────── */
 const MetricChip = ({ m, index }) => {
   const ref = useRef(null);
@@ -152,7 +203,7 @@ const MetricChip = ({ m, index }) => {
         background: PAPER,
         border: `1px solid ${RULED}`,
         borderRadius: 3,
-        padding: "clamp(16px,2vw,24px) clamp(14px,2vw,20px) clamp(14px,2vw,20px)",
+        padding: "clamp(16px,2vw,24px) clamp(14px,2vw,50px) clamp(14px,2vw,50px)",
         textAlign: "center",
         position: "relative",
         overflow: "hidden",
@@ -292,8 +343,7 @@ export default function ExperianceCount() {
   return (
     <div
       style={{
-        background: "",
-        borderTop: `1px solid ${RULED}`,
+        background: PAPER,
         padding: "clamp(24px,4vw,48px) clamp(16px,4vw,40px)",
         position: "relative",
         overflow: "hidden",
@@ -301,7 +351,7 @@ export default function ExperianceCount() {
       }}
     >
       {/* Full-section notebook background */}
-      <NotebookBackground />
+      <UnevenGrid />
 
       {/* Decorative paperclip */}
       <div style={{ position: "absolute", top: 8, right: 28, opacity: 0.28, zIndex: 3 }}>

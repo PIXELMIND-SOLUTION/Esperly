@@ -63,7 +63,7 @@ const steps = [
 
 /* ─── STEP CARD COLORS ─── */
 const stepColors = [
-  "bg-amber-50", "bg-rose-50", "bg-emerald-50", "bg-orange-50",
+  "bg-green-50", "bg-rose-50", "bg-emerald-50", "bg-orange-50",
   "bg-cyan-50", "bg-blue-50", "bg-purple-50", "bg-lime-50",
 ];
 
@@ -83,6 +83,57 @@ const RuledLines = () => (
     />
   </div>
 );
+
+const UnevenGrid = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="w-full h-full">
+        <defs>
+          <pattern
+            id="unevenGrid"
+            width="100"   // ⬅️ increased size
+            height="100"  // ⬅️ increased size
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Horizontal lines */}
+            <path
+              d="M0 25 Q50 30 100 25"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M0 75 Q50 70 100 75"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+
+            {/* Vertical lines */}
+            <path
+              d="M25 0 Q30 50 25 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M75 0 Q70 50 75 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
+      </svg>
+    </div>
+  );
+};
 
 /* ─── WASHI TAPE ─── */
 const WashiTape = ({ rotate = -2, top = -10, left = "40%" }) => (
@@ -129,8 +180,8 @@ const StepNumber = ({ num, isActive = false }) => (
   <div
     className={`flex items-center justify-center rounded-full font-black transition-all duration-300 flex-shrink-0 w-10 h-10 text-lg ${
       isActive 
-        ? "bg-[#A6192E] text-white shadow-[0_0_0_4px_rgba(166,25,46,0.12)]" 
-        : "bg-white text-[#A6192E] border-2 border-[#A6192E]"
+        ? "bg-[#EB6664] text-white shadow-[0_0_0_4px_rgba(166,25,46,0.12)]" 
+        : "bg-white text-[#EB6664] border-2 border-[#EB6664]"
     }`}
     style={{ fontFamily: "Fraunces, serif" }}
   >
@@ -158,7 +209,7 @@ const StepCard = ({ step, index, isActive, onClick, isLast, activeIndex }) => {
           <div
             className="w-0.5 flex-1 min-h-[60px] md:min-h-[80px] mt-2 transition-all duration-300"
             style={{
-              backgroundColor: index < activeIndex ? "#A6192E" : "#A6192E40",
+              backgroundColor: index < activeIndex ? "#EB6664" : "#EB666440",
             }}
           />
         )}
@@ -167,7 +218,7 @@ const StepCard = ({ step, index, isActive, onClick, isLast, activeIndex }) => {
       {/* Right Column - Card Content */}
       <motion.div
         className={`flex-1 relative rounded-lg transition-all duration-300 overflow-hidden mb-3 md:mb-6 ${bgColor} ${
-          isActive ? "shadow-lg scale-[1.01] border-l-4 border-[#A6192E]" : "shadow-sm"
+          isActive ? "shadow-lg scale-[1.01] border-l-4 border-[#EB6664]" : "shadow-sm"
         }`}
         style={{
           boxShadow: isActive ? "0 12px 32px rgba(166,25,46,0.15)" : "0 4px 12px rgba(0,0,0,0.06)",
@@ -218,7 +269,7 @@ const HorizontalProgress = ({ steps, activeIndex, onStepClick }) => {
         <div className="absolute left-0 right-0 h-1 rounded-full top-6 bg-[#A6192E]/20" />
         <div
           className="absolute left-0 h-1 rounded-full transition-all duration-500 top-6"
-          style={{ width: `${progressWidth}%`, background: "linear-gradient(90deg, #A6192E, #3B6FA0)" }}
+          style={{ width: `${progressWidth}%`, background: "linear-gradient(90deg, #EB6664, #EB6664)" }}
         />
         
         {steps.map((step, idx) => (
@@ -232,7 +283,7 @@ const HorizontalProgress = ({ steps, activeIndex, onStepClick }) => {
                 idx === activeIndex ? "w-14 h-14 shadow-[0_0_0_4px_rgba(166,25,46,0.12)]" : "w-11 h-11"
               }`}
               style={{
-                border: `2px solid ${idx <= activeIndex ? "#A6192E" : "#A6192E40"}`,
+                border: `2px solid ${idx <= activeIndex ? "#EB6664" : "#EB6664"}`,
                 backgroundColor: idx === activeIndex ? "#A6192E10" : "white",
               }}
             >
@@ -240,7 +291,7 @@ const HorizontalProgress = ({ steps, activeIndex, onStepClick }) => {
                 className={`font-bold ${idx === activeIndex ? "text-xl" : "text-base"}`}
                 style={{
                   fontFamily: "Fraunces, serif",
-                  color: idx <= activeIndex ? "#A6192E" : "#A6192E60",
+                  color: idx <= activeIndex ? "#EB6664" : "#EB6664",
                 }}
               >
                 {step.id}
@@ -248,7 +299,7 @@ const HorizontalProgress = ({ steps, activeIndex, onStepClick }) => {
             </div>
             <span
               className={`text-[9px] font-medium whitespace-nowrap transition-all duration-300 hidden xl:block ${
-                idx === activeIndex ? "text-[#A6192E] opacity-100" : "text-[#7A6E5A] opacity-60"
+                idx === activeIndex ? "text-[#EB6664] opacity-100" : "text-[#7A6E5A] opacity-60"
               }`}
               style={{ fontFamily: "monospace", letterSpacing: "0.08em" }}
             >
@@ -257,7 +308,7 @@ const HorizontalProgress = ({ steps, activeIndex, onStepClick }) => {
             {idx === activeIndex && (
               <motion.div
                 layoutId="activeDot"
-                className="w-1.5 h-1.5 rounded-full absolute -bottom-4 bg-[#A6192E]"
+                className="w-1.5 h-1.5 rounded-full absolute -bottom-4 bg-[#EB6664]"
               />
             )}
           </button>
@@ -314,10 +365,10 @@ export default function NotebookJourney() {
   return (
     <section
       id="journey-section"
-      className="relative overflow-hidden min-h-screen py-[clamp(40px,6vw,100px)] px-[clamp(16px,5vw,60px)] bg-[#F9F5ED]"
-      style={{ paddingBottom: isMobile ? "100px" : "clamp(60px,8vw,100px)" }}
+      className="relative overflow-hidden min-h-screen py-[clamp(40px,6vw,50px)] px-[clamp(16px,5vw,50px)] bg-[#FBF7F2]"
+      style={{ paddingBottom: isMobile ? "0px" : "clamp(60px,8vw,50px)" }}
     >
-      <RuledLines />
+      <UnevenGrid />
 
       {/* Decorative corner doodles */}
       <div className="absolute top-4 right-4 md:top-8 md:right-8 opacity-10 pointer-events-none hidden sm:block">
@@ -344,20 +395,20 @@ export default function NotebookJourney() {
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
-          <div className="flex items-center justify-start gap-2 md:gap-3 mb-3 md:mb-4 flex-wrap">
+          {/* <div className="flex items-center justify-start gap-2 md:gap-3 mb-3 md:mb-4 flex-wrap">
             <div className="w-6 md:w-8 h-[2px] bg-[#A6192E]" />
-            <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-[#A6192E]">
+            <span className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] text-[#A6192E]">
               Your Path to Success
             </span>
             <Stamp text="JOURNEY" color="#3B6FA0" rotate={3} />
-          </div>
+          </div> */}
 
           <h2
             className="font-black leading-[1.1] mb-2 md:mb-3 text-[#1C1209] text-[clamp(24px,5vw,52px)]"
             style={{ fontFamily: "Fraunces, Georgia, serif" }}
           >
             Esperly's{" "}
-            <span className="bg-gradient-to-r from-[#FFEB3B] via-[#FFEB3B] to-transparent px-1">
+            <span className="bg-gradient-to-r from-[#FFEB3B] via-[#FFEB3B] to-transparent px-1 text-[#EB6664]" style={{ backgroundSize: "100% 0.3em", backgroundPosition: "0 100%", backgroundRepeat: "no-repeat" }}>
               Structured Onboarding
             </span>
           </h2>
@@ -367,7 +418,7 @@ export default function NotebookJourney() {
           </p>
 
           <div className="flex justify-center mt-2">
-            <ScribbleUnderline color="#A6192E" width="160px" />
+            <ScribbleUnderline color="#EB6664" width="160px" />
           </div>
         </div>
 
@@ -380,8 +431,8 @@ export default function NotebookJourney() {
 
         {/* Mobile Current Step Title */}
         <div className="lg:hidden text-center mb-6">
-          <div className="inline-block px-3 py-1 rounded-full mb-2 bg-[#A6192E]/10">
-            <span className="font-mono text-xs font-bold text-[#A6192E]">
+          <div className="inline-block px-3 py-1 rounded-full mb-2 bg-[#EB6664]/10">
+            <span className="font-mono text-xs font-bold text-[#EB6664]">
               Step {activeStep + 1}
             </span>
           </div>
@@ -393,7 +444,7 @@ export default function NotebookJourney() {
         {/* Vertical Timeline Steps - ALL STEPS VISIBLE ON MOBILE */}
         <div className="relative">
           {/* Vertical timeline line */}
-          <div className="absolute left-[23px] md:left-[27px] top-0 bottom-0 w-0.5 rounded-full bg-[#A6192E]/20 hidden sm:block" />
+          <div className="absolute left-[23px] md:left-[27px] top-0 bottom-0 w-0.5 rounded-full bg-[#EB6664]/20 hidden sm:block" />
 
           {steps.map((step, idx) => (
             <StepCard
@@ -413,9 +464,9 @@ export default function NotebookJourney() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-8 md:mt-12 pt-6 md:pt-8 border-t border-[#A6192E]/15"
+          className="text-center mt-8 md:mt-12 pt-3 border-t border-[#A6192E]/15"
         >
-          <button className="px-6 md:px-8 py-2.5 md:py-3 rounded-md font-bold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 bg-[#A6192E] text-white text-[clamp(13px,1.2vw,16px)]" style={{ fontFamily: "Fraunces, serif", letterSpacing: "0.05em" }}>
+          <button className="px-6 md:px-8 py-2.5 md:py-3 rounded-md font-bold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95 bg-[#EB6664] text-white text-[clamp(13px,1.2vw,16px)]" style={{ fontFamily: "Fraunces, serif", letterSpacing: "0.05em" }}>
             Start Your Journey →
           </button>
           <p className="text-[9px] md:text-[10px] font-mono mt-3 text-[#7A6E5A] tracking-[0.1em]">

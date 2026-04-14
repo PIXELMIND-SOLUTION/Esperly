@@ -28,7 +28,7 @@ const Home = () => {
     return (
         <>
             <Navbar />
-            <NavImage />
+            {/* <NavImage /> */}
             {/* <Hero /> */}
             <HeroPage />
             <PillarsPage />

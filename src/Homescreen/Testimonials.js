@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useInView } from "motion/react";
 
 /* ─── COLOUR TOKENS ─────────────────────────────────────────── */
-const PAPER = "#F9F5ED";
+const PAPER = "#FBF7F2";
 const PAPER2 = "#F2EBD9";
 const RULED = "#D6CEBA";
 const INK = "#1C1209";
@@ -67,6 +67,57 @@ const RuledLines = ({ count = 20, topOffset = 60, gap = 26 }) => (
   </div>
 );
 
+const UnevenGrid = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="w-full h-full">
+        <defs>
+          <pattern
+            id="unevenGrid"
+            width="100"   // ⬅️ increased size
+            height="100"  // ⬅️ increased size
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Horizontal lines */}
+            <path
+              d="M0 25 Q50 30 100 25"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M0 75 Q50 70 100 75"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+
+            {/* Vertical lines */}
+            <path
+              d="M25 0 Q30 50 25 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+            <path
+              d="M75 0 Q70 50 75 100"
+              stroke="#1C1209"
+              strokeWidth="0.7"
+              opacity="0.2"
+              fill="none"
+            />
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
+      </svg>
+    </div>
+  );
+};
+
 const TestimonialCard = ({ t }) => (
   <motion.div key={t.name}
     initial={{ opacity: 0, x: 40 }}
@@ -80,7 +131,7 @@ const TestimonialCard = ({ t }) => (
       boxShadow: `3px 6px 24px ${t.accentColor}20`,
     }}
   >
-    <RuledLines count={14} topOffset={0} gap={28} />
+    {/* <UnevenGrid /> */}
     <div style={{ position: "absolute", top: -6, left: "50%", transform: "translateX(-50%)", zIndex: 4 }}>
       <div style={{
         width: 14, height: 14, borderRadius: "50%",
@@ -263,22 +314,22 @@ const TestimonialBlock = ({
 }) => (
   <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 2 }}>
     <FadeUp style={{ textAlign: "center", marginBottom: "clamp(28px,4vw,48px)" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 12 }}>
-        <div style={{ width: 20, height: 2, background: "#A6192E" }} />
-        <span style={{ fontFamily: "monospace", fontSize: "clamp(9px,1vw,12px)", color: "#A6192E", letterSpacing: "0.22em", textTransform: "uppercase" }}>
+      {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "start", gap: 12, marginBottom: 12 }}>
+        <div style={{ width: 20, height: 2, background: "#EB6664" }} />
+        <span style={{ fontFamily: "bold", fontSize: "clamp(9px,1vw,12px)", color: "#EB6664", letterSpacing: "0.22em", textTransform: "uppercase" }}>
           {label}
         </span>
-        <div style={{ width: 20, height: 2, background: "#A6192E" }} />
-      </div>
+        <div style={{ width: 20, height: 2, background: "#EB6664" }} />
+      </div> */}
       <h2 style={{
         fontFamily: "Fraunces, Georgia, serif",
         fontSize: "clamp(24px,3.8vw,50px)", fontWeight: 900,
         color: INK, lineHeight: 1.05, letterSpacing: "-0.02em",
       }}>
         {heading}{" "}
-        <span style={{ color: "#A6192E", fontStyle: "italic" }}>{headingAccent}</span>
+        <span style={{ color: "#EB6664", fontStyle: "italic" }}>{headingAccent}</span>
       </h2>
-      <ScribbleUnderline color={"#A6192E"} width="clamp(140px,20vw,240px)" style={{ margin: "8px auto 0" }} />
+      <ScribbleUnderline color={"#EB6664"} width="clamp(140px,20vw,240px)" style={{ margin: "8px auto 0" }} />
     </FadeUp>
 
     <AnimatePresence mode="wait">
@@ -328,7 +379,7 @@ const TestimonialBlock = ({
 const SectionDivider = () => (
   <div style={{
     display: "flex", alignItems: "center", gap: 16,
-    maxWidth: 780, margin: "clamp(40px,6vw,72px) auto",
+    maxWidth: 780, margin: "clamp(40px,6vw,50px) auto",
     position: "relative", zIndex: 2,
   }}>
     <div style={{ flex: 1, height: 1, background: RULED }} />
@@ -358,12 +409,12 @@ export default function Testimonioals() {
 
   return (
     <section style={{
-      padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
+      padding: "clamp(48px,7vw,50px) clamp(20px,5vw,50px)",
       position: "relative",
       overflow: "hidden",
       background: PAPER,
     }}>
-      <RuledLines count={60} topOffset={0} gap={26} />
+      <UnevenGrid />
 
       {/* Decorative overlays */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
