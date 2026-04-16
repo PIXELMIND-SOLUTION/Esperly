@@ -12,7 +12,7 @@ const navItems = [
 const moreItems = [
   { label: "About Us", path: "/aboutus" },
   { label: "Contact", path: "/contact" },
-  { label: "FAQ", path: "/faq" },
+  { label: "FAQ", path: "/faqs" },
 ];
 
 const Navbar = () => {

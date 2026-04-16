@@ -254,7 +254,7 @@ const Contact = () => {
                 }}
             >
                 {/* Graph Paper Grid Background */}
-                <UnevenGrid size={16} majorEvery={5} />
+                <UnevenGrid  />
 
                 {/* Graph paper blue coordinate axis hint */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.03]">

@@ -13,8 +13,8 @@ const navItems = [
 /* ─── MORE Items ──────────────── */
 const moreItems = [
   { label: "About Us", path: "/aboutus" },
-  { label: "Courses", path: "/courses" },
   { label: "Contact", path: "/contact" },
+  { label: "FAQ's", path: "/faqs" },
 ];
 
 const Header = () => {
@@ -102,8 +102,8 @@ const Header = () => {
 
               <div
                 className={`absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300 ${moreOpen
-                    ? "opacity-100 translate-y-0 visible"
-                    : "opacity-0 -translate-y-2 invisible"
+                  ? "opacity-100 translate-y-0 visible"
+                  : "opacity-0 -translate-y-2 invisible"
                   }`}
               >
                 {moreItems.map((item) => (
