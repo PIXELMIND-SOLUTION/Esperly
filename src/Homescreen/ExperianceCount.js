@@ -172,21 +172,21 @@ const MetricChip = ({ m, index }) => {
   const colors = [RED, BLUE, GREEN, RED];
   const c = colors[index % colors.length];
 
-  const numericValue = parseInt(m.value.replace(/[^0-9]/g, "")) || 0;
-  const counter = useCounter(numericValue, 1200, 0, inView);
+  const numericValue = parseFloat(m.value.replace(/[^0-9.]/g, "")) || 0;
+  const counter = useCounter(numericValue * 10, 1200, 0, inView);
 
-  const displayValue = m.value.includes("%")
-    ? `${counter}%`
+  /* ⭐ FIXED DISPLAY LOGIC */
+  const displayValue = m.label === "Mentor Rating"
+    ? `${(counter / 10).toFixed(1)} ⭐`
+    : m.value.includes("%")
+    ? `${Math.floor(counter)}%`
     : m.value.includes("₹")
-    ? `₹${counter}`
-    : m.value.includes("★")
-    ? `${(counter / 10).toFixed(1)}★`
+    ? `₹${Math.floor(counter)}`
     : m.value.includes("×")
-    ? `${counter}×`
-    : counter;
+    ? `${Math.floor(counter)}×`
+    : Math.floor(counter);
 
-  const LINE_SPACING = 22;
-  const NUM_CARD_LINES = 9;
+  const rotations = [-2, 1.5, -1.5, 2]; // sticky tilt
 
   return (
     <motion.div
@@ -195,89 +195,74 @@ const MetricChip = ({ m, index }) => {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       whileHover={{
         y: -6,
-        scale: 1.03,
-        boxShadow: `0px 12px 28px ${c}40`,
+        scale: 1.04,
+        rotate: 0,
+        boxShadow: `0px 14px 30px ${c}30`,
       }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
       style={{
         background: PAPER,
         border: `1px solid ${RULED}`,
-        borderRadius: 3,
-        padding: "clamp(16px,2vw,24px) clamp(14px,2vw,50px) clamp(14px,2vw,50px)",
+        borderRadius: 4,
+        padding: "clamp(16px,2vw,22px)",
         textAlign: "center",
         position: "relative",
         overflow: "hidden",
         cursor: "pointer",
-        /* subtle page-curl shadow */
-        boxShadow: "2px 3px 8px rgba(0,0,0,0.08), inset 0 0 0 0.5px rgba(255,255,255,0.6)",
+
+        /* ✨ STICKY NOTE FEEL */
+        transform: `rotate(${rotations[index]}deg)`,
+        boxShadow: `
+          3px 6px 0 ${c}30,
+          0 10px 25px rgba(0,0,0,0.15)
+        `,
       }}
     >
-      {/* Accent top bar */}
+      {/* 📌 TOP PIN */}
+      <div
+        style={{
+          position: "absolute",
+          top: -10,
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontSize: 14,
+        }}
+      >
+        📌
+      </div>
+
+      {/* TOP STRIP */}
       <div
         style={{
           position: "absolute",
           top: 0,
           left: 0,
           right: 0,
-          height: 4,
+          height: 6,
           background: c,
         }}
       />
 
-      {/* Card-level ruled lines */}
-      {Array.from({ length: NUM_CARD_LINES }, (_, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 20 + i * LINE_SPACING,
-            height: "1px",
-            background: RULED,
-            opacity: 0.55,
-          }}
-        />
-      ))}
-
-      {/* Left margin rule on card */}
+      {/* LIGHT PAPER TEXTURE */}
       <div
         style={{
           position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: 28,
-          width: "1px",
-          background: MARGIN_LINE,
-          opacity: 0.45,
+          inset: 0,
+          opacity: 0.05,
+          background:
+            "repeating-linear-gradient(0deg, transparent, transparent 20px, #000 21px)",
         }}
       />
 
-      {/* Symbol watermark */}
-      <div
-        style={{
-          fontFamily: "monospace",
-          fontSize: 11,
-          color: c,
-          letterSpacing: "0.15em",
-          position: "absolute",
-          top: 8,
-          right: 10,
-          opacity: 0.45,
-        }}
-      >
-        {m.symbol}
-      </div>
-
-      {/* Animated number */}
+      {/* VALUE */}
       <p
         style={{
           fontFamily: "Fraunces, Georgia, serif",
-          fontSize: "clamp(28px,4vw,44px)",
+          fontSize: "clamp(28px,4vw,42px)",
           fontWeight: 900,
           color: c,
           lineHeight: 1,
-          marginTop: 12,
+          marginTop: 16,
           position: "relative",
           zIndex: 1,
         }}
@@ -285,7 +270,7 @@ const MetricChip = ({ m, index }) => {
         {displayValue}
       </p>
 
-      {/* Label */}
+      {/* LABEL */}
       <p
         style={{
           fontFamily: "monospace",
@@ -300,7 +285,7 @@ const MetricChip = ({ m, index }) => {
         {m.label}
       </p>
 
-      {/* Sub */}
+      {/* SUBTEXT */}
       <p
         style={{
           fontSize: "clamp(9px,1vw,10px)",
@@ -314,16 +299,16 @@ const MetricChip = ({ m, index }) => {
         {m.sub}
       </p>
 
-      {/* Bottom torn-edge hint */}
+      {/* TORN EDGE EFFECT */}
       <div
         style={{
           position: "absolute",
           bottom: 0,
           left: 0,
           right: 0,
-          height: 3,
+          height: 4,
           background: `repeating-linear-gradient(90deg, ${RULED} 0px, ${RULED} 6px, transparent 6px, transparent 10px)`,
-          opacity: 0.5,
+          opacity: 0.6,
         }}
       />
     </motion.div>

@@ -279,7 +279,7 @@ const PillarCard = ({ p, index }) => {
       <WashiTape rotate={index % 2 === 0 ? -3 : 3} />
 
       {/* Ruled lines inside card */}
-      <div className="absolute inset-0 overflow-hidden rounded-[3px] pointer-events-none">
+      {/* <div className="absolute inset-0 overflow-hidden rounded-[3px] pointer-events-none">
         {Array.from({ length: 8 }, (_, i) => (
           <div
             key={i}
@@ -287,7 +287,7 @@ const PillarCard = ({ p, index }) => {
             style={{ top: 44 + i * 22, background: p.accent + "22" }}
           />
         ))}
-      </div>
+      </div> */}
 
       {/* Card number */}
       <div
