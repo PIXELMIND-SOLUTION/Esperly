@@ -100,9 +100,9 @@ const TuitionsDropdown = ({ open }) => {
         {/* Sub-items panel */}
         {activeGroup && (
           <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
-            <li className="px-4 py-1.5 text-xs font-bold text-[#EB6664] uppercase tracking-widest">
+            {/* <li className="px-4 py-1.5 text-xs font-bold text-[#EB6664] uppercase tracking-widest">
               {activeGroup}
-            </li>
+            </li> */}
             {tuitionsMenu
               .find((g) => g.label === activeGroup)
               ?.items.map((item) => (

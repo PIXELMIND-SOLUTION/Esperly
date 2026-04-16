@@ -260,7 +260,7 @@ const Contact = () => {
                                     {/* Phone Field */}
                                     <div>
                                         <label className="block text-xs font-semibold text-[#3A2E1A] tracking-wide mb-1.5 uppercase">
-                                            Phone Number
+                                            Contact Number
                                             <span className="text-[#EB6664] ml-0.5">*</span>
                                         </label>
                                         <input
