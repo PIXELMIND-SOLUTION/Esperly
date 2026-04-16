@@ -619,7 +619,7 @@ const BookSection = () => {
           backgroundPositionY: "32px",
         }}
       >
-        <UnevenGrid/>
+        {/* <UnevenGrid/> */}
         {/* Ambient blobs — matching Pillars */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute rounded-full" style={{

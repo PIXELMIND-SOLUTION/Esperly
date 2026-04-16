@@ -336,7 +336,7 @@ export default function ExperianceCount() {
       }}
     >
       {/* Full-section notebook background */}
-      <UnevenGrid />
+      {/* <UnevenGrid /> */}
 
       {/* Decorative paperclip */}
       <div style={{ position: "absolute", top: 8, right: 28, opacity: 0.28, zIndex: 3 }}>

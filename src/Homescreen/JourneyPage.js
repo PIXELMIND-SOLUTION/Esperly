@@ -368,7 +368,7 @@ export default function NotebookJourney() {
       className="relative overflow-hidden min-h-screen py-[clamp(40px,6vw,50px)] px-[clamp(16px,5vw,50px)] bg-[#FBF7F2]"
       style={{ paddingBottom: isMobile ? "0px" : "clamp(60px,8vw,50px)" }}
     >
-      <UnevenGrid />
+      {/* <UnevenGrid /> */}
 
       {/* Decorative corner doodles */}
       <div className="absolute top-4 right-4 md:top-8 md:right-8 opacity-10 pointer-events-none hidden sm:block">
@@ -444,7 +444,7 @@ export default function NotebookJourney() {
         {/* Vertical Timeline Steps - ALL STEPS VISIBLE ON MOBILE */}
         <div className="relative">
           {/* Vertical timeline line */}
-          <div className="absolute left-[23px] md:left-[27px] top-0 bottom-0 w-0.5 rounded-full bg-[#EB6664]/20 hidden sm:block" />
+          {/* <div className="absolute left-[23px] md:left-[27px] top-0 bottom-0 w-0.5 rounded-full bg-[#EB6664]/20 hidden sm:block" /> */}
 
           {steps.map((step, idx) => (
             <StepCard

@@ -340,7 +340,7 @@ export default function PillarsSection() {
         background: "#FBF7F2",
       }}
     >
-      <UnevenGrid count={30} topOffset={0} gap={26} />
+      {/* <UnevenGrid count={30} topOffset={0} gap={26} /> */}
 
       {/* Decorative blobs */}
       <div className="absolute inset-0 pointer-events-none">

@@ -166,15 +166,15 @@ const TestimonialCarousel = ({
   }, [isClient, direction, speed, testimonials.length]);
 
   return (
-    <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative bg-[#F2EBD9] overflow-hidden">
+    <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative bg-[#FBF7F2] overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* <div className="absolute inset-0 pointer-events-none">
         <div className="absolute w-64 h-64 sm:w-80 sm:h-80 rounded-full blur-[100px] opacity-10 top-[-10%] right-[-5%]" style={{ background: `radial-gradient(circle, ${accentColor}, transparent)` }} />
         <div className="absolute w-48 h-48 sm:w-60 sm:h-60 rounded-full blur-[80px] opacity-8 bottom-0 left-[10%]" style={{ background: `radial-gradient(circle, ${accentColor}, transparent)` }} />
-      </div>
+      </div> */}
 
       {/* Grid pattern overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-5">
+      {/* <div className="absolute inset-0 pointer-events-none opacity-5">
         <svg className="w-full h-full">
           <defs>
             <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -183,7 +183,7 @@ const TestimonialCarousel = ({
           </defs>
           <rect width="100%" height="100%" fill="url(#grid-pattern)" />
         </svg>
-      </div>
+      </div> */}
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}

@@ -171,7 +171,7 @@ export function TrustedSection() {
       overflow: "hidden",
       fontFamily: "sans-serif",
     }}>
-      <UnevenGrid />
+      {/* <UnevenGrid /> */}
 
       {/* Soft glow blobs */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -256,13 +256,12 @@ export function SupportSection() {
   return (
     <section style={{
       background: PAPER,
-      borderTop: `1px solid ${RULED}`,
       padding: "clamp(40px,6vw,80px) clamp(20px,5vw,64px)",
       position: "relative",
       overflow: "hidden",
       fontFamily: "sans-serif",
     }}>
-      <UnevenGrid />
+      {/* <UnevenGrid /> */}
 
       {/* Glow blobs */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>

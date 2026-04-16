@@ -5,40 +5,87 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import NavImage from "../../components/NavImage";
 
-/* SAME GRID BACKGROUND */
-const UnevenGrid = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden">
-    <svg className="w-full h-full">
-      <defs>
-        <pattern id="unevenGrid" width="100" height="100" patternUnits="userSpaceOnUse">
-          <path d="M0 25 Q50 30 100 25" stroke="#1C1209" strokeWidth="0.7" opacity="0.2" fill="none" />
-          <path d="M0 75 Q50 70 100 75" stroke="#1C1209" strokeWidth="0.7" opacity="0.2" fill="none" />
-          <path d="M25 0 Q30 50 25 100" stroke="#1C1209" strokeWidth="0.7" opacity="0.2" fill="none" />
-          <path d="M75 0 Q70 50 75 100" stroke="#1C1209" strokeWidth="0.7" opacity="0.2" fill="none" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#unevenGrid)" />
-    </svg>
-  </div>
-);
-
-/* FAQ DATA */
+/* FAQ DATA - Updated with Esperly content */
 const faqs = [
   {
-    q: "What services do you provide?",
-    a: "We provide full-stack development, UI/UX design, and scalable cloud solutions tailored to your business."
+    q: "What is Esperly, and how does it work?",
+    a: "Esperly is an online tuition platform offering one-on-one personalized classes for students from Class 1 to 12. Our experienced tutors provide interactive lessons designed to help each student learn effectively at their own pace."
   },
   {
-    q: "How long does a project take?",
-    a: "Depending on scope, most projects take between 2–8 weeks."
+    q: "Which classes and boards does Esperly support?",
+    a: "We support all major boards, including CBSE, ICSE, State Boards, and international curricula, for students from Class 1 to 12."
   },
   {
-    q: "Do you offer support after delivery?",
-    a: "Yes, we provide ongoing support, maintenance, and upgrades."
+    q: "Which subjects are available?",
+    a: "We cover all major subjects, including Mathematics, Science, English, Social Studies, and more, based on your child's board and grade."
   },
   {
-    q: "What technologies do you use?",
-    a: "We use modern stacks like React, Node.js, MongoDB, and cloud platforms."
+    q: "How is one-on-one tuition better than group classes?",
+    a: "One-on-one tuition ensures personalized attention, faster doubt resolution, and lessons tailored to your child's pace and learning style."
+  },
+  {
+    q: "Can Esperly help with exam preparation?",
+    a: "Yes. We provide board exam preparation, competitive exam guidance, and regular assessments to track your child's progress."
+  },
+  {
+    q: "How are tutors selected and trained?",
+    a: "All tutors are experienced, qualified educators trained to deliver engaging, interactive online lessons."
+  },
+  {
+    q: "Can I choose my child's tutor?",
+    a: "Yes. Tutors are matched based on subject, grade, and learning preferences."
+  },
+  {
+    q: "What if my child and the tutor are not a good fit?",
+    a: "We offer tutor reassignment to ensure your child receives the most suitable guidance."
+  },
+  {
+    q: "Are tutors available for extra doubt-clearing sessions?",
+    a: "Yes. Tutors can provide additional sessions if scheduled in advance."
+  },
+  {
+    q: "How do tutors personalize the learning experience?",
+    a: "Tutors assess your child's strengths and areas for improvement and design lessons to build understanding, confidence, and curiosity."
+  },
+  {
+    q: "How long is each session, and how often can my child attend?",
+    a: "Sessions typically last 30–60 minutes, with flexible frequency based on your child's needs."
+  },
+  {
+    q: "Can classes be scheduled according to my child's convenience?",
+    a: "Yes. Esperly offers flexible scheduling, including weekdays and weekends."
+  },
+  {
+    q: "Can I reschedule or cancel a class?",
+    a: "Yes. Classes can be rescheduled with prior notice."
+  },
+  {
+    q: "Is a trial class available?",
+    a: "Yes. Every student can book a trial class before enrolling in a package."
+  },
+  {
+    q: "Can international students attend classes?",
+    a: "Yes. Esperly is accessible globally, allowing students from any location or time zone to join."
+  },
+  {
+    q: "What devices or software are needed?",
+    a: "You can attend classes on a computer, tablet, or smartphone with a stable internet connection. No extra software is required."
+  },
+  {
+    q: "Is the platform safe for children?",
+    a: "Yes. Our platform is secure, private, and child-friendly."
+  },
+  {
+    q: "How can I track my child's progress?",
+    a: "Parents receive regular updates, performance reports, and feedback to monitor learning outcomes."
+  },
+  {
+    q: "Do students get assignments or practice material?",
+    a: "Yes. Tutors provide worksheets, practice questions, and notes to reinforce learning."
+  },
+  {
+    q: "How can I communicate with the tutor outside class?",
+    a: "Tutors are available for clarifications or guidance via the platform between sessions."
   }
 ];
 
@@ -48,13 +95,13 @@ const FAQItem = ({ item, i, openIndex, setOpenIndex }) => {
 
   return (
     <div
-      className="border border-[#EB666420] bg-[#FCFAF5] rounded-lg overflow-hidden"
+      className="border border-[#EB6664]/20 bg-white rounded-lg overflow-hidden"
     >
       <button
         onClick={() => setOpenIndex(isOpen ? null : i)}
         className="w-full flex justify-between items-center p-4 sm:p-5 text-left"
       >
-        <span className="font-mono text-[clamp(12px,1.2vw,14px)] text-[#1C1209]">
+        <span className="text-[clamp(14px,1.2vw,16px)] text-[#1C1209] font-normal">
           {item.q}
         </span>
 
@@ -63,16 +110,17 @@ const FAQItem = ({ item, i, openIndex, setOpenIndex }) => {
         </span>
       </button>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scaleY: 0 }}
+            animate={{ opacity: 1, scaleY: 1 }}
+            exit={{ opacity: 0, scaleY: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{ transformOrigin: "top" }}
             className="px-4 sm:px-5 pb-4"
           >
-            <p className="font-mono text-[clamp(11px,1.1vw,13px)] text-[#7A6E5A] leading-relaxed">
+            <p className="text-[clamp(13px,1.1vw,14px)] text-[#5a5a5a] leading-relaxed">
               {item.a}
             </p>
           </motion.div>
@@ -94,14 +142,11 @@ const FAQPage = () => {
       <NavImage />
 
       <section
-        className="relative overflow-hidden"
+        className="relative overflow-hidden bg-white"
         style={{
-          backgroundColor: "#FBF7F2",
           padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
         }}
       >
-        <UnevenGrid />
-
         <div className="max-w-[900px] mx-auto relative z-[2]">
 
           {/* HEADER */}
@@ -112,12 +157,12 @@ const FAQPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-[clamp(40px,6vw,64px)]"
           >
-            <h2 className="font-['Fraunces'] text-[clamp(28px,4.5vw,48px)] font-black text-[#1C1209]">
-              Frequently Asked <span className="text-[#EB6664] italic">Questions</span>
+            <h2 className="text-[clamp(28px,4.5vw,48px)] font-bold text-[#1C1209]">
+              Frequently Asked <span className="text-[#EB6664]">Questions</span>
             </h2>
 
-            <p className="font-mono text-[clamp(11px,1.2vw,13px)] text-[#7A6E5A] mt-3">
-              [ FAQ ] → Find answers to common queries
+            <p className="text-[clamp(13px,1.2vw,14px)] text-[#7A6E5A] mt-3 font-normal">
+              Everything you need to know about Esperly
             </p>
           </motion.div>
 
