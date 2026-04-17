@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView } from "motion/react";
 
-/* ─── COLOUR TOKENS (shared with Pillars theme) ─────────────── */
+/* ─── COLOUR TOKENS (kept only for SVG/gradient/dynamic values Tailwind can't handle) ─── */
 const PAPER  = "#FBF7F2";
 const RULED  = "#D6CEBA";
 const INK    = "#1C1209";
@@ -11,7 +11,7 @@ const BLUE   = "#3B6FA0";
 const TAPE   = "rgba(200,195,170,0.55)";
 const PENCIL = "#8C7B6B";
 
-const FLIP_MS      = 700;
+const FLIP_MS       = 700;
 const AUTO_INTERVAL = 4200;
 
 /* ─── CURRICULUM DATA ────────────────────────────────────────── */
@@ -66,7 +66,7 @@ const chapters = [
   },
 ];
 
-/* ─── SHARED DECORATIVE COMPONENTS (Pillars theme) ──────────── */
+/* ─── SHARED DECORATIVE COMPONENTS ──────────────────────────── */
 
 const WashiTape = ({ rotate = -2, color = TAPE, width = 52 }) => (
   <div
@@ -87,85 +87,19 @@ const ScribbleUnderline = ({ color = RED, style = {} }) => (
   </svg>
 );
 
-const UnevenGrid = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      <svg className="w-full h-full">
-        <defs>
-          <pattern
-            id="unevenGrid"
-            width="100"   // ⬅️ increased size
-            height="100"  // ⬅️ increased size
-            patternUnits="userSpaceOnUse"
-          >
-            {/* Horizontal lines */}
-            <path
-              d="M0 25 Q50 30 100 25"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-            <path
-              d="M0 75 Q50 70 100 75"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-
-            {/* Vertical lines */}
-            <path
-              d="M25 0 Q30 50 25 100"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-            <path
-              d="M75 0 Q70 50 75 100"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-          </pattern>
-        </defs>
-
-        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
-      </svg>
-    </div>
-  );
-};
-
-const Stamp = ({ text, color = RED, rotate = -8 }) => (
-  <div
-    className="inline-block rounded font-mono font-bold uppercase tracking-[0.18em] opacity-75 shrink-0"
-    style={{
-      border: `2.5px solid ${color}`,
-      padding: "3px 10px",
-      fontSize: "clamp(9px,1vw,11px)",
-      color,
-      transform: `rotate(${rotate}deg)`,
-    }}
-  >
-    {text}
-  </div>
+const Highlight = ({ children, color = "#FFEB3B" }) => (
+  <span style={{ background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)`, paddingBottom: 2 }}>
+    {children}
+  </span>
 );
 
-const RuledLines = ({ count = 22, gap = 26, accent = RED }) => (
+const RuledLines = ({ count = 22, gap = 26 }) => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {Array.from({ length: count }, (_, i) => (
       <div key={i} className="absolute left-0 right-0 h-px" style={{ top: 52 + i * gap, background: RULED, opacity: 0.45 }} />
     ))}
     <div className="absolute top-0 bottom-0 w-[2px]" style={{ left: "clamp(20px,5vw,72px)", background: RED, opacity: 0.18 }} />
   </div>
-);
-
-const Highlight = ({ children, color = "#FFEB3B" }) => (
-  <span style={{ background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)`, paddingBottom: 2 }}>
-    {children}
-  </span>
 );
 
 const FadeUp = ({ children, delay = 0, className = "" }) => {
@@ -203,59 +137,78 @@ const PencilSVG = ({ size = 160, rotate = 5 }) => (
 
 /* ─── LEFT PAGE ──────────────────────────────────────────────── */
 const LeftPageContent = ({ ch }) => (
-  <div className="w-full h-full flex flex-col justify-center items-center text-center px-6 py-8 relative overflow-hidden" style={{ background: ch.pageColor }}>
-    <RuledLines count={22} gap={26} accent={ch.accent} />
+  <div
+    className="w-full h-full flex flex-col justify-center items-center text-center px-6 py-8 relative overflow-hidden"
+    style={{ background: ch.pageColor }}
+  >
+    <RuledLines count={22} gap={26} />
 
     {/* Ghost chapter number */}
     <div
-      className="absolute bottom-2 right-3 select-none pointer-events-none"
-      style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "clamp(60px,8vw,100px)", fontWeight: 900, color: ch.accent, opacity: 0.06, lineHeight: 1 }}
+      className="absolute bottom-2 right-3 select-none pointer-events-none leading-none"
+      style={{
+        fontFamily: "Fraunces, Georgia, serif",
+        fontSize: "clamp(60px,8vw,100px)",
+        fontWeight: 900,
+        color: ch.accent,
+        opacity: 0.06,
+      }}
     >
       {ch.number}
     </div>
 
-    {/* Washi tape */}
     <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
 
-    {/* Icon */}
-    <div className="relative z-10 text-4xl mb-3" style={{ color: ch.accent }}>{ch.icon}</div>
+    <div className="relative z-10 text-4xl mb-3 leading-none" style={{ color: ch.accent }}>
+      {ch.icon}
+    </div>
 
-    {/* Subject */}
     <h3
       className="relative z-10 font-black leading-tight mb-2"
-      style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "clamp(14px,1.8vw,22px)", color: INK }}
+      style={{
+        fontFamily: "Fraunces, Georgia, serif",
+        fontSize: "clamp(14px,1.8vw,22px)",
+        color: INK,
+      }}
     >
       {ch.subject}
     </h3>
 
-    {/* Tagline */}
-    <p className="relative z-10 italic mb-3" style={{ fontFamily: "DM Serif Display, Georgia, serif", fontSize: "clamp(10px,1vw,13px)", color: ch.accent, letterSpacing: "0.04em" }}>
+    <p
+      className="relative z-10 italic mb-3 tracking-[0.04em]"
+      style={{
+        fontFamily: "DM Serif Display, Georgia, serif",
+        fontSize: "clamp(10px,1vw,13px)",
+        color: ch.accent,
+      }}
+    >
       {ch.tagline}
     </p>
 
-    {/* Scribble underline */}
     <ScribbleUnderline color={ch.accent} style={{ width: "70%", marginBottom: 12 }} />
 
-    {/* Description */}
     <p
       className="relative z-10 leading-relaxed mb-5"
-      style={{ fontFamily: "Georgia, serif", fontSize: "clamp(9px,0.95vw,12px)", color: FADED, maxWidth: 260 }}
+      style={{
+        fontFamily: "Georgia, serif",
+        fontSize: "clamp(9px,0.95vw,12px)",
+        color: FADED,
+        maxWidth: 260,
+      }}
     >
       {ch.description}
     </p>
 
-    {/* Stats */}
     <div className="relative z-10 flex gap-2 flex-wrap justify-center">
       {[ch.duration, ch.projects].map((s, i) => (
         <div
           key={i}
-          className="rounded px-3 py-1.5 font-mono font-bold"
+          className="rounded px-3 py-1.5 font-mono font-bold tracking-[0.06em]"
           style={{
             fontSize: "clamp(8px,0.8vw,11px)",
             color: ch.accent,
             background: `${ch.accent}10`,
             border: `1.5px solid ${ch.accent}30`,
-            letterSpacing: "0.06em",
           }}
         >
           {s}
@@ -268,14 +221,12 @@ const LeftPageContent = ({ ch }) => (
 /* ─── RIGHT PAGE ─────────────────────────────────────────────── */
 const RightPageContent = ({ ch }) => (
   <div className="w-full h-full flex flex-col px-20 py-6 relative overflow-hidden" style={{ background: PAPER }}>
-    <RuledLines count={22} gap={26} accent={ch.accent} />
+    <RuledLines count={22} gap={26} />
 
-    {/* Top washi */}
     <div className="absolute top-[-8px] right-10">
       <WashiTape rotate={2} color="rgba(160,200,255,0.5)" width={52} />
     </div>
 
-    {/* Chapter label */}
     <div
       className="relative z-10 mb-3 font-mono uppercase tracking-[0.2em]"
       style={{ fontSize: "clamp(8px,0.8vw,10px)", color: FADED }}
@@ -283,20 +234,29 @@ const RightPageContent = ({ ch }) => (
       Chapter {ch.number} · Curriculum
     </div>
 
-    {/* Section heading */}
     <h4
       className="relative z-10 mb-4 pb-3 border-b font-bold"
-      style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "clamp(11px,1.2vw,14px)", color: INK, borderColor: RULED }}
+      style={{
+        fontFamily: "Fraunces, Georgia, serif",
+        fontSize: "clamp(11px,1.2vw,14px)",
+        color: INK,
+        borderColor: RULED,
+      }}
     >
       What you'll learn
     </h4>
 
-    {/* Topics list */}
     <div className="relative z-10 flex flex-col gap-2 flex-1">
       {ch.topics.map((topic, i) => (
         <div key={i} className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: ch.accent, opacity: 0.85 }} />
-          <span className="flex-1" style={{ fontFamily: "Georgia, serif", fontSize: "clamp(9px,0.95vw,12px)", color: INK, lineHeight: 1.4 }}>
+          <div
+            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+            style={{ background: ch.accent, opacity: 0.85 }}
+          />
+          <span
+            className="flex-1"
+            style={{ fontFamily: "Georgia, serif", fontSize: "clamp(9px,0.95vw,12px)", color: INK, lineHeight: 1.4 }}
+          >
             {topic}
           </span>
           <div className="flex-1 border-b border-dotted" style={{ borderColor: RULED, marginBottom: 2 }} />
@@ -307,8 +267,10 @@ const RightPageContent = ({ ch }) => (
       ))}
     </div>
 
-    {/* Footer */}
-    <div className="relative z-10 flex justify-between items-center pt-3 mt-3 border-t" style={{ borderColor: RULED }}>
+    <div
+      className="relative z-10 flex justify-between items-center pt-3 mt-3 border-t"
+      style={{ borderColor: RULED }}
+    >
       <span className="font-mono tracking-[0.1em]" style={{ fontSize: 9, color: FADED }}>ESPERLY</span>
       <span style={{ fontFamily: "Georgia, serif", fontSize: 10, color: FADED, fontStyle: "italic" }}>
         pg. {ch.number}
@@ -319,26 +281,50 @@ const RightPageContent = ({ ch }) => (
 
 /* ─── BOOK SPINE ─────────────────────────────────────────────── */
 const Spine = ({ ch }) => (
-  <div className="w-full h-full flex flex-col items-center justify-center gap-2 relative overflow-hidden"
-    style={{ background: `linear-gradient(180deg, ${ch.accent}ee 0%, ${ch.accent}aa 100%)` }}>
-    <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.18) 0%, rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.12) 100%)" }} />
+  <div
+    className="w-full h-full flex flex-col items-center justify-center gap-2 relative overflow-hidden"
+    style={{ background: `linear-gradient(180deg, ${ch.accent}ee 0%, ${ch.accent}aa 100%)` }}
+  >
+    <div
+      className="absolute inset-0"
+      style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.18) 0%, rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.12) 100%)" }}
+    />
     {[...Array(7)].map((_, i) => (
-      <div key={i} className="relative z-10 rounded-full my-0.5"
-        style={{ width: 7, height: 7, background: "rgba(0,0,0,0.35)", boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 1px rgba(255,255,255,0.2)" }} />
+      <div
+        key={i}
+        className="relative z-10 rounded-full my-0.5"
+        style={{
+          width: 7, height: 7,
+          background: "rgba(0,0,0,0.35)",
+          boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 1px rgba(255,255,255,0.2)",
+        }}
+      />
     ))}
-    <span className="relative z-10" style={{
-      fontFamily: "Fraunces, Georgia, serif", fontSize: 9, fontWeight: 900,
-      color: "rgba(255,255,255,0.85)", letterSpacing: "0.18em",
-      writingMode: "vertical-rl", textOrientation: "mixed",
-      transform: "rotate(180deg)", textTransform: "uppercase",
-      maxHeight: 140, overflow: "hidden", whiteSpace: "nowrap",
-    }}>
+    <span
+      className="relative z-10 uppercase overflow-hidden whitespace-nowrap"
+      style={{
+        fontFamily: "Fraunces, Georgia, serif",
+        fontSize: 9, fontWeight: 900,
+        color: "rgba(255,255,255,0.85)",
+        letterSpacing: "0.18em",
+        writingMode: "vertical-rl",
+        textOrientation: "mixed",
+        transform: "rotate(180deg)",
+        maxHeight: 140,
+      }}
+    >
       {ch.subject}
     </span>
-    <span className="relative z-10 font-mono" style={{
-      fontSize: 8, color: "rgba(255,255,255,0.5)",
-      writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.12em",
-    }}>
+    <span
+      className="relative z-10 font-mono"
+      style={{
+        fontSize: 8,
+        color: "rgba(255,255,255,0.5)",
+        writingMode: "vertical-rl",
+        transform: "rotate(180deg)",
+        letterSpacing: "0.12em",
+      }}
+    >
       {ch.number}
     </span>
   </div>
@@ -346,24 +332,26 @@ const Spine = ({ ch }) => (
 
 /* ─── DESKTOP BOOK ───────────────────────────────────────────── */
 const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext }) => {
-  const ch = chapters[cur];
+  const ch     = chapters[cur];
   const chNext = chapters[nxt];
+
+  const btnStyle = {
+    background: PAPER,
+    border: `1.5px solid ${RULED}`,
+    color: INK,
+    boxShadow: "3px 3px 10px rgba(0,0,0,0.1)",
+    fontFamily: "Georgia, serif",
+  };
 
   return (
     <div className="flex items-center justify-center gap-4 lg:gap-8">
+
       {/* Prev button */}
       <motion.button
         whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
         onClick={onPrev} disabled={isFlipping}
         className="flex-shrink-0 flex items-center justify-center rounded-full text-lg disabled:opacity-40 transition-shadow"
-        style={{
-          width: "clamp(38px,4vw,52px)", height: "clamp(38px,4vw,52px)",
-          background: PAPER,
-          border: `1.5px solid ${RULED}`,
-          color: INK,
-          boxShadow: "3px 3px 10px rgba(0,0,0,0.1)",
-          fontFamily: "Georgia, serif",
-        }}
+        style={{ width: "clamp(38px,4vw,52px)", height: "clamp(38px,4vw,52px)", ...btnStyle }}
       >
         ←
       </motion.button>
@@ -372,59 +360,80 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
       <div className="relative" style={{ width: "clamp(360px,80vw,980px)", height: "clamp(320px,44vw,560px)" }}>
 
         {/* Drop shadow */}
-        <div className="absolute rounded-full pointer-events-none" style={{
-          bottom: -20, left: "6%", right: "6%", height: 28,
-          background: "rgba(0,0,0,0.14)", filter: "blur(16px)", zIndex: 0,
-        }} />
+        <div
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            bottom: -20, left: "6%", right: "6%", height: 28,
+            background: "rgba(0,0,0,0.14)",
+            filter: "blur(16px)",
+            zIndex: 0,
+          }}
+        />
 
         {/* Stacked pages illusion */}
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="absolute rounded-md" style={{
-            bottom: -(i + 1) * 2,
-            left: `calc(clamp(20px,2.5vw,32px) + ${i * 0.6}px)`,
-            right: -(i * 0.6),
-            height: "100%",
-            background: i % 2 === 0 ? "#EDE8DE" : "#E3DDD2",
-            zIndex: -i - 1,
-          }} />
+          <div
+            key={i}
+            className="absolute rounded-md"
+            style={{
+              bottom: -(i + 1) * 2,
+              left: `calc(clamp(20px,2.5vw,32px) + ${i * 0.6}px)`,
+              right: -(i * 0.6),
+              height: "100%",
+              background: i % 2 === 0 ? "#EDE8DE" : "#E3DDD2",
+              zIndex: -i - 1,
+            }}
+          />
         ))}
 
         {/* Book body */}
-        <div className="relative w-full h-full flex rounded-md overflow-visible z-10"
-          style={{ boxShadow: "0 16px 56px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)" }}>
+        <div
+          className="relative w-full h-full flex rounded-md overflow-visible z-10"
+          style={{ boxShadow: "0 16px 56px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)" }}
+        >
 
           {/* Spine */}
-          <div className="flex-shrink-0 rounded-l-md overflow-hidden relative z-10"
-            style={{ width: "clamp(22px,2.8vw,36px)", boxShadow: "inset -4px 0 12px rgba(0,0,0,0.22)" }}>
+          <div
+            className="flex-shrink-0 rounded-l-md overflow-hidden relative z-10"
+            style={{ width: "clamp(22px,2.8vw,36px)", boxShadow: "inset -4px 0 12px rgba(0,0,0,0.22)" }}
+          >
             <Spine ch={ch} />
           </div>
 
-          {/* Left page — static with cross-fade */}
+          {/* Left page — crossfade */}
           <div className="flex-1 relative overflow-hidden border-r z-10" style={{ borderColor: RULED }}>
-            <div className="absolute inset-0" style={{
-              opacity: isFlipping
-                ? (flipDir === "forward" ? Math.min(Math.abs(flipAngle) / 90, 1) : Math.min(flipAngle / 90, 1))
-                : 0,
-            }}>
+            <div
+              className="absolute inset-0"
+              style={{
+                opacity: isFlipping
+                  ? (flipDir === "forward" ? Math.min(Math.abs(flipAngle) / 90, 1) : Math.min(flipAngle / 90, 1))
+                  : 0,
+              }}
+            >
               <LeftPageContent ch={isFlipping ? chNext : ch} />
             </div>
-            <div className="absolute inset-0" style={{
-              opacity: isFlipping
-                ? (flipDir === "forward" ? Math.max(1 - Math.abs(flipAngle) / 90, 0) : Math.max(1 - flipAngle / 90, 0))
-                : 1,
-            }}>
+            <div
+              className="absolute inset-0"
+              style={{
+                opacity: isFlipping
+                  ? (flipDir === "forward" ? Math.max(1 - Math.abs(flipAngle) / 90, 0) : Math.max(1 - flipAngle / 90, 0))
+                  : 1,
+              }}
+            >
               <LeftPageContent ch={ch} />
             </div>
-            {/* Gutter shadow */}
-            <div className="absolute top-0 bottom-0 right-0 w-5 pointer-events-none z-10"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.04))" }} />
+            <div
+              className="absolute top-0 bottom-0 right-0 w-5 pointer-events-none z-10"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.04))" }}
+            />
           </div>
 
           {/* Right page + flip */}
           <div className="flex-1 relative overflow-visible z-20" style={{ perspective: 1800 }}>
+
             {/* Static underlayer */}
             <div className="absolute inset-0 z-0 rounded-r-md overflow-hidden">
-              {isFlipping && flipDir === "forward" && <RightPageContent ch={chNext} />}
+              {isFlipping && flipDir === "forward"  && <RightPageContent ch={chNext} />}
               {isFlipping && flipDir === "backward" && <RightPageContent ch={ch} />}
               {!isFlipping && <RightPageContent ch={ch} />}
             </div>
@@ -445,27 +454,38 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
                 }}
               >
                 {/* Front face */}
-                <div className="absolute inset-0 rounded-r-md overflow-hidden"
-                  style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
-                  <div className="absolute top-0 bottom-0 right-0 pointer-events-none z-10"
-                    style={{ width: "18%", background: `linear-gradient(90deg, transparent, rgba(0,0,0,${0.03 + 0.14 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)}))` }} />
-                  <div className="absolute top-0 bottom-0 left-0 pointer-events-none z-10"
-                    style={{ width: "14%", background: `linear-gradient(270deg, transparent, rgba(255,255,255,${0.06 + 0.16 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)}))` }} />
+                <div
+                  className="absolute inset-0 rounded-r-md overflow-hidden"
+                  style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+                >
+                  <div
+                    className="absolute top-0 bottom-0 right-0 pointer-events-none z-10"
+                    style={{ width: "18%", background: `linear-gradient(90deg, transparent, rgba(0,0,0,${0.03 + 0.14 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)}))` }}
+                  />
+                  <div
+                    className="absolute top-0 bottom-0 left-0 pointer-events-none z-10"
+                    style={{ width: "14%", background: `linear-gradient(270deg, transparent, rgba(255,255,255,${0.06 + 0.16 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)}))` }}
+                  />
                   {flipDir === "forward" ? <RightPageContent ch={ch} /> : <RightPageContent ch={chNext} />}
                 </div>
                 {/* Back face */}
-                <div className="absolute inset-0 rounded-r-md overflow-hidden"
-                  style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
-                  <div className="absolute top-0 bottom-0 left-0 pointer-events-none z-10"
-                    style={{ width: "22%", background: `linear-gradient(270deg, transparent, rgba(0,0,0,${0.04 + 0.15 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)}))` }} />
+                <div
+                  className="absolute inset-0 rounded-r-md overflow-hidden"
+                  style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                >
+                  <div
+                    className="absolute top-0 bottom-0 left-0 pointer-events-none z-10"
+                    style={{ width: "22%", background: `linear-gradient(270deg, transparent, rgba(0,0,0,${0.04 + 0.15 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)}))` }}
+                  />
                   {flipDir === "forward" ? <LeftPageContent ch={chNext} /> : <LeftPageContent ch={ch} />}
                 </div>
               </div>
             )}
 
-            {/* Gutter shadow */}
-            <div className="absolute top-0 bottom-0 left-0 w-5 pointer-events-none z-30 rounded-r-md"
-              style={{ background: "linear-gradient(270deg, transparent, rgba(0,0,0,0.04))" }} />
+            <div
+              className="absolute top-0 bottom-0 left-0 w-5 pointer-events-none z-30 rounded-r-md"
+              style={{ background: "linear-gradient(270deg, transparent, rgba(0,0,0,0.04))" }}
+            />
           </div>
         </div>
       </div>
@@ -475,14 +495,7 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
         whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
         onClick={onNext} disabled={isFlipping}
         className="flex-shrink-0 flex items-center justify-center rounded-full text-lg disabled:opacity-40"
-        style={{
-          width: "clamp(38px,4vw,52px)", height: "clamp(38px,4vw,52px)",
-          background: PAPER,
-          border: `1.5px solid ${RULED}`,
-          color: INK,
-          boxShadow: "3px 3px 10px rgba(0,0,0,0.1)",
-          fontFamily: "Georgia, serif",
-        }}
+        style={{ width: "clamp(38px,4vw,52px)", height: "clamp(38px,4vw,52px)", ...btnStyle }}
       >
         →
       </motion.button>
@@ -493,7 +506,7 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
 /* ─── MOBILE CARD ────────────────────────────────────────────── */
 const MobileCard = ({ ch, onNext, onPrev }) => {
   const [flipped, setFlipped] = useState(false);
-  const [anim, setAnim] = useState(false);
+  const [anim, setAnim]       = useState(false);
 
   const toggle = () => {
     if (anim) return;
@@ -514,16 +527,29 @@ const MobileCard = ({ ch, onNext, onPrev }) => {
         onClick={toggle}
       >
         {/* Front */}
-        <div className="absolute inset-0 rounded-lg overflow-hidden"
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", boxShadow: "4px 6px 24px rgba(0,0,0,0.15)" }}>
+        <div
+          className="absolute inset-0 rounded-lg overflow-hidden"
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            boxShadow: "4px 6px 24px rgba(0,0,0,0.15)",
+          }}
+        >
           <LeftPageContent ch={ch} />
           <div className="absolute bottom-4 left-0 right-0 text-center font-mono" style={{ fontSize: 11, color: FADED }}>
             Tap to see topics →
           </div>
         </div>
         {/* Back */}
-        <div className="absolute inset-0 rounded-lg overflow-hidden"
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)", boxShadow: "4px 6px 24px rgba(0,0,0,0.15)" }}>
+        <div
+          className="absolute inset-0 rounded-lg overflow-hidden"
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+            boxShadow: "4px 6px 24px rgba(0,0,0,0.15)",
+          }}
+        >
           <RightPageContent ch={ch} />
         </div>
       </div>
@@ -547,12 +573,12 @@ const MobileCard = ({ ch, onNext, onPrev }) => {
 
 /* ─── MAIN SECTION ───────────────────────────────────────────── */
 const BookSection = () => {
-  const [cur, setCur]           = useState(0);
-  const [nxt, setNxt]           = useState(1);
+  const [cur, setCur]               = useState(0);
+  const [nxt, setNxt]               = useState(1);
   const [isFlipping, setIsFlipping] = useState(false);
-  const [flipDir, setFlipDir]   = useState("forward");
-  const [flipAngle, setFlipAngle] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [flipDir, setFlipDir]       = useState("forward");
+  const [flipAngle, setFlipAngle]   = useState(0);
+  const [isMobile, setIsMobile]     = useState(false);
   const timerRef = useRef(null);
   const rafRef   = useRef(null);
   const count    = chapters.length;
@@ -609,46 +635,56 @@ const BookSection = () => {
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=DM+Serif+Display:ital@0;1&display=swap"
+        rel="stylesheet"
+      />
 
       <section
         className="relative overflow-hidden"
-        style={{
-          padding: "clamp(40px, 7vw, 50px) clamp(16px, 5vw, 50px)",
-          background: PAPER,
-          backgroundPositionY: "32px",
-        }}
+        style={{ padding: "clamp(40px,7vw,50px) clamp(16px,5vw,50px)", background: PAPER }}
       >
-        {/* <UnevenGrid/> */}
-        {/* Ambient blobs — matching Pillars */}
+        {/* Ambient blobs */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute rounded-full" style={{
-            width: "clamp(150px,25vw,300px)", height: "clamp(150px,25vw,300px)",
-            filter: "blur(80px)",
-            background: `radial-gradient(circle, ${RED}12, transparent)`,
-            top: "10%", right: "5%",
-          }} />
-          <div className="absolute rounded-full" style={{
-            width: "clamp(100px,18vw,200px)", height: "clamp(100px,18vw,200px)",
-            filter: "blur(60px)",
-            background: `radial-gradient(circle, ${BLUE}10, transparent)`,
-            bottom: "15%", left: "8%",
-          }} />
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "clamp(150px,25vw,300px)", height: "clamp(150px,25vw,300px)",
+              filter: "blur(80px)",
+              background: `radial-gradient(circle, ${RED}12, transparent)`,
+              top: "10%", right: "5%",
+            }}
+          />
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "clamp(100px,18vw,200px)", height: "clamp(100px,18vw,200px)",
+              filter: "blur(60px)",
+              background: `radial-gradient(circle, ${BLUE}10, transparent)`,
+              bottom: "15%", left: "8%",
+            }}
+          />
         </div>
 
-        {/* Pencil decoration — hidden on mobile */}
+        {/* Pencil decoration */}
         <div className="absolute top-6 right-6 opacity-15 hidden sm:block" aria-hidden>
           <PencilSVG size={160} rotate={5} />
         </div>
 
         {/* Corner doodles */}
-        <svg className="absolute top-6 left-8 opacity-[0.07] pointer-events-none hidden md:block" width="72" height="72" viewBox="0 0 80 80">
+        <svg
+          className="absolute top-6 left-8 opacity-[0.07] pointer-events-none hidden md:block"
+          width="72" height="72" viewBox="0 0 80 80"
+        >
           <circle cx="40" cy="40" r="30" stroke={RED} strokeWidth="1.5" fill="none" strokeDasharray="5 3" />
           <circle cx="40" cy="40" r="18" stroke={RED} strokeWidth="1" fill="none" />
           <line x1="10" y1="40" x2="70" y2="40" stroke={RED} strokeWidth="1" opacity="0.5" />
           <line x1="40" y1="10" x2="40" y2="70" stroke={RED} strokeWidth="1" opacity="0.5" />
         </svg>
-        <svg className="absolute bottom-8 right-8 opacity-[0.07] pointer-events-none hidden md:block" width="60" height="60" viewBox="0 0 64 64">
+        <svg
+          className="absolute bottom-8 right-8 opacity-[0.07] pointer-events-none hidden md:block"
+          width="60" height="60" viewBox="0 0 64 64"
+        >
           <rect x="6" y="6" width="52" height="52" rx="4" stroke={RED} strokeWidth="1.5" fill="none" strokeDasharray="4 3" />
           <rect x="18" y="18" width="28" height="28" rx="2" stroke={RED} strokeWidth="1" fill="none" />
           <circle cx="32" cy="32" r="6" fill={RED} opacity="0.4" />
@@ -664,20 +700,10 @@ const BookSection = () => {
         </div>
 
         {/* ── SECTION INNER ── */}
-        <div className="max-w-[1100px] mx-auto relative z-[2]">
+        <div className="max-w-7xl mx-auto relative z-[2]">
 
-          {/* ── HEADER (Pillars-style) ── */}
+          {/* Header */}
           <FadeUp>
-            {/* Label row */}
-            {/* <div className="flex items-center gap-[14px] mb-[clamp(8px,1.5vw,14px)] flex-wrap">
-              <div className="w-5 h-[2.5px] shrink-0" style={{ background: RED }} />
-              <span className="font-bold uppercase tracking-[0.22em]" style={{ fontSize: "clamp(9px,1.2vw,12px)", color: RED }}>
-                What We Offer
-              </span>
-              <Stamp text="Curriculum" color={BLUE} rotate={3} />
-            </div> */}
-
-            {/* Sub-heading */}
             <p
               className="leading-[1.6] font-bold mb-1"
               style={{ fontFamily: "DM Serif Display, Georgia, serif", fontSize: "24px", color: "black" }}
@@ -689,12 +715,13 @@ const BookSection = () => {
               , we unlock each child's true potential through{" "}
               <span style={{ fontStyle: "italic" }}>thoughtful</span> and guided learning.
             </p>
-
-            {/* Scribble underline */}
-            <ScribbleUnderline color={RED} style={{ width: "clamp(140px,30vw,320px)", marginBottom: "clamp(24px,4vw,48px)" }} />
+            <ScribbleUnderline
+              color={RED}
+              style={{ width: "clamp(140px,30vw,320px)", marginBottom: "clamp(24px,4vw,48px)" }}
+            />
           </FadeUp>
 
-          {/* ── BOOK / CARD ── */}
+          {/* Book or mobile card */}
           {isMobile ? (
             <div className="mb-24">
               <MobileCard ch={ch} onNext={handleNext} onPrev={handlePrev} />
@@ -707,27 +734,33 @@ const BookSection = () => {
             />
           )}
 
-          {/* ── PROGRESS DOTS ── */}
+          {/* Progress dots */}
           <div className="flex flex-col items-center gap-3 mt-10">
             <div className="flex gap-2 items-center">
               {chapters.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => handleDot(i)}
-                  className="rounded-full border-none outline-none cursor-pointer transition-all duration-300"
+                  className="rounded-full border-none outline-none cursor-pointer transition-all duration-300 h-2"
                   style={{
-                    width: i === cur ? 28 : 8, height: 8,
+                    width: i === cur ? 28 : 8,
                     background: i === cur ? RED : RULED,
                   }}
                 />
               ))}
             </div>
-            <div className="font-mono uppercase tracking-[0.18em]" style={{ fontSize: "clamp(9px,1vw,11px)", color: FADED }}>
+            <div
+              className="font-mono uppercase tracking-[0.18em]"
+              style={{ fontSize: "clamp(9px,1vw,11px)", color: FADED }}
+            >
               {chapters[cur].subject}
             </div>
-            {/* Auto-play bar */}
+            {/* Auto-play progress bar */}
             {!isMobile && (
-              <div className="rounded-full overflow-hidden" style={{ width: "clamp(100px,18vw,200px)", height: 2, background: RULED }}>
+              <div
+                className="rounded-full overflow-hidden h-[2px]"
+                style={{ width: "clamp(100px,18vw,200px)", background: RULED }}
+              >
                 <motion.div
                   key={cur}
                   initial={{ width: "0%" }}

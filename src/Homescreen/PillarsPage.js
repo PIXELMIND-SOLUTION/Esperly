@@ -1,15 +1,14 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 
-/* ─── COLOUR TOKENS (kept for SVG/canvas values Tailwind can't handle) ─── */
+/* ─── COLOUR TOKENS (kept only for SVG/gradient values Tailwind can't handle) ─── */
 const RED = "#EB6664";
 const BLUE = "#3B6FA0";
-const GREEN = "#2E7D52";
-const TAPE = "rgba(200,195,170,0.55)";
 const PENCIL = "#8C7B6B";
 const INK = "#1C1209";
 const FADED = "#111111";
 const RULED = "#D6CEBA";
+const TAPE = "rgba(200,195,170,0.55)";
 
 /* ─── SUB COMPONENTS ────────────────────────────────────────── */
 
@@ -22,19 +21,6 @@ const WashiTape = ({ rotate = -2 }) => (
       transform: `translateX(-50%) rotate(${rotate}deg)`,
     }}
   />
-);
-
-const Stamp = ({ text, color = RED, rotate = -8 }) => (
-  <div
-    className="inline-block rounded px-[10px] py-[3px] font-mono text-[clamp(9px,1vw,11px)] font-bold uppercase tracking-[0.18em] opacity-75 shrink-0"
-    style={{
-      border: `2.5px solid ${color}`,
-      color,
-      transform: `rotate(${rotate}deg)`,
-    }}
-  >
-    {text}
-  </div>
 );
 
 const ScribbleUnderline = ({ color = RED, className = "", style = {} }) => (
@@ -64,77 +50,6 @@ const Highlight = ({ children, color = "#FFEB3B" }) => (
     {children}
   </span>
 );
-
-const RuledLines = ({ count = 28, topOffset = 0, gap = 26 }) => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden">
-    {Array.from({ length: count }, (_, i) => (
-      <div
-        key={i}
-        className="absolute left-0 right-0 h-px"
-        style={{ top: topOffset + i * gap, background: RULED, opacity: 0.45 }}
-      />
-    ))}
-    <div
-      className="absolute top-0 bottom-0 w-[1.5px]"
-      style={{
-        left: "clamp(20px, 5vw, 72px)",
-        background: RED,
-        opacity: 0.18,
-      }}
-    />
-  </div>
-);
-
-const UnevenGrid = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      <svg className="w-full h-full">
-        <defs>
-          <pattern
-            id="unevenGrid"
-            width="100"   // ⬅️ increased size
-            height="100"  // ⬅️ increased size
-            patternUnits="userSpaceOnUse"
-          >
-            {/* Horizontal lines */}
-            <path
-              d="M0 25 Q50 30 100 25"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-            <path
-              d="M0 75 Q50 70 100 75"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-
-            {/* Vertical lines */}
-            <path
-              d="M25 0 Q30 50 25 100"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-            <path
-              d="M75 0 Q70 50 75 100"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-          </pattern>
-        </defs>
-
-        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
-      </svg>
-    </div>
-  );
-};
 
 const Bubble = ({ style: s }) => (
   <motion.div
@@ -219,8 +134,8 @@ const pillars = [
     title: "Dedicated Mentorship",
     body: "At Esperly, every student is paired with a mentor who truly understands their learning journey. Beyond teaching, our mentors guide, motivate, and build confidence — ensuring students feel supported at every step.",
     accent: RED,
-    noteBg: "bg-[#FFFDE7]",
     noteColor: "#F5B3B2",
+    noteBg: "#FFFDE7",
   },
   {
     id: "02",
@@ -228,8 +143,8 @@ const pillars = [
     title: "Personalized Learning",
     body: "We believe learning should adapt to the student, not the other way around. Our sessions are thoughtfully tailored to individual learning styles, pace, and goals — creating a more engaging and effective experience.",
     accent: RED,
-    noteBg: "bg-[#E3F0FF]",
     noteColor: "#E3F0FF",
+    noteBg: "#E3F0FF",
   },
   {
     id: "03",
@@ -237,8 +152,8 @@ const pillars = [
     title: "Concept Mastery",
     body: "Strong foundations lead to lasting success. We go beyond memorization, helping students deeply understand concepts, apply them with clarity, and develop the confidence to tackle any challenge.",
     accent: RED,
-    noteBg: "bg-[#E8F5E9]",
     noteColor: "#E8F5E9",
+    noteBg: "#E8F5E9",
   },
   {
     id: "04",
@@ -246,8 +161,8 @@ const pillars = [
     title: "Structured Progress Tracking",
     body: "Growth is best achieved with the right direction. Through regular assessments and detailed feedback, we track progress closely — keeping students and parents informed, involved, and confident in the journey.",
     accent: RED,
-    noteBg: "bg-[#FFF3E0]",
     noteColor: "#FFFDE7",
+    noteBg: "#FFF3E0",
   },
 ];
 
@@ -278,17 +193,6 @@ const PillarCard = ({ p, index }) => {
       {/* Washi tape */}
       <WashiTape rotate={index % 2 === 0 ? -3 : 3} />
 
-      {/* Ruled lines inside card */}
-      {/* <div className="absolute inset-0 overflow-hidden rounded-[3px] pointer-events-none">
-        {Array.from({ length: 8 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute left-0 right-0 h-px"
-            style={{ top: 44 + i * 22, background: p.accent + "22" }}
-          />
-        ))}
-      </div> */}
-
       {/* Card number */}
       <div
         className="absolute top-[10px] right-3 font-mono text-[11px] tracking-[0.1em] opacity-45"
@@ -299,12 +203,12 @@ const PillarCard = ({ p, index }) => {
 
       {/* Content */}
       <div className="p-[clamp(18px,3vw,28px)] relative z-10">
-        <div className="flex">
-          <div className="text-[clamp(24px,4vw,32px)] mb-[10px] leading-none">
+        <div className="flex items-start gap-2 mb-2">
+          <div className="text-[clamp(24px,4vw,32px)] leading-none shrink-0">
             {p.icon}
           </div>
           <h3
-            className="font-bold leading-[1.25] mb-2"
+            className="font-bold leading-[1.25]"
             style={{
               fontFamily: "Fraunces, Georgia, serif",
               fontSize: "clamp(15px, 2vw, 20px)",
@@ -316,7 +220,7 @@ const PillarCard = ({ p, index }) => {
         </div>
         <ScribbleUnderline color={p.accent} style={{ width: "80%", marginBottom: 10 }} />
         <p
-          className="leading-[1.75] mb-[14px] font-mono"
+          className="leading-[1.75] mb-[14px]"
           style={{
             fontFamily: '"DM Serif Display", Georgia, serif',
             fontSize: "clamp(8px, 1.4vw, 13px)",
@@ -334,14 +238,12 @@ const PillarCard = ({ p, index }) => {
 export default function PillarsSection() {
   return (
     <section
-      className="relative overflow-hidden vh-80"
+      className="relative overflow-hidden"
       style={{
         padding: "clamp(40px, 7vw, 50px) clamp(16px, 5vw, 50px)",
         background: "#FBF7F2",
       }}
     >
-      {/* <UnevenGrid count={30} topOffset={0} gap={26} /> */}
-
       {/* Decorative blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -397,31 +299,13 @@ export default function PillarsSection() {
       </div>
 
       {/* Pencil decoration — hidden on small screens */}
-      <div
-        className="absolute top-6 right-6 opacity-15 hidden sm:block"
-        aria-hidden
-      >
+      <div className="absolute top-6 right-6 opacity-15 hidden sm:block" aria-hidden>
         <PencilSVG size={160} rotate={5} />
       </div>
 
       {/* ── SECTION CONTENT ── */}
-      <div className="max-w-[1060px] mx-auto relative z-[2]">
+      <div className="max-w-7xl mx-auto relative z-[2]">
         <FadeUp>
-          {/* Label row */}
-          {/* <div className="flex items-center gap-[14px] mb-[clamp(8px,1.5vw,14px)] flex-wrap">
-            <div className="w-5 h-[2.5px] shrink-0" style={{ background: RED }} />
-            <span
-              className="font-bold uppercase tracking-[0.22em]"
-              style={{
-                fontSize: "clamp(9px, 1.2vw, 12px)",
-                color: RED,
-              }}
-            >
-              What We Offer
-            </span>
-            <Stamp text="Core" color={BLUE} rotate={3} />
-          </div> */}
-
           {/* Heading */}
           <h2
             className="font-black leading-[1.05] mb-1 tracking-[-0.02em]"

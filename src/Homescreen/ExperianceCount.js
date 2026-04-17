@@ -1,41 +1,26 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 
-/* ─── COLOUR TOKENS ─────────────────────────────────────────── */
-const PAPER = "#FBF7F2";
-const PAPER2 = "#F2EBD9";
-const PAPER3 = "#EDE3CC";
-const RULED = "#D6CEBA";
-const INK = "#1C1209";
-const INK2 = "#3A2E1A";
-const FADED = "#7A6E5A";
-const RED = "#EB6664";
-const BLUE = "#3B6FA0";
-const GREEN = "#2E7D52";
-const CLIP = "#9E9E9E";
-const CLIP2 = "#BDBDBD";
-const MARGIN_LINE = "#E8A0A8";
-const HOLE_SHADOW = "#C8B89A";
-
-/* ─── PAPERCLIP ─────────────────────────────────────────── */
-const Paperclip = ({ size = 48, color = CLIP, rotate = 0, style = {} }) => (
+/* ─── PAPERCLIP SVG ─────────────────────────────────────────── */
+const Paperclip = ({ rotate = 0 }) => (
   <svg
-    width={size}
-    height={size * 2.2}
+    width="22"
+    height="48"
     viewBox="0 0 24 52"
     fill="none"
-    style={{ transform: `rotate(${rotate}deg)`, ...style }}
+    className="opacity-30"
+    style={{ transform: `rotate(${rotate}deg)` }}
   >
     <path
       d="M12 4 C6 4 4 8 4 12 L4 40 C4 46 8 50 12 50 C16 50 20 46 20 40 L20 14 C20 10 18 7 14 7 C10 7 8 10 8 14 L8 38 C8 41 10 43 12 43 C14 43 16 41 16 38 L16 16"
-      stroke={color}
+      stroke="#9E9E9E"
       strokeWidth="2.2"
       strokeLinecap="round"
       fill="none"
     />
     <path
       d="M12 4 C6 4 4 8 4 12 L4 40 C4 46 8 50 12 50 C16 50 20 46 20 40 L20 14 C20 10 18 7 14 7 C10 7 8 10 8 14 L8 38 C8 41 10 43 12 43 C14 43 16 41 16 38 L16 16"
-      stroke={CLIP2}
+      stroke="#BDBDBD"
       strokeWidth="0.8"
       strokeLinecap="round"
       strokeDasharray="2 4"
@@ -65,250 +50,91 @@ const useCounter = (end, duration = 1500, start = 0, trigger = false) => {
   return count;
 };
 
-/* ─── NOTEBOOK RULED BACKGROUND ─────────────────────────────── */
-const NotebookBackground = () => {
-  const LINE_SPACING = 28;
-  const NUM_LINES = 40;
+/* ─── CARD ACCENT COLORS ─────────────────────────────────────── */
+const ACCENTS = [
+  { topBar: "bg-[#EB6664]", valueColor: "text-[#EB6664]", shadow: "shadow-[3px_6px_0_rgba(235,102,100,0.2),0_10px_25px_rgba(0,0,0,0.15)]" },
+  { topBar: "bg-[#3B6FA0]", valueColor: "text-[#3B6FA0]", shadow: "shadow-[3px_6px_0_rgba(59,111,160,0.2),0_10px_25px_rgba(0,0,0,0.15)]" },
+  { topBar: "bg-[#2E7D52]", valueColor: "text-[#2E7D52]", shadow: "shadow-[3px_6px_0_rgba(46,125,82,0.2),0_10px_25px_rgba(0,0,0,0.15)]" },
+  { topBar: "bg-[#EB6664]", valueColor: "text-[#EB6664]", shadow: "shadow-[3px_6px_0_rgba(235,102,100,0.2),0_10px_25px_rgba(0,0,0,0.15)]" },
+];
 
-  return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        overflow: "hidden",
-      }}
-    >
-      {/* Margin line — classic red ruled notebook margin */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: "clamp(20px, 5vw, 72px)",
-          width: "1.5px",
-          background: MARGIN_LINE,
-          opacity: 0.7,
-          zIndex: 1,
-        }}
-      />
-
-
-      {/* Horizontal ruled lines */}
-      {Array.from({ length: NUM_LINES }, (_, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 22 + i * LINE_SPACING,
-            height: "1px",
-            background: RULED,
-            opacity: 0.75,
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-const UnevenGrid = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      <svg className="w-full h-full">
-        <defs>
-          <pattern
-            id="unevenGrid"
-            width="100"   // ⬅️ increased size
-            height="100"  // ⬅️ increased size
-            patternUnits="userSpaceOnUse"
-          >
-            {/* Horizontal lines */}
-            <path
-              d="M0 25 Q50 30 100 25"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-            <path
-              d="M0 75 Q50 70 100 75"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-
-            {/* Vertical lines */}
-            <path
-              d="M25 0 Q30 50 25 100"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-            <path
-              d="M75 0 Q70 50 75 100"
-              stroke="#1C1209"
-              strokeWidth="0.7"
-              opacity="0.2"
-              fill="none"
-            />
-          </pattern>
-        </defs>
-
-        <rect width="100%" height="100%" fill="url(#unevenGrid)" />
-      </svg>
-    </div>
-  );
-};
+const ROTATIONS = ["-rotate-2", "rotate-[1.5deg]", "-rotate-[1.5deg]", "rotate-2"];
 
 /* ─── METRIC CHIP ─────────────────────────────────────────── */
 const MetricChip = ({ m, index }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
-
-  const colors = [RED, BLUE, GREEN, RED];
-  const c = colors[index % colors.length];
+  const accent = ACCENTS[index % ACCENTS.length];
 
   const numericValue = parseFloat(m.value.replace(/[^0-9.]/g, "")) || 0;
   const counter = useCounter(numericValue * 10, 1200, 0, inView);
 
-  /* ⭐ FIXED DISPLAY LOGIC */
-  const displayValue = m.label === "Mentor Rating"
-    ? `${(counter / 10).toFixed(1)} ⭐`
-    : m.value.includes("%")
-    ? `${Math.floor(counter)}%`
-    : m.value.includes("₹")
-    ? `₹${Math.floor(counter)}`
-    : m.value.includes("×")
-    ? `${Math.floor(counter)}×`
-    : Math.floor(counter);
-
-  const rotations = [-2, 1.5, -1.5, 2]; // sticky tilt
+  const displayValue =
+    m.label === "Mentor Rating"
+      ? `${(counter / 10).toFixed(1)} ⭐`
+      : m.value.includes("%")
+      ? `${Math.floor(counter)}%`
+      : m.value.includes("₹")
+      ? `₹${Math.floor(counter)}`
+      : m.value.includes("×")
+      ? `${Math.floor(counter)}×`
+      : Math.floor(counter);
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      whileHover={{
-        y: -6,
-        scale: 1.04,
-        rotate: 0,
-        boxShadow: `0px 14px 30px ${c}30`,
-      }}
+      whileHover={{ y: -6, scale: 1.04, rotate: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
-      style={{
-        background: PAPER,
-        border: `1px solid ${RULED}`,
-        borderRadius: 4,
-        padding: "clamp(16px,2vw,22px)",
-        textAlign: "center",
-        position: "relative",
-        overflow: "hidden",
-        cursor: "pointer",
-
-        /* ✨ STICKY NOTE FEEL */
-        transform: `rotate(${rotations[index]}deg)`,
-        boxShadow: `
-          3px 6px 0 ${c}30,
-          0 10px 25px rgba(0,0,0,0.15)
-        `,
-      }}
+      className={`
+        relative overflow-hidden cursor-pointer
+        bg-[#FBF7F2] border border-[#D6CEBA] rounded-[4px]
+        px-4 py-5 text-center
+        ${ROTATIONS[index]} ${accent.shadow}
+      `}
     >
-      {/* 📌 TOP PIN */}
-      <div
-        style={{
-          position: "absolute",
-          top: -10,
-          left: "50%",
-          transform: "translateX(-50%)",
-          fontSize: 14,
-        }}
-      >
+      {/* Pin */}
+      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-sm">
         📌
       </div>
 
-      {/* TOP STRIP */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 6,
-          background: c,
-        }}
-      />
+      {/* Top color bar */}
+      <div className={`absolute top-0 left-0 right-0 h-1.5 ${accent.topBar}`} />
 
-      {/* LIGHT PAPER TEXTURE */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.05,
-          background:
-            "repeating-linear-gradient(0deg, transparent, transparent 20px, #000 21px)",
-        }}
-      />
-
-      {/* VALUE */}
+      {/* Value */}
       <p
-        style={{
-          fontFamily: "Fraunces, Georgia, serif",
-          fontSize: "clamp(28px,4vw,42px)",
-          fontWeight: 900,
-          color: c,
-          lineHeight: 1,
-          marginTop: 16,
-          position: "relative",
-          zIndex: 1,
-        }}
+        className={`
+          font-serif text-[clamp(28px,4vw,42px)] font-black leading-none
+          mt-4 relative z-10 ${accent.valueColor}
+        `}
+        style={{ fontFamily: "Fraunces, Georgia, serif" }}
       >
         {displayValue}
       </p>
 
-      {/* LABEL */}
+      {/* Label */}
       <p
-        style={{
-          fontFamily: "monospace",
-          fontSize: "clamp(9px,1vw,11px)",
-          color: INK2,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-          position: "relative",
-          zIndex: 1,
-        }}
+        className="font-mono text-[clamp(9px,1vw,11px)] text-[#3A2E1A]
+          tracking-widest uppercase relative z-10 mt-1"
       >
         {m.label}
       </p>
 
-      {/* SUBTEXT */}
+      {/* Subtext */}
       <p
-        style={{
-          fontSize: "clamp(9px,1vw,10px)",
-          color: FADED,
-          fontFamily: "Georgia, serif",
-          fontStyle: "italic",
-          position: "relative",
-          zIndex: 1,
-        }}
+        className="text-[clamp(9px,1vw,10px)] text-[#7A6E5A] italic relative z-10"
+        style={{ fontFamily: "Georgia, serif" }}
       >
         {m.sub}
       </p>
 
-      {/* TORN EDGE EFFECT */}
+      {/* Torn edge */}
       <div
+        className="absolute bottom-0 left-0 right-0 h-1 opacity-60"
         style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 4,
-          background: `repeating-linear-gradient(90deg, ${RULED} 0px, ${RULED} 6px, transparent 6px, transparent 10px)`,
-          opacity: 0.6,
+          background:
+            "repeating-linear-gradient(90deg, #D6CEBA 0px, #D6CEBA 6px, transparent 6px, transparent 10px)",
         }}
       />
     </motion.div>
@@ -317,68 +143,58 @@ const MetricChip = ({ m, index }) => {
 
 /* ─── DATA ─────────────────────────────────────────── */
 const metrics = [
-  { value: "99%",  label: "Completion Rate",  sub: "Consistent learning. Strong finish.",   symbol: "★" },
-  { value: "3×",   label: "Faster Progress",  sub: "Learn faster. Achieve more.",            symbol: "↑" },
-  { value: "4.9",  label: "Mentor Rating",    sub: "Trusted. Experienced. Student-first",    symbol: "✓" },
-  { value: "98%",  label: "Real Growth",      sub: "Steady improvement. Proven success",     symbol: "₹" },
+  { value: "99%",  label: "Completion Rate",  sub: "Consistent learning. Strong finish."  },
+  { value: "3×",   label: "Faster Progress",  sub: "Learn faster. Achieve more."          },
+  { value: "4.9",  label: "Mentor Rating",    sub: "Trusted. Experienced. Student-first." },
+  { value: "98%",  label: "Real Growth",      sub: "Steady improvement. Proven success."  },
 ];
 
-/* ─── MAIN SECTION ─────────────────────────────────────────── */
-export default function ExperianceCount() {
-  return (
+/* ─── NOTEBOOK RULED BACKGROUND ─────────────────────────────── */
+const NotebookBackground = () => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    {/* Margin line */}
     <div
+      className="absolute top-0 bottom-0 w-[1.5px] opacity-70 z-10"
       style={{
-        background: PAPER,
-        padding: "clamp(24px,4vw,48px) clamp(16px,4vw,40px)",
-        position: "relative",
-        overflow: "hidden",
-        minHeight: 220,
+        left: "clamp(20px, 5vw, 72px)",
+        background: "#E8A0A8",
       }}
-    >
-      {/* Full-section notebook background */}
-      {/* <UnevenGrid /> */}
+    />
+    {/* Ruled lines */}
+    {Array.from({ length: 40 }, (_, i) => (
+      <div
+        key={i}
+        className="absolute left-0 right-0 h-px opacity-75"
+        style={{ top: 22 + i * 28, background: "#D6CEBA" }}
+      />
+    ))}
+  </div>
+);
+
+/* ─── MAIN SECTION ─────────────────────────────────────────── */
+export default function ExperienceCount() {
+  return (
+    <div className="relative overflow-hidden bg-[#FBF7F2] px-[clamp(16px,4vw,40px)] py-[clamp(24px,4vw,48px)] min-h-[220px]">
+      {/* <NotebookBackground /> */}
 
       {/* Decorative paperclip */}
-      <div style={{ position: "absolute", top: 8, right: 28, opacity: 0.28, zIndex: 3 }}>
-        <Paperclip size={22} rotate={-8} />
+      <div className="absolute top-2 right-7 z-10">
+        <Paperclip rotate={-8} />
       </div>
 
-      {/* Section heading — looks like a notebook title */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 3,
-          textAlign: "center",
-          marginBottom: "clamp(16px,3vw,28px)",
-          paddingLeft: 80,
-        }}
-      >
+      {/* Section heading */}
+      <div className="relative z-10 text-center mb-[clamp(16px,3vw,28px)] pl-20">
         <span
-          style={{
-            fontFamily: "Fraunces, Georgia, serif",
-            fontSize: "clamp(11px,1.4vw,14px)",
-            color: FADED,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            fontStyle: "italic",
-            borderBottom: `1px solid ${RULED}`,
-            paddingBottom: 2,
-          }}
+          className="text-[clamp(11px,1.4vw,14px)] text-[#7A6E5A] tracking-[0.18em] uppercase italic border-b border-[#D6CEBA] pb-0.5"
+          style={{ fontFamily: "Fraunces, Georgia, serif" }}
         >
           Our Numbers at a Glance
         </span>
       </div>
 
       {/* Cards grid */}
-      <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 3 }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "clamp(10px,2vw,18px)",
-            paddingLeft: "clamp(0px,4vw,80px)",
-          }}
-        >
+      <div className="max-w-7xl mx-auto relative z-10 pl-[clamp(0px,4vw,80px)]">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-[clamp(10px,2vw,18px)]">
           {metrics.map((m, i) => (
             <MetricChip key={i} m={m} index={i} />
           ))}

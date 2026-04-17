@@ -42,7 +42,6 @@ const languageTracks = [
 const moreItems = [
   { label: "About Us", path: "/aboutus" },
   { label: "Blogs", path: "/blogs" },
-  { label: "Testimonials", path: "/testimonials" },
   { label: "FAQ's", path: "/faqs" },
   { label: "Contact Us", path: "/contact" },
   { label: "Privacy Policy", path: "/privacy-policy" },
@@ -87,9 +86,9 @@ const TuitionsDropdown = ({ open }) => {
         {/* Sub-items panel */}
         {activeGroup && (
           <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
-            <li className="px-4 py-1.5 text-xs font-bold text-[#EB6664] uppercase tracking-widest">
+            {/* <li className="px-4 py-1.5 text-xs font-bold text-[#EB6664] uppercase tracking-widest">
               {activeGroup}
-            </li>
+            </li> */}
             {tuitionsMenu
               .find((g) => g.label === activeGroup)
               ?.items.map((item) => (
@@ -214,7 +213,7 @@ const Header = () => {
     <>
       {/* ── HEADER BAR ── */}
       <header className="sticky top-0 z-50 bg-[#EB6664]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[70px] flex items-center justify-between">
 
           {/* Logo */}
           <div

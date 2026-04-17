@@ -55,7 +55,6 @@ const languageTracks = [
 const moreItems = [
   { label: "About Us", path: "/aboutus" },
   { label: "Blogs", path: "/blogs" },
-  { label: "Testimonials", path: "/testimonials" },
   { label: "FAQ's", path: "/faqs" },
   { label: "Contact Us", path: "/contact" },
   { label: "Privacy Policy", path: "/privacy-policy" },

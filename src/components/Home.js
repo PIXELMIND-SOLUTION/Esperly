@@ -18,7 +18,8 @@ import PillarsPage from "../Homescreen/PillarsPage";
 import BookDesign from "../Homescreen/BookDesign";
 import MeetScreen from "../Homescreen/MeetScreen";
 import MeetImg from "../Homescreen/MeetImg";
-import JourneyPage from "../Homescreen/JourneyPage";
+import StaircaseChart3D from "../Homescreen/JourneyPage";
+import StepsImage from '../Homescreen/StepImage'
 import ExperianceCount from "../Homescreen/ExperianceCount";
 import TrustAndSupport from "../Homescreen/ExpertTrack";
 import Testimonioals from "../Homescreen/Testimonials";
@@ -33,7 +34,8 @@ const Home = () => {
             <HeroPage />
             <PillarsPage />
             <BookDesign />
-            <JourneyPage />
+            <StepsImage/>
+            <StaircaseChart3D />
             <ExperianceCount/>
             <MeetImg />
             <TrustAndSupport/>
