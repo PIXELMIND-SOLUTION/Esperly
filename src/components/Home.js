@@ -23,6 +23,8 @@ import StepsImage from '../Homescreen/StepImage'
 import ExperianceCount from "../Homescreen/ExperianceCount";
 import TrustAndSupport from "../Homescreen/ExpertTrack";
 import Testimonioals from "../Homescreen/Testimonials";
+import ScrollBanner from "../Homescreen/ScrolleBanner";
+import FlashBanner from "../Homescreen/FlashBanner";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -34,11 +36,13 @@ const Home = () => {
             <HeroPage />
             <PillarsPage />
             <BookDesign />
+            <FlashBanner/>
             <StepsImage/>
-            <StaircaseChart3D />
+            {/* <StaircaseChart3D /> */}
             <ExperianceCount/>
             <MeetImg />
             <TrustAndSupport/>
+            <ScrollBanner/>
             <Testimonioals/>
             {/* <MeetScreen/> */}
             {/* <WhatWeTeach />

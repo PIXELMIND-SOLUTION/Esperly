@@ -6,7 +6,7 @@ import { FiMenu, FiX, FiChevronDown, FiChevronRight } from "react-icons/fi";
 
 const tuitionsMenu = [
   {
-    label: "Primary Level",
+    label: "Elementary Level",
     items: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"],
   },
   {

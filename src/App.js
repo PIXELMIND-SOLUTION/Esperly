@@ -13,6 +13,8 @@ import Teachers from "./pages/teacher/Teachers";
 import BusBanner from "./views/BusBanner";
 import ScrollToTop from "./views/ScrollToTop";
 import FAQPage from "./pages/contact/FAQPage";
+import WhatsAppButton from "./views/WhatsAppButton";
+import SideScroller from "./views/SideScroller";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -53,6 +55,8 @@ const App = () => {
       {/* <CustomCursor /> */}
       {/* <RollingPencil /> */}
       {/* <BusBanner /> */}
+      <WhatsAppButton />
+      <SideScroller/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
