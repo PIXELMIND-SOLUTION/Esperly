@@ -1,94 +1,116 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useInView } from "motion/react";
 
-/* ─── COLOUR TOKENS (kept only for SVG/gradient/dynamic values Tailwind can't handle) ─── */
-const PAPER  = "#FBF7F2";
-const RULED  = "#D6CEBA";
-const INK    = "#1C1209";
-const FADED  = "#7A6E5A";
-const RED    = "#EB6664";
-const BLUE   = "#3B6FA0";
-const TAPE   = "rgba(200,195,170,0.55)";
-const PENCIL = "#8C7B6B";
+const FLIP_MS = 700;
+const AUTO_INTERVAL = 5000;
 
-const FLIP_MS       = 700;
-const AUTO_INTERVAL = 4200;
-
-/* ─── CURRICULUM DATA ────────────────────────────────────────── */
+/* ─── PAGE DATA ─────────────────────────────────────────────── */
 const chapters = [
   {
-    number: "01", subject: "Full Stack Development", icon: "⬡",
-    tagline: "From zero to production",
-    topics: ["HTML & CSS Mastery","JavaScript ES6+","React & Next.js","Node.js & Express","MongoDB & PostgreSQL","REST & GraphQL APIs","Docker & Deployment"],
-    description: "Build complete web applications from the ground up. Learn how the frontend talks to the backend, how data flows, and how to ship products that scale.",
-    duration: "240 hours", projects: "12 real projects",
-    pageColor: "#FFF8F5", accent: RED,
+    number: "01",
+    accent: "#EB6664",
+    pageColor: "#FFF8F5",
+    showLeftContent: false,
+    rightContent: { type: "intro" },
   },
   {
-    number: "02", subject: "Data Science", icon: "⬢",
-    tagline: "Turn raw data into decisions",
-    topics: ["Python & NumPy","Pandas & EDA","Data Visualisation","Statistics & Probability","Scikit-learn","Feature Engineering","Model Deployment"],
-    description: "Master the full data pipeline — from messy CSVs to insight dashboards. Learn to ask the right questions and build models that actually get used.",
-    duration: "200 hours", projects: "10 real projects",
-    pageColor: "#FFFBF0", accent: "#C8940A",
+    number: "02",
+    accent: "#3B6FA0",
+    pageColor: "#F5FAFF",
+    showLeftContent: true,
+    leftIcons: [
+      { emoji: "🏫", label: "School" },
+      { emoji: "📚", label: "Textbooks" },
+      { emoji: "✏️", label: "Learning" },
+      { emoji: "🎓", label: "Achievement" },
+      { emoji: "🧒", label: "Elementary" },
+      { emoji: "📐", label: "Math" },
+      { emoji: "🔬", label: "Science" },
+      { emoji: "📝", label: "Writing" },
+    ],
+    rightContent: { type: "tuition" },
   },
   {
-    number: "03", subject: "UI / UX Design", icon: "⬣",
-    tagline: "Design that thinks and feels",
-    topics: ["Design Principles","User Research","Wireframing","Figma Mastery","Prototyping","Usability Testing","Design Systems"],
-    description: "Go beyond aesthetics. Understand how people think, how interfaces should behave, and how to design with empathy that converts users into fans.",
-    duration: "160 hours", projects: "8 real projects",
-    pageColor: "#F5FAFF", accent: BLUE,
+    number: "03",
+    accent: "#2E7D52",
+    pageColor: "#F5FFF5",
+    showLeftContent: true,
+    leftIcons: [
+      { emoji: "🧮", label: "Abacus" },
+      { emoji: "🗣️", label: "Speaking" },
+      { emoji: "🔤", label: "Phonics" },
+      { emoji: "🧠", label: "Mental Math" },
+      { emoji: "💬", label: "Communication" },
+      { emoji: "📖", label: "Grammar" },
+      { emoji: "🌟", label: "Confidence" },
+      { emoji: "🎯", label: "Skills" },
+    ],
+    rightContent: { type: "shortcourses" },
   },
   {
-    number: "04", subject: "Product Management", icon: "⬡",
-    tagline: "Strategy meets execution",
-    topics: ["Product Thinking","Market Research","PRDs & Roadmaps","Agile & Scrum","Metrics & OKRs","Stakeholder Mgmt","Go-to-Market"],
-    description: "Learn to be the CEO of your product. Understand users, align teams, prioritise ruthlessly, and ship features that move the needle.",
-    duration: "180 hours", projects: "9 real projects",
-    pageColor: "#F5FFF5", accent: "#2E7D52",
+    number: "04",
+    accent: "#C05A1A",
+    pageColor: "#FFF8F0",
+    showLeftContent: true,
+    leftIcons: [
+      { emoji: "💃", label: "Dance" },
+      { emoji: "🎨", label: "Drawing" },
+      { emoji: "🎵", label: "Singing" },
+      { emoji: "🧘", label: "Yoga" },
+      { emoji: "🏃", label: "Zumba" },
+      { emoji: "🖌️", label: "Painting" },
+      { emoji: "🌈", label: "Creativity" },
+      { emoji: "🤸", label: "Wellness" },
+    ],
+    rightContent: { type: "boosters" },
   },
   {
-    number: "05", subject: "AI & Machine Learning", icon: "⬢",
-    tagline: "Build intelligent systems",
-    topics: ["Linear & Logistic Reg.","Neural Networks","CNNs & RNNs","NLP & Transformers","Prompt Engineering","LLM Fine-tuning","MLOps"],
-    description: "From perceptrons to large language models. Learn the mathematics, the intuition, and the engineering to build AI systems that work in the real world.",
-    duration: "220 hours", projects: "11 real projects",
-    pageColor: "#FDF5FF", accent: "#7B3FA0",
+    number: "05",
+    accent: "#7B3FA0",
+    pageColor: "#FDF5FF",
+    showLeftContent: true,
+    leftIcons: [
+      { emoji: "🇮🇳", label: "Hindi" },
+      { emoji: "🇬🇧", label: "English" },
+      { emoji: "🌏", label: "Tamil" },
+      { emoji: "📜", label: "Telugu" },
+      { emoji: "🗺️", label: "Kannada" },
+      { emoji: "🇫🇷", label: "French" },
+      { emoji: "🇩🇪", label: "German" },
+      { emoji: "🇪🇸", label: "Spanish" },
+    ],
+    rightContent: { type: "languages" },
   },
   {
-    number: "06", subject: "Cloud & DevOps", icon: "⬣",
-    tagline: "Ship fast. Stay reliable.",
-    topics: ["Linux & Bash","AWS / GCP / Azure","CI / CD Pipelines","Docker & Kubernetes","Infrastructure as Code","Monitoring & Logging","Security Best Practices"],
-    description: "Master the infrastructure that keeps apps alive. Learn to automate deployments, scale systems, and build pipelines that ship code safely every day.",
-    duration: "190 hours", projects: "9 real projects",
-    pageColor: "#FFF8F0", accent: "#C05A1A",
+    number: "06",
+    accent: "#EB6664",
+    pageColor: "#FFF8F5",
+    showLeftContent: false,
+    rightContent: { type: "closing" },
   },
 ];
 
 /* ─── SHARED DECORATIVE COMPONENTS ──────────────────────────── */
-
-const WashiTape = ({ rotate = -2, color = TAPE, width = 52 }) => (
+const WashiTape = ({ rotate = -2, color = "rgba(200,195,170,0.55)", width = 52 }) => (
   <div
-    className="absolute top-[-8px] left-1/2 h-4 pointer-events-none z-20"
+    className="absolute -top-2 left-1/2 h-4 pointer-events-none z-20 border-l border-r"
     style={{
       width,
       background: color,
-      borderLeft: "1px solid rgba(180,170,140,0.3)",
-      borderRight: "1px solid rgba(180,170,140,0.3)",
+      borderColor: "rgba(180,170,140,0.3)",
       transform: `translateX(-50%) rotate(${rotate}deg)`,
     }}
   />
 );
 
-const ScribbleUnderline = ({ color = RED, style = {} }) => (
-  <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ height: 12, display: "block", ...style }}>
+const ScribbleUnderline = ({ color = "#EB6664", className = "" }) => (
+  <svg viewBox="0 0 200 12" preserveAspectRatio="none" className={`h-3 block ${className}`}>
     <path d="M2 8 C30 4, 60 11, 100 7 C140 3, 170 10, 198 6" stroke={color} strokeWidth="2.5" fill="none" strokeLinecap="round" />
   </svg>
 );
 
 const Highlight = ({ children, color = "#FFEB3B" }) => (
-  <span style={{ background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)`, paddingBottom: 2 }}>
+  <span style={{ background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)` }} className="pb-0.5">
     {children}
   </span>
 );
@@ -96,9 +118,9 @@ const Highlight = ({ children, color = "#FFEB3B" }) => (
 const RuledLines = ({ count = 22, gap = 26 }) => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {Array.from({ length: count }, (_, i) => (
-      <div key={i} className="absolute left-0 right-0 h-px" style={{ top: 52 + i * gap, background: RULED, opacity: 0.45 }} />
+      <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * gap, background: "#D6CEBA" }} />
     ))}
-    <div className="absolute top-0 bottom-0 w-[2px]" style={{ left: "clamp(20px,5vw,72px)", background: RED, opacity: 0.18 }} />
+    <div className="absolute top-0 bottom-0 w-0.5 opacity-18" style={{ left: "clamp(40px,6vw,80px)", background: "#EB6664" }} />
   </div>
 );
 
@@ -126,7 +148,7 @@ const PencilSVG = ({ size = 160, rotate = 5 }) => (
     <line x1="20" y1="22" x2="168" y2="22" stroke="#C8A820" strokeWidth="0.5" opacity="0.4" />
     <rect x="158" y="9" width="24" height="18" rx="2" fill="#F4A7A7" />
     <rect x="158" y="9" width="24" height="18" rx="2" stroke="#D46060" strokeWidth="0.8" />
-    <rect x="153" y="8" width="8" height="20" fill={PENCIL} stroke="#BDBDBD" strokeWidth="0.5" />
+    <rect x="153" y="8" width="8" height="20" fill="#8C7B6B" stroke="#BDBDBD" strokeWidth="0.5" />
     <polygon points="20,8 20,28 2,18" fill="#E8C06A" />
     <polygon points="6,12 6,24 2,18" fill="#2A1F0E" />
     <line x1="20" y1="8" x2="2" y2="18" stroke="#C8A820" strokeWidth="0.8" />
@@ -135,144 +157,300 @@ const PencilSVG = ({ size = 160, rotate = 5 }) => (
   </svg>
 );
 
-/* ─── LEFT PAGE ──────────────────────────────────────────────── */
-const LeftPageContent = ({ ch }) => (
-  <div
-    className="w-full h-full flex flex-col justify-center items-center text-center px-6 py-8 relative overflow-hidden"
-    style={{ background: ch.pageColor }}
-  >
-    <RuledLines count={22} gap={26} />
+/* ─── RIGHT PAGE CONTENT RENDERER ───────────────────────────── */
+const RightPageInner = ({ ch }) => {
+  const { rightContent, accent, number } = ch;
+  const type = rightContent.type;
 
-    {/* Ghost chapter number */}
-    <div
-      className="absolute bottom-2 right-3 select-none pointer-events-none leading-none"
-      style={{
-        fontFamily: "Fraunces, Georgia, serif",
-        fontSize: "clamp(60px,8vw,100px)",
-        fontWeight: 900,
-        color: ch.accent,
-        opacity: 0.06,
-      }}
-    >
-      {ch.number}
-    </div>
-
-    <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
-
-    <div className="relative z-10 text-4xl mb-3 leading-none" style={{ color: ch.accent }}>
-      {ch.icon}
-    </div>
-
-    <h3
-      className="relative z-10 font-black leading-tight mb-2"
-      style={{
-        fontFamily: "Fraunces, Georgia, serif",
-        fontSize: "clamp(14px,1.8vw,22px)",
-        color: INK,
-      }}
-    >
-      {ch.subject}
-    </h3>
-
-    <p
-      className="relative z-10 italic mb-3 tracking-[0.04em]"
-      style={{
-        fontFamily: "DM Serif Display, Georgia, serif",
-        fontSize: "clamp(10px,1vw,13px)",
-        color: ch.accent,
-      }}
-    >
-      {ch.tagline}
-    </p>
-
-    <ScribbleUnderline color={ch.accent} style={{ width: "70%", marginBottom: 12 }} />
-
-    <p
-      className="relative z-10 leading-relaxed mb-5"
-      style={{
-        fontFamily: "Georgia, serif",
-        fontSize: "clamp(9px,0.95vw,12px)",
-        color: FADED,
-        maxWidth: 260,
-      }}
-    >
-      {ch.description}
-    </p>
-
-    <div className="relative z-10 flex gap-2 flex-wrap justify-center">
-      {[ch.duration, ch.projects].map((s, i) => (
-        <div
-          key={i}
-          className="rounded px-3 py-1.5 font-mono font-bold tracking-[0.06em]"
-          style={{
-            fontSize: "clamp(8px,0.8vw,11px)",
-            color: ch.accent,
-            background: `${ch.accent}10`,
-            border: `1.5px solid ${ch.accent}30`,
-          }}
-        >
-          {s}
+  if (type === "intro") {
+    return (
+      <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
+        <RuledLines count={22} gap={26} />
+        <div className="relative z-10">
+          <div className="font-mono uppercase tracking-widest mb-3 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">
+            Welcome · Esperly
+          </div>
+          <h2 className="font-['Fraunces',Georgia,serif] font-black text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-[#1C1209] leading-relaxed mb-2.5">
+            Our structured, personalized online tuition for Classes 1 to 12 is designed to help every learner succeed.
+          </h2>
+          <ScribbleUnderline color={accent} className="w-4/5 mb-3.5" />
+          {[
+            "1:1 learning, fully personalized",
+            "Handpicked expert educators",
+            "Flexible schedules that fit your routine",
+            "Engaging, student-focused sessions",
+          ].map((item, i) => (
+            <div key={i} className="flex items-start gap-1.5 font-['Georgia',serif] text-[9px] sm:text-[10px] md:text-[11px] lg:text-[11.5px] text-[#1C1209] leading-[1.5] mb-0.5">
+              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1" style={{ background: accent }} />
+              <span>{item}</span>
+            </div>
+          ))}
+          <div className="mt-3.5 p-2 md:p-2.5 rounded-md border-[1.5px]" style={{ background: `${accent}10`, borderColor: `${accent}30` }}>
+            <div className="font-['Fraunces',Georgia,serif] font-bold text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] mb-1" style={{ color: accent }}>
+              One Platform. All Boards.
+            </div>
+            <div className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] leading-relaxed">
+              CBSE • ICSE • IGCSE • State • International Baccalaureate (IB)
+            </div>
+          </div>
         </div>
+      </div>
+    );
+  }
+
+  if (type === "tuition") {
+    const levels = [
+      {
+        label: "Elementary Level (Class 1–5)",
+        items: ["Building a strong foundation in basics", "Focus on reading, writing, and concept understanding"],
+      },
+      {
+        label: "Middle Level (Class 6–8)",
+        items: ["Strengthening concepts across core subjects", "Gradual academic progression with clarity"],
+      },
+      {
+        label: "Secondary Level (Class 9–12)",
+        items: ["In-depth subject learning and mastery", "Focused exam preparation and performance"],
+      },
+    ];
+    return (
+      <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
+        <RuledLines count={22} gap={26} />
+        <div className="relative z-10">
+          <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 02</div>
+          <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-2">
+            School Tuition Programs
+          </h3>
+          <ScribbleUnderline color={accent} className="w-[70%] mb-3" />
+          {levels.map((lvl, li) => (
+            <div key={li} className="mb-2.5">
+              <div className="font-['Fraunces',Georgia,serif] font-bold text-[10px] sm:text-[11px] md:text-[12px] lg:text-[12.5px] mb-1" style={{ color: accent }}>
+                {lvl.label}
+              </div>
+              {lvl.items.map((item, i) => (
+                <div key={i} className="flex items-start gap-1.5 font-['Georgia',serif] text-[9px] sm:text-[10px] md:text-[11px] lg:text-[11.5px] text-[#1C1209] leading-[1.5] mb-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1" style={{ background: accent }} />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "shortcourses") {
+    const courses = ["Abacus", "Phonics", "Public Speaking", "Personality Development", "Vedic Maths", "English Grammar"];
+    return (
+      <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
+        <RuledLines count={22} gap={26} />
+        <div className="relative z-10">
+          <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 03</div>
+          <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
+            Short-Term Courses
+          </h3>
+          <div className="font-['Georgia',serif] italic text-[9px] sm:text-[10px] md:text-[11px] mb-2" style={{ color: accent }}>
+            Skill-Based Learning
+          </div>
+          <ScribbleUnderline color={accent} className="w-[70%] mb-2.5" />
+          <p className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] mb-2 leading-relaxed">
+            We offer focused short-term courses to enhance essential skills:
+          </p>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+            {courses.map((c, i) => (
+              <div key={i} className="flex items-start gap-1.5 font-['Georgia',serif] text-[9px] sm:text-[10px] md:text-[11px] lg:text-[11.5px] text-[#1C1209] leading-[1.5]">
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1" style={{ background: accent }} />
+                <span>{c}</span>
+              </div>
+            ))}
+          </div>
+          <p className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] mt-2.5 leading-relaxed">
+            These courses help students build confidence and practical abilities.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "boosters") {
+    const activities = ["Dance", "Drawing", "Singing", "Yoga", "Zumba", "Painting"];
+    return (
+      <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
+        <RuledLines count={22} gap={26} />
+        <div className="relative z-10">
+          <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 04</div>
+          <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
+            Learning Boosters
+          </h3>
+          <div className="font-['Georgia',serif] italic text-[9px] sm:text-[10px] md:text-[11px] mb-2" style={{ color: accent }}>
+            Creative & Activity-Based Programs
+          </div>
+          <ScribbleUnderline color={accent} className="w-[70%] mb-2.5" />
+          <p className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] mb-2 leading-relaxed">
+            To support overall growth, we provide:
+          </p>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+            {activities.map((a, i) => (
+              <div key={i} className="flex items-start gap-1.5 font-['Georgia',serif] text-[9px] sm:text-[10px] md:text-[11px] lg:text-[11.5px] text-[#1C1209] leading-[1.5]">
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1" style={{ background: accent }} />
+                <span>{a}</span>
+              </div>
+            ))}
+          </div>
+          <p className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] mt-2.5 leading-relaxed">
+            These activities help in creativity, expression, and physical well-being.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "languages") {
+    const langs = ["Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "French", "German", "Spanish", "Sanskrit"];
+    return (
+      <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
+        <RuledLines count={22} gap={26} />
+        <div className="relative z-10">
+          <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 05</div>
+          <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
+            Language Tracks
+          </h3>
+          <div className="font-['Georgia',serif] italic text-[9px] sm:text-[10px] md:text-[11px] mb-2" style={{ color: accent }}>
+            Multi-Language Learning
+          </div>
+          <ScribbleUnderline color={accent} className="w-[70%] mb-2.5" />
+          <p className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] mb-2 leading-relaxed">
+            Students can learn and improve communication skills in:
+          </p>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+            {langs.map((l, i) => (
+              <div key={i} className="flex items-start gap-1.5 font-['Georgia',serif] text-[9px] sm:text-[10px] md:text-[11px] lg:text-[11.5px] text-[#1C1209] leading-[1.5]">
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1" style={{ background: accent }} />
+                <span>{l}</span>
+              </div>
+            ))}
+          </div>
+          <p className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] text-[#7A6E5A] mt-2.5 leading-relaxed">
+            Focus is on speaking, reading, and writing skills.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "closing") {
+    return (
+      <div className="h-full flex flex-col justify-center items-center text-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
+        <RuledLines count={22} gap={26} />
+        <div className="relative z-10 w-full">
+          <div className="font-mono uppercase tracking-widest mb-4 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">
+            Chapter 06 · Final
+          </div>
+          <div className="text-[24px] sm:text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] mb-2.5">🎓</div>
+          <h3 className="font-['Fraunces',Georgia,serif] font-black text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-[#1C1209] leading-relaxed mb-2">
+            Complete Learning Solution
+          </h3>
+          <ScribbleUnderline color={accent} className="w-[70%] mx-auto mb-3.5" />
+          <p className="font-['Georgia',serif] text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] text-[#7A6E5A] leading-relaxed mb-3.5">
+            From academics to skills and creativity, we offer a complete learning platform for every student.
+          </p>
+          <div className="flex gap-2 flex-wrap justify-center mb-4">
+            {["Structured Learning", "Expert Guidance", "Flexible Classes"].map((tag, i) => (
+              <span
+                key={i}
+                className="font-['Georgia',serif] text-[8px] sm:text-[9px] md:text-[10px] rounded py-0.5 px-2 border-[1.5px]"
+                style={{ color: accent, background: `${accent}12`, borderColor: `${accent}30` }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div className="font-['Fraunces',Georgia,serif] font-bold italic text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px]" style={{ color: accent }}>
+            Start your learning journey with us today.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+/* ─── LEFT PAGE CONTENT ──────────────────────────────────────── */
+const LeftPageContent = ({ ch }) => {
+  if (!ch.showLeftContent) {
+    return (
+      <div className="w-full h-full relative overflow-hidden flex justify-center items-center" style={{ background: ch.pageColor }}>
+        <div>
+          {Array.from({ length: 22 }, (_, i) => (
+            <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * 26, background: "#D6CEBA" }} />
+          ))}
+          <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
+          <div
+            className="absolute bottom-2 right-3 select-none pointer-events-none leading-none font-['Fraunces',Georgia,serif] font-black opacity-6"
+            style={{ fontSize: "clamp(60px,8vw,100px)", color: ch.accent }}
+          >
+            {ch.number}
+          </div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center relative z-10">
+            <div className="text-[32px] sm:text-[36px] md:text-[40px] lg:text-[46px] xl:text-[52px] mb-2">📖</div>
+            <div className="font-['Fraunces',Georgia,serif] font-black tracking-wider text-[16px] sm:text-[18px] md:text-[20px] lg:text-[23px] xl:text-[26px]" style={{ color: ch.accent }}>
+              Esperly
+            </div>
+            <ScribbleUnderline color={ch.accent} className="w-20 mt-1" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full h-full flex flex-col justify-center items-center text-center px-4 py-6 relative overflow-hidden" style={{ background: ch.pageColor }}>
+      {Array.from({ length: 22 }, (_, i) => (
+        <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * 26, background: "#D6CEBA" }} />
       ))}
+      <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
+      <div
+        className="absolute bottom-2 right-3 select-none pointer-events-none leading-none font-['Fraunces',Georgia,serif] font-black opacity-6"
+        style={{ fontSize: "clamp(60px,8vw,100px)", color: ch.accent }}
+      >
+        {ch.number}
+      </div>
+
+      <div className="relative z-10 w-full">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-3 px-2 sm:px-4 md:px-5">
+          {ch.leftIcons.map((icon, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center gap-1 p-2 sm:p-2.5 rounded-lg border"
+              style={{ background: `${ch.accent}08`, borderColor: `${ch.accent}18` }}
+            >
+              <span className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[25px] xl:text-[28px] leading-none">{icon.emoji}</span>
+              <span
+                className="font-['Georgia',serif] font-bold tracking-wider text-[7px] sm:text-[8px] md:text-[9px]"
+                style={{ color: ch.accent }}
+              >
+                {icon.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
-/* ─── RIGHT PAGE ─────────────────────────────────────────────── */
+/* ─── RIGHT PAGE WRAPPER ─────────────────────────────────────── */
 const RightPageContent = ({ ch }) => (
-  <div className="w-full h-full flex flex-col px-20 py-6 relative overflow-hidden" style={{ background: PAPER }}>
-    <RuledLines count={22} gap={26} />
-
-    <div className="absolute top-[-8px] right-10">
+  <div className="w-full h-full relative overflow-hidden bg-[#FBF7F2]">
+    <div className="absolute -top-2 right-10">
       <WashiTape rotate={2} color="rgba(160,200,255,0.5)" width={52} />
     </div>
-
-    <div
-      className="relative z-10 mb-3 font-mono uppercase tracking-[0.2em]"
-      style={{ fontSize: "clamp(8px,0.8vw,10px)", color: FADED }}
-    >
-      Chapter {ch.number} · Curriculum
-    </div>
-
-    <h4
-      className="relative z-10 mb-4 pb-3 border-b font-bold"
-      style={{
-        fontFamily: "Fraunces, Georgia, serif",
-        fontSize: "clamp(11px,1.2vw,14px)",
-        color: INK,
-        borderColor: RULED,
-      }}
-    >
-      What you'll learn
-    </h4>
-
-    <div className="relative z-10 flex flex-col gap-2 flex-1">
-      {ch.topics.map((topic, i) => (
-        <div key={i} className="flex items-center gap-2">
-          <div
-            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-            style={{ background: ch.accent, opacity: 0.85 }}
-          />
-          <span
-            className="flex-1"
-            style={{ fontFamily: "Georgia, serif", fontSize: "clamp(9px,0.95vw,12px)", color: INK, lineHeight: 1.4 }}
-          >
-            {topic}
-          </span>
-          <div className="flex-1 border-b border-dotted" style={{ borderColor: RULED, marginBottom: 2 }} />
-          <span className="flex-shrink-0 font-mono" style={{ fontSize: 9, color: RULED }}>
-            {String(i + 1).padStart(2, "0")}
-          </span>
-        </div>
-      ))}
-    </div>
-
-    <div
-      className="relative z-10 flex justify-between items-center pt-3 mt-3 border-t"
-      style={{ borderColor: RULED }}
-    >
-      <span className="font-mono tracking-[0.1em]" style={{ fontSize: 9, color: FADED }}>ESPERLY</span>
-      <span style={{ fontFamily: "Georgia, serif", fontSize: 10, color: FADED, fontStyle: "italic" }}>
+    <RightPageInner ch={ch} />
+    <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center px-4 py-2 border-t border-[#D6CEBA]" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
+      <span className="font-mono tracking-widest text-[9px] text-[#7A6E5A]">ESPERLY</span>
+      <span className="font-['Georgia',serif] text-[10px] text-[#7A6E5A] italic">
         pg. {ch.number}
       </span>
     </div>
@@ -280,97 +458,92 @@ const RightPageContent = ({ ch }) => (
 );
 
 /* ─── BOOK SPINE ─────────────────────────────────────────────── */
-const Spine = ({ ch }) => (
-  <div
-    className="w-full h-full flex flex-col items-center justify-center gap-2 relative overflow-hidden"
-    style={{ background: `linear-gradient(180deg, ${ch.accent}ee 0%, ${ch.accent}aa 100%)` }}
-  >
+const Spine = ({ ch }) => {
+  const subjects = ["Welcome", "Tuition Programs", "Short Courses", "Activity Boosters", "Language Tracks", "Complete Solution"];
+  const label = subjects[parseInt(ch.number, 10) - 1] || "Esperly";
+  return (
     <div
-      className="absolute inset-0"
-      style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.18) 0%, rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.12) 100%)" }}
-    />
-    {[...Array(7)].map((_, i) => (
+      className="w-full h-full flex flex-col items-center justify-center gap-2 relative overflow-hidden"
+      style={{ background: `linear-gradient(180deg, ${ch.accent}ee 0%, ${ch.accent}aa 100%)` }}
+    >
       <div
-        key={i}
-        className="relative z-10 rounded-full my-0.5"
-        style={{
-          width: 7, height: 7,
-          background: "rgba(0,0,0,0.35)",
-          boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 1px rgba(255,255,255,0.2)",
-        }}
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.18) 0%, rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.12) 100%)" }}
       />
-    ))}
-    <span
-      className="relative z-10 uppercase overflow-hidden whitespace-nowrap"
-      style={{
-        fontFamily: "Fraunces, Georgia, serif",
-        fontSize: 9, fontWeight: 900,
-        color: "rgba(255,255,255,0.85)",
-        letterSpacing: "0.18em",
-        writingMode: "vertical-rl",
-        textOrientation: "mixed",
-        transform: "rotate(180deg)",
-        maxHeight: 140,
-      }}
-    >
-      {ch.subject}
-    </span>
-    <span
-      className="relative z-10 font-mono"
-      style={{
-        fontSize: 8,
-        color: "rgba(255,255,255,0.5)",
-        writingMode: "vertical-rl",
-        transform: "rotate(180deg)",
-        letterSpacing: "0.12em",
-      }}
-    >
-      {ch.number}
-    </span>
-  </div>
-);
+      {[...Array(7)].map((_, i) => (
+        <div
+          key={i}
+          className="relative z-10 rounded-full my-0.5"
+          style={{
+            width: 7, height: 7,
+            background: "rgba(0,0,0,0.35)",
+            boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 1px rgba(255,255,255,0.2)",
+          }}
+        />
+      ))}
+      <span
+        className="relative z-10 uppercase overflow-hidden whitespace-nowrap font-['Fraunces',Georgia,serif] font-black text-white/85 tracking-[0.18em]"
+        style={{
+          fontSize: 9,
+          writingMode: "vertical-rl",
+          textOrientation: "mixed",
+          transform: "rotate(180deg)",
+          maxHeight: 140,
+        }}
+      >
+        {label}
+      </span>
+      <span
+        className="relative z-10 font-mono text-white/50 tracking-[0.12em]"
+        style={{
+          fontSize: 8,
+          writingMode: "vertical-rl",
+          transform: "rotate(180deg)",
+        }}
+      >
+        {ch.number}
+      </span>
+    </div>
+  );
+};
 
 /* ─── DESKTOP BOOK ───────────────────────────────────────────── */
 const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext }) => {
-  const ch     = chapters[cur];
+  const ch = chapters[cur];
   const chNext = chapters[nxt];
-
-  const btnStyle = {
-    background: PAPER,
-    border: `1.5px solid ${RULED}`,
-    color: INK,
-    boxShadow: "3px 3px 10px rgba(0,0,0,0.1)",
-    fontFamily: "Georgia, serif",
-  };
 
   return (
     <div className="flex items-center justify-center gap-4 lg:gap-8">
-
-      {/* Prev button */}
       <motion.button
-        whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-        onClick={onPrev} disabled={isFlipping}
-        className="flex-shrink-0 flex items-center justify-center rounded-full text-lg disabled:opacity-40 transition-shadow"
-        style={{ width: "clamp(38px,4vw,52px)", height: "clamp(38px,4vw,52px)", ...btnStyle }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={onPrev}
+        disabled={isFlipping}
+        className="flex-shrink-0 flex items-center justify-center rounded-full text-lg disabled:opacity-40 transition-shadow w-[38px] h-[38px] sm:w-[42px] sm:h-[42px] md:w-[46px] md:h-[46px] lg:w-[48px] lg:h-[48px] xl:w-[52px] xl:h-[52px]"
+        style={{
+          background: "#FBF7F2",
+          border: "1.5px solid #D6CEBA",
+          color: "#1C1209",
+          boxShadow: "3px 3px 10px rgba(0,0,0,0.1)",
+          fontFamily: "Georgia, serif",
+        }}
       >
         ←
       </motion.button>
 
-      {/* Book container */}
-      <div className="relative" style={{ width: "clamp(360px,80vw,980px)", height: "clamp(320px,44vw,560px)" }}>
-
-        {/* Drop shadow */}
+      <div className="relative w-[360px] h-[320px] sm:w-[500px] sm:h-[380px] md:w-[650px] md:h-[420px] lg:w-[800px] lg:h-[480px] xl:w-[980px] xl:h-[560px]">
         <div
           className="absolute rounded-full pointer-events-none"
           style={{
-            bottom: -20, left: "6%", right: "6%", height: 28,
+            bottom: -20,
+            left: "6%",
+            right: "6%",
+            height: 28,
             background: "rgba(0,0,0,0.14)",
             filter: "blur(16px)",
             zIndex: 0,
           }}
         />
-
-        {/* Stacked pages illusion */}
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
@@ -385,28 +558,26 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
             }}
           />
         ))}
-
-        {/* Book body */}
         <div
           className="relative w-full h-full flex rounded-md overflow-visible z-10"
           style={{ boxShadow: "0 16px 56px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)" }}
         >
-
-          {/* Spine */}
           <div
-            className="flex-shrink-0 rounded-l-md overflow-hidden relative z-10"
-            style={{ width: "clamp(22px,2.8vw,36px)", boxShadow: "inset -4px 0 12px rgba(0,0,0,0.22)" }}
+            className="flex-shrink-0 rounded-l-md overflow-hidden relative z-10 w-[22px] sm:w-[26px] md:w-[30px] lg:w-[32px] xl:w-[36px]"
+            style={{ boxShadow: "inset -4px 0 12px rgba(0,0,0,0.22)" }}
           >
             <Spine ch={ch} />
           </div>
 
-          {/* Left page — crossfade */}
-          <div className="flex-1 relative overflow-hidden border-r z-10" style={{ borderColor: RULED }}>
+          {/* Left page */}
+          <div className="flex-1 relative overflow-hidden border-r z-10 border-[#D6CEBA]">
             <div
               className="absolute inset-0"
               style={{
                 opacity: isFlipping
-                  ? (flipDir === "forward" ? Math.min(Math.abs(flipAngle) / 90, 1) : Math.min(flipAngle / 90, 1))
+                  ? flipDir === "forward"
+                    ? Math.min(Math.abs(flipAngle) / 90, 1)
+                    : Math.min(flipAngle / 90, 1)
                   : 0,
               }}
             >
@@ -416,7 +587,9 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
               className="absolute inset-0"
               style={{
                 opacity: isFlipping
-                  ? (flipDir === "forward" ? Math.max(1 - Math.abs(flipAngle) / 90, 0) : Math.max(1 - flipAngle / 90, 0))
+                  ? flipDir === "forward"
+                    ? Math.max(1 - Math.abs(flipAngle) / 90, 0)
+                    : Math.max(1 - flipAngle / 90, 0)
                   : 1,
               }}
             >
@@ -430,15 +603,12 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
 
           {/* Right page + flip */}
           <div className="flex-1 relative overflow-visible z-20" style={{ perspective: 1800 }}>
-
-            {/* Static underlayer */}
             <div className="absolute inset-0 z-0 rounded-r-md overflow-hidden">
-              {isFlipping && flipDir === "forward"  && <RightPageContent ch={chNext} />}
+              {isFlipping && flipDir === "forward" && <RightPageContent ch={chNext} />}
               {isFlipping && flipDir === "backward" && <RightPageContent ch={ch} />}
               {!isFlipping && <RightPageContent ch={ch} />}
             </div>
 
-            {/* Flipping page */}
             {isFlipping && (
               <div
                 className="absolute inset-0 z-20"
@@ -446,14 +616,12 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
                   transformStyle: "preserve-3d",
                   transformOrigin: "0% 50%",
                   transform: `rotateY(${flipAngle}deg)`,
-                  filter: `drop-shadow(${
-                    Math.abs(flipAngle) > 10 && Math.abs(flipAngle) < 170
-                      ? `${flipDir === "forward" ? "-6px" : "6px"} 0 18px rgba(0,0,0,${0.08 + 0.2 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)})`
-                      : "none"
-                  })`,
+                  filter: `drop-shadow(${Math.abs(flipAngle) > 10 && Math.abs(flipAngle) < 170
+                    ? `${flipDir === "forward" ? "-6px" : "6px"} 0 18px rgba(0,0,0,${0.08 + 0.2 * Math.sin((Math.abs(flipAngle) / 180) * Math.PI)})`
+                    : "none"
+                    })`,
                 }}
               >
-                {/* Front face */}
                 <div
                   className="absolute inset-0 rounded-r-md overflow-hidden"
                   style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
@@ -468,7 +636,6 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
                   />
                   {flipDir === "forward" ? <RightPageContent ch={ch} /> : <RightPageContent ch={chNext} />}
                 </div>
-                {/* Back face */}
                 <div
                   className="absolute inset-0 rounded-r-md overflow-hidden"
                   style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
@@ -490,12 +657,19 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
         </div>
       </div>
 
-      {/* Next button */}
       <motion.button
-        whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-        onClick={onNext} disabled={isFlipping}
-        className="flex-shrink-0 flex items-center justify-center rounded-full text-lg disabled:opacity-40"
-        style={{ width: "clamp(38px,4vw,52px)", height: "clamp(38px,4vw,52px)", ...btnStyle }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={onNext}
+        disabled={isFlipping}
+        className="flex-shrink-0 flex items-center justify-center rounded-full text-lg disabled:opacity-40 w-[38px] h-[38px] sm:w-[42px] sm:h-[42px] md:w-[46px] md:h-[46px] lg:w-[48px] lg:h-[48px] xl:w-[52px] xl:h-[52px]"
+        style={{
+          background: "#FBF7F2",
+          border: "1.5px solid #D6CEBA",
+          color: "#1C1209",
+          boxShadow: "3px 3px 10px rgba(0,0,0,0.1)",
+          fontFamily: "Georgia, serif",
+        }}
       >
         →
       </motion.button>
@@ -506,17 +680,17 @@ const DesktopBook = ({ cur, nxt, isFlipping, flipDir, flipAngle, onPrev, onNext 
 /* ─── MOBILE CARD ────────────────────────────────────────────── */
 const MobileCard = ({ ch, onNext, onPrev }) => {
   const [flipped, setFlipped] = useState(false);
-  const [anim, setAnim]       = useState(false);
+  const [anim, setAnim] = useState(false);
 
   const toggle = () => {
     if (anim) return;
     setAnim(true);
-    setFlipped(f => !f);
+    setFlipped((f) => !f);
     setTimeout(() => setAnim(false), FLIP_MS);
   };
 
   return (
-    <div className="relative w-full max-w-sm mx-auto" style={{ height: 500, perspective: 1400 }}>
+    <div className="relative w-full max-w-sm mx-auto h-[500px]" style={{ perspective: 1400 }}>
       <div
         className="w-full h-full relative cursor-pointer"
         style={{
@@ -526,7 +700,6 @@ const MobileCard = ({ ch, onNext, onPrev }) => {
         }}
         onClick={toggle}
       >
-        {/* Front */}
         <div
           className="absolute inset-0 rounded-lg overflow-hidden"
           style={{
@@ -536,11 +709,10 @@ const MobileCard = ({ ch, onNext, onPrev }) => {
           }}
         >
           <LeftPageContent ch={ch} />
-          <div className="absolute bottom-4 left-0 right-0 text-center font-mono" style={{ fontSize: 11, color: FADED }}>
-            Tap to see topics →
+          <div className="absolute bottom-4 left-0 right-0 text-center font-mono text-[11px] text-[#7A6E5A]">
+            Tap to see details →
           </div>
         </div>
-        {/* Back */}
         <div
           className="absolute inset-0 rounded-lg overflow-hidden"
           style={{
@@ -554,18 +726,39 @@ const MobileCard = ({ ch, onNext, onPrev }) => {
         </div>
       </div>
 
-      {/* Mobile nav */}
       <div className="absolute -bottom-16 left-0 right-0 flex justify-center gap-4">
         <button
-          onClick={e => { e.stopPropagation(); onPrev(); setFlipped(false); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPrev();
+            setFlipped(false);
+          }}
           className="w-11 h-11 rounded-full flex items-center justify-center text-lg transition-all"
-          style={{ background: PAPER, border: `1.5px solid ${RULED}`, color: INK, boxShadow: "2px 3px 8px rgba(0,0,0,0.1)" }}
-        >←</button>
+          style={{
+            background: "#FBF7F2",
+            border: "1.5px solid #D6CEBA",
+            color: "#1C1209",
+            boxShadow: "2px 3px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          ←
+        </button>
         <button
-          onClick={e => { e.stopPropagation(); onNext(); setFlipped(false); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onNext();
+            setFlipped(false);
+          }}
           className="w-11 h-11 rounded-full flex items-center justify-center text-lg transition-all"
-          style={{ background: PAPER, border: `1.5px solid ${RULED}`, color: INK, boxShadow: "2px 3px 8px rgba(0,0,0,0.1)" }}
-        >→</button>
+          style={{
+            background: "#FBF7F2",
+            border: "1.5px solid #D6CEBA",
+            color: "#1C1209",
+            boxShadow: "2px 3px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          →
+        </button>
       </div>
     </div>
   );
@@ -573,15 +766,15 @@ const MobileCard = ({ ch, onNext, onPrev }) => {
 
 /* ─── MAIN SECTION ───────────────────────────────────────────── */
 const BookSection = () => {
-  const [cur, setCur]               = useState(0);
-  const [nxt, setNxt]               = useState(1);
+  const [cur, setCur] = useState(0);
+  const [nxt, setNxt] = useState(1);
   const [isFlipping, setIsFlipping] = useState(false);
-  const [flipDir, setFlipDir]       = useState("forward");
-  const [flipAngle, setFlipAngle]   = useState(0);
-  const [isMobile, setIsMobile]     = useState(false);
+  const [flipDir, setFlipDir] = useState("forward");
+  const [flipAngle, setFlipAngle] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const timerRef = useRef(null);
-  const rafRef   = useRef(null);
-  const count    = chapters.length;
+  const rafRef = useRef(null);
+  const count = chapters.length;
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -590,25 +783,33 @@ const BookSection = () => {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const runFlip = useCallback((dir, targetIdx) => {
-    if (isFlipping) return;
-    setNxt(targetIdx);
-    setFlipDir(dir);
-    setFlipAngle(0);
-    setIsFlipping(true);
-    const start  = performance.now();
-    const target = dir === "forward" ? -180 : 180;
-    const step   = (now) => {
-      const t    = Math.min((now - start) / FLIP_MS, 1);
-      const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      setFlipAngle(target * ease);
-      if (t < 1) { rafRef.current = requestAnimationFrame(step); }
-      else { setFlipAngle(0); setCur(targetIdx); setIsFlipping(false); }
-    };
-    rafRef.current = requestAnimationFrame(step);
-  }, [isFlipping]);
+  const runFlip = useCallback(
+    (dir, targetIdx) => {
+      if (isFlipping) return;
+      setNxt(targetIdx);
+      setFlipDir(dir);
+      setFlipAngle(0);
+      setIsFlipping(true);
+      const start = performance.now();
+      const target = dir === "forward" ? -180 : 180;
+      const step = (now) => {
+        const t = Math.min((now - start) / FLIP_MS, 1);
+        const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        setFlipAngle(target * ease);
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(step);
+        } else {
+          setFlipAngle(0);
+          setCur(targetIdx);
+          setIsFlipping(false);
+        }
+      };
+      rafRef.current = requestAnimationFrame(step);
+    },
+    [isFlipping]
+  );
 
-  const goNext = useCallback(() => runFlip("forward",  (cur + 1) % count), [runFlip, cur, count]);
+  const goNext = useCallback(() => runFlip("forward", (cur + 1) % count), [runFlip, cur, count]);
   const goPrev = useCallback(() => runFlip("backward", (cur - 1 + count) % count), [runFlip, cur, count]);
 
   useEffect(() => {
@@ -623,15 +824,22 @@ const BookSection = () => {
     timerRef.current = setInterval(goNext, AUTO_INTERVAL);
   };
 
-  const handleNext = () => { goNext(); resetTimer(); };
-  const handlePrev = () => { goPrev(); resetTimer(); };
-  const handleDot  = (i) => {
+  const handleNext = () => {
+    goNext();
+    resetTimer();
+  };
+  const handlePrev = () => {
+    goPrev();
+    resetTimer();
+  };
+  const handleDot = (i) => {
     if (i === cur || isFlipping) return;
     runFlip(i > cur ? "forward" : "backward", i);
     resetTimer();
   };
 
   const ch = chapters[cur];
+  const pageLabels = ["Welcome", "Tuition Programs", "Short Courses", "Learning Boosters", "Language Tracks", "Complete Solution"];
 
   return (
     <>
@@ -640,101 +848,71 @@ const BookSection = () => {
         rel="stylesheet"
       />
 
-      <section
-        className="relative overflow-hidden"
-        style={{ padding: "clamp(40px,7vw,50px) clamp(16px,5vw,50px)", background: PAPER }}
-      >
-        {/* Ambient blobs */}
+      <section className="relative overflow-hidden py-10 px-4 sm:py-12 sm:px-5 md:py-14 md:px-6 bg-[#FBF7F2]">
         <div className="absolute inset-0 pointer-events-none">
           <div
-            className="absolute rounded-full"
-            style={{
-              width: "clamp(150px,25vw,300px)", height: "clamp(150px,25vw,300px)",
-              filter: "blur(80px)",
-              background: `radial-gradient(circle, ${RED}12, transparent)`,
-              top: "10%", right: "5%",
-            }}
+            className="absolute rounded-full w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[250px] lg:w-[300px] lg:h-[300px] blur-[80px] top-[10%] right-[5%]"
+            style={{ background: "radial-gradient(circle, #EB666412, transparent)" }}
           />
           <div
-            className="absolute rounded-full"
-            style={{
-              width: "clamp(100px,18vw,200px)", height: "clamp(100px,18vw,200px)",
-              filter: "blur(60px)",
-              background: `radial-gradient(circle, ${BLUE}10, transparent)`,
-              bottom: "15%", left: "8%",
-            }}
+            className="absolute rounded-full w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[170px] md:h-[170px] lg:w-[200px] lg:h-[200px] blur-[60px] bottom-[15%] left-[8%]"
+            style={{ background: "radial-gradient(circle, #3B6FA010, transparent)" }}
           />
         </div>
 
-        {/* Pencil decoration */}
         <div className="absolute top-6 right-6 opacity-15 hidden sm:block" aria-hidden>
           <PencilSVG size={160} rotate={5} />
         </div>
 
-        {/* Corner doodles */}
-        <svg
-          className="absolute top-6 left-8 opacity-[0.07] pointer-events-none hidden md:block"
-          width="72" height="72" viewBox="0 0 80 80"
-        >
-          <circle cx="40" cy="40" r="30" stroke={RED} strokeWidth="1.5" fill="none" strokeDasharray="5 3" />
-          <circle cx="40" cy="40" r="18" stroke={RED} strokeWidth="1" fill="none" />
-          <line x1="10" y1="40" x2="70" y2="40" stroke={RED} strokeWidth="1" opacity="0.5" />
-          <line x1="40" y1="10" x2="40" y2="70" stroke={RED} strokeWidth="1" opacity="0.5" />
+        <svg className="absolute top-6 left-8 opacity-7 pointer-events-none hidden md:block" width="72" height="72" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="30" stroke="#EB6664" strokeWidth="1.5" fill="none" strokeDasharray="5 3" />
+          <circle cx="40" cy="40" r="18" stroke="#EB6664" strokeWidth="1" fill="none" />
+          <line x1="10" y1="40" x2="70" y2="40" stroke="#EB6664" strokeWidth="1" opacity="0.5" />
+          <line x1="40" y1="10" x2="40" y2="70" stroke="#EB6664" strokeWidth="1" opacity="0.5" />
         </svg>
-        <svg
-          className="absolute bottom-8 right-8 opacity-[0.07] pointer-events-none hidden md:block"
-          width="60" height="60" viewBox="0 0 64 64"
-        >
-          <rect x="6" y="6" width="52" height="52" rx="4" stroke={RED} strokeWidth="1.5" fill="none" strokeDasharray="4 3" />
-          <rect x="18" y="18" width="28" height="28" rx="2" stroke={RED} strokeWidth="1" fill="none" />
-          <circle cx="32" cy="32" r="6" fill={RED} opacity="0.4" />
+        <svg className="absolute bottom-8 right-8 opacity-7 pointer-events-none hidden md:block" width="60" height="60" viewBox="0 0 64 64">
+          <rect x="6" y="6" width="52" height="52" rx="4" stroke="#EB6664" strokeWidth="1.5" fill="none" strokeDasharray="4 3" />
+          <rect x="18" y="18" width="28" height="28" rx="2" stroke="#EB6664" strokeWidth="1" fill="none" />
+          <circle cx="32" cy="32" r="6" fill="#EB6664" opacity="0.4" />
         </svg>
 
-        {/* Decorative wave */}
         <div className="absolute top-0 right-0 pointer-events-none opacity-15">
-          <svg style={{ width: "clamp(120px,22vw,300px)", height: "clamp(80px,15vw,200px)" }} viewBox="0 0 300 200">
-            <path d="M300 0 C220 40, 140 30, 80 90 C40 130, 15 165, 0 200" stroke={RED} strokeWidth="2" fill="none" />
-            <circle cx="160" cy="70" r="5" fill={RED} opacity="0.5" />
-            <circle cx="100" cy="115" r="3" fill={RED} opacity="0.4" />
+          <svg className="w-[120px] h-[80px] sm:w-[160px] sm:h-[110px] md:w-[220px] md:h-[150px] lg:w-[260px] lg:h-[180px] xl:w-[300px] xl:h-[200px]" viewBox="0 0 300 200">
+            <path d="M300 0 C220 40, 140 30, 80 90 C40 130, 15 165, 0 200" stroke="#EB6664" strokeWidth="2" fill="none" />
+            <circle cx="160" cy="70" r="5" fill="#EB6664" opacity="0.5" />
+            <circle cx="100" cy="115" r="3" fill="#EB6664" opacity="0.4" />
           </svg>
         </div>
 
-        {/* ── SECTION INNER ── */}
         <div className="max-w-7xl mx-auto relative z-[2]">
-
-          {/* Header */}
           <FadeUp>
-            <p
-              className="leading-[1.6] font-bold mb-1"
-              style={{ fontFamily: "DM Serif Display, Georgia, serif", fontSize: "24px", color: "black" }}
-            >
+            <p className="leading-relaxed font-bold mb-1 font-['DMSerifDisplay',Georgia,serif] text-2xl text-black">
               At{" "}
               <Highlight color="#FFEB3B">
-                <span style={{ color: RED, fontStyle: "italic" }}>Esperly</span>
+                <span className="text-[#EB6664] italic">Esperly</span>
               </Highlight>
               , we unlock each child's true potential through{" "}
-              <span style={{ fontStyle: "italic" }}>thoughtful</span> and guided learning.
+              <span className="italic">thoughtful</span> and guided learning.
             </p>
-            <ScribbleUnderline
-              color={RED}
-              style={{ width: "clamp(140px,30vw,320px)", marginBottom: "clamp(24px,4vw,48px)" }}
-            />
+            <ScribbleUnderline color="#EB6664" className="w-[140px] sm:w-[220px] md:w-[280px] lg:w-[320px] mb-6 sm:mb-8 md:mb-10 lg:mb-12" />
           </FadeUp>
 
-          {/* Book or mobile card */}
           {isMobile ? (
             <div className="mb-24">
               <MobileCard ch={ch} onNext={handleNext} onPrev={handlePrev} />
             </div>
           ) : (
             <DesktopBook
-              cur={cur} nxt={nxt}
-              isFlipping={isFlipping} flipDir={flipDir} flipAngle={flipAngle}
-              onPrev={handlePrev} onNext={handleNext}
+              cur={cur}
+              nxt={nxt}
+              isFlipping={isFlipping}
+              flipDir={flipDir}
+              flipAngle={flipAngle}
+              onPrev={handlePrev}
+              onNext={handleNext}
             />
           )}
 
-          {/* Progress dots */}
           <div className="flex flex-col items-center gap-3 mt-10">
             <div className="flex gap-2 items-center">
               {chapters.map((_, i) => (
@@ -744,30 +922,23 @@ const BookSection = () => {
                   className="rounded-full border-none outline-none cursor-pointer transition-all duration-300 h-2"
                   style={{
                     width: i === cur ? 28 : 8,
-                    background: i === cur ? RED : RULED,
+                    background: i === cur ? "#EB6664" : "#D6CEBA",
                   }}
                 />
               ))}
             </div>
-            <div
-              className="font-mono uppercase tracking-[0.18em]"
-              style={{ fontSize: "clamp(9px,1vw,11px)", color: FADED }}
-            >
-              {chapters[cur].subject}
+            <div className="font-mono uppercase tracking-[0.18em] text-[9px] sm:text-[10px] md:text-[11px] text-[#7A6E5A]">
+              {pageLabels[cur]}
             </div>
-            {/* Auto-play progress bar */}
             {!isMobile && (
-              <div
-                className="rounded-full overflow-hidden h-[2px]"
-                style={{ width: "clamp(100px,18vw,200px)", background: RULED }}
-              >
+              <div className="rounded-full overflow-hidden h-0.5 w-[100px] sm:w-[140px] md:w-[170px] lg:w-[200px] bg-[#D6CEBA]">
                 <motion.div
                   key={cur}
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
                   transition={{ duration: AUTO_INTERVAL / 1000, ease: "linear" }}
                   className="h-full rounded-full"
-                  style={{ background: `linear-gradient(90deg, ${RED}, ${RED}88)` }}
+                  style={{ background: "linear-gradient(90deg, #EB6664, #EB666488)" }}
                 />
               </div>
             )}
