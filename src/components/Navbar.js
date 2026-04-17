@@ -41,8 +41,12 @@ const learningBoosters = [
 
 const languageTracks = [
   {
+    label: "Primary Language",
+    items: [ "English"]
+  },
+  {
     label: "Regional Languages",
-    items: ["Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "Sanskrit"]
+    items: ["Hindi", "Tamil", "Telugu", "Kannada", "Malayalam", "Sanskrit"]
   },
   {
     label: "Foreign Languages",
