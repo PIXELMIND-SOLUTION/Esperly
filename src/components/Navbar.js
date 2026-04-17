@@ -40,16 +40,14 @@ const learningBoosters = [
 ];
 
 const languageTracks = [
-  "Hindi",
-  "English",
-  "Tamil",
-  "Telugu",
-  "Kannada",
-  "Malayalam",
-  "French",
-  "German",
-  "Spanish",
-  "Sanskrit",
+  {
+    label: "National Languages",
+    items: ["Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "Sanskrit"]
+  },
+  {
+    label: "International Languages",
+    items: ["French", "German", "Spanish"]
+  }
 ];
 
 const moreItems = [
@@ -146,6 +144,60 @@ const FlatDropdown = ({ open, items, pathPrefix = "" }) => (
   </div>
 );
 
+// ─── LANGUAGE TRACKS CASCADING DROPDOWN ─────────────────────────────────────
+
+const LanguageTracksDropdown = ({ open }) => {
+  const [activeGroup, setActiveGroup] = useState(null);
+
+  useEffect(() => {
+    if (!open) setActiveGroup(null);
+  }, [open]);
+
+  return (
+    <div
+      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${
+        open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+      }`}
+    >
+      <div className="flex bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px]">
+        {/* Category list */}
+        <ul className="py-2 min-w-[190px]">
+          {languageTracks.map((group) => (
+            <li
+              key={group.label}
+              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${
+                activeGroup === group.label
+                  ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+              }`}
+              onMouseEnter={() => setActiveGroup(group.label)}
+            >
+              {group.label}
+              <FiChevronRight size={13} className="ml-2 text-gray-400" />
+            </li>
+          ))}
+        </ul>
+
+        {/* Sub-items panel */}
+        {activeGroup && (
+          <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
+            {languageTracks
+              .find((g) => g.label === activeGroup)
+              ?.items.map((item) => (
+                <li
+                  key={item}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-[#EB6664]/10 hover:text-[#EB6664] cursor-pointer transition-colors duration-150"
+                >
+                  {item}
+                </li>
+              ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ─── NAVBAR ──────────────────────────────────────────────────────────────────
 
 const Navbar = () => {
@@ -156,6 +208,7 @@ const Navbar = () => {
   // Mobile accordion
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [mobileTuitionGroup, setMobileTuitionGroup] = useState(null);
+  const [mobileLanguageGroup, setMobileLanguageGroup] = useState(null);
 
   const isScrolledRef = useRef(false);
   const navigate = useNavigate();
@@ -298,11 +351,7 @@ const Navbar = () => {
 
                 {/* LANGUAGE TRACKS */}
                 <DropdownNavItem id="language" label="LANGUAGE TRACKS">
-                  <FlatDropdown
-                    open={activeDropdown === "language"}
-                    items={languageTracks}
-                    pathPrefix="/language"
-                  />
+                  <LanguageTracksDropdown open={activeDropdown === "language"} />
                 </DropdownNavItem>
 
                 {/* MORE */}
@@ -459,20 +508,40 @@ const Navbar = () => {
                 ))}
               </MobileAccordion>
 
-              {/* Language Tracks */}
+              {/* Language Tracks - Mobile with nested accordion */}
               <MobileAccordion
                 label="Language Tracks"
                 expanded={mobileExpanded === "language"}
                 onToggle={() => setMobileExpanded(mobileExpanded === "language" ? null : "language")}
               >
-                {languageTracks.map((item) => (
-                  <button
-                    key={item}
-                    className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {item}
-                  </button>
+                {languageTracks.map((group) => (
+                  <div key={group.label}>
+                    <button
+                      className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-widest hover:text-[#EB6664] transition-colors"
+                      onClick={() =>
+                        setMobileLanguageGroup(mobileLanguageGroup === group.label ? null : group.label)
+                      }
+                    >
+                      {group.label}
+                      <FiChevronDown
+                        size={12}
+                        className={`transition-transform ${mobileLanguageGroup === group.label ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {mobileLanguageGroup === group.label && (
+                      <div className="pl-4 pb-1 flex flex-col gap-0.5">
+                        {group.items.map((item) => (
+                          <button
+                            key={item}
+                            className="text-left px-3 py-1.5 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {item}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </MobileAccordion>
 

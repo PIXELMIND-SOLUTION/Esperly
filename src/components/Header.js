@@ -35,8 +35,14 @@ const learningBoosters = [
 ];
 
 const languageTracks = [
-  "Hindi", "English", "Tamil", "Telugu", "Kannada",
-  "Malayalam", "French", "German", "Spanish", "Sanskrit",
+  {
+    label: "National Languages",
+    items: ["Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "Sanskrit"]
+  },
+  {
+    label: "International Languages",
+    items: ["French", "German", "Spanish"]
+  }
 ];
 
 const moreItems = [
@@ -60,9 +66,8 @@ const TuitionsDropdown = ({ open }) => {
 
   return (
     <div
-      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${
-        open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
-      }`}
+      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+        }`}
     >
       <div className="flex bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[190px]">
         {/* Level list */}
@@ -70,11 +75,10 @@ const TuitionsDropdown = ({ open }) => {
           {tuitionsMenu.map((group) => (
             <li
               key={group.label}
-              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${
-                activeGroup === group.label
+              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${activeGroup === group.label
                   ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
                   : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
-              }`}
+                }`}
               onMouseEnter={() => setActiveGroup(group.label)}
             >
               {group.label}
@@ -86,10 +90,59 @@ const TuitionsDropdown = ({ open }) => {
         {/* Sub-items panel */}
         {activeGroup && (
           <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
-            {/* <li className="px-4 py-1.5 text-xs font-bold text-[#EB6664] uppercase tracking-widest">
-              {activeGroup}
-            </li> */}
             {tuitionsMenu
+              .find((g) => g.label === activeGroup)
+              ?.items.map((item) => (
+                <li
+                  key={item}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-[#EB6664]/10 hover:text-[#EB6664] cursor-pointer transition-colors duration-150"
+                >
+                  {item}
+                </li>
+              ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ─── LANGUAGE TRACKS CASCADING DROPDOWN ───────────────────────────────────── */
+
+const LanguageTracksDropdown = ({ open }) => {
+  const [activeGroup, setActiveGroup] = useState(null);
+
+  useEffect(() => {
+    if (!open) setActiveGroup(null);
+  }, [open]);
+
+  return (
+    <div
+      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+        }`}
+    >
+      <div className="flex bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[190px]">
+        {/* Category list */}
+        <ul className="py-2 min-w-[190px]">
+          {languageTracks.map((group) => (
+            <li
+              key={group.label}
+              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${activeGroup === group.label
+                  ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                }`}
+              onMouseEnter={() => setActiveGroup(group.label)}
+            >
+              {group.label}
+              <FiChevronRight size={13} className="ml-2 text-gray-400 flex-shrink-0" />
+            </li>
+          ))}
+        </ul>
+
+        {/* Sub-items panel */}
+        {activeGroup && (
+          <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
+            {languageTracks
               .find((g) => g.label === activeGroup)
               ?.items.map((item) => (
                 <li
@@ -110,14 +163,13 @@ const TuitionsDropdown = ({ open }) => {
 
 const FlatDropdown = ({ open, items }) => (
   <div
-    className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${
-      open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
-    }`}
+    className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+      }`}
   >
     <ul className="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-[190px]">
       {items.map((item) => {
         const label = typeof item === "string" ? item : item.label;
-        const path  = typeof item === "object" ? item.path : "#";
+        const path = typeof item === "object" ? item.path : "#";
         return (
           <li key={label}>
             <NavLink
@@ -138,11 +190,10 @@ const FlatDropdown = ({ open, items }) => (
 const MobileAccordion = ({ label, expanded, onToggle, children }) => (
   <div>
     <button
-      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-        expanded
+      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${expanded
           ? "bg-[#EB6664]/10 text-[#EB6664]"
           : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
-      }`}
+        }`}
       onClick={onToggle}
     >
       {label}
@@ -162,15 +213,16 @@ const MobileAccordion = ({ label, expanded, onToggle, children }) => (
 /* ─── HEADER ────────────────────────────────────────────────────────────────── */
 
 const Header = () => {
-  const [mobileOpen, setMobileOpen]       = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   // Mobile accordion state
-  const [mobileExpanded, setMobileExpanded]       = useState(null);
+  const [mobileExpanded, setMobileExpanded] = useState(null);
   const [mobileTuitionGroup, setMobileTuitionGroup] = useState(null);
+  const [mobileLanguageGroup, setMobileLanguageGroup] = useState(null);
 
   const closeTimer = useRef(null);
-  const navigate   = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -178,14 +230,13 @@ const Header = () => {
   }, [mobileOpen]);
 
   /* ── Hover helpers with small delay so cursor can reach sub-panel ── */
-  const openDropdown  = (name) => { clearTimeout(closeTimer.current); setActiveDropdown(name); };
-  const scheduleClose = ()     => { closeTimer.current = setTimeout(() => setActiveDropdown(null), 120); };
+  const openDropdown = (name) => { clearTimeout(closeTimer.current); setActiveDropdown(name); };
+  const scheduleClose = () => { closeTimer.current = setTimeout(() => setActiveDropdown(null), 120); };
 
   const navLinkClass = ({ isActive }) =>
-    `px-3 py-1.5 rounded-full text-sm font-semibold transition ${
-      isActive
-        ? "text-white bg-white/20"
-        : "text-white/90 hover:text-white hover:bg-white/15"
+    `px-3 py-1.5 rounded-full text-sm font-semibold transition ${isActive
+      ? "text-white bg-white/20"
+      : "text-white/90 hover:text-white hover:bg-white/15"
     }`;
 
   /* Reusable desktop dropdown wrapper */
@@ -241,7 +292,7 @@ const Header = () => {
 
             {/* LANGUAGE TRACKS */}
             <DropdownItem id="language" label="LANGUAGE TRACKS">
-              <FlatDropdown open={activeDropdown === "language"} items={languageTracks} />
+              <LanguageTracksDropdown open={activeDropdown === "language"} />
             </DropdownItem>
 
             {/* MORE */}
@@ -270,23 +321,20 @@ const Header = () => {
 
       {/* ── MOBILE DRAWER ── */}
       <div
-        className={`fixed inset-0 z-[100] transition-all duration-500 ${
-          mobileOpen ? "visible" : "invisible"
-        }`}
+        className={`fixed inset-0 z-[100] transition-all duration-500 ${mobileOpen ? "visible" : "invisible"
+          }`}
       >
         {/* Backdrop */}
         <div
-          className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-500 ${
-            mobileOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-500 ${mobileOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMobileOpen(false)}
         />
 
         {/* Panel */}
         <aside
-          className={`absolute right-0 top-0 h-full w-[85%] max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-500 ease-in-out ${
-            mobileOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute right-0 top-0 h-full w-[85%] max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-500 ease-in-out ${mobileOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {/* Header */}
           <div className="flex justify-between items-center px-5 py-5 border-b border-gray-100">
@@ -314,8 +362,7 @@ const Header = () => {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                    isActive ? "bg-[#EB6664]/10 text-[#EB6664]" : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${isActive ? "bg-[#EB6664]/10 text-[#EB6664]" : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
                   }`
                 }
                 onClick={() => setMobileOpen(false)}
@@ -377,20 +424,40 @@ const Header = () => {
                 ))}
               </MobileAccordion>
 
-              {/* Language Tracks */}
+              {/* Language Tracks - Mobile with nested accordion */}
               <MobileAccordion
                 label="Language Tracks"
                 expanded={mobileExpanded === "language"}
                 onToggle={() => setMobileExpanded(mobileExpanded === "language" ? null : "language")}
               >
-                {languageTracks.map((item) => (
-                  <button
-                    key={item}
-                    className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {item}
-                  </button>
+                {languageTracks.map((group) => (
+                  <div key={group.label}>
+                    <button
+                      className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-widest hover:text-[#EB6664] transition-colors"
+                      onClick={() =>
+                        setMobileLanguageGroup(mobileLanguageGroup === group.label ? null : group.label)
+                      }
+                    >
+                      {group.label}
+                      <FiChevronDown
+                        size={12}
+                        className={`transition-transform ${mobileLanguageGroup === group.label ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {mobileLanguageGroup === group.label && (
+                      <div className="pl-4 pb-1 flex flex-col gap-0.5">
+                        {group.items.map((item) => (
+                          <button
+                            key={item}
+                            className="text-left px-3 py-1.5 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {item}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </MobileAccordion>
 
@@ -405,10 +472,9 @@ const Header = () => {
                       key={item.path}
                       to={item.path}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                          isActive
-                            ? "bg-[#EB6664]/10 text-[#EB6664]"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-[#EB6664]"
+                        `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
+                          ? "bg-[#EB6664]/10 text-[#EB6664]"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-[#EB6664]"
                         }`
                       }
                       onClick={() => setMobileOpen(false)}
