@@ -1,192 +1,303 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import banner1 from '../assets/banner1.png';
-import banner2 from '../assets/banner2.png';
+import { useState, useEffect, useRef } from "react";
 
-/* ─────────────────────────────
-   BANNER DATA
-───────────────────────────── */
-
-const BANNERS = [
-  {
-    id: 1,
-    img: banner1,
-    eyebrow: "LIMITED TIME",
-    title: "SOS SALE",
-    subtitle: "BUY 1 GET 1 FREE on all styles",
-    cta: "Explore",
-    ctaColor: "#EB6664",
-    overlay: "rgba(12,12,12,0.55)",
-  },
-  {
-    id: 2,
-    img: banner2,
-    eyebrow: "NEW ARRIVALS",
-    title: "SUMMER 2025",
-    subtitle: "Fresh styles · Kurtas · Dresses",
-    cta: "Explore",
-    ctaColor: "#EB6664",
-    overlay: "rgba(12,12,12,0.5)",
-  },
-];
-
-/* ─────────────────────────────
-   HOOK
-───────────────────────────── */
-
-const useCarousel = (count, autoMs) => {
-  const [cur, setCur] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const timer = useRef(null);
-
-  const next = useCallback(() => {
-    setCur((c) => (c + 1) % count);
-  }, [count]);
-
-  useEffect(() => {
-    if (!paused) timer.current = setInterval(next, autoMs);
-    return () => clearInterval(timer.current);
-  }, [paused, next, autoMs]);
-
-  return {
-    cur,
-    next,
-    prev: () => setCur((c) => (c - 1 + count) % count),
-    goTo: setCur,
-    pause: () => setPaused(true),
-    resume: () => setPaused(false),
-  };
-};
-
-/* ─────────────────────────────
-   RESPONSIVE BANNER STRIP
-───────────────────────────── */
-
-const BannerStrip = ({ banner }) => (
-  <div className="relative w-full h-full">
-
-    {/* IMAGE */}
-    <img
-      src={banner.img}
-      alt={banner.title}
-      className="absolute inset-0 w-full h-full object-cover"
-    />
-
-    {/* OVERLAY */}
-    {/* <div className="absolute inset-0" style={{ background: banner.overlay }} /> */}
-
-    {/* CONTENT */}
-    {/* <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-
-     
-      <span
-        className="text-[9px] sm:text-xs font-bold tracking-[0.2em] mb-1"
-        style={{ color: "#000000" }}
-      >
-        {banner.eyebrow}
-      </span>
-
-   
-      <h2 className="
-        text-white 
-        text-lg sm:text-xl md:text-2xl lg:text-3xl
-        font-bold 
-        mb-1 sm:mb-2
-      ">
-        {banner.title}
-      </h2>
-
-
-      <p className="
-        text-white/70 
-        text-[10px] sm:text-xs md:text-sm
-        mb-2 sm:mb-3
-        max-w-xs md:max-w-md
-      ">
-        {banner.subtitle}
-      </p>
-
-  
-      <button
-        className="
-          text-[10px] sm:text-xs md:text-sm
-          px-4 py-1.5 sm:px-5 sm:py-2
-          font-semibold
-          transition-all
-          hover:scale-105
-        "
-        style={{
-          background: banner.ctaColor,
-          color: "#fff",
-        }}
-      >
-        {banner.cta}
-      </button>
-    </div> */}
-  </div>
-);
-
-/* ─────────────────────────────
-   MAIN COMPONENT
-───────────────────────────── */
-
-export default function FlashBanner() {
-  const { cur, next, prev, goTo, pause, resume } = useCarousel(
-    BANNERS.length,
-    4000
+function GraduationCapIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
+      <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+    </svg>
   );
+}
 
-  const accent = BANNERS[cur].ctaColor;
+export default function AnnouncementBanner() {
+  const fullText = "Mentorship is Now Available";
+  const [typedText, setTypedText] = useState("");
+  const [startTyping, setStartTyping] = useState(false);
+  const ref = useRef(null);
+  const timeoutRef = useRef(null);
+  const indexRef = useRef(0);
+  const isDeleting = useRef(false);
+
+  // Viewport detection
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStartTyping(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Fixed loop typing logic using refs to avoid stale closure bugs
+  useEffect(() => {
+    if (!startTyping) return;
+
+    const type = () => {
+      if (!isDeleting.current) {
+        // Typing forward
+        if (indexRef.current < fullText.length) {
+          setTypedText(fullText.slice(0, indexRef.current + 1));
+          indexRef.current += 1;
+          timeoutRef.current = setTimeout(type, 40);
+        } else {
+          // Finished typing — wait 2s then start clearing
+          timeoutRef.current = setTimeout(() => {
+            isDeleting.current = true;
+            type();
+          }, 2000);
+        }
+      } else {
+        // Deleting
+        if (indexRef.current > 0) {
+          indexRef.current -= 1;
+          setTypedText(fullText.slice(0, indexRef.current));
+          timeoutRef.current = setTimeout(type, 20);
+        } else {
+          // Done deleting — restart
+          isDeleting.current = false;
+          timeoutRef.current = setTimeout(type, 300);
+        }
+      }
+    };
+
+    type();
+
+    return () => clearTimeout(timeoutRef.current);
+  }, [startTyping]);
 
   return (
     <div
+      ref={ref}
       className="
         w-full relative overflow-hidden
-        h-[300px] sm:h-[300px] md:h-[300px]
+        bg-[#0d0405]
+        flex flex-col md:flex-row items-center justify-between
+        gap-6 md:gap-10
+        px-4 sm:px-6 md:px-10 lg:px-14
+        py-6 sm:py-8 md:py-10
+        text-center md:text-left
       "
-      style={{ background: "#0C0C0C" }}
-      onMouseEnter={pause}
-      onMouseLeave={resume}
     >
-      {/* SLIDES */}
-      {BANNERS.map((b, i) => (
-        <div
-          key={b.id}
-          className="absolute inset-0 transition-opacity duration-700"
-          style={{ opacity: i === cur ? 1 : 0 }}
-        >
-          <BannerStrip banner={b} />
+      {/* LEFT */}
+      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+
+        {/* Icon */}
+        <div className="flex flex-col items-center gap-2 animate-[float_3.5s_ease-in-out_infinite]">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#EB66641a] border border-[#EB66644d] flex items-center justify-center">
+            <GraduationCapIcon className="text-[#EB6664] w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+          </div>
+
+          <div className="flex items-center gap-1">
+            <span className="relative w-2 h-2 flex">
+              <span className="absolute inset-0 rounded-full bg-[#EB6664] opacity-70 animate-ping" />
+              <span className="relative w-2 h-2 rounded-full bg-[#EB6664]" />
+            </span>
+            <span className="text-[10px] font-bold tracking-widest uppercase text-[#EB6664]">
+              Live
+            </span>
+          </div>
         </div>
-      ))}
 
-      {/* ARROWS */}
-      <button
-        onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 text-white"
-      >
-        ‹
-      </button>
-
-      <button
-        onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-white"
-      >
-        ›
-      </button>
-
-      {/* DOTS */}
-      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-1">
-        {BANNERS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            className="h-1 transition-all"
-            style={{
-              width: i === cur ? 20 : 6,
-              background: i === cur ? accent : "#999",
-            }}
-          />
-        ))}
+        {/* Typing Text */}
+        <div className="text-white font-extrabold leading-tight
+                        text-lg sm:text-xl md:text-2xl lg:text-3xl">
+          <span className="text-[#EB6664]">1-on-1 </span>
+          {typedText}
+          <span className="border-r-2 border-white ml-1 animate-pulse" />
+        </div>
       </div>
+
+      {/* CTA */}
+      <button
+        className="
+          flex items-center gap-2 shrink-0
+          bg-[#EB6664] text-white font-bold
+          text-xs sm:text-sm
+          px-4 sm:px-5 md:px-6
+          py-2.5 sm:py-3
+          rounded-lg
+          transition-all duration-200
+          hover:bg-[#d95250] hover:scale-105
+        "
+      >
+        Book a Session
+      </button>
+
+      {/* Float animation */}
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+      `}</style>
     </div>
   );
 }
+
+
+
+
+// import { useState, useEffect, useRef } from "react";
+
+// function GraduationCapIcon({ className }) {
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       viewBox="0 0 24 24"
+//       fill="currentColor"
+//       className={className}
+//     >
+//       <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+//     </svg>
+//   );
+// }
+
+// export default function AnnouncementBanner() {
+//   const fullText = "Mentorship is Now Available";
+//   const [typedText, setTypedText] = useState("");
+//   const [startTyping, setStartTyping] = useState(false);
+//   const ref = useRef(null);
+//   const timeoutRef = useRef(null);
+//   const indexRef = useRef(0);
+//   const isDeleting = useRef(false);
+
+//   // Viewport detection
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setStartTyping(true);
+//           observer.disconnect();
+//         }
+//       },
+//       { threshold: 0.4 }
+//     );
+//     if (ref.current) observer.observe(ref.current);
+//     return () => observer.disconnect();
+//   }, []);
+
+//   // Fixed loop typing logic using refs to avoid stale closure bugs
+//   useEffect(() => {
+//     if (!startTyping) return;
+
+//     const type = () => {
+//       if (!isDeleting.current) {
+//         // Typing forward
+//         if (indexRef.current < fullText.length) {
+//           setTypedText(fullText.slice(0, indexRef.current + 1));
+//           indexRef.current += 1;
+//           timeoutRef.current = setTimeout(type, 40);
+//         } else {
+//           // Finished typing — wait 2s then start clearing
+//           timeoutRef.current = setTimeout(() => {
+//             isDeleting.current = true;
+//             type();
+//           }, 2000);
+//         }
+//       } else {
+//         // Deleting
+//         if (indexRef.current > 0) {
+//           indexRef.current -= 1;
+//           setTypedText(fullText.slice(0, indexRef.current));
+//           timeoutRef.current = setTimeout(type, 20);
+//         } else {
+//           // Done deleting — restart
+//           isDeleting.current = false;
+//           timeoutRef.current = setTimeout(type, 300);
+//         }
+//       }
+//     };
+
+//     type();
+
+//     return () => clearTimeout(timeoutRef.current);
+//   }, [startTyping]);
+
+//   return (
+//     <div
+//       ref={ref}
+//       className="
+//         w-full relative overflow-hidden
+//         bg-[#0d0405]
+//         flex flex-col md:flex-row items-center justify-between
+//         gap-6 md:gap-10
+//         px-4 sm:px-6 md:px-10 lg:px-14
+//         py-6 sm:py-8 md:py-10
+//         text-center md:text-left
+//       "
+//     >
+//       {/* LEFT */}
+//       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+
+//         {/* Icon */}
+//         <div className="flex flex-col items-center gap-2 animate-[float_3.5s_ease-in-out_infinite]">
+//           <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#EB66641a] border border-[#EB66644d] flex items-center justify-center">
+//             <GraduationCapIcon className="text-[#EB6664] w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+//           </div>
+
+//           <div className="flex items-center gap-1">
+//             <span className="relative w-2 h-2 flex">
+//               <span className="absolute inset-0 rounded-full bg-[#EB6664] opacity-70 animate-ping" />
+//               <span className="relative w-2 h-2 rounded-full bg-[#EB6664]" />
+//             </span>
+//             <span className="text-[10px] font-bold tracking-widest uppercase text-[#EB6664]">
+//               Live
+//             </span>
+//           </div>
+//         </div>
+
+//         {/* Typing Text */}
+//         <div className="text-white font-extrabold leading-tight
+//                         text-lg sm:text-xl md:text-2xl lg:text-3xl">
+//           <span className="text-[#EB6664]">1-on-1 </span>
+//           {(() => {
+//             const colorStart = fullText.indexOf("Available");
+//             if (colorStart === -1 || typedText.length <= colorStart) {
+//               return <span>{typedText}</span>;
+//             }
+//             return (
+//               <>
+//                 <span>{typedText.slice(0, colorStart)}</span>
+//                 <span className="text-[#EB6664]">{typedText.slice(colorStart)}</span>
+//               </>
+//             );
+//           })()}
+//           <span className="border-r-2 border-white ml-1 animate-pulse" />
+//         </div>
+//       </div>
+
+//       {/* CTA */}
+//       <button
+//         className="
+//           flex items-center gap-2 shrink-0
+//           bg-[#EB6664] text-white font-bold
+//           text-xs sm:text-sm
+//           px-4 sm:px-5 md:px-6
+//           py-2.5 sm:py-3
+//           rounded-lg
+//           transition-all duration-200
+//           hover:bg-[#d95250] hover:scale-105
+//         "
+//       >
+//         Book a Session
+//       </button>
+
+//       {/* Float animation */}
+//       <style>{`
+//         @keyframes float {
+//           0%, 100% { transform: translateY(0); }
+//           50% { transform: translateY(-4px); }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }

@@ -174,27 +174,40 @@ const NotebookBackground = () => (
 /* ─── MAIN SECTION ─────────────────────────────────────────── */
 export default function ExperienceCount() {
   return (
-    <div className="relative overflow-hidden bg-[#FBF7F2] px-[clamp(16px,4vw,40px)] py-[clamp(24px,4vw,48px)] min-h-[220px]">
-      {/* <NotebookBackground /> */}
+    <div className="relative overflow-hidden bg-[#FBF7F2] 
+      px-4 sm:px-6 md:px-10 lg:px-16 
+      py-8 sm:py-10 md:py-14 lg:py-16 
+      min-h-[200px]">
 
       {/* Decorative paperclip */}
-      <div className="absolute top-2 right-7 z-10">
+      <div className="absolute top-2 right-3 sm:right-6 md:right-10 z-10">
         <Paperclip rotate={-8} />
       </div>
 
-      {/* Section heading */}
-      <div className="relative z-10 text-center mb-[clamp(16px,3vw,28px)] pl-20">
+      {/* Heading */}
+      <div className="relative z-10 text-center mb-6 sm:mb-8 md:mb-10">
         <span
-          className="text-[clamp(11px,1.4vw,14px)] text-[#7A6E5A] tracking-[0.18em] uppercase italic border-b border-[#D6CEBA] pb-0.5"
+          className="block text-[12px] sm:text-sm md:text-base 
+          text-[#7A6E5A] tracking-[0.18em] uppercase italic 
+          border-b border-[#D6CEBA] pb-1 w-fit mx-auto"
           style={{ fontFamily: "Fraunces, Georgia, serif" }}
         >
           Our Numbers at a Glance
         </span>
       </div>
 
-      {/* Cards grid */}
-      <div className="max-w-7xl mx-auto relative z-10 pl-[clamp(0px,4vw,80px)]">
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-[clamp(10px,2vw,18px)]">
+      {/* Cards */}
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div
+          className="
+          grid 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4
+          gap-3 sm:gap-4 md:gap-6
+        "
+        >
           {metrics.map((m, i) => (
             <MetricChip key={i} m={m} index={i} />
           ))}

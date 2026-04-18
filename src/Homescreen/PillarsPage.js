@@ -1,20 +1,16 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 
-/* ─── COLOUR TOKENS (kept only for SVG/gradient values Tailwind can't handle) ─── */
 const RED = "#EB6664";
 const BLUE = "#3B6FA0";
 const PENCIL = "#8C7B6B";
 const INK = "#1C1209";
 const FADED = "#111111";
-const RULED = "#D6CEBA";
 const TAPE = "rgba(200,195,170,0.55)";
-
-/* ─── SUB COMPONENTS ────────────────────────────────────────── */
 
 const WashiTape = ({ rotate = -2 }) => (
   <div
-    className="absolute top-[-8px] left-1/2 h-4 w-[52px] border-l border-r"
+    className="absolute -top-2 left-1/2 h-4 w-[52px] border-l border-r"
     style={{
       background: TAPE,
       borderColor: "rgba(180,170,140,0.3)",
@@ -23,7 +19,11 @@ const WashiTape = ({ rotate = -2 }) => (
   />
 );
 
-const ScribbleUnderline = ({ color = RED, className = "", style = {} }) => (
+const ScribbleUnderline = ({
+  color = RED,
+  className = "",
+  style = {},
+}) => (
   <svg
     viewBox="0 0 200 12"
     preserveAspectRatio="none"
@@ -40,7 +40,10 @@ const ScribbleUnderline = ({ color = RED, className = "", style = {} }) => (
   </svg>
 );
 
-const Highlight = ({ children, color = "#FFEB3B" }) => (
+const Highlight = ({
+  children,
+  color = "#FFEB3B",
+}) => (
   <span
     style={{
       background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)`,
@@ -110,7 +113,11 @@ const PencilSVG = ({ size = 160, rotate = 5 }) => (
   </svg>
 );
 
-const FadeUp = ({ children, delay = 0, className = "" }) => {
+const FadeUp = ({
+  children,
+  delay = 0,
+  className = "",
+}) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-8% 0px" });
   return (
@@ -126,7 +133,6 @@ const FadeUp = ({ children, delay = 0, className = "" }) => {
   );
 };
 
-/* ─── PILLAR DATA ────────────────────────────────────────────── */
 const pillars = [
   {
     id: "01",
@@ -134,7 +140,6 @@ const pillars = [
     title: "Dedicated Mentorship",
     body: "At Esperly, every student is paired with a mentor who truly understands their learning journey. Beyond teaching, our mentors guide, motivate, and build confidence — ensuring students feel supported at every step.",
     accent: RED,
-    noteColor: "#F5B3B2",
     noteBg: "#FFFDE7",
   },
   {
@@ -143,7 +148,6 @@ const pillars = [
     title: "Personalized Learning",
     body: "We believe learning should adapt to the student, not the other way around. Our sessions are thoughtfully tailored to individual learning styles, pace, and goals — creating a more engaging and effective experience.",
     accent: RED,
-    noteColor: "#E3F0FF",
     noteBg: "#E3F0FF",
   },
   {
@@ -152,7 +156,6 @@ const pillars = [
     title: "Concept Mastery",
     body: "Strong foundations lead to lasting success. We go beyond memorization, helping students deeply understand concepts, apply them with clarity, and develop the confidence to tackle any challenge.",
     accent: RED,
-    noteColor: "#E8F5E9",
     noteBg: "#E8F5E9",
   },
   {
@@ -161,12 +164,10 @@ const pillars = [
     title: "Structured Progress Tracking",
     body: "Growth is best achieved with the right direction. Through regular assessments and detailed feedback, we track progress closely — keeping students and parents informed, involved, and confident in the journey.",
     accent: RED,
-    noteColor: "#FFFDE7",
     noteBg: "#FFF3E0",
   },
 ];
 
-/* ─── PILLAR CARD ────────────────────────────────────────────── */
 const PillarCard = ({ p, index }) => {
   const [hovered, setHovered] = useState(false);
   const ref = useRef(null);
@@ -177,9 +178,9 @@ const PillarCard = ({ p, index }) => {
   return (
     <motion.div
       ref={ref}
-      className="relative rounded-[3px] cursor-default overflow-visible transition-shadow duration-300"
+      className="relative rounded-sm cursor-default overflow-visible transition-shadow duration-300"
       style={{
-        background: p.noteColor,
+        background: p.noteBg,
         boxShadow: hovered
           ? `4px 8px 32px ${p.accent}30, 0 1px 0 rgba(255,255,255,0.8) inset`
           : "3px 5px 16px rgba(0,0,0,0.13), 0 1px 0 rgba(255,255,255,0.7) inset",
@@ -190,42 +191,33 @@ const PillarCard = ({ p, index }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Washi tape */}
       <WashiTape rotate={index % 2 === 0 ? -3 : 3} />
 
       {/* Card number */}
       <div
-        className="absolute top-[10px] right-3 font-mono text-[11px] tracking-[0.1em] opacity-45"
+        className="absolute top-2.5 right-3 font-mono text-[11px] tracking-[0.1em] opacity-45"
         style={{ color: p.accent }}
       >
         #{p.id}
       </div>
 
       {/* Content */}
-      <div className="p-[clamp(18px,3vw,28px)] relative z-10">
+      <div className="p-5 sm:p-6 lg:p-7 relative z-10">
         <div className="flex items-start gap-2 mb-2">
-          <div className="text-[clamp(24px,4vw,32px)] leading-none shrink-0">
-            {p.icon}
-          </div>
+          <div className="text-2xl sm:text-3xl leading-none shrink-0">{p.icon}</div>
           <h3
-            className="font-bold leading-[1.25]"
-            style={{
-              fontFamily: "Fraunces, Georgia, serif",
-              fontSize: "clamp(15px, 2vw, 20px)",
-              color: INK,
-            }}
+            className="font-bold leading-snug text-base sm:text-lg lg:text-xl"
+            style={{ fontFamily: "Fraunces, Georgia, serif", color: INK }}
           >
             {p.title}
           </h3>
         </div>
+
         <ScribbleUnderline color={p.accent} style={{ width: "80%", marginBottom: 10 }} />
+
         <p
-          className="leading-[1.75] mb-[14px]"
-          style={{
-            fontFamily: '"DM Serif Display", Georgia, serif',
-            fontSize: "clamp(8px, 1.4vw, 13px)",
-            color: FADED,
-          }}
+          className="leading-[1.6] sm:leading-[1.7] md:leading-[1.8] lg:leading-[1.9] text-[11px] sm:text-xs lg:text-[13px]"
+          style={{ fontFamily: '"DM Serif Display", Georgia, serif', color: FADED }}
         >
           {p.body}
         </p>
@@ -234,38 +226,24 @@ const PillarCard = ({ p, index }) => {
   );
 };
 
-/* ─── MAIN EXPORT ────────────────────────────────────────────── */
 export default function PillarsSection() {
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{
-        padding: "clamp(40px, 7vw, 50px) clamp(16px, 5vw, 50px)",
-        background: "#FBF7F2",
-      }}
-    >
+    <section className="relative overflow-hidden bg-[#FBF7F2] py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
+
       {/* Decorative blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full w-[150px] sm:w-[220px] lg:w-[300px] h-[150px] sm:h-[220px] lg:h-[300px] top-[10%] right-[5%]"
           style={{
-            width: "clamp(150px, 25vw, 300px)",
-            height: "clamp(150px, 25vw, 300px)",
             filter: "blur(80px)",
             background: `radial-gradient(circle, ${RED}12, transparent)`,
-            top: "10%",
-            right: "5%",
           }}
         />
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full w-[100px] sm:w-[150px] lg:w-[200px] h-[100px] sm:h-[150px] lg:h-[200px] bottom-[15%] left-[8%]"
           style={{
-            width: "clamp(100px, 18vw, 200px)",
-            height: "clamp(100px, 18vw, 200px)",
             filter: "blur(60px)",
             background: `radial-gradient(circle, ${BLUE}10, transparent)`,
-            bottom: "15%",
-            left: "8%",
           }}
         />
         {heroBubbles.map((b, i) => (
@@ -284,7 +262,7 @@ export default function PillarsSection() {
       {/* Decorative wave */}
       <div className="absolute top-0 right-0 pointer-events-none opacity-15">
         <svg
-          style={{ width: "clamp(120px,22vw,300px)", height: "clamp(80px,15vw,200px)" }}
+          className="w-[120px] sm:w-[200px] lg:w-[300px] h-auto"
           viewBox="0 0 300 200"
         >
           <path
@@ -298,22 +276,17 @@ export default function PillarsSection() {
         </svg>
       </div>
 
-      {/* Pencil decoration — hidden on small screens */}
+      {/* Pencil — hidden on mobile */}
       <div className="absolute top-6 right-6 opacity-15 hidden sm:block" aria-hidden>
         <PencilSVG size={160} rotate={5} />
       </div>
 
-      {/* ── SECTION CONTENT ── */}
+      {/* Section content */}
       <div className="max-w-7xl mx-auto relative z-[2]">
         <FadeUp>
-          {/* Heading */}
           <h2
-            className="font-black leading-[1.05] mb-1 tracking-[-0.02em]"
-            style={{
-              fontFamily: "Fraunces, Georgia, serif",
-              fontSize: "clamp(24px, 5vw, 52px)",
-              color: INK,
-            }}
+            className="font-black leading-[1.05] mb-1 tracking-[-0.02em] text-[clamp(24px,5vw,52px)]"
+            style={{ fontFamily: "Fraunces, Georgia, serif", color: INK }}
           >
             The Four Pillars of{" "}
             <Highlight color="#FFEB3B">
@@ -321,32 +294,24 @@ export default function PillarsSection() {
             </Highlight>
           </h2>
 
-          {/* Sub-heading */}
           <p
-            className="leading-[1.6] italic mb-[clamp(6px,1vw,10px)]"
-            style={{
-              fontFamily: '"DM Serif Display", Georgia, serif',
-              fontSize: "clamp(13px, 1.8vw, 17px)",
-              color: FADED,
-            }}
+            className="leading-[1.6] italic mb-2 sm:mb-3 text-sm sm:text-base lg:text-[17px]"
+            style={{ fontFamily: '"DM Serif Display", Georgia, serif', color: FADED }}
           >
             Designed to support every student's unique learning journey
           </p>
 
-          {/* Scribble underline */}
           <ScribbleUnderline
             color={RED}
-            style={{ width: "clamp(140px, 30vw, 320px)", marginBottom: "clamp(24px, 4vw, 48px)" }}
+            style={{
+              width: "clamp(140px, 30vw, 320px)",
+              marginBottom: "clamp(24px, 4vw, 48px)",
+            }}
           />
         </FadeUp>
 
-        {/* ── CARDS GRID ── */}
-        <div
-          className="grid gap-[clamp(20px,3vw,28px)] pt-2"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))",
-          }}
-        >
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-7 pt-2">
           {pillars.map((p, i) => (
             <PillarCard p={p} index={i} key={p.id} />
           ))}

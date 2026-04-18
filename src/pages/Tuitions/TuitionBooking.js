@@ -17,18 +17,54 @@ const boards = [
 ];
 
 const subjectsByClass = {
-    "Class 1": ["English", "Mathematics", "EVS", "Hindi", "General Knowledge"],
-    "Class 2": ["English", "Mathematics", "EVS", "Hindi", "General Knowledge"],
-    "Class 3": ["English", "Mathematics", "Science", "Social Studies", "Hindi"],
-    "Class 4": ["English", "Mathematics", "Science", "Social Studies", "Hindi"],
-    "Class 5": ["English", "Mathematics", "Science", "Social Studies", "Hindi"],
-    "Class 6": ["English", "Mathematics", "Science", "Social Studies", "Hindi", "Sanskrit"],
-    "Class 7": ["English", "Mathematics", "Science", "Social Studies", "Hindi", "Sanskrit"],
-    "Class 8": ["English", "Mathematics", "Science", "Social Studies", "Hindi", "Sanskrit"],
-    "Class 9": ["English", "Mathematics", "Physics", "Chemistry", "Biology", "Social Science", "Hindi"],
-    "Class 10": ["English", "Mathematics", "Physics", "Chemistry", "Biology", "Social Science", "Hindi"],
-    "Class 11": ["Physics", "Chemistry", "Mathematics", "Biology", "English", "Accountancy", "Economics", "Business Studies", "Computer Science"],
-    "Class 12": ["Physics", "Chemistry", "Mathematics", "Biology", "English", "Accountancy", "Economics", "Business Studies", "Computer Science"],
+    "Class 1": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 2": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 3": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 4": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 5": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 6": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 7": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 8": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 9": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 10": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 11": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ],
+    "Class 12": [
+        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
+        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
+    ]
 };
 
 const countryCodes = [
@@ -42,8 +78,8 @@ const countryCodes = [
     { code: "+974", country: "QA", flag: "🇶🇦" },
 ];
 
-const daysOptions = ["1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days (daily)"];
-const startOptions = ["This week", "Next week", "Within 2 weeks", "Within a month", "Flexible"];
+const daysOptions = ["1 day per week", "2 days per week", "3 days per week", "4 days per week", "5 days per week", "6 days per week", "7 days (daily)"];
+const startOptions = ["Immediately", "In Few Days", "In a week", "In 10 Days", "In This Month", "Next Month"];
 
 export default function TuitionBooking() {
     const params = new URLSearchParams(window.location.search);
