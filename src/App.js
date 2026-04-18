@@ -15,6 +15,7 @@ import ScrollToTop from "./views/ScrollToTop";
 import FAQPage from "./pages/contact/FAQPage";
 import WhatsAppButton from "./views/WhatsAppButton";
 import SideScroller from "./views/SideScroller";
+import TuitionBooking from "./pages/Tuitions/TuitionBooking";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -56,7 +57,7 @@ const App = () => {
       {/* <RollingPencil /> */}
       {/* <BusBanner /> */}
       <WhatsAppButton />
-      <SideScroller/>
+      {/* <SideScroller /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
@@ -66,9 +67,12 @@ const App = () => {
         <Route path="/category/:categoryId" element={<Subcategory onSelectCourse={handleCourseSelect} />} />
         <Route path="/course-detail/:courseId" element={<CourseDetail />} />
         <Route path="/faqs" element={<FAQPage />} />
+
+        {/* Tuition booking — matches /tuition?label=elementary-level&item=class-1 */}
+        <Route path="/tuition" element={<TuitionBooking />} />
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

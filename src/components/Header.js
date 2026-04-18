@@ -7,18 +7,22 @@ import { FiMenu, FiX, FiChevronDown, FiChevronRight } from "react-icons/fi";
 const tuitionsMenu = [
   {
     label: "Elementary  Level",
+    type: "class",
     items: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"],
   },
   {
     label: "Middle Level",
+    type: "class",
     items: ["Class 6", "Class 7", "Class 8"],
   },
   {
     label: "Secondary Level",
+    type: "class",
     items: ["Class 9", "Class 10", "Class 11", "Class 12"],
   },
   {
     label: "Short Term Courses",
+    type: "course",
     items: [
       "Abacus",
       "Phonics Classes",
@@ -37,7 +41,7 @@ const learningBoosters = [
 const languageTracks = [
   {
     label: "Primary Language",
-    items: [ "English"]
+    items: ["English"]
   },
   {
     label: "Regional Languages",
@@ -63,10 +67,19 @@ const moreItems = [
 
 const TuitionsDropdown = ({ open }) => {
   const [activeGroup, setActiveGroup] = useState(null);
+  const [activeType, setActiveType] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) setActiveGroup(null);
+    if (!open) setActiveType(null);
   }, [open]);
+
+  const goToTuition = (label, item) => {
+    const fmt = (s) => s.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/tuition?label=${fmt(label)}&item=${fmt(item)}`);
+  };
 
   return (
     <div
@@ -80,10 +93,13 @@ const TuitionsDropdown = ({ open }) => {
             <li
               key={group.label}
               className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${activeGroup === group.label
-                  ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
+                : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
                 }`}
-              onMouseEnter={() => setActiveGroup(group.label)}
+              onMouseEnter={() => {
+                setActiveGroup(group.label);
+                setActiveType(group.type);
+              }}
             >
               {group.label}
               <FiChevronRight size={13} className="ml-2 text-gray-400 flex-shrink-0" />
@@ -92,14 +108,19 @@ const TuitionsDropdown = ({ open }) => {
         </ul>
 
         {/* Sub-items panel */}
-        {activeGroup && (
+        {activeGroup && activeType && (
           <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
             {tuitionsMenu
-              .find((g) => g.label === activeGroup)
+              .find((g) => g.label === activeGroup && g.type === activeType)
               ?.items.map((item) => (
                 <li
                   key={item}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-[#EB6664]/10 hover:text-[#EB6664] cursor-pointer transition-colors duration-150"
+                  onClick={() => {
+                    if (activeType !== 'course') {
+                      goToTuition(activeGroup, item);
+                    }
+                  }}
                 >
                   {item}
                 </li>
@@ -132,8 +153,8 @@ const LanguageTracksDropdown = ({ open }) => {
             <li
               key={group.label}
               className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${activeGroup === group.label
-                  ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
+                : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
                 }`}
               onMouseEnter={() => setActiveGroup(group.label)}
             >
@@ -195,8 +216,8 @@ const MobileAccordion = ({ label, expanded, onToggle, children }) => (
   <div>
     <button
       className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${expanded
-          ? "bg-[#EB6664]/10 text-[#EB6664]"
-          : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+        ? "bg-[#EB6664]/10 text-[#EB6664]"
+        : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
         }`}
       onClick={onToggle}
     >
@@ -224,6 +245,14 @@ const Header = () => {
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [mobileTuitionGroup, setMobileTuitionGroup] = useState(null);
   const [mobileLanguageGroup, setMobileLanguageGroup] = useState(null);
+  const [activeGroup, setActiveGroup] = useState(null);
+  const [activeType, setActiveType] = useState(null);
+
+  const goToTuition = (label, item) => {
+    const fmt = (s) => s.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/tuition?label=${fmt(label)}&item=${fmt(item)}`);
+  };
+
 
   const closeTimer = useRef(null);
   const navigate = useNavigate();
@@ -384,9 +413,11 @@ const Header = () => {
                   <div key={group.label}>
                     <button
                       className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-widest hover:text-[#EB6664] transition-colors"
-                      onClick={() =>
-                        setMobileTuitionGroup(mobileTuitionGroup === group.label ? null : group.label)
-                      }
+                      onClick={() => {
+                        setMobileTuitionGroup(mobileTuitionGroup === group.label ? null : group.label);
+                        setActiveGroup(group.label);
+                        setActiveType(group.type);
+                      }}
                     >
                       {group.label}
                       <FiChevronDown
@@ -400,7 +431,12 @@ const Header = () => {
                           <button
                             key={item}
                             className="text-left px-3 py-1.5 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                            onClick={() => setMobileOpen(false)}
+                            onClick={() => {
+                              if (activeType !== 'course') {
+                                goToTuition(activeGroup, item);
+                                setMobileOpen(false);
+                              }
+                            }}
                           >
                             {item}
                           </button>

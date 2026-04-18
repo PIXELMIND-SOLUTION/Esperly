@@ -6,19 +6,23 @@ import { FiMenu, FiX, FiChevronDown, FiChevronRight } from "react-icons/fi";
 
 const tuitionsMenu = [
   {
-    label: "Elementary Level",
+    label: "Elementary  Level",
+    type: "class",
     items: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"],
   },
   {
     label: "Middle Level",
+    type: "class",
     items: ["Class 6", "Class 7", "Class 8"],
   },
   {
     label: "Secondary Level",
+    type: "class",
     items: ["Class 9", "Class 10", "Class 11", "Class 12"],
   },
   {
     label: "Short Term Courses",
+    type: "course",
     items: [
       "Abacus",
       "Phonics Classes",
@@ -42,7 +46,7 @@ const learningBoosters = [
 const languageTracks = [
   {
     label: "Primary Language",
-    items: [ "English"]
+    items: ["English"]
   },
   {
     label: "Regional Languages",
@@ -68,48 +72,60 @@ const moreItems = [
 
 const TuitionsDropdown = ({ open }) => {
   const [activeGroup, setActiveGroup] = useState(null);
+  const [activeType, setActiveType] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) setActiveGroup(null);
+    if (!open) setActiveType(null);
   }, [open]);
+
+  const goToTuition = (label, item) => {
+    const fmt = (s) => s.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/tuition?label=${fmt(label)}&item=${fmt(item)}`);
+  };
 
   return (
     <div
-      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${
-        open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
-      }`}
+      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+        }`}
     >
-      <div className="flex bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px]">
+      <div className="flex bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[190px]">
         {/* Level list */}
         <ul className="py-2 min-w-[190px]">
           {tuitionsMenu.map((group) => (
             <li
               key={group.label}
-              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${
-                activeGroup === group.label
-                  ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
-              }`}
-              onMouseEnter={() => setActiveGroup(group.label)}
+              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${activeGroup === group.label
+                ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
+                : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                }`}
+              onMouseEnter={() => {
+                setActiveGroup(group.label);
+                setActiveType(group.type);
+              }}
             >
               {group.label}
-              <FiChevronRight size={13} className="ml-2 text-gray-400" />
+              <FiChevronRight size={13} className="ml-2 text-gray-400 flex-shrink-0" />
             </li>
           ))}
         </ul>
 
         {/* Sub-items panel */}
-        {activeGroup && (
+        {activeGroup && activeType && (
           <ul className="py-2 min-w-[170px] border-l border-gray-100 bg-white">
-            {/* <li className="px-4 py-1.5 text-xs font-bold text-[#EB6664] uppercase tracking-widest">
-              {activeGroup}
-            </li> */}
             {tuitionsMenu
-              .find((g) => g.label === activeGroup)
+              .find((g) => g.label === activeGroup && g.type === activeType)
               ?.items.map((item) => (
                 <li
                   key={item}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-[#EB6664]/10 hover:text-[#EB6664] cursor-pointer transition-colors duration-150"
+                  onClick={() => {
+                    if (activeType !== 'course') {
+                      goToTuition(activeGroup, item);
+                    }
+                  }}
                 >
                   {item}
                 </li>
@@ -125,9 +141,8 @@ const TuitionsDropdown = ({ open }) => {
 
 const FlatDropdown = ({ open, items, pathPrefix = "" }) => (
   <div
-    className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${
-      open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
-    }`}
+    className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+      }`}
   >
     <ul className="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-[190px]">
       {items.map((item) => {
@@ -159,9 +174,8 @@ const LanguageTracksDropdown = ({ open }) => {
 
   return (
     <div
-      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${
-        open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
-      }`}
+      className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+        }`}
     >
       <div className="flex bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px]">
         {/* Category list */}
@@ -169,11 +183,10 @@ const LanguageTracksDropdown = ({ open }) => {
           {languageTracks.map((group) => (
             <li
               key={group.label}
-              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${
-                activeGroup === group.label
-                  ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
-              }`}
+              className={`flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 select-none ${activeGroup === group.label
+                ? "bg-[#EB6664]/10 text-[#EB6664] font-semibold"
+                : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                }`}
               onMouseEnter={() => setActiveGroup(group.label)}
             >
               {group.label}
@@ -218,6 +231,14 @@ const Navbar = () => {
   const navigate = useNavigate();
   const closeTimer = useRef(null);
 
+  const [activeGroup, setActiveGroup] = useState(null);
+  const [activeType, setActiveType] = useState(null);
+
+  const goToTuition = (label, item) => {
+    const fmt = (s) => s.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/tuition?label=${fmt(label)}&item=${fmt(item)}`);
+  };
+
   // ── Scroll listener ──
   useEffect(() => {
     const handleScroll = () => {
@@ -250,10 +271,9 @@ const Navbar = () => {
   };
 
   const navLinkClass = ({ isActive }) =>
-    `flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-      isActive
-        ? "text-white bg-white/20"
-        : "text-white/90 hover:text-white hover:bg-white/15"
+    `flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 ${isActive
+      ? "text-white bg-white/20"
+      : "text-white/90 hover:text-white hover:bg-white/15"
     }`;
 
   // ── Dropdown nav item ──
@@ -280,17 +300,15 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ease-in-out ${
-          scrolled
-            ? "h-[70px] bg-[#EB6664] backdrop-blur-xl backdrop-saturate-150 border-b border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.18)]"
-            : "h-[200px] bg-transparent border-none shadow-none"
-        }`}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ease-in-out ${scrolled
+          ? "h-[70px] bg-[#EB6664] backdrop-blur-xl backdrop-saturate-150 border-b border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.18)]"
+          : "h-[200px] bg-transparent border-none shadow-none"
+          }`}
       >
         {/* Glass overlay */}
         <div
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out pointer-events-none bg-[#EB6664]/75 backdrop-blur-xl backdrop-saturate-150 ${
-            scrolled ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out pointer-events-none bg-[#EB6664]/75 backdrop-blur-xl backdrop-saturate-150 ${scrolled ? "opacity-100" : "opacity-0"
+            }`}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-center">
@@ -302,9 +320,8 @@ const Navbar = () => {
               onClick={() => navigate("/")}
             >
               <div
-                className={`overflow-hidden flex-shrink-0 transition-all duration-700 ease-in-out ${
-                  scrolled ? "w-9 h-9 rounded-lg" : "w-[68px] h-[68px] rounded-xl"
-                }`}
+                className={`overflow-hidden flex-shrink-0 transition-all duration-700 ease-in-out ${scrolled ? "w-9 h-9 rounded-lg" : "w-[68px] h-[68px] rounded-xl"
+                  }`}
               >
                 <img
                   src="/logo4.png"
@@ -314,9 +331,8 @@ const Navbar = () => {
               </div>
               <div className="flex flex-col leading-tight">
                 <span
-                  className={`text-white font-semibold tracking-tight transition-all duration-700 ease-in-out ${
-                    scrolled ? "text-[17px]" : "text-2xl"
-                  }`}
+                  className={`text-white font-semibold tracking-tight transition-all duration-700 ease-in-out ${scrolled ? "text-[17px]" : "text-2xl"
+                    }`}
                 >
                   Esperly
                 </span>
@@ -331,11 +347,10 @@ const Navbar = () => {
 
               {/* Desktop nav — visible when scrolled */}
               <div
-                className={`hidden lg:flex items-center gap-1 transition-all duration-700 ease-in-out ${
-                  scrolled
-                    ? "opacity-100 translate-y-0 pointer-events-auto"
-                    : "opacity-0 translate-y-3 pointer-events-none"
-                }`}
+                className={`hidden lg:flex items-center gap-1 transition-all duration-700 ease-in-out ${scrolled
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 translate-y-3 pointer-events-none"
+                  }`}
               >
                 <NavLink to="/" className={navLinkClass}>HUB</NavLink>
 
@@ -369,11 +384,10 @@ const Navbar = () => {
 
               {/* Contact Us — hero only */}
               <span
-                className={`text-white font-semibold text-xl hidden sm:block transition-all duration-700 ease-in-out cursor-pointer ${
-                  scrolled
-                    ? "opacity-0 w-0 overflow-hidden pointer-events-none"
-                    : "opacity-100 w-auto"
-                }`}
+                className={`text-white font-semibold text-xl hidden sm:block transition-all duration-700 ease-in-out cursor-pointer ${scrolled
+                  ? "opacity-0 w-0 overflow-hidden pointer-events-none"
+                  : "opacity-100 w-auto"
+                  }`}
                 onClick={() => navigate("/contact")}
               >
                 Contact Us
@@ -382,11 +396,10 @@ const Navbar = () => {
               {/* Send Enquiry — scrolled desktop */}
               <button
                 onClick={() => navigate("/contact")}
-                className={`hidden lg:block px-5 py-2 rounded-full bg-white text-[#EB6664] font-semibold text-sm transition-all duration-500 hover:scale-105 hover:shadow-lg hover:bg-white/90 ${
-                  scrolled
-                    ? "opacity-100 translate-y-0 pointer-events-auto"
-                    : "opacity-0 translate-y-2 pointer-events-none"
-                }`}
+                className={`hidden lg:block px-5 py-2 rounded-full bg-white text-[#EB6664] font-semibold text-sm transition-all duration-500 hover:scale-105 hover:shadow-lg hover:bg-white/90 ${scrolled
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 translate-y-2 pointer-events-none"
+                  }`}
               >
                 SEND ENQUIRY
               </button>
@@ -394,9 +407,8 @@ const Navbar = () => {
               {/* Hamburger */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className={`w-9 h-9 flex items-center justify-center bg-white/15 backdrop-blur-sm rounded-lg text-white hover:bg-white/25 transition-all duration-300 ${
-                  scrolled ? "lg:hidden" : "lg:flex"
-                }`}
+                className={`w-9 h-9 flex items-center justify-center bg-white/15 backdrop-blur-sm rounded-lg text-white hover:bg-white/25 transition-all duration-300 ${scrolled ? "lg:hidden" : "lg:flex"
+                  }`}
               >
                 <FiMenu size={20} />
               </button>
@@ -407,21 +419,18 @@ const Navbar = () => {
 
       {/* ── MOBILE DRAWER ── */}
       <div
-        className={`fixed inset-0 z-[100] transition-all duration-500 ${
-          mobileOpen ? "visible" : "invisible"
-        }`}
+        className={`fixed inset-0 z-[100] transition-all duration-500 ${mobileOpen ? "visible" : "invisible"
+          }`}
       >
         <div
-          className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-500 ${
-            mobileOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-500 ${mobileOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMobileOpen(false)}
         />
 
         <aside
-          className={`absolute right-0 top-0 h-full w-[85%] max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-500 ease-in-out ${
-            mobileOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute right-0 top-0 h-full w-[85%] max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-500 ease-in-out ${mobileOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {/* Drawer header */}
           <div className="flex justify-between items-center px-5 py-5 border-b border-gray-100">
@@ -449,8 +458,7 @@ const Navbar = () => {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                    isActive ? "bg-[#EB6664]/10 text-[#EB6664]" : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${isActive ? "bg-[#EB6664]/10 text-[#EB6664]" : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
                   }`
                 }
                 onClick={() => setMobileOpen(false)}
@@ -468,9 +476,11 @@ const Navbar = () => {
                   <div key={group.label}>
                     <button
                       className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-widest hover:text-[#EB6664] transition-colors"
-                      onClick={() =>
-                        setMobileTuitionGroup(mobileTuitionGroup === group.label ? null : group.label)
-                      }
+                      onClick={() => {
+                        setMobileTuitionGroup(mobileTuitionGroup === group.label ? null : group.label);
+                        setActiveGroup(group.label);
+                        setActiveType(group.type);
+                      }}
                     >
                       {group.label}
                       <FiChevronDown
@@ -484,7 +494,12 @@ const Navbar = () => {
                           <button
                             key={item}
                             className="text-left px-3 py-1.5 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                            onClick={() => setMobileOpen(false)}
+                            onClick={() => {
+                              if (activeType !== 'course') {
+                                goToTuition(activeGroup, item);
+                                setMobileOpen(false);
+                              }
+                            }}
                           >
                             {item}
                           </button>
@@ -560,10 +575,9 @@ const Navbar = () => {
                       key={item.path}
                       to={item.path}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                          isActive
-                            ? "bg-[#EB6664]/10 text-[#EB6664]"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-[#EB6664]"
+                        `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
+                          ? "bg-[#EB6664]/10 text-[#EB6664]"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-[#EB6664]"
                         }`
                       }
                       onClick={() => setMobileOpen(false)}
@@ -599,9 +613,8 @@ const Navbar = () => {
 const MobileAccordion = ({ label, expanded, onToggle, children }) => (
   <div>
     <button
-      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-        expanded ? "bg-[#EB6664]/10 text-[#EB6664]" : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
-      }`}
+      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${expanded ? "bg-[#EB6664]/10 text-[#EB6664]" : "text-gray-700 hover:bg-gray-50 hover:text-[#EB6664]"
+        }`}
       onClick={onToggle}
     >
       {label}
