@@ -139,7 +139,32 @@ const TuitionsDropdown = ({ open }) => {
 
 // ─── SIMPLE FLAT DROPDOWN ────────────────────────────────────────────────────
 
-const FlatDropdown = ({ open, items, pathPrefix = "" }) => (
+const BoostersDropdown = ({ open, items, pathPrefix = "" }) => (
+  <div
+    className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
+      }`}
+  >
+    <ul className="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 min-w-[190px]">
+      {items.map((item) => {
+        const label = typeof item === "string" ? item : item.label;
+        const path = typeof item === "object" ? item.path : `${pathPrefix}/${label.toLowerCase().replace(/\s+/g, "-")}`;
+        return (
+          <li key={label}>
+            <NavLink
+              to={`/booster/${label}`}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#EB6664]/10 hover:text-[#EB6664] transition-colors duration-150"
+            >
+              {label}
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+);
+
+
+const MoreDropdown = ({ open, items, pathPrefix = "" }) => (
   <div
     className={`absolute left-0 top-full mt-2 z-50 transition-all duration-200 ${open ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"
       }`}
@@ -361,7 +386,7 @@ const Navbar = () => {
 
                 {/* LEARNING BOOSTERS */}
                 <DropdownNavItem id="boosters" label="LEARNING BOOSTERS">
-                  <FlatDropdown
+                  <BoostersDropdown
                     open={activeDropdown === "boosters"}
                     items={learningBoosters}
                     pathPrefix="/boosters"
@@ -375,7 +400,7 @@ const Navbar = () => {
 
                 {/* MORE */}
                 <DropdownNavItem id="more" label="MORE">
-                  <FlatDropdown
+                  <MoreDropdown
                     open={activeDropdown === "more"}
                     items={moreItems}
                   />
@@ -520,7 +545,10 @@ const Navbar = () => {
                   <button
                     key={item}
                     className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      navigate(`/booster/${item}`)
+                    }}
                   >
                     {item}
                   </button>

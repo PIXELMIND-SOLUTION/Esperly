@@ -58,7 +58,7 @@ const AboutUs = () => {
                             alt="Students learning together"
                             className="w-full h-full object-cover"
                         />
-                        <div className=" absolute inset-0 bg-[#EB6664]/50 backdrop-blur-xs backdrop-saturate-150 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)]"></div>
+                        <div className=" absolute inset-0 bg-[#000000]/40 backdrop-blur-sm backdrop-saturate-150 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)]"></div>
                     </div>
 
                     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32">

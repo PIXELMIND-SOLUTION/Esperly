@@ -1,11 +1,24 @@
 const NavImage = () => {
   return (
-    <div className="bg-[#EB6664] w-full">
-      <img
-        src="/Nav.png"
-        alt="Navigation Image"
-        className="w-full h-auto object-cover max-h-[120px] sm:max-h-[200px] md:max-h-[200px] lg:max-h-[240px]"
-      />
+    <div className="relative w-full">
+
+      {/* Hanging Wave */}
+      <div className="absolute left-0 top-full w-full pointer-events-none z-10">
+        <svg
+          viewBox="0 0 1440 120"
+          className="w-full h-[50px] sm:h-[70px] md:h-[90px]"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,40 
+               C300,100 900,0 1440,60 
+               L1440,0 
+               L0,0 Z"
+            fill="#EB6664"
+          />
+        </svg>
+      </div>
+
     </div>
   );
 };
