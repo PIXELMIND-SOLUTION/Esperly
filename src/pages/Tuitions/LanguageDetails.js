@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import NavImage from '../../components/NavImage';
+import { FaDownload } from 'react-icons/fa';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -45,7 +49,7 @@ const getLanguageContent = (language) => {
                 "Master the art of eloquent communication.",
                 "From boardrooms to classrooms, English opens every door.",
                 "Build fluency. Build confidence. Build your future.",
-                "Speak with clarity. Write with precision. Lead with language.",
+                "We help you speak clearly, write precisely, and lead confidently through language mastery",
             ],
             flag: "🇬🇧",
             accentColor: "#EB6664",
@@ -859,8 +863,11 @@ const LanguageDetailsPage = () => {
     const { language, trackLabel, trackEmoji, content } = languageData;
 
     return (
-        <div className="min-h-screen bg-stone-50">
-            <style>{`
+        <>
+            <Header />
+            <NavImage />
+            <div className="min-h-screen bg-stone-50">
+                <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
         * { font-family: 'DM Sans', sans-serif; }
         h1, h2, h3.serif { font-family: 'Playfair Display', serif; }
@@ -871,371 +878,370 @@ const LanguageDetailsPage = () => {
         .section-title { font-family: 'Playfair Display', serif; }
       `}</style>
 
-            {/* ══ HERO SECTION ══════════════════════════════════════════════════════════════ */}
-            <section className={`relative bg-gradient-to-br ${content.bgGradient} overflow-hidden`}>
-                <div className="absolute inset-0 flex items-center justify-end overflow-hidden pointer-events-none select-none">
-                    <span className="text-[28rem] opacity-[0.04] pr-8 leading-none">{content.flag}</span>
-                </div>
-                <div className="absolute top-0 right-0 w-1.5 h-full" style={{ background: '#EB6664' }}></div>
-                <div className="absolute inset-0 opacity-[0.03]" style={{
-                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-                    backgroundSize: '48px 48px'
-                }}></div>
+                {/* ══ HERO SECTION ══════════════════════════════════════════════════════════════ */}
+                <section className={`relative bg-gradient-to-br ${content.bgGradient} overflow-hidden`}>
+                    <div className="absolute inset-0 flex items-center justify-end overflow-hidden pointer-events-none select-none">
+                        <span className="text-[28rem] opacity-[0.04] pr-8 leading-none">{content.flag}</span>
+                    </div>
+                    <div className="absolute top-0 right-0 w-1.5 h-full" style={{ background: '#EB6664' }}></div>
+                    <div className="absolute inset-0 opacity-[0.03]" style={{
+                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+                        backgroundSize: '48px 48px'
+                    }}></div>
 
-                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20">
+                    <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20">
 
 
-                    <div className="grid lg:grid-cols-2 gap-12 xl:gap-24 items-center min-h-[520px]">
+                        <div className="grid lg:grid-cols-2 gap-12 xl:gap-24 items-center min-h-[520px]">
+                            <div>
+                                <div className="flex items-end gap-5 mb-8">
+                                    {/* <span className="text-6xl md:text-7xl leading-none drop-shadow-2xl">{content.flag}</span> */}
+                                    <div>
+                                        <p className="text-white/35 text-xs uppercase tracking-[0.3em] mb-1.5">{trackEmoji} {trackLabel}</p>
+                                        <h1 className="text-6xl md:text-7xl xl:text-8xl font-black text-white leading-none section-title">
+                                            {content.heroTitle}
+                                        </h1>
+                                    </div>
+                                </div>
+
+                                <blockquote className="pl-5 border-l-2 mb-2" style={{ borderColor: '#EB6664' }}>
+                                    <p className="text-white/90 text-base md:text-lg italic font-light leading-relaxed">
+                                        {content.quoteOriginal}
+                                    </p>
+                                </blockquote>
+                                <p className="text-white/40 text-xs italic mb-10 pl-5">{content.quoteEnglish}</p>
+
+
+
+                                <div className="flex flex-wrap gap-3 mb-8">
+                                    <button
+                                        onClick={() => setShowModal(true)}
+                                        className="flex items-center gap-2 text-white font-bold px-7 py-4 rounded-2xl text-sm tracking-wide shadow-xl transition hover:opacity-90 hover:scale-105 active:scale-95"
+                                        style={{ background: 'linear-gradient(135deg, #EB6664, #c0504e)' }}
+                                    >
+                                        Enroll Now
+                                    </button>
+                                    <button className="flex gap-2 bg-white/8 backdrop-blur-sm text-white font-semibold px-7 py-4 rounded-2xl text-sm border border-white/15 hover:bg-white/15 transition">
+                                        <FaDownload /> Download Syllabus
+                                    </button>
+                                </div>
+
+
+                            </div>
+
+                            <div className="hidden lg:block">
+                                <div className="relative">
+                                    <div className="absolute -inset-6 rounded-[2.5rem] blur-3xl opacity-15" style={{ background: '#EB6664' }}></div>
+                                    <div className="relative rounded-3xl border border-white/10 overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)' }}>
+                                        <div className="flex items-center gap-2 px-6 py-4 border-b border-white/8" style={{ background: 'rgba(0,0,0,0.2)' }}>
+                                            <div className="w-3 h-3 rounded-full bg-red-400/70"></div>
+                                            <div className="w-3 h-3 rounded-full bg-yellow-400/70"></div>
+                                            <div className="w-3 h-3 rounded-full bg-green-400/70"></div>
+                                            <span className="ml-4 text-white/25 text-xs font-mono tracking-widest">{language.toLowerCase()}_intro.lang</span>
+                                        </div>
+                                        <div className="p-8">
+                                            <div className="text-center mb-6">
+                                                <div className="text-7xl mb-3">{content.flag}</div>
+                                                <div className="text-white/50 text-xs uppercase tracking-[0.35em] font-light">{language.toUpperCase()}</div>
+                                            </div>
+                                            <div className="flex items-center gap-3 mb-7">
+                                                <div className="flex-1 h-px bg-white/8"></div>
+                                                <span className="text-white/15 text-xs">◆</span>
+                                                <div className="flex-1 h-px bg-white/8"></div>
+                                            </div>
+                                            <div className="my-auto flex items-start">
+                                                <p className="text-white/80 text-base md:text-lg leading-relaxed font-light">
+                                                    <Typewriter lines={content.typewriterLines} speed={50} pause={2800} />
+                                                </p>
+                                            </div>
+                                            <div className="mt-8 pt-6 border-t border-white/8 flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                                                    <span className="text-white/25 text-xs font-mono tracking-wider">LIVE</span>
+                                                </div>
+                                                <div className="flex gap-1.5">
+                                                    {[1, 2, 3].map(i => (
+                                                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-green-400/60 animate-pulse" style={{ animationDelay: `${i * 0.25}s` }}></div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="lg:hidden relative z-10 mx-6 mb-10">
+                        <div className="rounded-2xl border border-white/10 p-5" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                            <div className="flex items-center gap-2 mb-3">
+                                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                                <span className="text-white/30 text-xs font-mono">LIVE</span>
+                            </div>
+                            <p className="text-white/75 text-sm leading-relaxed min-h-10">
+                                <Typewriter lines={content.typewriterLines} speed={55} pause={2500} />
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══ WHAT WE TEACH SECTION ═══════════════════════════════════════════════════ */}
+                <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+                    <div className="text-center mb-14">
+                        <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Curriculum</p>
+                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">What You'll Master</h2>
+                        <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">A comprehensive syllabus designed by language experts to take you from beginner to confident speaker</p>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                        {content.whatWeTeach.map((item, i) => (
+                            <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 card-hover group cursor-default">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ background: 'rgba(235,102,100,0.08)' }}>
+                                        {item.icon}
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-gray-900 mb-1.5 text-sm">{item.title}</h3>
+                                        <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                                    </div>
+                                </div>
+                                <div className="mt-5 h-0.5 w-10 rounded-full transition-all duration-300 group-hover:w-16" style={{ background: '#EB6664' }}></div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 md:p-12">
+                        <div className="grid md:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <div className="flex items-center gap-3 mb-5">
+                                    <div className="w-1 h-8 rounded-full flex-shrink-0" style={{ background: '#EB6664' }}></div>
+                                    <h3 className="text-2xl font-black text-gray-900 section-title">About This Program</h3>
+                                </div>
+                                <p className="text-gray-600 leading-relaxed">{content.overview}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                {[
+                                    { label: "Format", value: "Live + Recorded" },
+                                    { label: "Duration", value: "60–90 mins/class" },
+                                    { label: "Frequency", value: "3–5 days/week" },
+                                    { label: "Certificate", value: "Yes, recognised" },
+                                    { label: "Support", value: "24/7 available" },
+                                    { label: "Start", value: "Within 24 hours" },
+                                ].map((item, i) => (
+                                    <div key={i} className="rounded-xl p-4 bg-gray-50 border border-gray-100">
+                                        <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">{item.label}</p>
+                                        <p className="text-sm font-bold text-gray-800">{item.value}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══ ADVANTAGES SECTION ══════════════════════════════════════════════════════ */}
+                <section className="bg-white py-16">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8">
+                        <div className="text-center mb-14">
+                            <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Why Us</p>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">Why Learn {language} With Us?</h2>
+                            <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">What sets our program apart from every other language school</p>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 gap-6 mb-14">
+                            {content.advantages.map((adv, i) => (
+                                <div key={i} className="bg-gray-50 rounded-2xl p-8 border border-gray-100 card-hover group flex gap-5">
+                                    <div className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300" style={{ background: 'rgba(235,102,100,0.08)' }}>
+                                        {adv.icon}
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-bold text-gray-900 mb-2">{adv.title}</h3>
+                                        <p className="text-sm text-gray-500 leading-relaxed">{adv.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="rounded-3xl p-10 text-white" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)' }}>
+                            <p className="text-center text-white/35 text-xs uppercase tracking-[0.3em] mb-10">By The Numbers</p>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
+                                {content.stats.map((s, i) => (
+                                    <div key={i}>
+                                        <div className="text-3xl md:text-4xl font-black mb-1.5 section-title" style={{ color: '#EB6664' }}>{s.value}</div>
+                                        <div className="text-white/35 text-xs uppercase tracking-wider">{s.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══ FEATURES SECTION ════════════════════════════════════════════════════════ */}
+                <section className="py-16">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8">
+                        <div className="text-center mb-14">
+                            <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Platform</p>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">Premium Learning Features</h2>
+                            <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">Everything you need to master {language} — built into one seamless platform</p>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+                            {content.features.map((feat, i) => (
+                                <div key={i} className="group relative bg-white rounded-2xl p-6 border border-gray-100 card-hover overflow-hidden cursor-default">
+                                    <div className="absolute top-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(90deg, #EB6664, #f59e0b)' }}></div>
+                                    <div className="text-3xl mb-4">{feat.icon}</div>
+                                    <h3 className="font-bold text-gray-900 mb-2">{feat.title}</h3>
+                                    <p className="text-sm text-gray-500 leading-relaxed">{feat.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="rounded-3xl p-10 border" style={{ background: 'rgba(235,102,100,0.04)', borderColor: 'rgba(235,102,100,0.15)' }}>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                                {[
+                                    { value: "500+", label: "Video Lessons" },
+                                    { value: "2,000+", label: "Practice Exercises" },
+                                    { value: "100+", label: "Live Sessions / Year" },
+                                    { value: "24/7", label: "Doubt Support" },
+                                ].map((item, i) => (
+                                    <div key={i}>
+                                        <div className="text-3xl md:text-4xl font-black mb-1.5 section-title" style={{ color: '#EB6664' }}>{item.value}</div>
+                                        <div className="text-gray-400 text-xs uppercase tracking-widest">{item.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ══ REVIEWS SECTION ═════════════════════════════════════════════════════════ */}
+                <section className="bg-white py-16">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8">
+                        <div className="text-center mb-14">
+                            <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Testimonials</p>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">What Our Students Say</h2>
+                            <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">Real words from real learners on their journey to fluency</p>
+                        </div>
+
+                        <div className="bg-gray-50 rounded-3xl border border-gray-100 shadow-sm p-8 md:p-10 mb-10 flex flex-col md:flex-row gap-10 items-center">
+                            <div className="text-center flex-shrink-0">
+                                <div className="text-7xl font-black leading-none mb-2 section-title" style={{ color: '#EB6664' }}>4.9</div>
+                                <StarRating rating={5} />
+                                <p className="text-xs text-gray-400 mt-2">{content.stats[0].value} students</p>
+                            </div>
+                            <div className="flex-1 w-full max-w-sm">
+                                {[5, 4, 3, 2, 1].map(star => {
+                                    const pct = star === 5 ? 82 : star === 4 ? 14 : star === 3 ? 3 : star === 2 ? 1 : 0;
+                                    return (
+                                        <div key={star} className="flex items-center gap-3 mb-2.5">
+                                            <span className="text-xs text-gray-500 w-3 font-semibold">{star}</span>
+                                            <svg className="w-3 h-3 text-amber-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                            <div className="flex-1 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                                <div className="h-2.5 rounded-full" style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #EB6664, #f59e0b)' }}></div>
+                                            </div>
+                                            <span className="text-xs text-gray-400 w-8 text-right">{pct}%</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {content.testimonials.map((t, i) => (
+                                <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover">
+                                    <div className="flex items-start gap-4 mb-4">
+                                        <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, #EB6664, #c0504e)' }}>
+                                            {t.name.charAt(0)}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div>
+                                                    <p className="font-bold text-gray-900 text-sm">{t.name}</p>
+                                                    <p className="text-xs text-gray-400">{t.city}</p>
+                                                </div>
+                                                <span className="text-xs px-2.5 py-1 rounded-full font-semibold flex-shrink-0" style={{ background: 'rgba(235,102,100,0.08)', color: '#EB6664' }}>{t.course}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <StarRating rating={t.rating} />
+                                    <p className="text-gray-600 text-sm leading-relaxed mt-3 italic">"{t.text}"</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+
+                {/* ══ CTA BANNER ════════════════════════════════════════════════════════════ */}
+                <div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #EB6664 0%, #c0504e 100%)' }}>
+                    <div className="absolute inset-0 opacity-[0.07] flex items-center justify-end pointer-events-none">
+                        <span className="text-[20rem] leading-none pr-8 select-none">{content.flag}</span>
+                    </div>
+                    <div className="relative max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div>
-                            <div className="flex items-end gap-5 mb-8">
-                                <span className="text-6xl md:text-7xl leading-none drop-shadow-2xl">{content.flag}</span>
-                                <div>
-                                    <p className="text-white/35 text-xs uppercase tracking-[0.3em] mb-1.5">{trackEmoji} {trackLabel}</p>
-                                    <h1 className="text-6xl md:text-7xl xl:text-8xl font-black text-white leading-none section-title">
-                                        {content.heroTitle}
-                                    </h1>
-                                </div>
-                            </div>
+                            <h2 className="text-2xl md:text-4xl font-black text-white section-title">Ready to start your {language} journey?</h2>
+                            <p className="text-white/70 mt-2 text-sm">Join {content.stats[0].value} learners already on the path to fluency.</p>
+                        </div>
+                        <div className="flex flex-wrap gap-3 flex-shrink-0">
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="bg-white font-black px-8 py-4 rounded-2xl text-sm transition hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
+                                style={{ color: '#EB6664' }}
+                            >
+                                🎓 Book Free Trial
+                            </button>
+                            <button className="bg-white/15 text-white font-semibold px-8 py-4 rounded-2xl text-sm border border-white/25 hover:bg-white/25 transition">
+                                📥 Download Brochure
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                            <blockquote className="pl-5 border-l-2 mb-2" style={{ borderColor: '#EB6664' }}>
-                                <p className="text-white/90 text-base md:text-lg italic font-light leading-relaxed">
-                                    {content.quoteOriginal}
-                                </p>
-                            </blockquote>
-                            <p className="text-white/40 text-xs italic mb-10 pl-5">{content.quoteEnglish}</p>
-
-
-
-                            <div className="flex flex-wrap gap-3 mb-8">
-                                <button
-                                    onClick={() => setShowModal(true)}
-                                    className="flex items-center gap-2 text-white font-bold px-7 py-4 rounded-2xl text-sm tracking-wide shadow-xl transition hover:opacity-90 hover:scale-105 active:scale-95"
-                                    style={{ background: 'linear-gradient(135deg, #EB6664, #c0504e)' }}
-                                >
-                                    <span>🎓</span> Enrol Now — Free Demo
-                                </button>
-                                <button className="bg-white/8 backdrop-blur-sm text-white font-semibold px-7 py-4 rounded-2xl text-sm border border-white/15 hover:bg-white/15 transition">
-                                    📥 Download Syllabus
-                                </button>
-                            </div>
-
-
+                {/* ══ FAQ SECTION ════════════════════════════════════════════════════════════ */}
+                <section className="py-16">
+                    <div className="max-w-7xl mx-auto px-4 md:px-8">
+                        <div className="text-center mb-14">
+                            <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>FAQs</p>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">Frequently Asked Questions</h2>
+                            <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">Everything you need to know before starting your {language} journey</p>
                         </div>
 
-                        <div className="hidden lg:block">
-                            <div className="relative">
-                                <div className="absolute -inset-6 rounded-[2.5rem] blur-3xl opacity-15" style={{ background: '#EB6664' }}></div>
-                                <div className="relative rounded-3xl border border-white/10 overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)' }}>
-                                    <div className="flex items-center gap-2 px-6 py-4 border-b border-white/8" style={{ background: 'rgba(0,0,0,0.2)' }}>
-                                        <div className="w-3 h-3 rounded-full bg-red-400/70"></div>
-                                        <div className="w-3 h-3 rounded-full bg-yellow-400/70"></div>
-                                        <div className="w-3 h-3 rounded-full bg-green-400/70"></div>
-                                        <span className="ml-4 text-white/25 text-xs font-mono tracking-widest">{language.toLowerCase()}_intro.lang</span>
-                                    </div>
-                                    <div className="p-8">
-                                        <div className="text-center mb-6">
-                                            <div className="text-7xl mb-3">{content.flag}</div>
-                                            <div className="text-white/50 text-xs uppercase tracking-[0.35em] font-light">{language.toUpperCase()}</div>
-                                        </div>
-                                        <div className="flex items-center gap-3 mb-7">
-                                            <div className="flex-1 h-px bg-white/8"></div>
-                                            <span className="text-white/15 text-xs">◆</span>
-                                            <div className="flex-1 h-px bg-white/8"></div>
-                                        </div>
-                                        <div className="min-h-24 flex items-start">
-                                            <p className="text-white/80 text-base md:text-lg leading-relaxed font-light">
-                                                <Typewriter lines={content.typewriterLines} speed={50} pause={2800} />
-                                            </p>
-                                        </div>
-                                        <div className="mt-8 pt-6 border-t border-white/8 flex items-center justify-between">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                                                <span className="text-white/25 text-xs font-mono tracking-wider">LIVE</span>
-                                            </div>
-                                            <div className="flex gap-1.5">
-                                                {[1, 2, 3].map(i => (
-                                                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-green-400/60 animate-pulse" style={{ animationDelay: `${i * 0.25}s` }}></div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div className="max-w-3xl mx-auto">
+                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm px-6 md:px-10 py-2 mb-10">
+                                {content.faqs.map((faq, i) => (
+                                    <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
+                                ))}
+                            </div>
 
+                            <div className="rounded-3xl p-8 text-center" style={{ background: 'rgba(235,102,100,0.05)', border: '1px solid rgba(235,102,100,0.15)' }}>
+                                <div className="text-3xl mb-3">💬</div>
+                                <h3 className="text-xl font-black text-gray-900 mb-2 section-title">Still have questions?</h3>
+                                <p className="text-gray-500 text-sm mb-7 leading-relaxed">Our academic counselors are available 9 AM – 9 PM, 7 days a week.</p>
+                                <div className="flex flex-wrap gap-3 justify-center">
+                                    <button
+                                        onClick={() => setShowModal(true)}
+                                        className="text-white font-bold px-7 py-3.5 rounded-xl text-sm hover:opacity-90 transition"
+                                        style={{ background: '#EB6664' }}
+                                    >
+                                        Book Free Demo
+                                    </button>
+                                    <button className="bg-white font-semibold px-7 py-3.5 rounded-xl text-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
+                                        📞 Call Us
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div className="lg:hidden relative z-10 mx-6 mb-10">
-                    <div className="rounded-2xl border border-white/10 p-5" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                            <span className="text-white/30 text-xs font-mono">LIVE</span>
-                        </div>
-                        <p className="text-white/75 text-sm leading-relaxed min-h-10">
-                            <Typewriter lines={content.typewriterLines} speed={55} pause={2500} />
-                        </p>
-                    </div>
-                </div>
-            </section>
 
-            {/* ══ WHAT WE TEACH SECTION ═══════════════════════════════════════════════════ */}
-            <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-                <div className="text-center mb-14">
-                    <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Curriculum</p>
-                    <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">What You'll Master</h2>
-                    <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">A comprehensive syllabus designed by language experts to take you from beginner to confident speaker</p>
-                </div>
-
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                    {content.whatWeTeach.map((item, i) => (
-                        <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 card-hover group cursor-default">
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ background: 'rgba(235,102,100,0.08)' }}>
-                                    {item.icon}
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-gray-900 mb-1.5 text-sm">{item.title}</h3>
-                                    <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
-                                </div>
-                            </div>
-                            <div className="mt-5 h-0.5 w-10 rounded-full transition-all duration-300 group-hover:w-16" style={{ background: '#EB6664' }}></div>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 md:p-12">
-                    <div className="grid md:grid-cols-2 gap-10 items-center">
-                        <div>
-                            <div className="flex items-center gap-3 mb-5">
-                                <div className="w-1 h-8 rounded-full flex-shrink-0" style={{ background: '#EB6664' }}></div>
-                                <h3 className="text-2xl font-black text-gray-900 section-title">About This Program</h3>
-                            </div>
-                            <p className="text-gray-600 leading-relaxed">{content.overview}</p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            {[
-                                { label: "Format", value: "Live + Recorded" },
-                                { label: "Duration", value: "60–90 mins/class" },
-                                { label: "Frequency", value: "3–5 days/week" },
-                                { label: "Certificate", value: "Yes, recognised" },
-                                { label: "Support", value: "24/7 available" },
-                                { label: "Start", value: "Within 24 hours" },
-                            ].map((item, i) => (
-                                <div key={i} className="rounded-xl p-4 bg-gray-50 border border-gray-100">
-                                    <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">{item.label}</p>
-                                    <p className="text-sm font-bold text-gray-800">{item.value}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ══ ADVANTAGES SECTION ══════════════════════════════════════════════════════ */}
-            <section className="bg-white py-16">
-                <div className="max-w-7xl mx-auto px-4 md:px-8">
-                    <div className="text-center mb-14">
-                        <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Why Us</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">Why Learn {language} With Us?</h2>
-                        <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">What sets our program apart from every other language school</p>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 gap-6 mb-14">
-                        {content.advantages.map((adv, i) => (
-                            <div key={i} className="bg-gray-50 rounded-2xl p-8 border border-gray-100 card-hover group flex gap-5">
-                                <div className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300" style={{ background: 'rgba(235,102,100,0.08)' }}>
-                                    {adv.icon}
-                                </div>
-                                <div>
-                                    <h3 className="text-base font-bold text-gray-900 mb-2">{adv.title}</h3>
-                                    <p className="text-sm text-gray-500 leading-relaxed">{adv.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="rounded-3xl p-10 text-white" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)' }}>
-                        <p className="text-center text-white/35 text-xs uppercase tracking-[0.3em] mb-10">By The Numbers</p>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
-                            {content.stats.map((s, i) => (
-                                <div key={i}>
-                                    <div className="text-3xl md:text-4xl font-black mb-1.5 section-title" style={{ color: '#EB6664' }}>{s.value}</div>
-                                    <div className="text-white/35 text-xs uppercase tracking-wider">{s.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ══ FEATURES SECTION ════════════════════════════════════════════════════════ */}
-            <section className="py-16">
-                <div className="max-w-7xl mx-auto px-4 md:px-8">
-                    <div className="text-center mb-14">
-                        <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Platform</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">Premium Learning Features</h2>
-                        <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">Everything you need to master {language} — built into one seamless platform</p>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
-                        {content.features.map((feat, i) => (
-                            <div key={i} className="group relative bg-white rounded-2xl p-6 border border-gray-100 card-hover overflow-hidden cursor-default">
-                                <div className="absolute top-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(90deg, #EB6664, #f59e0b)' }}></div>
-                                <div className="text-3xl mb-4">{feat.icon}</div>
-                                <h3 className="font-bold text-gray-900 mb-2">{feat.title}</h3>
-                                <p className="text-sm text-gray-500 leading-relaxed">{feat.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="rounded-3xl p-10 border" style={{ background: 'rgba(235,102,100,0.04)', borderColor: 'rgba(235,102,100,0.15)' }}>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                            {[
-                                { value: "500+", label: "Video Lessons" },
-                                { value: "2,000+", label: "Practice Exercises" },
-                                { value: "100+", label: "Live Sessions / Year" },
-                                { value: "24/7", label: "Doubt Support" },
-                            ].map((item, i) => (
-                                <div key={i}>
-                                    <div className="text-3xl md:text-4xl font-black mb-1.5 section-title" style={{ color: '#EB6664' }}>{item.value}</div>
-                                    <div className="text-gray-400 text-xs uppercase tracking-widest">{item.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ══ REVIEWS SECTION ═════════════════════════════════════════════════════════ */}
-            <section className="bg-white py-16">
-                <div className="max-w-7xl mx-auto px-4 md:px-8">
-                    <div className="text-center mb-14">
-                        <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>Testimonials</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">What Our Students Say</h2>
-                        <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">Real words from real learners on their journey to fluency</p>
-                    </div>
-
-                    <div className="bg-gray-50 rounded-3xl border border-gray-100 shadow-sm p-8 md:p-10 mb-10 flex flex-col md:flex-row gap-10 items-center">
-                        <div className="text-center flex-shrink-0">
-                            <div className="text-7xl font-black leading-none mb-2 section-title" style={{ color: '#EB6664' }}>4.9</div>
-                            <StarRating rating={5} />
-                            <p className="text-xs text-gray-400 mt-2">{content.stats[0].value} students</p>
-                        </div>
-                        <div className="flex-1 w-full max-w-sm">
-                            {[5, 4, 3, 2, 1].map(star => {
-                                const pct = star === 5 ? 82 : star === 4 ? 14 : star === 3 ? 3 : star === 2 ? 1 : 0;
-                                return (
-                                    <div key={star} className="flex items-center gap-3 mb-2.5">
-                                        <span className="text-xs text-gray-500 w-3 font-semibold">{star}</span>
-                                        <svg className="w-3 h-3 text-amber-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                                        <div className="flex-1 bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                                            <div className="h-2.5 rounded-full" style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #EB6664, #f59e0b)' }}></div>
-                                        </div>
-                                        <span className="text-xs text-gray-400 w-8 text-right">{pct}%</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {content.testimonials.map((t, i) => (
-                            <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 card-hover">
-                                <div className="flex items-start gap-4 mb-4">
-                                    <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, #EB6664, #c0504e)' }}>
-                                        {t.name.charAt(0)}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-start justify-between gap-2">
-                                            <div>
-                                                <p className="font-bold text-gray-900 text-sm">{t.name}</p>
-                                                <p className="text-xs text-gray-400">{t.city}</p>
-                                            </div>
-                                            <span className="text-xs px-2.5 py-1 rounded-full font-semibold flex-shrink-0" style={{ background: 'rgba(235,102,100,0.08)', color: '#EB6664' }}>{t.course}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <StarRating rating={t.rating} />
-                                <p className="text-gray-600 text-sm leading-relaxed mt-3 italic">"{t.text}"</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ══ FAQ SECTION ════════════════════════════════════════════════════════════ */}
-            <section className="py-16">
-                <div className="max-w-7xl mx-auto px-4 md:px-8">
-                    <div className="text-center mb-14">
-                        <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#EB6664' }}>FAQs</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 section-title">Frequently Asked Questions</h2>
-                        <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">Everything you need to know before starting your {language} journey</p>
-                    </div>
-
-                    <div className="max-w-3xl mx-auto">
-                        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm px-6 md:px-10 py-2 mb-10">
-                            {content.faqs.map((faq, i) => (
-                                <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
-                            ))}
-                        </div>
-
-                        <div className="rounded-3xl p-8 text-center" style={{ background: 'rgba(235,102,100,0.05)', border: '1px solid rgba(235,102,100,0.15)' }}>
-                            <div className="text-3xl mb-3">💬</div>
-                            <h3 className="text-xl font-black text-gray-900 mb-2 section-title">Still have questions?</h3>
-                            <p className="text-gray-500 text-sm mb-7 leading-relaxed">Our academic counselors are available 9 AM – 9 PM, 7 days a week.</p>
-                            <div className="flex flex-wrap gap-3 justify-center">
-                                <button
-                                    onClick={() => setShowModal(true)}
-                                    className="text-white font-bold px-7 py-3.5 rounded-xl text-sm hover:opacity-90 transition"
-                                    style={{ background: '#EB6664' }}
-                                >
-                                    Book Free Demo
-                                </button>
-                                <button className="bg-white font-semibold px-7 py-3.5 rounded-xl text-sm border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
-                                    📞 Call Us
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ══ CTA BANNER ════════════════════════════════════════════════════════════ */}
-            <div className="relative overflow-hidden mt-4" style={{ background: 'linear-gradient(135deg, #EB6664 0%, #c0504e 100%)' }}>
-                <div className="absolute inset-0 opacity-[0.07] flex items-center justify-end pointer-events-none">
-                    <span className="text-[20rem] leading-none pr-8 select-none">{content.flag}</span>
-                </div>
-                <div className="relative max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div>
-                        <h2 className="text-2xl md:text-4xl font-black text-white section-title">Ready to start your {language} journey?</h2>
-                        <p className="text-white/70 mt-2 text-sm">Join {content.stats[0].value} learners already on the path to fluency.</p>
-                    </div>
-                    <div className="flex flex-wrap gap-3 flex-shrink-0">
-                        <button
-                            onClick={() => setShowModal(true)}
-                            className="bg-white font-black px-8 py-4 rounded-2xl text-sm transition hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
-                            style={{ color: '#EB6664' }}
-                        >
-                            🎓 Book Free Trial
-                        </button>
-                        <button className="bg-white/15 text-white font-semibold px-8 py-4 rounded-2xl text-sm border border-white/25 hover:bg-white/25 transition">
-                            📥 Download Brochure
-                        </button>
-                    </div>
-                </div>
+                {/* ══ MODAL ════════════════════════════════════════════════════════════════ */}
+                {showModal && (
+                    <EnrollModal language={language} flag={content.flag} onClose={() => setShowModal(false)} />
+                )}
             </div>
-
-            {/* ══ FOOTER ════════════════════════════════════════════════════════════════ */}
-            <div className="bg-gray-950 text-gray-600 text-center py-6 text-xs tracking-wider">
-                © {new Date().getFullYear()} Language Tuition Platform · All rights reserved
-            </div>
-
-            {/* ══ MODAL ════════════════════════════════════════════════════════════════ */}
-            {showModal && (
-                <EnrollModal language={language} flag={content.flag} onClose={() => setShowModal(false)} />
-            )}
-        </div>
+            <Footer />
+        </>
     );
 };
 

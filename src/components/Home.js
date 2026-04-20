@@ -26,6 +26,7 @@ import Testimonioals from "../Homescreen/Testimonials";
 import ScrollBanner from "../Homescreen/ScrolleBanner";
 import FlashBanner from "../Homescreen/FlashBanner";
 import MeetVideo from "../Homescreen/MeetVideo";
+import OnboardingJourney from "../Homescreen/JourneyPage";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -37,15 +38,16 @@ const Home = () => {
             <HeroPage />
             <PillarsPage />
             <BookDesign />
-            <FlashBanner/>
-            <StepsImage/>
+            <FlashBanner />
+            <StepsImage />
+            {/* <OnboardingJourney/> */}
             {/* <StaircaseChart3D /> */}
-            <ExperianceCount/>
+            <ExperianceCount />
             <MeetImg />
             {/* <MeetVideo/> */}
-            <TrustAndSupport/>
-            <ScrollBanner/>
-            <Testimonioals/>
+            <TrustAndSupport />
+            <ScrollBanner />
+            <Testimonioals />
             {/* <MeetScreen/> */}
             {/* <WhatWeTeach />
             <ZoomDesign/>
