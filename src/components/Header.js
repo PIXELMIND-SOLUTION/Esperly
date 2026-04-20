@@ -136,6 +136,7 @@ const TuitionsDropdown = ({ open }) => {
 
 const LanguageTracksDropdown = ({ open }) => {
   const [activeGroup, setActiveGroup] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) setActiveGroup(null);
@@ -173,6 +174,8 @@ const LanguageTracksDropdown = ({ open }) => {
                 <li
                   key={item}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-[#EB6664]/10 hover:text-[#EB6664] cursor-pointer transition-colors duration-150"
+                  onClick={() => navigate(`/language?label=${encodeURIComponent(activeGroup)}&language=${encodeURIComponent(item)}`)}
+
                 >
                   {item}
                 </li>

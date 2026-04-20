@@ -165,7 +165,7 @@ const RightPageInner = ({ ch }) => {
   if (type === "intro") {
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
-        <RuledLines count={22} gap={26} />
+        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-3 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">
             Welcome · Esperly
@@ -215,7 +215,7 @@ const RightPageInner = ({ ch }) => {
     ];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        <RuledLines count={22} gap={26} />
+        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 02</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-2">
@@ -244,7 +244,7 @@ const RightPageInner = ({ ch }) => {
     const courses = ["Abacus", "Phonics", "Public Speaking", "Personality Development", "Vedic Maths", "English Grammar"];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        <RuledLines count={22} gap={26} />
+        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 03</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
@@ -277,7 +277,7 @@ const RightPageInner = ({ ch }) => {
     const activities = ["Dance", "Drawing", "Singing", "Yoga", "Zumba", "Painting"];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        <RuledLines count={22} gap={26} />
+        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 04</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
@@ -310,7 +310,7 @@ const RightPageInner = ({ ch }) => {
     const langs = ["Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "French", "German", "Spanish", "Sanskrit"];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        <RuledLines count={22} gap={26} />
+        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 05</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
@@ -342,7 +342,7 @@ const RightPageInner = ({ ch }) => {
   if (type === "closing") {
     return (
       <div className="h-full flex flex-col justify-center items-center text-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
-        <RuledLines count={22} gap={26} />
+        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10 w-full">
           <div className="font-mono uppercase tracking-widest mb-4 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">
             Chapter 06 · Final
@@ -383,9 +383,9 @@ const LeftPageContent = ({ ch }) => {
     return (
       <div className="w-full h-full relative overflow-hidden flex justify-center items-center" style={{ background: ch.pageColor }}>
         <div>
-          {Array.from({ length: 22 }, (_, i) => (
+          {/* {Array.from({ length: 22 }, (_, i) => (
             <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * 26, background: "#D6CEBA" }} />
-          ))}
+          ))} */}
           <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
           <div
             className="absolute bottom-2 right-3 select-none pointer-events-none leading-none font-['Fraunces',Georgia,serif] font-black opacity-6"
@@ -407,9 +407,9 @@ const LeftPageContent = ({ ch }) => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center text-center px-4 py-6 relative overflow-hidden" style={{ background: ch.pageColor }}>
-      {Array.from({ length: 22 }, (_, i) => (
+      {/* {Array.from({ length: 22 }, (_, i) => (
         <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * 26, background: "#D6CEBA" }} />
-      ))}
+      ))} */}
       <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
       <div
         className="absolute bottom-2 right-3 select-none pointer-events-none leading-none font-['Fraunces',Georgia,serif] font-black opacity-6"

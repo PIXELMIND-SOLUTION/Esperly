@@ -114,14 +114,11 @@ export function TrustedSection() {
               className="font-black leading-[1.05] tracking-tight mb-1.5"
               style={{
                 fontFamily: "Fraunces, Georgia, serif",
-                fontSize: "clamp(26px,4vw,52px)",
+                fontSize: "clamp(22px,4vw,42px)",
                 color: "#1C1209",
               }}
             >
-              Trusted by<br />
-              <span className="italic" style={{ color: "#EB6664" }}>
-                Teachers & Parents
-              </span>
+              Trusted by <span className="italic" style={{ color: "#EB6664" }}>Teachers & Parents</span>
             </h2>
 
             <ScribbleUnderline color="#EB6664" widthClass="w-[clamp(140px,20vw,260px)]" />
@@ -135,6 +132,11 @@ export function TrustedSection() {
                 maxWidth: 480,
               }}
             >
+              Trusted by families and educators alike, Esperly delivers a learning experience that truly
+              makes a difference. Our personalized approach, expert mentors, and consistent results have
+              earned the confidence of parents and teachers who want the{" "}
+              <Highlight>best for every child.</Highlight><br/>
+
               Trusted by families and educators alike, Esperly delivers a learning experience that truly
               makes a difference. Our personalized approach, expert mentors, and consistent results have
               earned the confidence of parents and teachers who want the{" "}
@@ -201,7 +203,7 @@ export function SupportSection() {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-[2]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-16 items-center">
 
           {/* Left — image */}
           <SlideIn from="left" delay={0.12}>
@@ -230,14 +232,11 @@ export function SupportSection() {
               className="font-black leading-[1.05] tracking-tight mb-1.5"
               style={{
                 fontFamily: "Fraunces, Georgia, serif",
-                fontSize: "clamp(26px,4vw,52px)",
+                fontSize: "clamp(22px,4vw,42px)",
                 color: "#1C1209",
               }}
             >
-              Support from<br />
-              <span className="italic" style={{ color: "#EB6664" }}>
-                Our Team
-              </span>
+              Support from <span className="italic" style={{ color: "#EB6664" }}>Our Team</span>
             </h2>
 
             <ScribbleUnderline color="#EB6664" widthClass="w-[clamp(120px,16vw,200px)]" />
@@ -252,6 +251,11 @@ export function SupportSection() {
                 marginBottom: "clamp(20px,3vw,36px)",
               }}
             >
+              At Esperly, you're never alone in the learning journey. Our dedicated support team is always
+              ready to assist with guidance, queries, and continuous encouragement—ensuring a{" "}
+              <HighlightBlue>smooth and stress-free experience</HighlightBlue>
+              {" "}for both students and parents.<br/>
+
               At Esperly, you're never alone in the learning journey. Our dedicated support team is always
               ready to assist with guidance, queries, and continuous encouragement—ensuring a{" "}
               <HighlightBlue>smooth and stress-free experience</HighlightBlue>

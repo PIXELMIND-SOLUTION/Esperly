@@ -348,7 +348,7 @@ export default function TuitionBooking() {
                             <StepHeader number={4} title="Your Details" subtitle="We'll use this to confirm your booking" active={step === 4} />
                             <div className="mt-6 bg-white rounded-2xl border border-rose-100 p-6 space-y-5 shadow-sm">
                                 <InputField
-                                    label="Full Name"
+                                    label=" Student Full Name"
                                     placeholder="e.g. Rahul Sharma"
                                     value={formData.name}
                                     onChange={(v) => setFormData({ ...formData, name: v })}

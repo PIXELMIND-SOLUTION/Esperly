@@ -17,6 +17,8 @@ import WhatsAppButton from "./views/WhatsAppButton";
 import SideScroller from "./views/SideScroller";
 import TuitionBooking from "./pages/Tuitions/TuitionBooking";
 import BoosterDetails from './pages/Tuitions/LearningBoostersDetails'
+import LanguageDetailPage from "./pages/Tuitions/LanguageDetails";
+import LanguageDetailsPage from "./pages/Tuitions/LanguageDetails";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -72,6 +74,7 @@ const App = () => {
         {/* Tuition booking — matches /tuition?label=elementary-level&item=class-1 */}
         <Route path="/tuition" element={<TuitionBooking />} />
         <Route path="/booster/:boosterId" element={<BoosterDetails/>}/>
+        <Route path="/language" element={<LanguageDetailsPage/>}/>
       </Routes>
     </div>
   );

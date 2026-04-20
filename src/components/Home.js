@@ -25,6 +25,7 @@ import TrustAndSupport from "../Homescreen/ExpertTrack";
 import Testimonioals from "../Homescreen/Testimonials";
 import ScrollBanner from "../Homescreen/ScrolleBanner";
 import FlashBanner from "../Homescreen/FlashBanner";
+import MeetVideo from "../Homescreen/MeetVideo";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -41,6 +42,7 @@ const Home = () => {
             {/* <StaircaseChart3D /> */}
             <ExperianceCount/>
             <MeetImg />
+            {/* <MeetVideo/> */}
             <TrustAndSupport/>
             <ScrollBanner/>
             <Testimonioals/>
