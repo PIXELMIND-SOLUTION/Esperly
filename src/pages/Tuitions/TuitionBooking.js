@@ -79,7 +79,7 @@ const countryCodes = [
 ];
 
 const daysOptions = ["1 day per week", "2 days per week", "3 days per week", "4 days per week", "5 days per week", "6 days per week", "7 days (daily)"];
-const startOptions = ["Immediately", "In Few Days", "In a week", "In 10 Days", "In This Month", "Next Month"];
+const startOptions = ["Immediately", "In a week", "In a month"];
 
 export default function TuitionBooking() {
     const params = new URLSearchParams(window.location.search);
