@@ -11,60 +11,81 @@ const tuitionsMenu = [
 const boards = [
     { id: "cbse", name: "CBSE", desc: "Central Board of Secondary Education", icon: "🇮🇳" },
     { id: "icse", name: "ICSE", desc: "Indian Certificate of Secondary Education", icon: "📚" },
-    { id: "igcse", name: "IGCSE", desc: "International General Certificate", icon: "🌍" },
-    { id: "state", name: "State Board", desc: "State level curriculum", icon: "🏛️" },
     { id: "ib", name: "IB", desc: "International Baccalaureate", icon: "🎓" },
+    { id: "pearson", name: "Pearson Edexcel", desc: "Pearson Edexcel International", icon: "🌐" },
+    { id: "cambridge", name: "Cambridge", desc: "Cambridge Assessment International", icon: "🌍" },
+    { id: "state", name: "State Boards", desc: "State level curriculum", icon: "🏛️" },
 ];
 
-const subjectsByClass = {
-    "Class 1": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 2": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 3": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 4": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 5": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 6": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 7": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 8": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 9": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 10": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 11": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ],
-    "Class 12": [
-        "All Subjects", "All Subjects Except Language", "EVS", "Mathematics", "Science", "Computers",
-        "English", "Hindi", "Tamil", "French", "German", "Telugu", "Spanish", "Marathi", "Kannada", "Sanskrit"
-    ]
+// Subjects grouped by class level
+const getSubjectsByClass = (className) => {
+    const classNum = parseInt(className.replace("Class ", ""));
+
+    if (classNum >= 1 && classNum <= 5) {
+        return {
+            "Core Subjects": {
+                subtitle: "Structured learning designed to build strong fundamentals.",
+                subjects: ["English", "Mathematics", "Science", "Hindi", "Social Studies"],
+            },
+            "Regional Languages": {
+                subtitle: "Connect learning with cultural roots.",
+                subjects: ["Hindi", "Telugu", "Tamil", "Kannada", "Malayalam", "Marathi", "Gujarati", "Bengali", "Urdu"],
+            },
+            "Foreign Languages": {
+                subtitle: "Build global communication skills from an early age.",
+                subjects: ["French", "German", "Spanish", "Japanese", "Arabic", "Russian"],
+            },
+        };
+    }
+
+    if (classNum >= 6 && classNum <= 8) {
+        return {
+            "Core Subjects": {
+                subtitle: "Strengthening concepts with a deeper academic focus and application-based learning.",
+                subjects: ["English", "Mathematics", "Science", "Social Science", "Hindi", "Computer Science"],
+            },
+            "Regional Languages": {
+                subtitle: "Enhancing communication and cultural understanding.",
+                subjects: ["Hindi", "Telugu", "Tamil", "Kannada", "Malayalam", "Marathi", "Gujarati", "Bengali", "Urdu"],
+            },
+            "Foreign Languages": {
+                subtitle: "Building global language proficiency and confidence.",
+                subjects: ["French", "German", "Spanish", "Japanese", "Arabic", "Russian"],
+            },
+        };
+    }
+
+    // Classes 9–12
+    return {
+        "Core Subjects": {
+            subtitle: "Strong foundation for board examinations and higher studies.",
+            subjects: ["English", "Hindi", "Mathematics", "Science", "Social Science", "Computer Science"],
+        },
+        "Science Stream": {
+            subtitle: "Focused on analytical thinking, experimentation, and problem-solving.",
+            subjects: ["Physics", "Chemistry", "Biology"],
+        },
+        "Commerce Stream": {
+            subtitle: "Designed for business, finance, and entrepreneurial careers.",
+            subjects: ["Accountancy", "Business Studies", "Economics", "Entrepreneurship"],
+        },
+        "Humanities / Arts": {
+            subtitle: "Exploring society, behavior, governance, and critical thinking.",
+            subjects: ["History", "Political Science", "Sociology", "Psychology"],
+        },
+        "Skill & Applied Subjects": {
+            subtitle: "Career-oriented learning with practical exposure.",
+            subjects: ["Computer Science", "Physical Education", "Data Entry Operations", "Environmental Studies (EVS)"],
+        },
+        "Regional Languages": {
+            subtitle: "",
+            subjects: ["Hindi", "Telugu", "Tamil", "Kannada", "Malayalam", "Marathi", "Gujarati", "Bengali", "Urdu"],
+        },
+        "Foreign Languages": {
+            subtitle: "",
+            subjects: ["French", "German", "Spanish", "Japanese", "Arabic", "Russian"],
+        },
+    };
 };
 
 const countryCodes = [
@@ -99,7 +120,6 @@ export default function TuitionBooking() {
     const [formErrors, setFormErrors] = useState({});
     const [showOtp, setShowOtp] = useState(false);
     const [otp, setOtp] = useState("");
-    const [enteredOtp, setEnteredOtp] = useState("");
     const [otpError, setOtpError] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
@@ -109,14 +129,12 @@ export default function TuitionBooking() {
     const scheduleRef = useRef(null);
     const contactRef = useRef(null);
 
-    const subjects = subjectsByClass[matchedItem] || [];
+    const subjectGroups = getSubjectsByClass(matchedItem);
+    const allSubjects = Object.values(subjectGroups).flatMap(g => g.subjects);
 
     const scrollTo = (ref) => {
         setTimeout(() => {
-            ref?.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
+            ref?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 0);
     };
 
@@ -126,7 +144,7 @@ export default function TuitionBooking() {
 
     const handleBoardSelect = (id) => {
         setSelectedBoard(id);
-        if (step === 1) { setStep(2); scrollTo(subjectRef); }
+        if (id) { setStep(2); scrollTo(subjectRef); }
     };
 
     const handleSubjectsNext = () => {
@@ -155,7 +173,6 @@ export default function TuitionBooking() {
         const generated = Math.floor(100000 + Math.random() * 900000).toString();
         setOtp(generated);
         setShowOtp(true);
-        setEnteredOtp("");
         setOtpDigits(["", "", "", "", "", ""]);
         setOtpError("");
     };
@@ -251,7 +268,7 @@ export default function TuitionBooking() {
 
                     {/* Step 1 — Board Selection */}
                     <section ref={boardRef}>
-                        <StepHeader number={1} title="Choose your Board" active={true} />
+                        <StepHeader number={1} title="Boards We Offer" subtitle="A strong academic foundation across national and international curriculam." active={true} />
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                             {boards.map((b) => (
                                 <button
@@ -281,25 +298,36 @@ export default function TuitionBooking() {
                     {step >= 2 && (
                         <section ref={subjectRef} style={{ scrollMarginTop: "100px" }}>
                             <StepHeader number={2} title="Select Subjects" subtitle="Choose all subjects you need help with" active={step === 2} />
-                            <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {subjects.map((s) => {
-                                    const checked = selectedSubjects.includes(s);
-                                    return (
-                                        <button
-                                            key={s}
-                                            onClick={() => toggleSubject(s)}
-                                            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-200 text-left ${checked ? "border-transparent shadow-md" : "border-gray-100 bg-white hover:border-rose-200"
-                                                }`}
-                                            style={checked ? { background: "linear-gradient(135deg, #FFF1F1, #FFF3EE)", borderColor: "#EB6664" } : {}}
-                                        >
-                                            <div className={`w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all ${checked ? "border-transparent" : "border-gray-200"}`}
-                                                style={checked ? { background: "linear-gradient(135deg, #EB6664, #F4956A)" } : {}}>
-                                                {checked && <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
-                                            </div>
-                                            <span className={`text-sm font-medium ${checked ? "text-rose-700" : "text-gray-600"}`}>{s}</span>
-                                        </button>
-                                    );
-                                })}
+                            <div className="mt-6 space-y-8">
+                                {Object.entries(subjectGroups).map(([groupName, { subtitle, subjects }]) => (
+                                    <div key={groupName}>
+                                        <div className="mb-4">
+                                            <p className="text-sm font-semibold text-gray-700 uppercase tracking-widest">{groupName}</p>
+                                            <p className="text-xs text-gray-400 mt-0.5 italic">{subtitle}</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                            {subjects.map((s) => {
+                                                const checked = selectedSubjects.includes(s);
+                                                return (
+                                                    <button
+                                                        key={`${groupName}-${s}`}
+                                                        onClick={() => toggleSubject(s)}
+                                                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-200 text-left ${checked ? "border-transparent shadow-md" : "border-gray-100 bg-white hover:border-rose-200"}`}
+                                                        style={checked ? { background: "linear-gradient(135deg, #FFF1F1, #FFF3EE)", borderColor: "#EB6664" } : {}}
+                                                    >
+                                                        <div
+                                                            className="w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all"
+                                                            style={checked ? { background: "linear-gradient(135deg, #EB6664, #F4956A)", borderColor: "transparent" } : { borderColor: "#d1d5db" }}
+                                                        >
+                                                            {checked && <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
+                                                        </div>
+                                                        <span className={`text-sm font-medium ${checked ? "text-rose-700" : "text-gray-600"}`}>{s}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                             {selectedSubjects.length > 0 && (
                                 <div className="mt-4 flex flex-wrap gap-2">
@@ -348,7 +376,7 @@ export default function TuitionBooking() {
                             <StepHeader number={4} title="Your Details" subtitle="We'll use this to confirm your booking" active={step === 4} />
                             <div className="mt-6 bg-white rounded-2xl border border-rose-100 p-6 space-y-5 shadow-sm">
                                 <InputField
-                                    label=" Student Full Name"
+                                    label="Student Full Name"
                                     placeholder="e.g. Rahul Sharma"
                                     value={formData.name}
                                     onChange={(v) => setFormData({ ...formData, name: v })}
@@ -409,7 +437,7 @@ export default function TuitionBooking() {
                 {/* OTP Modal */}
                 {showOtp && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(8px)" }}>
-                        <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl animate-in">
+                        <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
                             <div className="text-center mb-6">
                                 <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}>
                                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -479,7 +507,7 @@ function StepHeader({ number, title, subtitle, active }) {
             </div>
             <div>
                 <h2 className="text-xl font-bold text-gray-800" style={{ fontFamily: "'Playfair Display', serif" }}>{title}</h2>
-                {subtitle && <p className="text-sm text-gray-400 mt-0.5">{subtitle}</p>}
+                {subtitle && <p className="text-sm italic text-gray-400 mt-0.5">{subtitle}</p>}
             </div>
         </div>
     );
