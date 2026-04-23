@@ -119,6 +119,8 @@ const TuitionsDropdown = ({ open }) => {
                   onClick={() => {
                     if (activeType !== 'course') {
                       goToTuition(activeGroup, item);
+                    }else{
+                      navigate(`/course?label=${encodeURIComponent(activeGroup)}&type=course&item=${encodeURIComponent(item)}`);
                     }
                   }}
                 >

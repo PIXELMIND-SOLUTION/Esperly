@@ -19,6 +19,7 @@ import TuitionBooking from "./pages/Tuitions/TuitionBooking";
 import BoosterDetails from './pages/Tuitions/LearningBoostersDetails'
 import LanguageDetailPage from "./pages/Tuitions/LanguageDetails";
 import LanguageDetailsPage from "./pages/Tuitions/LanguageDetails";
+import ShortTermCourseDetails from "./pages/Tuitions/ShortTermCourseDetails";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -75,6 +76,7 @@ const App = () => {
         <Route path="/tuition" element={<TuitionBooking />} />
         <Route path="/booster/:boosterId" element={<BoosterDetails/>}/>
         <Route path="/language" element={<LanguageDetailsPage/>}/>
+        <Route path="/course" element={<ShortTermCourseDetails/>}/>
       </Routes>
     </div>
   );
