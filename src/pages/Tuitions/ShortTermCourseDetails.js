@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import NavImage from "../../components/NavImage";
+import video from "../../assets/esperlyIntro.mp4"
 
 const COURSES = {
   Abacus: {
@@ -18,9 +20,14 @@ const COURSES = {
       lightBg: "bg-[#EB6664]/5",
       badge: "bg-[#EB6664]/10 text-[#EB6664]",
       icon: "🧮",
+      image: "https://i.pinimg.com/736x/82/e4/dd/82e4dd99794717f18052f971ff21de1a.jpg",
     },
-    trainingModes: ["Online One-on-One", "Group Batch"],
-    duration: "3-6 Months",
+    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
+    duration: 'Depending on Level',
+    ageGroup: '5 to 12 Years',
+    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
+    phone: '+91 9876543210',
+    email: 'support@esperly.com',
     description: "Transform your child's mathematical ability with ancient abacus techniques that build lightning-fast mental calculation skills.",
     stats: [
       { icon: Brain, label: "Brain Development", value: "2x Faster" },
@@ -137,9 +144,14 @@ const COURSES = {
       lightBg: "bg-[#EB6664]/5",
       badge: "bg-[#EB6664]/10 text-[#EB6664]",
       icon: "🔤",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
     },
-    trainingModes: ["Online One-on-One", "Group Batch"],
-    duration: "4-8 Months",
+    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
+    duration: 'Depending on Level',
+    ageGroup: '5 to 12 Years',
+    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
+    phone: '+91 9876543210',
+    email: 'support@esperly.com',
     description: "Master the art of reading through scientific phonics methods that make learning to read natural and fun.",
     stats: [
       { icon: BookOpen, label: "Reading Level", value: "2x Grade" },
@@ -231,9 +243,14 @@ const COURSES = {
       lightBg: "bg-[#EB6664]/5",
       badge: "bg-[#EB6664]/10 text-[#EB6664]",
       icon: "🎤",
+      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
     },
-    trainingModes: ["Online One-on-One", "Group Batch"],
-    duration: "3-6 Months",
+    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
+    duration: 'Depending on Level',
+    ageGroup: '5 to 12 Years',
+    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
+    phone: '+91 9876543210',
+    email: 'support@esperly.com',
     description: "Transform nervous speakers into confident orators who command attention and inspire audiences.",
     stats: [
       { icon: Users, label: "Students Trained", value: "5000+" },
@@ -325,9 +342,14 @@ const COURSES = {
       lightBg: "bg-[#EB6664]/5",
       badge: "bg-[#EB6664]/10 text-[#EB6664]",
       icon: "🌟",
+      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
     },
-    trainingModes: ["Online One-on-One", "Group Batch"],
-    duration: "4-8 Months",
+    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
+    duration: 'Depending on Level',
+    ageGroup: '5 to 12 Years',
+    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
+    phone: '+91 9876543210',
+    email: 'support@esperly.com',
     description: "Holistic development program that builds character, confidence, and social skills for lifelong success.",
     stats: [
       { icon: Heart, label: "Happier Kids", value: "92%" },
@@ -419,9 +441,14 @@ const COURSES = {
       lightBg: "bg-[#EB6664]/5",
       badge: "bg-[#EB6664]/10 text-[#EB6664]",
       icon: "🕉️",
+      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
     },
-    trainingModes: ["Online One-on-One", "Group Batch"],
-    duration: "3-6 Months",
+    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
+    duration: 'Depending on Level',
+    ageGroup: '5 to 12 Years',
+    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
+    phone: '+91 9876543210',
+    email: 'support@esperly.com',
     description: "Discover 16 ancient sutras that make complex calculations simple and lightning-fast.",
     stats: [
       { icon: Clock, label: "Speed Increase", value: "10x" },
@@ -513,9 +540,14 @@ const COURSES = {
       lightBg: "bg-[#EB6664]/5",
       badge: "bg-[#EB6664]/10 text-[#EB6664]",
       icon: "📝",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
     },
-    trainingModes: ["Online One-on-One", "Group Batch"],
-    duration: "3-6 Months",
+    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
+    duration: 'Depending on Level',
+    ageGroup: '5 to 12 Years',
+    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
+    phone: '+91 9876543210',
+    email: 'support@esperly.com',
     description: "Master English grammar through engaging lessons and practical application.",
     stats: [
       { icon: BookOpen, label: "Grade Improvement", value: "2 Levels" },
@@ -696,102 +728,112 @@ export default function ShortTermCourseDetails() {
   return (
     <>
       <Header />
+      <NavImage />
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
 
         {/* Hero Section */}
-        <div className={`relative overflow-hidden bg-gradient-to-br ${course.hero.gradient}`}>
+        <div className="relative overflow-hidden min-h-[520px] sm:min-h-[600px]">
 
-          {/* Background Blur Effects */}
-          <div className="absolute inset-0 opacity-30 pointer-events-none">
-            <div className="absolute top-0 right-0 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-white rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-white rounded-full blur-3xl" />
-            <div className="absolute top-1/2 left-1/2 w-40 sm:w-56 md:w-64 h-40 sm:h-56 md:h-64 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full blur-2xl" />
-          </div>
+          {/* Background Image */}
+          <img
+            src={course.hero.image}
+            alt={selected}
+            className="absolute inset-0 w-full h-full object-cover scale-[1.02]"
+          />
+
+          {/* Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/40 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+          {/* Decorative accent line top */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#EB6664] via-[#f0a08a] to-transparent" />
 
           {/* Container */}
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 flex flex-col justify-end min-h-[520px] sm:min-h-[600px] pb-14 sm:pb-16 pt-16">
 
-            <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-center">
-
-              {/* LEFT CONTENT */}
-              <div className="text-white text-center md:text-left">
-
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/20 backdrop-blur-sm mb-5 sm:mb-6">
-                  <Sparkles size={14} />
-                  <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
-                    Short Term Course
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-                  {selected}
-                </h1>
-
-                {/* Tagline */}
-                <p className="text-base sm:text-lg md:text-xl mb-5 sm:mb-6 text-white/90">
-                  {course.hero.tagline}
-                </p>
-
-                {/* Description */}
-                <p className="text-sm sm:text-base text-white/80 mb-6 sm:mb-8 max-w-lg mx-auto md:mx-0">
-                  {course.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                  {course.trainingModes.map((mode, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-xl px-3 py-1.5 sm:px-4 sm:py-2"
-                    >
-                      <Users size={14} />
-                      <span className="text-xs sm:text-sm font-medium">{mode}</span>
-                    </div>
-                  ))}
-
-                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-xl px-3 py-1.5 sm:px-4 sm:py-2">
-                    <Clock size={14} />
-                    <span className="text-xs sm:text-sm font-medium">
-                      Duration: {course.duration}
-                    </span>
-                  </div>
-                </div>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#EB6664]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#EB6664]/50" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#EB6664]/20" />
               </div>
-
-              {/* RIGHT CONTENT (CTA CARD) */}
-              <div className="w-full max-w-md mx-auto md:ml-auto">
-
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-white/20 shadow-lg">
-
-                  <p className="text-white/90 text-sm mb-4 text-center md:text-left">
-                    Ready to begin?
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-
-                    <button
-                      onClick={handleCallNow}
-                      className="w-full bg-white text-[#EB6664] font-semibold py-2.5 rounded-xl hover:shadow-lg transition-all flex items-center justify-center gap-2"
-                    >
-                      <Phone size={16} />
-                      Call Now
-                    </button>
-
-                    <button
-                      onClick={handleEmailNow}
-                      className="w-full border border-white text-white font-semibold py-2.5 rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-                    >
-                      <Mail size={16} />
-                      Email
-                    </button>
-
-                  </div>
-                </div>
-
-              </div>
+              <span className="text-[#EB6664] text-[10px] font-bold uppercase tracking-[0.3em]">
+                Short Term Course
+              </span>
             </div>
+
+            {/* Title */}
+            <h1 className="text-[3.5rem] sm:text-[3rem] md:text-[4.5rem] font-black text-white uppercase leading-none tracking-tighter mb-2">
+              {selected}
+            </h1>
+
+            {/* Tagline with left accent */}
+            <div className="flex items-center gap-3 mb-10">
+              <div className="w-10 h-px bg-[#EB6664]/60" />
+              <p className="text-white/60 text-sm sm:text-base font-light tracking-wide italic">
+                {course.hero.tagline}
+              </p>
+            </div>
+
+            {/* Metadata Strip */}
+            <div className="flex flex-wrap items-start gap-x-10 gap-y-6 mb-10 p-5 sm:p-6
+      border border-white/10 rounded-2xl
+      bg-white/[0.04] backdrop-blur-sm
+      relative overflow-hidden">
+
+              {/* Strip inner glow */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#EB6664]/5 via-transparent to-transparent pointer-events-none" />
+
+              <div className="flex flex-col gap-1 relative z-10">
+                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Training Modes</span>
+                <span className="text-white text-sm font-semibold">{course.trainingModes.join(' / ')}</span>
+              </div>
+
+              <div className="w-px h-8 bg-white/10 self-center hidden sm:block" />
+
+              <div className="flex flex-col gap-1 relative z-10">
+                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Duration</span>
+                <span className="text-white text-sm font-semibold">{course.duration}</span>
+              </div>
+
+              <div className="w-px h-8 bg-white/10 self-center hidden sm:block" />
+
+              <div className="flex flex-col gap-1 relative z-10">
+                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Age Group</span>
+                <span className="text-white text-sm font-semibold">{course.ageGroup}</span>
+              </div>
+
+              <div className="w-px h-8 bg-white/10 self-center hidden sm:block" />
+
+              <div className="flex flex-col gap-1 relative z-10">
+                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Topics Covered</span>
+                <span className="text-white text-sm font-semibold">{course.topics.join(' · ')}</span>
+              </div>
+
+            </div>
+
+            {/* CTA Row */}
+            <div className="flex flex-wrap items-center gap-4">
+
+              <button
+                onClick={handleCallNow}
+                className="flex items-center gap-2.5 bg-[#EB6664] hover:bg-[#d45553] text-white text-xs font-bold uppercase tracking-[0.18em] px-7 py-3.5 rounded-full transition-all duration-200 shadow-xl shadow-[#EB6664]/30 hover:shadow-[#EB6664]/50 hover:scale-[1.02]"
+              >
+                <Phone size={13} />
+                Call Us
+              </button>
+
+              <button
+                onClick={handleEmailNow}
+                className="flex items-center gap-2.5 text-white text-xs font-bold uppercase tracking-[0.18em] px-7 py-3.5 rounded-full border border-white/20 hover:border-white/50 hover:bg-white/8 transition-all duration-200 hover:scale-[1.02]"
+              >
+                <Mail size={13} />
+                Email Us
+              </button>
+
+            </div>
+
           </div>
         </div>
 
@@ -849,14 +891,14 @@ export default function ShortTermCourseDetails() {
                   <div className="space-y-3">
                     {course.benefits.benefits.map((item, i) => {
                       const colors = [
-                        "bg-[#ff7a78]",
-                        "bg-[#ff6f6d]",
-                        "bg-[#ff6462]",
-                        "bg-[#f95f5d]",
-                        "bg-[#EB6664]",
-                        "bg-[#e05553]",
-                        "bg-[#d64c4a]",
-                        "bg-[#cc4341]",
+                        "bg-[#6366F1]", // Indigo
+                        "bg-[#22C55E]", // Green
+                        "bg-[#F59E0B]", // Amber
+                        "bg-[#06B6D4]", // Cyan
+                        "bg-[#EF4444]", // Red
+                        "bg-[#8B5CF6]", // Purple
+                        "bg-[#10B981]", // Emerald
+                        "bg-[#F43F5E]", // Rose
                       ];
 
                       return (
@@ -878,20 +920,25 @@ export default function ShortTermCourseDetails() {
                 {/* RIGHT SIDE */}
                 <div className="flex flex-col items-center justify-center h-full">
 
-                  {/* Video */}
                   <div className="relative w-full max-w-md rounded-xl overflow-hidden shadow-lg">
-                    <img
-                      src="https://img.youtube.com/vi/ysz5S6PUM-U/maxresdefault.jpg"
-                      alt="video"
-                      className="w-full h-64 md:h-72 object-cover"
-                    />
 
-                    {/* Play Button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-14 h-14 md:w-16 md:h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                    <video
+                      className="w-full h-64 md:h-96 object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src={video} />
+                    </video>
+
+                    {/* Play Icon Overlay (optional) */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="w-14 h-14 md:w-16 md:h-16 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
                         <div className="w-0 h-0 border-l-[14px] border-l-[#EB6664] border-y-[10px] border-y-transparent ml-1"></div>
                       </div>
                     </div>
+
                   </div>
 
                   {/* CTA Button */}
