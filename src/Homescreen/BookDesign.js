@@ -862,7 +862,7 @@ const BookSection = () => {
         rel="stylesheet"
       />
 
-      <section className="relative overflow-hidden py-10 px-4 sm:py-12 sm:px-5 md:py-14 md:px-6 bg-[#FBF7F2]">
+      <section className="relative overflow-hidden py-10 px-4 sm:py-12 sm:px-5 md:py-14 md:px-6 bg-[transparent]">
         <div className="absolute inset-0 pointer-events-none">
           <div
             className="absolute rounded-full w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[250px] lg:w-[300px] lg:h-[300px] blur-[80px] top-[10%] right-[5%]"

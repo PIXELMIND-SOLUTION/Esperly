@@ -228,7 +228,7 @@ const PillarCard = ({ p, index }) => {
 
 export default function PillarsSection() {
   return (
-    <section className="relative overflow-hidden bg-[#FBF7F2] py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
+    <section className="relative overflow-hidden bg-[transparent] py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
 
       {/* Decorative blobs */}
       <div className="absolute inset-0 pointer-events-none">

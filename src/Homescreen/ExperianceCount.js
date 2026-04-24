@@ -174,7 +174,7 @@ const NotebookBackground = () => (
 /* ─── MAIN SECTION ─────────────────────────────────────────── */
 export default function ExperienceCount() {
   return (
-    <div className="relative overflow-hidden bg-[#FBF7F2] 
+    <div className="relative overflow-hidden bg-[transparent] 
       px-4 sm:px-6 md:px-10 lg:px-16 
       py-8 sm:py-10 md:py-14 lg:py-16 
       min-h-[200px]">

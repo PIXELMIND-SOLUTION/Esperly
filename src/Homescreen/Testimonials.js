@@ -166,7 +166,7 @@ const TestimonialCarousel = ({
   }, [isClient, direction, speed, testimonials.length]);
 
   return (
-    <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative bg-[#FBF7F2] overflow-hidden">
+    <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative bg-[transparent] overflow-hidden">
       {/* Background decoration */}
       {/* <div className="absolute inset-0 pointer-events-none">
         <div className="absolute w-64 h-64 sm:w-80 sm:h-80 rounded-full blur-[100px] opacity-10 top-[-10%] right-[-5%]" style={{ background: `radial-gradient(circle, ${accentColor}, transparent)` }} />

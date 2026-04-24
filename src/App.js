@@ -20,6 +20,7 @@ import BoosterDetails from './pages/Tuitions/LearningBoostersDetails'
 import LanguageDetailPage from "./pages/Tuitions/LanguageDetails";
 import LanguageDetailsPage from "./pages/Tuitions/LanguageDetails";
 import ShortTermCourseDetails from "./pages/Tuitions/ShortTermCourseDetails";
+import SchoolBack from "./views/schollback";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -62,6 +63,7 @@ const App = () => {
       {/* <BusBanner /> */}
       <WhatsAppButton />
       {/* <SideScroller /> */}
+       <SchoolBack>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
@@ -78,6 +80,7 @@ const App = () => {
         <Route path="/language" element={<LanguageDetailsPage/>}/>
         <Route path="/course" element={<ShortTermCourseDetails/>}/>
       </Routes>
+      </SchoolBack>
     </div>
   );
 };

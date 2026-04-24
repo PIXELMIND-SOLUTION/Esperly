@@ -86,7 +86,7 @@ const Contact = () => {
       <Header onOpenModal={() => setOpenModal(true)} />
       <NavImage />
 
-      <section className="relative overflow-hidden bg-[#FBF7F2] py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-[transparent] py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
         {/* Decorative blobs - hidden on mobile */}
         <div className="hidden sm:block absolute top-20 right-10 w-32 h-32 rounded-full bg-[#EB6664]/5 blur-3xl pointer-events-none" />
         <div className="hidden sm:block absolute bottom-20 left-10 w-40 h-40 rounded-full bg-[#3B6FA0]/5 blur-3xl pointer-events-none" />

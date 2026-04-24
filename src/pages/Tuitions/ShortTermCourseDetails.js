@@ -9,6 +9,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import NavImage from "../../components/NavImage";
 import video from "../../assets/esperlyIntro.mp4"
+import SchoolBack from "../../views/schollback";
 
 const COURSES = {
   Abacus: {
@@ -729,7 +730,7 @@ export default function ShortTermCourseDetails() {
     <>
       <Header />
       <NavImage />
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="min-h-screen bg-[transparent]">
 
         {/* Hero Section */}
         <div className="relative overflow-hidden min-h-[520px] sm:min-h-[600px]">
@@ -741,9 +742,9 @@ export default function ShortTermCourseDetails() {
             className="absolute inset-0 w-full h-full object-cover scale-[1.02]"
           />
 
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/40 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          {/* Overlays — lighter so image breathes */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/65 via-black/30 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
           {/* Decorative accent line top */}
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#EB6664] via-[#f0a08a] to-transparent" />
@@ -768,47 +769,75 @@ export default function ShortTermCourseDetails() {
               {selected}
             </h1>
 
-            {/* Tagline with left accent */}
-            <div className="flex items-center gap-3 mb-10">
+            {/* Tagline */}
+            <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-px bg-[#EB6664]/60" />
               <p className="text-white/60 text-sm sm:text-base font-light tracking-wide italic">
                 {course.hero.tagline}
               </p>
             </div>
 
-            {/* Metadata Strip */}
-            <div className="flex flex-wrap items-start gap-x-10 gap-y-6 mb-10 p-5 sm:p-6
-      border border-white/10 rounded-2xl
-      bg-white/[0.04] backdrop-blur-sm
-      relative overflow-hidden">
+            {/* Colorful Glassy Metadata Cards */}
+            <div className="flex flex-wrap gap-3 mb-8">
 
-              {/* Strip inner glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#EB6664]/5 via-transparent to-transparent pointer-events-none" />
-
-              <div className="flex flex-col gap-1 relative z-10">
-                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Training Modes</span>
-                <span className="text-white text-sm font-semibold">{course.trainingModes.join(' / ')}</span>
+              {/* Training Modes — Red glass */}
+              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
+        border border-[#EB6664]/40
+        backdrop-blur-md
+        shadow-lg shadow-[#EB6664]/20">
+                <div className="absolute inset-0 bg-[#EB6664]/20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#EB6664]/30 via-[#EB6664]/10 to-transparent" />
+                <span className="relative text-[#ffb3b2] text-[9px] font-bold uppercase tracking-[0.22em]">
+                  Training Modes
+                </span>
+                <span className="relative text-white text-sm font-bold leading-snug">
+                  {course.trainingModes.join(' / ')}
+                </span>
               </div>
 
-              <div className="w-px h-8 bg-white/10 self-center hidden sm:block" />
-
-              <div className="flex flex-col gap-1 relative z-10">
-                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Duration</span>
-                <span className="text-white text-sm font-semibold">{course.duration}</span>
+              {/* Duration — Violet glass */}
+              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
+        border border-[#7C3AED]/40
+        backdrop-blur-md
+        shadow-lg shadow-[#7C3AED]/20">
+                <div className="absolute inset-0 bg-[#7C3AED]/20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/30 via-[#7C3AED]/10 to-transparent" />
+                <span className="relative text-[#c4b5fd] text-[9px] font-bold uppercase tracking-[0.22em]">
+                  Duration
+                </span>
+                <span className="relative text-white text-sm font-bold leading-snug">
+                  {course.duration}
+                </span>
               </div>
 
-              <div className="w-px h-8 bg-white/10 self-center hidden sm:block" />
-
-              <div className="flex flex-col gap-1 relative z-10">
-                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Age Group</span>
-                <span className="text-white text-sm font-semibold">{course.ageGroup}</span>
+              {/* Age Group — Amber glass */}
+              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
+        border border-[#F59E0B]/40
+        backdrop-blur-md
+        shadow-lg shadow-[#F59E0B]/20">
+                <div className="absolute inset-0 bg-[#F59E0B]/20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#F59E0B]/30 via-[#F59E0B]/10 to-transparent" />
+                <span className="relative text-[#fcd34d] text-[9px] font-bold uppercase tracking-[0.22em]">
+                  Age Group
+                </span>
+                <span className="relative text-white text-sm font-bold leading-snug">
+                  {course.ageGroup}
+                </span>
               </div>
 
-              <div className="w-px h-8 bg-white/10 self-center hidden sm:block" />
-
-              <div className="flex flex-col gap-1 relative z-10">
-                <span className="text-[#EB6664]/80 text-[9px] font-bold uppercase tracking-[0.25em]">Topics Covered</span>
-                <span className="text-white text-sm font-semibold">{course.topics.join(' · ')}</span>
+              {/* Topics — Emerald glass */}
+              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
+        border border-[#059669]/40
+        backdrop-blur-md
+        shadow-lg shadow-[#059669]/20">
+                <div className="absolute inset-0 bg-[#059669]/20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#059669]/30 via-[#059669]/10 to-transparent" />
+                <span className="relative text-[#6ee7b7] text-[9px] font-bold uppercase tracking-[0.22em]">
+                  Topics Covered
+                </span>
+                <span className="relative text-white text-sm font-bold leading-snug">
+                  {course.topics.join(' · ')}
+                </span>
               </div>
 
             </div>
@@ -826,7 +855,7 @@ export default function ShortTermCourseDetails() {
 
               <button
                 onClick={handleEmailNow}
-                className="flex items-center gap-2.5 text-white text-xs font-bold uppercase tracking-[0.18em] px-7 py-3.5 rounded-full border border-white/20 hover:border-white/50 hover:bg-white/8 transition-all duration-200 hover:scale-[1.02]"
+                className="flex items-center gap-2.5 text-white text-xs font-bold uppercase tracking-[0.18em] px-7 py-3.5 rounded-full border border-white/20 hover:border-white/50 hover:bg-white/5 transition-all duration-200 hover:scale-[1.02]"
               >
                 <Mail size={13} />
                 Email Us
@@ -864,7 +893,7 @@ export default function ShortTermCourseDetails() {
             </div>
           </section>
 
-          <section className="bg-[#fff] py-12 px-4 md:px-10">
+          <section className="bg-[transparent] py-12 px-4 md:px-10">
             <div className="max-w-7xl mx-auto">
 
               {/* Heading */}
@@ -951,7 +980,7 @@ export default function ShortTermCourseDetails() {
             </div>
           </section>
 
-          <section className="bg-[#fff] py-12 px-4 md:px-10">
+          <section className="bg-[transparent] py-12 px-4 md:px-10">
             <div className="max-w-7xl mx-auto">
 
               {/* Heading */}
@@ -1027,7 +1056,7 @@ export default function ShortTermCourseDetails() {
             </div>
           </section>
 
-          <section className="bg-[#fff] py-14 px-4 md:px-10">
+          <section className="bg-[transparent] py-14 px-4 md:px-10">
             <div className="max-w-7xl mx-auto">
 
               {/* Heading */}

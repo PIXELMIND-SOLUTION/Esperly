@@ -81,7 +81,7 @@ export function TrustedSection() {
   return (
     <section
       className="relative overflow-hidden border-t border-[#D6CEBA] font-sans"
-      style={{ background: "#FBF7F2", padding: "clamp(40px,6vw,80px) clamp(20px,5vw,64px)" }}
+      style={{ background: "transparent", padding: "clamp(40px,6vw,80px) clamp(20px,5vw,64px)" }}
     >
       {/* Glow blobs */}
       <div className="absolute inset-0 pointer-events-none">
@@ -173,7 +173,7 @@ export function SupportSection() {
   return (
     <section
       className="relative overflow-hidden font-sans"
-      style={{ background: "#FBF7F2", padding: "clamp(40px,6vw,80px) clamp(20px,5vw,64px)" }}
+      style={{ background: "transparent", padding: "clamp(40px,6vw,80px) clamp(20px,5vw,64px)" }}
     >
       {/* Glow blobs */}
       <div className="absolute inset-0 pointer-events-none">
