@@ -464,6 +464,9 @@ const Header = () => {
                               if (activeType !== 'course') {
                                 goToTuition(activeGroup, item);
                                 setMobileOpen(false);
+                              }else {
+                                navigate(`/course?label=${encodeURIComponent(activeGroup)}&type=course&item=${encodeURIComponent(item)}`);
+                                setMobileOpen(false);
                               }
                             }}
                           >

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const tuitionsMenu = [
     { label: "Elementary Level", items: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"] },
@@ -88,16 +90,7 @@ const getSubjectsByClass = (className) => {
     };
 };
 
-const countryCodes = [
-    { code: "+91", country: "IN", flag: "🇮🇳" },
-    { code: "+1", country: "US", flag: "🇺🇸" },
-    { code: "+44", country: "UK", flag: "🇬🇧" },
-    { code: "+61", country: "AU", flag: "🇦🇺" },
-    { code: "+971", country: "AE", flag: "🇦🇪" },
-    { code: "+65", country: "SG", flag: "🇸🇬" },
-    { code: "+60", country: "MY", flag: "🇲🇾" },
-    { code: "+974", country: "QA", flag: "🇶🇦" },
-];
+
 
 const daysOptions = ["1 day per week", "2 days per week", "3 days per week", "4 days per week", "5 days per week", "6 days per week", "7 days (daily)"];
 const startOptions = ["Immediately", "In a week", "In a month"];
@@ -393,27 +386,31 @@ export default function TuitionBooking() {
                                     type="email"
                                 />
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-600 mb-2">Mobile Number</label>
-                                    <div className="flex gap-2">
-                                        <select
-                                            value={formData.countryCode}
-                                            onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                                            className="px-3 py-3.5 rounded-xl border-2 border-gray-100 bg-gray-50 text-sm font-medium text-gray-700 focus:outline-none focus:border-rose-300 transition-colors"
-                                            style={{ minWidth: "90px" }}
-                                        >
-                                            {countryCodes.map((c) => (
-                                                <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
-                                            ))}
-                                        </select>
-                                        <input
-                                            type="tel"
-                                            placeholder="9876543210"
+                                    <label className="block text-sm font-semibold text-gray-600 mb-2">
+                                        Mobile Number <span className="text-red-500">*</span>
+                                    </label>
+
+                                    <div className={`relative ${formErrors.mobile ? "border-red-300" : ""}`}>
+                                        <PhoneInput
+                                            country={"in"}
                                             value={formData.mobile}
-                                            onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                                            className={`flex-1 px-4 py-3.5 rounded-xl border-2 text-sm focus:outline-none transition-colors ${formErrors.mobile ? "border-red-300 bg-red-50" : "border-gray-100 bg-gray-50 focus:border-rose-300"}`}
+                                            onChange={(value) => {
+                                                setFormData({ ...formData, mobile: value });
+                                                if (formErrors.mobile) {
+                                                    setFormErrors({ ...formErrors, mobile: "" });
+                                                }
+                                            }}
+                                            enableSearch
+                                            preferredCountries={["in", "us", "gb", "au", "ca"]}
+                                            inputClass="!w-full !h-[50px] !pl-[60px] !bg-gray-50 !border-2 !border-gray-100 !rounded-xl !text-sm focus:!border-rose-300"
+                                            buttonClass="!bg-gray-50 !border-2 !border-gray-100 !rounded-l-xl"
+                                            containerClass="!w-full"
                                         />
                                     </div>
-                                    {formErrors.mobile && <p className="text-xs text-red-500 mt-1">{formErrors.mobile}</p>}
+
+                                    {formErrors.mobile && (
+                                        <p className="text-xs text-red-500 mt-1">{formErrors.mobile}</p>
+                                    )}
                                 </div>
                             </div>
 

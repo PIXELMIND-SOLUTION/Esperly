@@ -124,7 +124,7 @@ const TuitionsDropdown = ({ open }) => {
                   onClick={() => {
                     if (activeType !== 'course') {
                       goToTuition(activeGroup, item);
-                    }else{
+                    } else {
                       navigate(`/course?label=${encodeURIComponent(activeGroup)}&type=course&item=${encodeURIComponent(item)}`);
                     }
                   }}
@@ -526,6 +526,9 @@ const Navbar = () => {
                             onClick={() => {
                               if (activeType !== 'course') {
                                 goToTuition(activeGroup, item);
+                                setMobileOpen(false);
+                              } else {
+                                navigate(`/course?label=${encodeURIComponent(activeGroup)}&type=course&item=${encodeURIComponent(item)}`);
                                 setMobileOpen(false);
                               }
                             }}

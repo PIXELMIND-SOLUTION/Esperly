@@ -4,6 +4,55 @@ import { motion, useInView } from "motion/react";
 const FLIP_MS = 700;
 const AUTO_INTERVAL = 5000;
 
+/* ─── IMAGE MAPS ─────────────────────────────────────────────── */
+const chapterImages = {
+  // Chapter 01 & 06 – intro/closing
+  intro: "/logo1.png",   // open book
+  closing: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80", // graduation
+
+  // Left-page icon sets
+  ch02: [
+    { img: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=200&q=75", label: "School" },
+    { img: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=200&q=75", label: "Textbooks" },
+    { img: "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=200&q=75", label: "Learning" },
+    { img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=200&q=75", label: "Achievement" },
+    { img: "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=200&q=75", label: "Elementary" },
+    { img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=200&q=75", label: "Math" },
+    { img: "https://images.unsplash.com/photo-1532094349884-543559b2a2cb?w=200&q=75", label: "Science" },
+    { img: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=200&q=75", label: "Writing" },
+  ],
+  ch03: [
+    { img: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=200&q=75", label: "Abacus" },
+    { img: "https://images.unsplash.com/photo-1543269664-56d93c1b41a6?w=200&q=75", label: "Speaking" },
+    { img: "https://images.unsplash.com/photo-1503676382389-4809596d5290?w=200&q=75", label: "Phonics" },
+    { img: "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=200&q=75", label: "Mental Math" },
+    { img: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=200&q=75", label: "Communication" },
+    { img: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?w=200&q=75", label: "Grammar" },
+    { img: "https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=200&q=75", label: "Confidence" },
+    { img: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&q=75", label: "Skills" },
+  ],
+  ch04: [
+    { img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=200&q=75", label: "Dance" },
+    { img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200&q=75", label: "Drawing" },
+    { img: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=200&q=75", label: "Singing" },
+    { img: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=200&q=75", label: "Yoga" },
+    { img: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=200&q=75", label: "Zumba" },
+    { img: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=200&q=75", label: "Painting" },
+    { img: "https://images.unsplash.com/photo-1499540633125-484965b60031?w=200&q=75", label: "Creativity" },
+    { img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=200&q=75", label: "Wellness" },
+  ],
+  ch05: [
+    { img: "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=200&q=75", label: "Hindi" },
+    { img: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&q=75", label: "English" },
+    { img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&q=75", label: "Tamil" },
+    { img: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&q=75", label: "Telugu" },
+    { img: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=200&q=75", label: "Kannada" },
+    { img: "https://images.unsplash.com/photo-1549732565-d673b928da7f?w=200&q=75", label: "French" },
+    { img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=200&q=75", label: "German" },
+    { img: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=200&q=75", label: "Spanish" },
+  ],
+};
+
 /* ─── PAGE DATA ─────────────────────────────────────────────── */
 const chapters = [
   {
@@ -18,16 +67,7 @@ const chapters = [
     accent: "#3B6FA0",
     pageColor: "#F5FAFF",
     showLeftContent: true,
-    leftIcons: [
-      { emoji: "🏫", label: "School" },
-      { emoji: "📚", label: "Textbooks" },
-      { emoji: "✏️", label: "Learning" },
-      { emoji: "🎓", label: "Achievement" },
-      { emoji: "🧒", label: "Elementary" },
-      { emoji: "📐", label: "Math" },
-      { emoji: "🔬", label: "Science" },
-      { emoji: "📝", label: "Writing" },
-    ],
+    leftIcons: chapterImages.ch02,
     rightContent: { type: "tuition" },
   },
   {
@@ -35,16 +75,7 @@ const chapters = [
     accent: "#2E7D52",
     pageColor: "#F5FFF5",
     showLeftContent: true,
-    leftIcons: [
-      { emoji: "🧮", label: "Abacus" },
-      { emoji: "🗣️", label: "Speaking" },
-      { emoji: "🔤", label: "Phonics" },
-      { emoji: "🧠", label: "Mental Math" },
-      { emoji: "💬", label: "Communication" },
-      { emoji: "📖", label: "Grammar" },
-      { emoji: "🌟", label: "Confidence" },
-      { emoji: "🎯", label: "Skills" },
-    ],
+    leftIcons: chapterImages.ch03,
     rightContent: { type: "shortcourses" },
   },
   {
@@ -52,16 +83,7 @@ const chapters = [
     accent: "#C05A1A",
     pageColor: "#FFF8F0",
     showLeftContent: true,
-    leftIcons: [
-      { emoji: "💃", label: "Dance" },
-      { emoji: "🎨", label: "Drawing" },
-      { emoji: "🎵", label: "Singing" },
-      { emoji: "🧘", label: "Yoga" },
-      { emoji: "🏃", label: "Zumba" },
-      { emoji: "🖌️", label: "Painting" },
-      { emoji: "🌈", label: "Creativity" },
-      { emoji: "🤸", label: "Wellness" },
-    ],
+    leftIcons: chapterImages.ch04,
     rightContent: { type: "boosters" },
   },
   {
@@ -69,16 +91,7 @@ const chapters = [
     accent: "#7B3FA0",
     pageColor: "#FDF5FF",
     showLeftContent: true,
-    leftIcons: [
-      { emoji: "🇮🇳", label: "Hindi" },
-      { emoji: "🇬🇧", label: "English" },
-      { emoji: "🌏", label: "Tamil" },
-      { emoji: "📜", label: "Telugu" },
-      { emoji: "🗺️", label: "Kannada" },
-      { emoji: "🇫🇷", label: "French" },
-      { emoji: "🇩🇪", label: "German" },
-      { emoji: "🇪🇸", label: "Spanish" },
-    ],
+    leftIcons: chapterImages.ch05,
     rightContent: { type: "languages" },
   },
   {
@@ -113,15 +126,6 @@ const Highlight = ({ children, color = "#FFEB3B" }) => (
   <span style={{ background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)` }} className="pb-0.5">
     {children}
   </span>
-);
-
-const RuledLines = ({ count = 22, gap = 26 }) => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden">
-    {Array.from({ length: count }, (_, i) => (
-      <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * gap, background: "#D6CEBA" }} />
-    ))}
-    <div className="absolute top-0 bottom-0 w-0.5 opacity-18" style={{ left: "clamp(40px,6vw,80px)", background: "#EB6664" }} />
-  </div>
 );
 
 const FadeUp = ({ children, delay = 0, className = "" }) => {
@@ -165,7 +169,6 @@ const RightPageInner = ({ ch }) => {
   if (type === "intro") {
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
-        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-3 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">
             Welcome · Esperly
@@ -215,7 +218,6 @@ const RightPageInner = ({ ch }) => {
     ];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 02</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-2">
@@ -244,7 +246,6 @@ const RightPageInner = ({ ch }) => {
     const courses = ["Abacus", "Phonics", "Public Speaking", "Personality Development", "Vedic Maths", "English Grammar"];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 03</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
@@ -277,7 +278,6 @@ const RightPageInner = ({ ch }) => {
     const activities = ["Dance", "Drawing", "Singing", "Yoga", "Zumba", "Painting"];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 04</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
@@ -310,7 +310,6 @@ const RightPageInner = ({ ch }) => {
     const langs = ["Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam", "French", "German", "Spanish", "Sanskrit"];
     return (
       <div className="h-full flex flex-col justify-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)", paddingTop: "clamp(16px,2vw,24px)", paddingBottom: "clamp(16px,2vw,24px)" }}>
-        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10">
           <div className="font-mono uppercase tracking-widest mb-2 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">Chapter 05</div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-[#1C1209] mb-1">
@@ -342,12 +341,18 @@ const RightPageInner = ({ ch }) => {
   if (type === "closing") {
     return (
       <div className="h-full flex flex-col justify-center items-center text-center relative" style={{ paddingLeft: "clamp(50px,7vw,90px)", paddingRight: "clamp(20px,3vw,40px)" }}>
-        {/* <RuledLines count={22} gap={26} /> */}
         <div className="relative z-10 w-full">
           <div className="font-mono uppercase tracking-widest mb-4 text-[8px] sm:text-[9px] md:text-[10px] text-[#7A6E5A]">
             Chapter 06 · Final
           </div>
-          <div className="text-[24px] sm:text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] mb-2.5">🎓</div>
+          {/* Graduation image replacing emoji */}
+          <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[64px] md:h-[64px] lg:w-[72px] lg:h-[72px] rounded-full overflow-hidden mx-auto mb-2.5 border-2" style={{ borderColor: `${accent}40` }}>
+            <img
+              src={chapterImages.closing}
+              alt="Graduation"
+              className="w-full h-full object-cover"
+            />
+          </div>
           <h3 className="font-['Fraunces',Georgia,serif] font-black text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-[#1C1209] leading-relaxed mb-2">
             Complete Learning Solution
           </h3>
@@ -383,9 +388,6 @@ const LeftPageContent = ({ ch }) => {
     return (
       <div className="w-full h-full relative overflow-hidden flex justify-center items-center" style={{ background: ch.pageColor }}>
         <div>
-          {/* {Array.from({ length: 22 }, (_, i) => (
-            <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * 26, background: "#D6CEBA" }} />
-          ))} */}
           <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
           <div
             className="absolute bottom-2 right-3 select-none pointer-events-none leading-none font-['Fraunces',Georgia,serif] font-black opacity-6"
@@ -394,7 +396,14 @@ const LeftPageContent = ({ ch }) => {
             {ch.number}
           </div>
           <div className="absolute inset-0 flex flex-col items-center justify-center relative z-10">
-            <div className="text-[32px] sm:text-[36px] md:text-[40px] lg:text-[46px] xl:text-[52px] mb-2">📖</div>
+            {/* Book image replacing 📖 emoji */}
+            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[64px] md:h-[64px] lg:w-[72px] lg:h-[72px] rounded-full overflow-hidden mb-2 " >
+              <img
+                src={chapterImages.intro}
+                alt="Learning"
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div className="font-['Fraunces',Georgia,serif] font-black tracking-wider text-[16px] sm:text-[18px] md:text-[20px] lg:text-[23px] xl:text-[26px]" style={{ color: ch.accent }}>
               Esperly
             </div>
@@ -407,9 +416,6 @@ const LeftPageContent = ({ ch }) => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center text-center px-4 py-6 relative overflow-hidden" style={{ background: ch.pageColor }}>
-      {/* {Array.from({ length: 22 }, (_, i) => (
-        <div key={i} className="absolute left-0 right-0 h-px opacity-45" style={{ top: 52 + i * 26, background: "#D6CEBA" }} />
-      ))} */}
       <WashiTape rotate={-1} color="rgba(255,200,80,0.65)" width={64} />
       <div
         className="absolute bottom-2 right-3 select-none pointer-events-none leading-none font-['Fraunces',Georgia,serif] font-black opacity-6"
@@ -426,7 +432,21 @@ const LeftPageContent = ({ ch }) => {
               className="flex flex-col items-center gap-1 p-2 sm:p-2.5 rounded-lg border"
               style={{ background: `${ch.accent}08`, borderColor: `${ch.accent}18` }}
             >
-              <span className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[25px] xl:text-[28px] leading-none">{icon.emoji}</span>
+              {/* Image replacing emoji */}
+              <div
+                className="rounded-md overflow-hidden flex-shrink-0"
+                style={{
+                  width: "clamp(28px, 4vw, 48px)",
+                  height: "clamp(28px, 4vw, 48px)",
+                }}
+              >
+                <img
+                  src={icon.img}
+                  alt={icon.label}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
               <span
                 className="font-['Georgia',serif] font-bold tracking-wider text-[7px] sm:text-[8px] md:text-[9px]"
                 style={{ color: ch.accent }}
@@ -824,14 +844,8 @@ const BookSection = () => {
     timerRef.current = setInterval(goNext, AUTO_INTERVAL);
   };
 
-  const handleNext = () => {
-    goNext();
-    resetTimer();
-  };
-  const handlePrev = () => {
-    goPrev();
-    resetTimer();
-  };
+  const handleNext = () => { goNext(); resetTimer(); };
+  const handlePrev = () => { goPrev(); resetTimer(); };
   const handleDot = (i) => {
     if (i === cur || isFlipping) return;
     runFlip(i > cur ? "forward" : "backward", i);
