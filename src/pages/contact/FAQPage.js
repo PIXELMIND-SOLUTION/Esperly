@@ -95,7 +95,7 @@ const FAQItem = ({ item, i, openIndex, setOpenIndex }) => {
 
   return (
     <div
-      className="border border-[#EB6664]/20 bg-white rounded-lg overflow-hidden"
+      className="border border-[#EB6664]/20 bg-[#F9F5F0] rounded-lg overflow-hidden"
     >
       <button
         onClick={() => setOpenIndex(isOpen ? null : i)}
@@ -142,7 +142,7 @@ const FAQPage = () => {
       <NavImage />
 
       <section
-        className="relative overflow-hidden bg-white"
+        className="relative overflow-hidden bg-[transparent]"
         style={{
           padding: "clamp(48px,7vw,96px) clamp(20px,5vw,60px)",
         }}

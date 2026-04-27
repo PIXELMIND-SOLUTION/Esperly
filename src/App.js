@@ -21,6 +21,8 @@ import LanguageDetailPage from "./pages/Tuitions/LanguageDetails";
 import LanguageDetailsPage from "./pages/Tuitions/LanguageDetails";
 import ShortTermCourseDetails from "./pages/Tuitions/ShortTermCourseDetails";
 import SchoolBack from "./views/schollback";
+import AllBlogs from "./pages/Blogs/AllBlogs";
+import BlogDetails from "./pages/Blogs/BlogDetails";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -79,6 +81,8 @@ const App = () => {
         <Route path="/booster/:boosterId" element={<BoosterDetails/>}/>
         <Route path="/language" element={<LanguageDetailsPage/>}/>
         <Route path="/course" element={<ShortTermCourseDetails/>}/>
+        <Route path="/blogs" element={<AllBlogs />} />
+        <Route path="/blogs/:slug" element={<BlogDetails />} />
       </Routes>
       </SchoolBack>
     </div>

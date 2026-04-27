@@ -1,4 +1,6 @@
+import { Book } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import BookSessionModal from "../modals/BookSession";
 
 function GraduationCapIcon({ className }) {
   return (
@@ -21,6 +23,7 @@ export default function AnnouncementBanner() {
   const timeoutRef = useRef(null);
   const indexRef = useRef(0);
   const isDeleting = useRef(false);
+  const [openModal, setOpenModal] = useState(false);
 
   // Viewport detection
   useEffect(() => {
@@ -128,6 +131,7 @@ export default function AnnouncementBanner() {
           transition-all duration-200
           hover:bg-[#d95250] hover:scale-105
         "
+        onClick={() => setOpenModal(true)}
       >
         Book a Session
       </button>
@@ -139,6 +143,11 @@ export default function AnnouncementBanner() {
           50% { transform: translateY(-4px); }
         }
       `}</style>
+
+      {/* Modal */}
+      {openModal && (
+        <BookSessionModal isOpen={openModal} onClose={() => setOpenModal(false)} />
+      )}
     </div>
   );
 }

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import BookSessionModal from "../modals/BookSession";
 
 const HeroPage = () => {
   const { scrollYProgress } = useScroll();
+  const [openModal, setOpenModal] = useState(false);
 
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.05]);
@@ -157,12 +159,17 @@ const HeroPage = () => {
                 (e.currentTarget).style.boxShadow =
                   "0 6px 28px rgba(166,25,46,0.50), 0 1px 0 rgba(255,255,255,0.18) inset";
               }}
+              onClick={() => setOpenModal(true)}
             >
               Begin with a Free Session
             </button>
           </motion.div>
         </motion.div>
       </motion.div>
+      {/* Modal */}
+      {openModal && (
+        <BookSessionModal isOpen={openModal} onClose={() => setOpenModal(false)} />
+      )}
     </section>
   );
 };
