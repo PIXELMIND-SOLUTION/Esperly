@@ -23,6 +23,7 @@ import ShortTermCourseDetails from "./pages/Tuitions/ShortTermCourseDetails";
 import SchoolBack from "./views/schollback";
 import AllBlogs from "./pages/Blogs/AllBlogs";
 import BlogDetails from "./pages/Blogs/BlogDetails";
+import MathsBack from "./views/MathsBack";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -65,26 +66,28 @@ const App = () => {
       {/* <BusBanner /> */}
       <WhatsAppButton />
       {/* <SideScroller /> */}
-       <SchoolBack>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/aboutus" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/teachers" element={<Teachers />} />
-        <Route path="/category" element={<Category />} />
-        <Route path="/category/:categoryId" element={<Subcategory onSelectCourse={handleCourseSelect} />} />
-        <Route path="/course-detail/:courseId" element={<CourseDetail />} />
-        <Route path="/faqs" element={<FAQPage />} />
+      {/* <SchoolBack> */}
+      <MathsBack>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/aboutus" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/teachers" element={<Teachers />} />
+          <Route path="/category" element={<Category />} />
+          <Route path="/category/:categoryId" element={<Subcategory onSelectCourse={handleCourseSelect} />} />
+          <Route path="/course-detail/:courseId" element={<CourseDetail />} />
+          <Route path="/faqs" element={<FAQPage />} />
 
-        {/* Tuition booking — matches /tuition?label=elementary-level&item=class-1 */}
-        <Route path="/tuition" element={<TuitionBooking />} />
-        <Route path="/booster/:boosterId" element={<BoosterDetails/>}/>
-        <Route path="/language" element={<LanguageDetailsPage/>}/>
-        <Route path="/course" element={<ShortTermCourseDetails/>}/>
-        <Route path="/blogs" element={<AllBlogs />} />
-        <Route path="/blogs/:slug" element={<BlogDetails />} />
-      </Routes>
-      </SchoolBack>
+          {/* Tuition booking — matches /tuition?label=elementary-level&item=class-1 */}
+          <Route path="/tuition" element={<TuitionBooking />} />
+          <Route path="/booster/:boosterId" element={<BoosterDetails />} />
+          <Route path="/language" element={<LanguageDetailsPage />} />
+          <Route path="/course" element={<ShortTermCourseDetails />} />
+          <Route path="/blogs" element={<AllBlogs />} />
+          <Route path="/blogs/:slug" element={<BlogDetails />} />
+        </Routes>
+      </MathsBack>
+      {/* </SchoolBack> */}
     </div>
   );
 };

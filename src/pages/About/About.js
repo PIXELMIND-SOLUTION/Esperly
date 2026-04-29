@@ -47,7 +47,7 @@ const AboutUs = () => {
         <>
             <Header />
             <NavImage/>
-            <div className="min-h-screen bg-white">
+            <div className="min-h-screen bg-[transparent]">
 
                 {/* Hero Section with Image */}
                 <section className="relative overflow-hidden">
@@ -89,7 +89,7 @@ const AboutUs = () => {
                                 transition={{ duration: 0.5, delay: 0.4 }}
                                 className="flex flex-col sm:flex-row gap-4 justify-center"
                             >
-                                <button className="bg-white text-[#EB6664] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+                                <button className="bg-[transparent] text-[#EB6664] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
                                     Contact Us <FiChevronRight className="w-4 h-4" />
                                 </button>
                                 {/* <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
@@ -108,7 +108,7 @@ const AboutUs = () => {
                 </section>
 
                 {/* Our Story Section */}
-                <section ref={refs.story} className="py-16 md:py-12 px-4 sm:px-6 lg:px-8 bg-white">
+                <section ref={refs.story} className="py-16 md:py-12 px-4 sm:px-6 lg:px-8 bg-[transparent]">
                     <div className="max-w-7xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -159,7 +159,7 @@ const AboutUs = () => {
                 </section>
 
                 {/* Why Esperly Section */}
-                <section ref={refs.why} className="py-12 md:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+                <section ref={refs.why} className="py-12 md:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 bg-[transparent]">
                     <div className="max-w-7xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -167,7 +167,7 @@ const AboutUs = () => {
                             transition={{ duration: 0.6 }}
                             className="text-center mb-12"
                         >
-                            <div className="inline-flex items-center gap-2 bg-[#EB6664]/10 text-[#EB6664] px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                            <div className="inline-flex items-center gap-2 text-[#EB6664] px-4 py-2 rounded-full text-sm font-semibold mb-4">
                                 <FiStar className="w-4 h-4" />
                                 Why Choose Us
                             </div>
@@ -187,10 +187,10 @@ const AboutUs = () => {
                                     animate={whyInView ? { opacity: 1, y: 0 } : {}}
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                     whileHover={{ y: -8 }}
-                                    className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4"
+                                    className="rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4"
                                     style={{ borderTopColor: "#EB6664" }}
                                 >
-                                    <div className="w-14 h-14 rounded-xl bg-[#EB6664]/10 text-[#EB6664] flex items-center justify-center mb-4">
+                                    <div className="w-14 h-14 rounded-xl text-[#EB6664] flex items-center justify-center mb-4">
                                         <point.icon className="w-7 h-7" />
                                     </div>
                                     <h3 className="text-xl font-bold text-gray-900 mb-2">{point.title}</h3>
@@ -214,7 +214,7 @@ const AboutUs = () => {
                 </section>
 
                 {/* CTA Section */}
-                <section className="py-12 md:py-12 px-4 sm:px-6 lg:px-8 bg-white">
+                <section className="py-12 md:py-12 px-4 sm:px-6 lg:px-8 bg-[transparent]">
                     <div className="max-w-4xl mx-auto text-center">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
