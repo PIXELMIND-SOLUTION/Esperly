@@ -17,7 +17,7 @@ export default function MathsBack({ children }) {
               {/* Equations (spaced out) */}
               <text x="20" y="50" fontSize="16" fill="#EB6664">E = mc²</text>
               <text x="180" y="140" fontSize="15" fill="#EB6664">a² + b² = c²</text>
-              <text x="40" y="260" fontSize="14" fill="#EB6664">sinθ = opp/hyp</text>
+              <text x="40" y="260" fontSize="14" fill="#EB6664">sin²θ + cos²θ = 1</text>
 
               {/* Symbols */}
               <text x="260" y="60" fontSize="18" fill="#EB6664">π</text>
