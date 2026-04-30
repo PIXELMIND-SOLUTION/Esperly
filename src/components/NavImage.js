@@ -1,12 +1,12 @@
 const NavImage = () => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full h-[50px] sm:h-[70px] md:h-[70px]">
 
       {/* Hanging Wave */}
       <div className="absolute left-0 top-full w-full pointer-events-none z-10">
         <svg
           viewBox="0 0 1440 120"
-          className="w-full h-[50px] sm:h-[70px] md:h-[90px]"
+          className="w-full h-[50px] sm:h-[70px] md:h-[70px]"
           preserveAspectRatio="none"
         >
           <path

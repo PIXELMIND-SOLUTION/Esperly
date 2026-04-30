@@ -325,7 +325,7 @@ const Header = () => {
   return (
     <>
       {/* ── HEADER BAR ── */}
-      <header className="sticky top-0 z-50 bg-[#EB6664]">
+      <header className="fixed top-0 left-0 right-0 w-full z-50 bg-[#EB6664]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[70px] flex items-center justify-between">
 
           {/* Logo */}
