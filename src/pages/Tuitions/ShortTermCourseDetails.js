@@ -780,62 +780,62 @@ export default function ShortTermCourseDetails() {
             {/* Colorful Glassy Metadata Cards */}
             <div className="flex flex-wrap gap-3 mb-8">
 
-              {/* Training Modes — Red glass */}
+              {/* Training Modes — Green pastel */}
               <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#EB6664]/40
+        border border-[#66BB6A]/40
         backdrop-blur-md
-        shadow-lg shadow-[#EB6664]/20">
-                <div className="absolute inset-0 bg-[#EB6664]/20" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#EB6664]/30 via-[#EB6664]/10 to-transparent" />
-                <span className="relative text-[#ffb3b2] text-[9px] font-bold uppercase tracking-[0.22em]">
+        shadow-lg shadow-[#66BB6A]/20">
+                <div className="absolute inset-0 bg-[#e8f5e9]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#66BB6A]/20 via-[#66BB6A]/5 to-transparent" />
+                <span className="relative text-[#2e7d32] text-[9px] font-bold uppercase tracking-[0.22em]">
                   Training Modes
                 </span>
-                <span className="relative text-white text-sm font-bold leading-snug">
+                <span className="relative text-[#1b5e20] text-sm font-bold leading-snug">
                   {course.trainingModes.join(' / ')}
                 </span>
               </div>
 
-              {/* Duration — Violet glass */}
+              {/* Duration — Violet pastel */}
               <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#7C3AED]/40
+        border border-[#9C27B0]/40
         backdrop-blur-md
-        shadow-lg shadow-[#7C3AED]/20">
-                <div className="absolute inset-0 bg-[#7C3AED]/20" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#7C3AED]/30 via-[#7C3AED]/10 to-transparent" />
-                <span className="relative text-[#c4b5fd] text-[9px] font-bold uppercase tracking-[0.22em]">
+        shadow-lg shadow-[#9C27B0]/20">
+                <div className="absolute inset-0 bg-[#f3e5f5]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#9C27B0]/20 via-[#9C27B0]/5 to-transparent" />
+                <span className="relative text-[#6a1b9a] text-[9px] font-bold uppercase tracking-[0.22em]">
                   Duration
                 </span>
-                <span className="relative text-white text-sm font-bold leading-snug">
+                <span className="relative text-[#4a148c] text-sm font-bold leading-snug">
                   {course.duration}
                 </span>
               </div>
 
-              {/* Age Group — Amber glass */}
+              {/* Age Group — Amber pastel */}
               <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#F59E0B]/40
+        border border-[#FFA726]/40
         backdrop-blur-md
-        shadow-lg shadow-[#F59E0B]/20">
-                <div className="absolute inset-0 bg-[#F59E0B]/20" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#F59E0B]/30 via-[#F59E0B]/10 to-transparent" />
-                <span className="relative text-[#fcd34d] text-[9px] font-bold uppercase tracking-[0.22em]">
+        shadow-lg shadow-[#FFA726]/20">
+                <div className="absolute inset-0 bg-[#fff8e1]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FFA726]/20 via-[#FFA726]/5 to-transparent" />
+                <span className="relative text-[#e65100] text-[9px] font-bold uppercase tracking-[0.22em]">
                   Age Group
                 </span>
-                <span className="relative text-white text-sm font-bold leading-snug">
+                <span className="relative text-[#bf360c] text-sm font-bold leading-snug">
                   {course.ageGroup}
                 </span>
               </div>
 
-              {/* Topics — Emerald glass */}
+              {/* Topics — Blue pastel */}
               <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#059669]/40
+        border border-[#1E88E5]/40
         backdrop-blur-md
-        shadow-lg shadow-[#059669]/20">
-                <div className="absolute inset-0 bg-[#059669]/20" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#059669]/30 via-[#059669]/10 to-transparent" />
-                <span className="relative text-[#6ee7b7] text-[9px] font-bold uppercase tracking-[0.22em]">
+        shadow-lg shadow-[#1E88E5]/20">
+                <div className="absolute inset-0 bg-[#e3f2fd]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1E88E5]/20 via-[#1E88E5]/5 to-transparent" />
+                <span className="relative text-[#1565c0] text-[9px] font-bold uppercase tracking-[0.22em]">
                   Topics Covered
                 </span>
-                <span className="relative text-white text-sm font-bold leading-snug">
+                <span className="relative text-[#0d47a1] text-sm font-bold leading-snug">
                   {course.topics.join(' · ')}
                 </span>
               </div>

@@ -89,7 +89,7 @@ const AboutUs = () => {
                                 transition={{ duration: 0.5, delay: 0.4 }}
                                 className="flex flex-col sm:flex-row gap-4 justify-center"
                             >
-                                <button className="bg-[transparent] text-[#EB6664] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+                                <button className="bg-[transparent] text-[#EB6664] px-8 py-3 rounded-lg font-semibold bg-gray-100  hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
                                     Contact Us <FiChevronRight className="w-4 h-4" />
                                 </button>
                                 {/* <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
@@ -159,7 +159,7 @@ const AboutUs = () => {
                 </section>
 
                 {/* Why Esperly Section */}
-                <section ref={refs.why} className="py-12 md:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 bg-[transparent]">
+                <section ref={refs.why} className="py-12 md:py-12 px-4 sm:px-6 lg:px-8 bg-[transparent]">
                     <div className="max-w-7xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -179,7 +179,7 @@ const AboutUs = () => {
                             </p>
                         </motion.div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-white ">
                             {whyPoints.map((point, index) => (
                                 <motion.div
                                     key={index}

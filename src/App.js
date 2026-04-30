@@ -24,6 +24,7 @@ import SchoolBack from "./views/schollback";
 import AllBlogs from "./pages/Blogs/AllBlogs";
 import BlogDetails from "./pages/Blogs/BlogDetails";
 import MathsBack from "./views/MathsBack";
+import FloatingButtons from "./views/Brochure";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -64,10 +65,11 @@ const App = () => {
       {/* <CustomCursor /> */}
       {/* <RollingPencil /> */}
       {/* <BusBanner /> */}
-      <WhatsAppButton />
+      {/* <WhatsAppButton /> */}
+      <FloatingButtons/>
       {/* <SideScroller /> */}
       {/* <SchoolBack> */}
-      <MathsBack>
+      {/* <MathsBack> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<About />} />
@@ -86,7 +88,7 @@ const App = () => {
           <Route path="/blogs" element={<AllBlogs />} />
           <Route path="/blogs/:slug" element={<BlogDetails />} />
         </Routes>
-      </MathsBack>
+      {/* </MathsBack> */}
       {/* </SchoolBack> */}
     </div>
   );

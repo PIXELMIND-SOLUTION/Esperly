@@ -11,7 +11,7 @@ const StepsImage = () => {
         </span>
     );
     return (
-        <div className="w-full bg-[#FBF7F2] flex flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-16 lg:px-16 lg:py-20">
+        <div className="w-full bg-[transparent] flex flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-16 lg:px-16 lg:py-20">
 
             {/* Heading */}
             <h2 className="text-center font-semibold text-gray-800 
@@ -23,7 +23,7 @@ const StepsImage = () => {
             </h2>
 
             {/* Image */}
-            <div className="w-full max-w-5xl">
+            <div className="w-full max-w-7xl">
                 <img
                     src="/step.png"
                     alt="Onboarding Journey"
