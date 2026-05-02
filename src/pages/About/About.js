@@ -50,7 +50,7 @@ const AboutUs = () => {
             <div className="min-h-screen bg-[transparent]">
 
                 {/* Hero Section with Image */}
-                <section className="relative overflow-hidden">
+                <section className="relative overflow-hidden bg-[transparent]">
                     {/* Background Image */}
                     <div className="absolute inset-0">
                         <img
@@ -100,11 +100,11 @@ const AboutUs = () => {
                     </div>
 
                     {/* Bottom Wave */}
-                    <div className="absolute bottom-0 left-0 right-0">
+                    {/* <div className="absolute bottom-0 left-0 right-0">
                         <svg className="w-full h-12 md:h-16 text-white" viewBox="0 0 1440 120" preserveAspectRatio="none">
                             <path d="M0 120 L60 110 C120 100 240 80 360 75 C480 70 600 80 720 85 C840 90 960 90 1080 85 C1200 80 1320 70 1380 65 L1440 60 L1440 120 L0 120 Z" fill="currentColor" />
                         </svg>
-                    </div>
+                    </div> */}
                 </section>
 
                 {/* Our Story Section */}
