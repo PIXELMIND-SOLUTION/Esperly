@@ -1,194 +1,290 @@
 import { useState, useEffect, useRef } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import pdf from "../assets/brochure.pdf";
 
-/*
-  tailwind.config.js — add these to enable the expand transition & custom animations:
+/* ─── OTP Modal ─────────────────────────────────────────────────────────────── */
+const OTP_LENGTH = 6;
 
-  theme: {
-    extend: {
-      width: {
-        "btn-icon": "52px",
-        "btn-expanded": "200px",
-      },
-      keyframes: {
-        spin: { to: { transform: "rotate(360deg)" } },
-        popIn: {
-          "0%":   { transform: "scale(0.4)", opacity: "0" },
-          "70%":  { transform: "scale(1.25)" },
-          "100%": { transform: "scale(1)",   opacity: "1" },
-        },
-        pulseRing: { to: { transform: "scale(1.6)", opacity: "0" } },
-        progressBar: {
-          "0%":   { width: "0%",  left: "0" },
-          "50%":  { width: "65%", left: "18%" },
-          "100%": { width: "0%",  left: "100%" },
-        },
-        shimmer: {
-          "0%":   { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(250%)" },
-        },
-        labelSlide: {
-          from: { opacity: "0", transform: "translateX(-8px)" },
-          to:   { opacity: "1", transform: "translateX(0)" },
-        },
-      },
-      animation: {
-        "spin-slow":    "spin 0.9s linear infinite",
-        "pop-in":       "popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both",
-        "pulse-ring":   "pulseRing 0.7s ease-out forwards",
-        "progress-bar": "progressBar 1.1s ease-in-out infinite",
-        "shimmer":      "shimmer 2.4s ease-in-out infinite",
-        "label-slide":  "labelSlide 0.35s cubic-bezier(0.34,1.56,0.64,1) both",
-      },
-    },
-  },
-*/
+function BrochureModal({ onClose }) {
+  const [step, setStep] = useState("form"); // "form" | "otp" | "success"
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(""));
+  const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
+  const otpRefs = useRef([]);
+  const timerRef = useRef(null);
 
-/* ─── jsPDF loader ──────────────────────────────────────────────────────────── */
-function loadJsPDF() {
-  return new Promise((resolve) => {
-    if (window.jspdf) return resolve(window.jspdf.jsPDF);
-    const s = document.createElement("script");
-    s.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-    s.onload = () => resolve(window.jspdf.jsPDF);
-    document.head.appendChild(s);
-  });
-}
+  /* countdown for resend */
+  const startResendTimer = () => {
+    setResendTimer(30);
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setResendTimer((t) => {
+        if (t <= 1) { clearInterval(timerRef.current); return 0; }
+        return t - 1;
+      });
+    }, 1000);
+  };
 
-/* ─── PDF brochure generator ────────────────────────────────────────────────── */
-async function generateBrochure() {
-  const jsPDF = await loadJsPDF();
-  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-  const W = 210, H = 297;
+  useEffect(() => () => clearInterval(timerRef.current), []);
 
-  doc.setFillColor(15, 23, 42);
-  doc.rect(0, 0, W, H, "F");
+  /* ── Step 1: submit name + mobile ── */
+  const handleFormSubmit = async () => {
+    setError("");
+    if (!name.trim()) return setError("Please enter your name.");
+    if (!/^[6-9]\d{9}$/.test(mobile)) return setError("Enter a valid 10-digit mobile number.");
+    setSending(true);
+    /* TODO: replace with real OTP send API */
+    await new Promise((r) => setTimeout(r, 900));
+    setSending(false);
+    startResendTimer();
+    setStep("otp");
+  };
 
-  doc.setFillColor(139, 92, 246);
-  doc.rect(0, 0, W, 40, "F");
-  doc.setFillColor(99, 102, 241);
-  doc.rect(0, 40, W, 20, "F");
+  /* ── OTP input handling ── */
+  const handleOtpChange = (i, val) => {
+    if (!/^\d?$/.test(val)) return;
+    const next = [...otp];
+    next[i] = val;
+    setOtp(next);
+    if (val && i < OTP_LENGTH - 1) otpRefs.current[i + 1]?.focus();
+  };
 
-  doc.setFillColor(244, 114, 182);
-  doc.rect(0, 0, 8, H, "F");
+  const handleOtpKeyDown = (i, e) => {
+    if (e.key === "Backspace" && !otp[i] && i > 0) {
+      otpRefs.current[i - 1]?.focus();
+    }
+  };
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(34);
-  doc.setTextColor(255, 255, 255);
-  doc.text("Your Company", 22, 36);
+  const handleOtpPaste = (e) => {
+    const text = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    if (text.length === OTP_LENGTH) {
+      setOtp(text.split(""));
+      otpRefs.current[OTP_LENGTH - 1]?.focus();
+    }
+    e.preventDefault();
+  };
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(12);
-  doc.setTextColor(224, 231, 255);
-  doc.text("Premium Services  ·  Excellence  ·  Trust", 22, 50);
+  /* ── Step 2: verify OTP ── */
+  const handleVerify = async () => {
+    const code = otp.join("");
+    if (code.length < OTP_LENGTH) return setError("Enter all 6 digits.");
+    setError("");
+    setVerifying(true);
+    /* TODO: replace with real OTP verify API */
+    await new Promise((r) => setTimeout(r, 1000));
+    setVerifying(false);
+    /* For demo, accept any 6-digit code */
+    setStep("success");
+    triggerDownload();
+  };
 
-  doc.setDrawColor(244, 114, 182);
-  doc.setLineWidth(0.6);
-  doc.line(22, 68, W - 20, 68);
+  const triggerDownload = () => {
+    const link = document.createElement("a");
+    link.href = pdf;
+    link.download = "brochure.pdf";
+    link.click();
+  };
 
-  doc.setFontSize(16);
-  doc.setTextColor(167, 139, 250);
-  doc.setFont("helvetica", "bold");
-  doc.text("About Us", 22, 82);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
-  doc.setTextColor(203, 213, 225);
-  const about = doc.splitTextToSize(
-    "We are a leading provider of high-quality solutions designed to transform your business. With over a decade of experience, our team of experts delivers innovative approaches tailored to your unique needs.",
-    W - 42
+  const handleResend = async () => {
+    if (resendTimer > 0) return;
+    setSending(true);
+    await new Promise((r) => setTimeout(r, 700));
+    setSending(false);
+    setOtp(Array(OTP_LENGTH).fill(""));
+    startResendTimer();
+    setError("");
+  };
+
+  /* ── backdrop click ── */
+  const handleBackdrop = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  return (
+    <div
+      onClick={handleBackdrop}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+    >
+      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+
+        {/* Header stripe */}
+        <div className="bg-gradient-to-r from-[#EB6664] to-[#e04e4c] px-6 py-5">
+          <p className="text-xs font-semibold tracking-widest text-red-100 uppercase mb-1">Company Brochure</p>
+          <h2 className="text-xl font-bold text-white leading-tight">
+            {step === "form" && "Get your free brochure"}
+            {step === "otp" && "Verify your number"}
+            {step === "success" && "You're all set!"}
+          </h2>
+          {step === "otp" && (
+            <p className="text-sm text-red-100 mt-1">OTP sent to +91 {mobile}</p>
+          )}
+        </div>
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition"
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="w-4 h-4">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {/* Body */}
+        <div className="px-6 py-6">
+
+          {/* ── STEP 1: Form ── */}
+          {step === "form" && (
+            <div className="space-y-4">
+              <p className="text-sm text-gray-500">
+                Fill in your details and we'll verify your number to download the brochure.
+              </p>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Eg. Rahul Sharma"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleFormSubmit()}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#EB6664] focus:ring-2 focus:ring-[#EB6664]/20 outline-none text-sm text-gray-800 transition"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Mobile Number
+                </label>
+                <div className="flex">
+                  <span className="px-3 py-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm text-gray-500 font-medium">+91</span>
+                  <input
+                    type="tel"
+                    maxLength={10}
+                    placeholder="98765 43210"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+                    onKeyDown={(e) => e.key === "Enter" && handleFormSubmit()}
+                    className="flex-1 px-4 py-3 rounded-r-xl border border-gray-200 focus:border-[#EB6664] focus:ring-2 focus:ring-[#EB6664]/20 outline-none text-sm text-gray-800 transition"
+                  />
+                </div>
+              </div>
+              {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+              <button
+                onClick={handleFormSubmit}
+                disabled={sending}
+                className="w-full py-3 rounded-xl bg-[#EB6664] hover:bg-[#d95a58] active:scale-[0.98] text-white font-semibold text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-1"
+              >
+                {sending ? "Sending OTP…" : "Send OTP →"}
+              </button>
+            </div>
+          )}
+
+          {/* ── STEP 2: OTP ── */}
+          {step === "otp" && (
+            <div className="space-y-5">
+              <p className="text-sm text-gray-500">
+                Enter the 6-digit code sent to your mobile number.
+              </p>
+              <div className="flex gap-2 justify-between" onPaste={handleOtpPaste}>
+                {otp.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={(el) => (otpRefs.current[i] = el)}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(i, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                    className="w-11 h-12 text-center text-lg font-bold rounded-xl border-2 border-gray-200 focus:border-[#EB6664] focus:ring-2 focus:ring-[#EB6664]/20 outline-none text-gray-800 transition"
+                  />
+                ))}
+              </div>
+              {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+              <button
+                onClick={handleVerify}
+                disabled={verifying || otp.join("").length < OTP_LENGTH}
+                className="w-full py-3 rounded-xl bg-[#EB6664] hover:bg-[#d95a58] active:scale-[0.98] text-white font-semibold text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {verifying ? "Verifying…" : "Verify & Download"}
+              </button>
+              <div className="flex items-center justify-between text-xs text-gray-500">
+                <button
+                  onClick={() => { setStep("form"); setOtp(Array(OTP_LENGTH).fill("")); setError(""); }}
+                  className="hover:text-[#EB6664] transition"
+                >
+                  ← Change number
+                </button>
+                <button
+                  onClick={handleResend}
+                  disabled={resendTimer > 0 || sending}
+                  className="hover:text-[#EB6664] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : sending ? "Sending…" : "Resend OTP"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ── STEP 3: Success ── */}
+          {step === "success" && (
+            <div className="text-center py-4 space-y-4">
+              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-gray-800 text-base">Download started!</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Hi <span className="font-semibold text-gray-700">{name}</span>, your brochure is downloading now.
+                </p>
+              </div>
+              <button
+                onClick={triggerDownload}
+                className="text-xs text-[#EB6664] hover:underline"
+              >
+                Didn't start? Click here to retry
+              </button>
+              <button
+                onClick={onClose}
+                className="block w-full py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition mt-1"
+              >
+                Close
+              </button>
+            </div>
+          )}
+
+        </div>
+      </div>
+    </div>
   );
-  doc.text(about, 22, 92);
-
-  doc.setFontSize(16);
-  doc.setTextColor(167, 139, 250);
-  doc.setFont("helvetica", "bold");
-  doc.text("Our Services", 22, 128);
-
-  const services = [
-    ["Consulting",   "Strategic advice to accelerate your growth."],
-    ["Development",  "Custom software built for scale and speed."],
-    ["Support",      "24/7 dedicated support whenever you need us."],
-    ["Training",     "Workshops and coaching for your entire team."],
-  ];
-
-  services.forEach(([title, desc], i) => {
-    const y = 140 + i * 26;
-    doc.setFillColor(30, 27, 75);
-    doc.roundedRect(22, y - 6, W - 44, 22, 3, 3, "F");
-    doc.setDrawColor(99, 102, 241);
-    doc.setLineWidth(0.4);
-    doc.roundedRect(22, y - 6, W - 44, 22, 3, 3, "S");
-    doc.setTextColor(167, 139, 250);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.text(title, 30, y + 4);
-    doc.setTextColor(203, 213, 225);
-    doc.setFont("helvetica", "normal");
-    doc.text(desc, 30, y + 11);
-  });
-
-  doc.setFontSize(16);
-  doc.setTextColor(167, 139, 250);
-  doc.setFont("helvetica", "bold");
-  doc.text("Contact Us", 22, 252);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
-  doc.setTextColor(203, 213, 225);
-  doc.text("Phone: +91 98765 43210", 22, 262);
-  doc.text("Email: hello@yourcompany.com", 22, 270);
-  doc.text("Website: www.yourcompany.com", 22, 278);
-
-  doc.setFillColor(30, 27, 75);
-  doc.rect(0, H - 16, W, 16, "F");
-  doc.setFontSize(9);
-  doc.setTextColor(100, 116, 139);
-  doc.text("© 2025 Your Company · All rights reserved", W / 2, H - 5, { align: "center" });
-
-  doc.save("company-brochure.pdf");
 }
 
 /* ─── Download Icon ─────────────────────────────────────────────────────────── */
 function DownloadIcon({ state }) {
   if (state === "success")
     return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-5 h-5 shrink-0 animate-pop-in"
-      >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 shrink-0 animate-pop-in">
         <polyline points="20 6 9 17 4 12" />
       </svg>
     );
 
   if (state === "loading")
     return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-5 h-5 shrink-0 animate-spin-slow"
-      >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 shrink-0 animate-spin-slow">
         <path d="M21 12a9 9 0 1 1-9-9" />
       </svg>
     );
 
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="w-5 h-5 shrink-0"
-    >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 shrink-0">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
       <polyline points="7 10 12 15 17 10" />
       <line x1="12" y1="15" x2="12" y2="3" />
@@ -198,9 +294,10 @@ function DownloadIcon({ state }) {
 
 /* ─── Download Brochure Button ───────────────────────────────────────────────── */
 const DownloadBrochureButton = () => {
-  const [dlState, setDlState]   = useState("idle");
+  const [dlState, setDlState] = useState("idle");
   const [expanded, setExpanded] = useState(false);
-  const collapseTimer  = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const collapseTimer = useRef(null);
   const expandInterval = useRef(null);
 
   const triggerExpand = () => {
@@ -219,142 +316,94 @@ const DownloadBrochureButton = () => {
     };
   }, []);
 
-  const handleDownload = async () => {
+  const handleClick = () => {
     if (dlState !== "idle") return;
+    setShowModal(true);
     clearTimeout(collapseTimer.current);
     clearInterval(expandInterval.current);
     setExpanded(true);
-    setDlState("loading");
-    try {
-      await generateBrochure();
-      setDlState("success");
-      setTimeout(() => {
-        setDlState("idle");
-        collapseTimer.current = setTimeout(() => {
-          setExpanded(false);
-          expandInterval.current = setInterval(triggerExpand, 10000);
-        }, 1800);
-      }, 2200);
-    } catch {
-      setDlState("idle");
-      expandInterval.current = setInterval(triggerExpand, 10000);
-    }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    expandInterval.current = setInterval(triggerExpand, 10000);
   };
 
   const label =
-    dlState === "success" ? "Downloaded!"       :
-    dlState === "loading" ? "Preparing..."      :
-                            "Download Brochure";
+    dlState === "success" ? "Downloaded!" :
+      dlState === "loading" ? "Preparing..." :
+        "Download Brochure";
 
-  /* Tailwind bg gradient per state */
-  const btnGradient =
-    dlState === "success" ? "bg-gradient-to-br from-[#EB6664] to-[#EB6664]"     :
-    dlState === "loading" ? "bg-gradient-to-br from-[#EB6664] to-[#EB6664]"     :
-                            "bg-gradient-to-br from-[#EB6664] via-[#EB6664] to-[#EB6664]";
-
-  /* Tailwind shadow per state */
-  const btnShadow =
-    dlState === "success" ? "shadow-[0_4px_20px_rgba(16,185,129,0.55)]"           :
-    dlState === "loading" ? "shadow-[0_4px_20px_rgba(99,102,241,0.55)]"           :
-                            "shadow-[0_4px_24px_rgba(168,85,247,0.5),0_1px_6px_rgba(236,72,153,0.35)]";
+  const btnGradient = "bg-gradient-to-br from-[#EB6664] to-[#EB6664]";
+  const btnShadow = "shadow-[0_4px_24px_rgba(235,102,100,0.5)]";
 
   return (
-    <div className="fixed bottom-24 right-5 z-50 flex items-center group/wrapper">
+    <>
+      {showModal && <BrochureModal onClose={handleModalClose} />}
 
-      {/* Tooltip — only shown when collapsed */}
-      {!expanded && (
-        <div className="
-          absolute right-full mr-3.5 top-1/2 -translate-y-1/2
-          bg-indigo-950 text-indigo-100
-          text-xs font-medium px-3 py-1.5 rounded-lg
-          whitespace-nowrap pointer-events-none select-none
-          opacity-0 group-hover/wrapper:opacity-100 transition-opacity duration-200
-          shadow-lg
-          after:content-[''] after:absolute after:right-[-4px] after:top-1/2
-          after:-translate-y-1/2 after:rotate-45
-          after:w-2 after:h-2 after:bg-indigo-950
-        ">
-          Download brochure
-        </div>
-      )}
-
-      {/* Button */}
-      <button
-        onClick={handleDownload}
-        disabled={dlState === "loading"}
-        aria-label="Download Brochure"
-        className={[
-          /* layout */
-          "relative flex items-center overflow-hidden",
-          "h-[52px] rounded-full p-0 border-0",
-          /* colour */
-          btnGradient, btnShadow,
-          "text-white",
-          /* width transition — springy expand */
-          expanded ? "w-[200px]" : "w-[52px]",
-          "transition-[width,box-shadow,transform] duration-500",
-          "ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-          /* hover / active */
-          "enabled:hover:-translate-y-0.5 enabled:hover:scale-[1.04]",
-          "enabled:active:scale-95",
-          "disabled:cursor-not-allowed",
-        ].join(" ")}
-      >
-        {/* Shimmer sweep — idle only */}
-        {dlState === "idle" && (
-          <span className="
-            absolute inset-0 pointer-events-none
-            bg-gradient-to-r from-transparent via-white/20 to-transparent
-            animate-shimmer
-          " />
+      <div className="fixed bottom-24 right-5 z-50 flex items-center group/wrapper">
+        {/* Tooltip */}
+        {!expanded && (
+          <div className="
+            absolute right-full mr-3.5 top-1/2 -translate-y-1/2
+            bg-indigo-950 text-indigo-100
+            text-xs font-medium px-3 py-1.5 rounded-lg
+            whitespace-nowrap pointer-events-none select-none
+            opacity-0 group-hover/wrapper:opacity-100 transition-opacity duration-200
+            shadow-lg
+            after:content-[''] after:absolute after:right-[-4px] after:top-1/2
+            after:-translate-y-1/2 after:rotate-45
+            after:w-2 after:h-2 after:bg-indigo-950
+          ">
+            Download brochure
+          </div>
         )}
 
-        {/* Progress bar — loading */}
-        {dlState === "loading" && (
-          <span className="
-            absolute bottom-0 left-0 h-[3px]
-            bg-white/50 rounded-full
-            animate-progress-bar
-          " />
-        )}
+        {/* Button */}
+        <button
+          onClick={handleClick}
+          disabled={dlState === "loading"}
+          aria-label="Download Brochure"
+          className={[
+            "relative flex items-center overflow-hidden",
+            "h-[52px] rounded-full p-0 border-0",
+            btnGradient, btnShadow,
+            "text-white",
+            expanded ? "w-[200px]" : "w-[52px]",
+            "transition-[width,box-shadow,transform] duration-500",
+            "ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+            "enabled:hover:-translate-y-0.5 enabled:hover:scale-[1.04]",
+            "enabled:active:scale-95",
+            "disabled:cursor-not-allowed",
+          ].join(" ")}
+        >
+          {/* Shimmer */}
+          {dlState === "idle" && (
+            <span className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+          )}
 
-        {/* Pulse ring — success */}
-        {dlState === "success" && (
-          <span className="
-            absolute inset-0 rounded-full
-            bg-emerald-400/40
-            animate-pulse-ring
-          " />
-        )}
-
-        {/* Icon slot — always 52 × 52 */}
-        <span className="flex items-center justify-center w-[52px] h-[52px] shrink-0">
-          <DownloadIcon state={dlState} />
-        </span>
-
-        {/* Label — only when expanded */}
-        {expanded && (
-          <span
-            key={label}
-            className="
-              text-[13px] font-semibold tracking-wide
-              whitespace-nowrap pr-5
-              animate-label-slide
-            "
-          >
-            {label}
+          {/* Icon slot */}
+          <span className="flex items-center justify-center w-[52px] h-[52px] shrink-0">
+            <DownloadIcon state={dlState} />
           </span>
-        )}
-      </button>
-    </div>
+
+          {/* Label */}
+          {expanded && (
+            <span key={label} className="text-[13px] font-semibold tracking-wide whitespace-nowrap pr-5 animate-label-slide">
+              {label}
+            </span>
+          )}
+        </button>
+      </div>
+    </>
   );
 };
 
 /* ─── WhatsApp Button ────────────────────────────────────────────────────────── */
 const WhatsAppButton = () => {
   const phoneNumber = "919876543210";
-  const message     = "Hi! I'm interested in your services.";
-  const url         = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const message = "Hi! I'm interested in your services.";
+  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
     <div className="fixed bottom-5 right-5 z-50 group">

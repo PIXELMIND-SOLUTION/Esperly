@@ -135,6 +135,11 @@ const COURSES = {
         a: "Yes, it improves calculation speed, concentration, memory, and accuracy, which directly helps children perform better in school mathematics exams and competitive learning tasks.",
       },
     ],
+    gallery: [
+      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+      "https://i.pinimg.com/1200x/b3/22/e1/b322e16b709acc359a063a2e7552762b.jpg",
+      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+    ],
   },
   "Phonics Classes": {
     hero: {
@@ -233,6 +238,11 @@ const COURSES = {
       { q: "What age is best for phonics?", a: "Ages 3-7 is the ideal window for phonics instruction." },
       { q: "How is phonics different from whole language?", a: "Phonics teaches decoding skills vs memorizing whole words." },
       { q: "Can phonics help with dyslexia?", a: "Yes, systematic phonics is proven to help dyslexic learners." },
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
     ],
   },
   "Public Speaking": {
@@ -333,6 +343,11 @@ const COURSES = {
       { q: "How soon will I see improvement?", a: "Most students show confidence gains within 4 weeks." },
       { q: "Are there competitions?", a: "Yes, we organize regular speaking contests." },
     ],
+    gallery: [
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    ],
   },
   "Personality Development": {
     hero: {
@@ -431,6 +446,11 @@ const COURSES = {
       { q: "What age is this for?", a: "Designed for children aged 6-16 years." },
       { q: "Can it help with school performance?", a: "Yes, confidence improves classroom participation." },
       { q: "How long is the program?", a: "Typically 6-8 months for complete transformation." },
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
     ],
   },
   "Vedic Maths": {
@@ -531,6 +551,11 @@ const COURSES = {
       { q: "Will it confuse my child?", a: "No, it provides alternative, simpler methods." },
       { q: "How soon will results show?", a: "Speed improvements visible within 4 weeks." },
     ],
+    gallery: [
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    ],
   },
   "English Grammar": {
     hero: {
@@ -629,6 +654,11 @@ const COURSES = {
       { q: "Is this for non-native speakers?", a: "Perfect for ESL learners of all levels." },
       { q: "How does it help with school?", a: "Directly improves essay and test scores." },
       { q: "Can it help with IELTS?", a: "Yes, comprehensive exam preparation included." },
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
     ],
   },
 };
@@ -842,24 +872,116 @@ export default function ShortTermCourseDetails() {
 
             </div>
 
-            {/* CTA Row */}
-            <div className="flex flex-wrap items-center gap-4">
+            {/* Premium Pastel CTA Section */}
+            <div className="w-full max-w-xl space-y-5">
 
-              <button
-                onClick={handleCallNow}
-                className="flex items-center gap-2.5 bg-[#EB6664] hover:bg-[#d45553] text-white text-xs font-bold uppercase tracking-[0.18em] px-7 py-3.5 rounded-full transition-all duration-200 shadow-xl shadow-[#EB6664]/30 hover:shadow-[#EB6664]/50 hover:scale-[1.02]"
+              {/* Call Card — Coral Pastel */}
+              <div
+                className="group relative overflow-hidden rounded-3xl border border-[#EB6664]/30
+    shadow-lg shadow-[#EB6664]/15 transition-all duration-300
+    hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#EB6664]/20"
               >
-                <Phone size={13} />
-                Call Us
-              </button>
 
-              <button
-                onClick={handleEmailNow}
-                className="flex items-center gap-2.5 text-white text-xs font-bold uppercase tracking-[0.18em] px-7 py-3.5 rounded-full border border-white/20 hover:border-white/50 hover:bg-white/5 transition-all duration-200 hover:scale-[1.02]"
+                {/* Background Layers */}
+                <div className="absolute inset-0 bg-[#fff1f0]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#EB6664]/15 via-[#EB6664]/5 to-transparent" />
+
+                <div className="relative p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+                  {/* Left */}
+                  <div className="flex items-center gap-4">
+
+                    {/* Icon */}
+                    <div
+                      className="flex h-14 w-14 items-center justify-center rounded-2xl
+          bg-gradient-to-br from-[#EB6664] to-[#ff8d8b]
+          shadow-lg shadow-[#EB6664]/20"
+                    >
+                      <Phone size={20} className="text-white" />
+                    </div>
+
+                    {/* Text */}
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-[#c85b59] font-bold mb-1">
+                        Call Support
+                      </p>
+
+                      <a
+                        href={`tel:${course.phone}`}
+                        className="text-[#7a2e2c] text-base sm:text-lg font-bold hover:text-[#EB6664] transition-colors duration-200"
+                      >
+                        {course.phone}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Button */}
+                  <button
+                    onClick={handleCallNow}
+                    className="inline-flex items-center justify-center gap-2 rounded-full
+        bg-[#EB6664] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.18em]
+        text-white shadow-lg shadow-[#EB6664]/20 transition-all duration-300
+        hover:scale-[1.03] hover:bg-[#d94d4b]"
+                  >
+                    <Phone size={14} />
+                    Call Now
+                  </button>
+                </div>
+              </div>
+
+              {/* Email Card — Blue Pastel */}
+              <div
+                className="group relative overflow-hidden rounded-3xl border border-[#1E88E5]/30
+    shadow-lg shadow-[#1E88E5]/15 transition-all duration-300
+    hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#1E88E5]/20"
               >
-                <Mail size={13} />
-                Email Us
-              </button>
+
+                {/* Background Layers */}
+                <div className="absolute inset-0 bg-[#eef7ff]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1E88E5]/15 via-[#1E88E5]/5 to-transparent" />
+
+                <div className="relative p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+                  {/* Left */}
+                  <div className="flex items-center gap-4">
+
+                    {/* Icon */}
+                    <div
+                      className="flex h-14 w-14 items-center justify-center rounded-2xl
+          bg-gradient-to-br from-[#1E88E5] to-[#64B5F6]
+          shadow-lg shadow-[#1E88E5]/20"
+                    >
+                      <Mail size={20} className="text-white" />
+                    </div>
+
+                    {/* Text */}
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-[#1565c0] font-bold mb-1">
+                        Email Address
+                      </p>
+
+                      <a
+                        href={`mailto:${course.email}`}
+                        className="text-[#0d47a1] text-base sm:text-lg font-bold hover:text-[#1E88E5] transition-colors duration-200 break-all"
+                      >
+                        {course.email}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Button */}
+                  <button
+                    onClick={handleEmailNow}
+                    className="inline-flex items-center justify-center gap-2 rounded-full
+        bg-[#1E88E5] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.18em]
+        text-white shadow-lg shadow-[#1E88E5]/20 transition-all duration-300
+        hover:scale-[1.03] hover:bg-[#1565c0]"
+                  >
+                    <Mail size={14} />
+                    Email Now
+                  </button>
+                </div>
+              </div>
 
             </div>
 
@@ -869,27 +991,118 @@ export default function ShortTermCourseDetails() {
         <div className="max-w-7xl mx-auto px-4 py-16 space-y-20">
 
           {/* What Is Section */}
-          <section id="whatis" className={`transform transition-all duration-700 ${isVisible.whatis ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <div className="flex items-center gap-3 mb-8">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${course.hero.gradient} flex items-center justify-center`}>
+          <section
+            id="whatis"
+            className={`transform transition-all duration-700 ${isVisible.whatis
+              ? "translate-y-0 opacity-100"
+              : "translate-y-6 opacity-0"
+              }`}
+          >
+            {/* Section Header */}
+            <div className="flex items-center gap-3 mb-6">
+
+              {/* Icon Box */}
+              <div
+                className={`relative w-12 h-12 rounded-xl bg-gradient-to-br ${course.hero.gradient}
+      flex items-center justify-center shadow-lg shadow-[#EB6664]/15`}
+              >
                 <BookOpen size={20} className="text-white" />
               </div>
+
+              {/* Title */}
               <div>
-                <h2 className="text-3xl font-bold text-[#EB6664]">{course.whatIs.title}</h2>
-                <p className="text-gray-500">Everything you need to know</p>
+                <h2 className="text-2xl md:text-3xl font-extrabold text-[#EB6664] tracking-tight leading-tight">
+                  {course.whatIs.title}
+                </h2>
+
+                <p className="text-gray-500 text-xs md:text-sm mt-0.5">
+                  Everything you need to know
+                </p>
               </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              {course.whatIs.points.map((point, idx) => (
-                <div key={idx} className="group bg-white rounded-2xl p-5 border border-gray-100 hover:shadow-xl transition-all duration-300">
-                  <div className="flex items-start gap-3">
-                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${course.hero.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                      <CheckCircle size={16} className="text-white" />
+
+            {/* Cards */}
+            <div className="grid md:grid-cols-2 gap-3 md:gap-4">
+
+              {course.whatIs.points.map((point, idx) => {
+
+                const styles = [
+                  {
+                    border: "border-[#66BB6A]/25",
+                    bg: "bg-[#e8f5e9]",
+                    gradient: "from-[#66BB6A]/15 via-[#66BB6A]/5 to-transparent",
+                    icon: "from-[#66BB6A] to-[#81C784]",
+                    shadow: "shadow-[#66BB6A]/10",
+                    title: "text-[#2e7d32]",
+                  },
+                  {
+                    border: "border-[#1E88E5]/25",
+                    bg: "bg-[#e3f2fd]",
+                    gradient: "from-[#1E88E5]/15 via-[#1E88E5]/5 to-transparent",
+                    icon: "from-[#1E88E5] to-[#64B5F6]",
+                    shadow: "shadow-[#1E88E5]/10",
+                    title: "text-[#1565c0]",
+                  },
+                  {
+                    border: "border-[#FFA726]/25",
+                    bg: "bg-[#fff8e1]",
+                    gradient: "from-[#FFA726]/15 via-[#FFA726]/5 to-transparent",
+                    icon: "from-[#FFA726] to-[#FFCC80]",
+                    shadow: "shadow-[#FFA726]/10",
+                    title: "text-[#ef6c00]",
+                  },
+                  {
+                    border: "border-[#9C27B0]/25",
+                    bg: "bg-[#f3e5f5]",
+                    gradient: "from-[#9C27B0]/15 via-[#9C27B0]/5 to-transparent",
+                    icon: "from-[#9C27B0] to-[#BA68C8]",
+                    shadow: "shadow-[#9C27B0]/10",
+                    title: "text-[#7b1fa2]",
+                  },
+                ];
+
+                const style = styles[idx % styles.length];
+
+                return (
+                  <div
+                    key={idx}
+                    className={`group relative overflow-hidden rounded-2xl border ${style.border}
+          shadow-md ${style.shadow} transition-all duration-300
+          hover:-translate-y-0.5 hover:shadow-lg`}
+                  >
+
+                    {/* Background */}
+                    <div className={`absolute inset-0 ${style.bg}`} />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${style.gradient}`}
+                    />
+
+                    {/* Content */}
+                    <div className="relative p-4 flex items-start gap-3">
+
+                      {/* Icon */}
+                      <div
+                        className={`w-9 h-9 rounded-xl bg-gradient-to-br ${style.icon}
+              flex items-center justify-center flex-shrink-0
+              shadow-sm ${style.shadow}
+              transition-transform duration-300 group-hover:scale-105`}
+                      >
+                        <CheckCircle size={16} className="text-white" />
+                      </div>
+
+                      {/* Text */}
+                      <div>
+                        <p
+                          className={`leading-relaxed text-sm md:text-[15px] font-semibold ${style.title}`}
+                        >
+                          {point}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-gray-700 leading-relaxed">{point}</p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+
             </div>
           </section>
 
@@ -919,24 +1132,69 @@ export default function ShortTermCourseDetails() {
 
                   <div className="space-y-3">
                     {course.benefits.benefits.map((item, i) => {
+
                       const colors = [
-                        "bg-[#6366F1]", // Indigo
-                        "bg-[#22C55E]", // Green
-                        "bg-[#F59E0B]", // Amber
-                        "bg-[#06B6D4]", // Cyan
-                        "bg-[#EF4444]", // Red
-                        "bg-[#8B5CF6]", // Purple
-                        "bg-[#10B981]", // Emerald
-                        "bg-[#F43F5E]", // Rose
+                        {
+                          bg: "bg-[#e8f5e9]",
+                          border: "border-[#66BB6A]/30",
+                          text: "text-[#2e7d32]",
+                          shadow: "shadow-[#66BB6A]/15",
+                        },
+                        {
+                          bg: "bg-[#e3f2fd]",
+                          border: "border-[#1E88E5]/30",
+                          text: "text-[#1565c0]",
+                          shadow: "shadow-[#1E88E5]/15",
+                        },
+                        {
+                          bg: "bg-[#fff8e1]",
+                          border: "border-[#FFA726]/30",
+                          text: "text-[#ef6c00]",
+                          shadow: "shadow-[#FFA726]/15",
+                        },
+                        {
+                          bg: "bg-[#f3e5f5]",
+                          border: "border-[#9C27B0]/30",
+                          text: "text-[#7b1fa2]",
+                          shadow: "shadow-[#9C27B0]/15",
+                        },
+                        {
+                          bg: "bg-[#ffebee]",
+                          border: "border-[#EF5350]/30",
+                          text: "text-[#c62828]",
+                          shadow: "shadow-[#EF5350]/15",
+                        },
+                        {
+                          bg: "bg-[#e0f7fa]",
+                          border: "border-[#00ACC1]/30",
+                          text: "text-[#00838f]",
+                          shadow: "shadow-[#00ACC1]/15",
+                        },
+                        {
+                          bg: "bg-[#f1f8e9]",
+                          border: "border-[#7CB342]/30",
+                          text: "text-[#558b2f]",
+                          shadow: "shadow-[#7CB342]/15",
+                        },
+                        {
+                          bg: "bg-[#fce4ec]",
+                          border: "border-[#EC407A]/30",
+                          text: "text-[#ad1457]",
+                          shadow: "shadow-[#EC407A]/15",
+                        },
                       ];
+
+                      const style = colors[i % colors.length];
 
                       return (
                         <div
                           key={i}
-                          className={`relative ${colors[i % colors.length]} text-white font-semibold px-5 py-3 rounded-md shadow-md`}
+                          className={`relative ${style.bg} ${style.border} border ${style.text}
+        font-bold px-5 py-3 rounded-xl shadow-md ${style.shadow}
+        transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg`}
                           style={{
                             clipPath:
-                              "polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%)",
+                              "polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%)",
                           }}
                         >
                           {item.title}
@@ -1095,6 +1353,116 @@ export default function ShortTermCourseDetails() {
 
             </div>
           </section>
+
+
+          {/* Gallery Section */}
+<section className="py-12 md:py-16 px-4 md:px-10 bg-transparent">
+  <div className="max-w-7xl mx-auto">
+
+    {/* Heading */}
+    <div className="text-center mb-10">
+      <h2 className="text-3xl md:text-4xl font-extrabold text-[#EB6664] tracking-tight">
+        Course Gallery
+      </h2>
+
+      <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto">
+        Explore moments, classrooms, activities, and engaging learning
+        experiences from our program.
+      </p>
+    </div>
+
+    {/* Gallery Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      {course.gallery.map((image, index) => {
+
+        const colors = [
+          {
+            border: "border-[#66BB6A]/30",
+            shadow: "shadow-[#66BB6A]/15",
+            glow: "bg-[#66BB6A]/20",
+          },
+          {
+            border: "border-[#1E88E5]/30",
+            shadow: "shadow-[#1E88E5]/15",
+            glow: "bg-[#1E88E5]/20",
+          },
+          {
+            border: "border-[#FFA726]/30",
+            shadow: "shadow-[#FFA726]/15",
+            glow: "bg-[#FFA726]/20",
+          },
+          {
+            border: "border-[#9C27B0]/30",
+            shadow: "shadow-[#9C27B0]/15",
+            glow: "bg-[#9C27B0]/20",
+          },
+        ];
+
+        const style = colors[index % colors.length];
+
+        return (
+          <div
+            key={index}
+            className={`group relative overflow-hidden rounded-[2rem]
+            border ${style.border}
+            shadow-xl ${style.shadow}
+            transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl`}
+          >
+
+            {/* Glow */}
+            <div
+              className={`absolute -top-10 -right-10 w-32 h-32 rounded-full
+              blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-500
+              ${style.glow}`}
+            />
+
+            {/* Image */}
+            <div className="relative overflow-hidden">
+              <img
+                src={image}
+                alt={`Gallery ${index + 1}`}
+                className="w-full h-64 md:h-72 object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+
+              {/* Overlay */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t
+                from-black/50 via-black/10 to-transparent opacity-70"
+              />
+
+              {/* Number Badge */}
+              <div
+                className="absolute top-4 left-4 px-3 py-1 rounded-full
+                bg-white/90 backdrop-blur-md text-[#EB6664]
+                text-xs font-bold shadow-md"
+              >
+                0{index + 1}
+              </div>
+
+              {/* Bottom Text */}
+              <div className="absolute bottom-5 left-5 right-5">
+
+                <div
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full
+                  bg-white/15 backdrop-blur-md text-white text-[11px]
+                  uppercase tracking-[0.18em] font-semibold mb-2"
+                >
+                  Course Moments
+                </div>
+
+                <h3 className="text-white text-lg font-bold leading-snug">
+                  Interactive Learning Experience
+                </h3>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+    </div>
+  </div>
+</section>
 
           {/* FAQs */}
           <section id="faqs" className={`transform transition-all duration-700 delay-300 ${isVisible.faqs ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
