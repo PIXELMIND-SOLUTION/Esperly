@@ -588,7 +588,10 @@ const Navbar = () => {
                           <button
                             key={item}
                             className="text-left px-3 py-1.5 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                            onClick={() => setMobileOpen(false)}
+                            onClick={() => {
+                              navigate(`/language?label=${encodeURIComponent(mobileLanguageGroup)}&language=${encodeURIComponent(item)}`);
+                              setMobileOpen(false);
+                            }}
                           >
                             {item}
                           </button>

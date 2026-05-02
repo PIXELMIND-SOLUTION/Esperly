@@ -119,7 +119,7 @@ const TuitionsDropdown = ({ open }) => {
                   onClick={() => {
                     if (activeType !== 'course') {
                       goToTuition(activeGroup, item);
-                    }else{
+                    } else {
                       navigate(`/course?label=${encodeURIComponent(activeGroup)}&type=course&item=${encodeURIComponent(item)}`);
                     }
                   }}
@@ -464,7 +464,7 @@ const Header = () => {
                               if (activeType !== 'course') {
                                 goToTuition(activeGroup, item);
                                 setMobileOpen(false);
-                              }else {
+                              } else {
                                 navigate(`/course?label=${encodeURIComponent(activeGroup)}&type=course&item=${encodeURIComponent(item)}`);
                                 setMobileOpen(false);
                               }
@@ -525,7 +525,10 @@ const Header = () => {
                           <button
                             key={item}
                             className="text-left px-3 py-1.5 text-sm text-gray-600 hover:text-[#EB6664] hover:bg-[#EB6664]/5 rounded-lg transition-colors"
-                            onClick={() => setMobileOpen(false)}
+                            onClick={() => {
+                              navigate(`/language?label=${encodeURIComponent(mobileLanguageGroup)}&language=${encodeURIComponent(item)}`);
+                              setMobileOpen(false);
+                            }}
                           >
                             {item}
                           </button>
