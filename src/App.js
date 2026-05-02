@@ -25,6 +25,7 @@ import AllBlogs from "./pages/Blogs/AllBlogs";
 import BlogDetails from "./pages/Blogs/BlogDetails";
 import MathsBack from "./views/MathsBack";
 import FloatingButtons from "./views/Brochure";
+import DownloadBrochureButton from "./views/Brochure";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -66,7 +67,8 @@ const App = () => {
       {/* <RollingPencil /> */}
       {/* <BusBanner /> */}
       {/* <WhatsAppButton /> */}
-      <FloatingButtons/>
+      <DownloadBrochureButton />
+      <WhatsAppButton />
       {/* <SideScroller /> */}
       {/* <SchoolBack> */}
       {/* <MathsBack> */}

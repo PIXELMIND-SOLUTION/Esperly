@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import NavImage from '../../components/NavImage';
 import { FaDownload } from 'react-icons/fa';
+import BrochureModal from '../../modals/BrochureModal';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -803,6 +804,41 @@ const LanguageDetailsPage = () => {
     const [error, setError] = useState(null);
     const [languageData, setLanguageData] = useState(null);
 
+    const [dlState, setDlState] = useState("idle");
+    const [expanded, setExpanded] = useState(false);
+    const [showBrochureModal, setShowBrochureModal] = useState(false);
+    const collapseTimer = useRef(null);
+    const expandInterval = useRef(null);
+
+    const triggerExpand = () => {
+        setExpanded(true);
+        clearTimeout(collapseTimer.current);
+        collapseTimer.current = setTimeout(() => setExpanded(false), 3000);
+    };
+
+    useEffect(() => {
+        const mountDelay = setTimeout(triggerExpand, 600);
+        expandInterval.current = setInterval(triggerExpand, 10000);
+        return () => {
+            clearTimeout(mountDelay);
+            clearInterval(expandInterval.current);
+            clearTimeout(collapseTimer.current);
+        };
+    }, []);
+
+    const handleClick = () => {
+        if (dlState !== "idle") return;
+        setShowBrochureModal(true);
+        clearTimeout(collapseTimer.current);
+        clearInterval(expandInterval.current);
+        setExpanded(true);
+    };
+
+    const handleModalClose = () => {
+        setShowBrochureModal(false);
+        expandInterval.current = setInterval(triggerExpand, 10000);
+    };
+
     useEffect(() => {
         if (!labelParam || !languageParam) {
             setError('Missing required parameters. Please provide both label and language.');
@@ -866,6 +902,7 @@ const LanguageDetailsPage = () => {
         <>
             <Header />
             <NavImage />
+            {showBrochureModal && <BrochureModal onClose={handleModalClose} />}
             <div className="min-h-screen bg-stone-50">
                 <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
@@ -1190,7 +1227,7 @@ const LanguageDetailsPage = () => {
                             >
                                 🎓 Book Free Trial
                             </button>
-                            <button className="bg-white/15 text-white font-semibold px-8 py-4 rounded-2xl text-sm border border-white/25 hover:bg-white/25 transition">
+                            <button onClick={handleClick} className="bg-white/15 text-white font-semibold px-8 py-4 rounded-2xl text-sm border border-white/25 hover:bg-white/25 transition">
                                 📥 Download Brochure
                             </button>
                         </div>
