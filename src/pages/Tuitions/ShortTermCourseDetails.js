@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
   ChevronRight, Phone, Mail, Play, CheckCircle,
@@ -754,6 +754,42 @@ export default function ShortTermCourseDetails() {
     navigate("/courses");
   };
 
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    let animationId;
+    let scrollAmount = 0;
+    const speed = 0.5; // px per frame — adjust for faster/slower
+
+    const scroll = () => {
+      scrollAmount += speed;
+      // When we've scrolled half the total width, reset to 0 (seamless loop)
+      if (scrollAmount >= container.scrollWidth / 2) {
+        scrollAmount = 0;
+      }
+      container.scrollLeft = scrollAmount;
+      animationId = requestAnimationFrame(scroll);
+    };
+
+    animationId = requestAnimationFrame(scroll);
+
+    // Pause on hover
+    const pause = () => cancelAnimationFrame(animationId);
+    const resume = () => { animationId = requestAnimationFrame(scroll); };
+
+    container.addEventListener("mouseenter", pause);
+    container.addEventListener("mouseleave", resume);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      container.removeEventListener("mouseenter", pause);
+      container.removeEventListener("mouseleave", resume);
+    };
+  }, [course.testimonials]);
+
   if (!course) return null;
 
   return (
@@ -1314,155 +1350,164 @@ export default function ShortTermCourseDetails() {
             </div>
           </section>
 
-          <section className="bg-[transparent] py-14 px-4 md:px-10">
-            <div className="max-w-7xl mx-auto">
+          <section className="bg-transparent py-14 px-4 md:px-10 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
 
-              {/* Heading */}
-              <h2 className="text-center text-3xl md:text-4xl font-bold text-[#EB6664] mb-12">
-                Hear from Happy Parents
-              </h2>
+        {/* Heading */}
+        <h2 className="text-center text-3xl md:text-4xl font-bold text-[#EB6664] mb-12">
+          Hear from Happy Parents
+        </h2>
 
-              {/* Cards */}
-              <div className="grid md:grid-cols-3 gap-6">
-                {course.testimonials.map((item, i) => (
-                  <div
-                    key={i}
-                    className={`${item.bg} rounded-2xl p-6 text-center shadow-md hover:scale-105 transition-transform duration-300`}
-                  >
-                    <h3 className="font-bold text-lg mb-3">{item.title}</h3>
+        {/* Fade edges */}
+        <div className="relative">
+          
 
-                    <p className="text-sm text-gray-800 leading-relaxed mb-5">
-                      {item.desc}
-                    </p>
+          {/* Scrolling track */}
+          <div
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-hidden"
+            style={{ scrollBehavior: "auto" }}
+          >
+            {/* Render twice for seamless loop */}
+            {[...course.testimonials, ...course.testimonials].map((item, i) => (
+              <div
+                key={i}
+                className={`${item.bg} rounded-2xl p-6 text-center shadow-md flex-shrink-0 w-[300px]`}
+              >
+                <h3 className="font-bold text-lg mb-3">{item.title}</h3>
 
-                    <div className="flex items-center gap-3 justify-center">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-10 h-10 rounded-full"
-                      />
+                <p className="text-sm text-gray-800 leading-relaxed mb-5">
+                  {item.desc}
+                </p>
 
-                      <div className="text-left">
-                        <p className="font-semibold text-sm">{item.name}</p>
-                        <p className="text-xs text-gray-700">{item.location}</p>
-                      </div>
-                    </div>
+                <div className="flex items-center gap-3 justify-center">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div className="text-left">
+                    <p className="font-semibold text-sm">{item.name}</p>
+                    <p className="text-xs text-gray-700">{item.location}</p>
                   </div>
-                ))}
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
 
-            </div>
-          </section>
+      </div>
+    </section>
 
 
           {/* Gallery Section */}
-<section className="py-12 md:py-16 px-4 md:px-10 bg-transparent">
-  <div className="max-w-7xl mx-auto">
+          <section className="py-12 md:py-16 px-4 md:px-10 bg-transparent">
+            <div className="max-w-7xl mx-auto">
 
-    {/* Heading */}
-    <div className="text-center mb-10">
-      <h2 className="text-3xl md:text-4xl font-extrabold text-[#EB6664] tracking-tight">
-        Course Gallery
-      </h2>
+              {/* Heading */}
+              <div className="text-center mb-10">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#EB6664] tracking-tight">
+                  Gallery
+                </h2>
 
-      <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto">
-        Explore moments, classrooms, activities, and engaging learning
-        experiences from our program.
-      </p>
-    </div>
+                <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto">
+                  Explore moments, classrooms, activities, and engaging learning
+                  experiences from our program.
+                </p>
+              </div>
 
-    {/* Gallery Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {/* Gallery Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
-      {course.gallery.map((image, index) => {
+                {course.gallery.map((image, index) => {
 
-        const colors = [
-          {
-            border: "border-[#66BB6A]/30",
-            shadow: "shadow-[#66BB6A]/15",
-            glow: "bg-[#66BB6A]/20",
-          },
-          {
-            border: "border-[#1E88E5]/30",
-            shadow: "shadow-[#1E88E5]/15",
-            glow: "bg-[#1E88E5]/20",
-          },
-          {
-            border: "border-[#FFA726]/30",
-            shadow: "shadow-[#FFA726]/15",
-            glow: "bg-[#FFA726]/20",
-          },
-          {
-            border: "border-[#9C27B0]/30",
-            shadow: "shadow-[#9C27B0]/15",
-            glow: "bg-[#9C27B0]/20",
-          },
-        ];
+                  const colors = [
+                    {
+                      border: "border-[#66BB6A]/30",
+                      shadow: "shadow-[#66BB6A]/15",
+                      glow: "bg-[#66BB6A]/20",
+                    },
+                    {
+                      border: "border-[#1E88E5]/30",
+                      shadow: "shadow-[#1E88E5]/15",
+                      glow: "bg-[#1E88E5]/20",
+                    },
+                    {
+                      border: "border-[#FFA726]/30",
+                      shadow: "shadow-[#FFA726]/15",
+                      glow: "bg-[#FFA726]/20",
+                    },
+                    {
+                      border: "border-[#9C27B0]/30",
+                      shadow: "shadow-[#9C27B0]/15",
+                      glow: "bg-[#9C27B0]/20",
+                    },
+                  ];
 
-        const style = colors[index % colors.length];
+                  const style = colors[index % colors.length];
 
-        return (
-          <div
-            key={index}
-            className={`group relative overflow-hidden rounded-[2rem]
+                  return (
+                    <div
+                      key={index}
+                      className={`group relative overflow-hidden rounded-[2rem]
             border ${style.border}
             shadow-xl ${style.shadow}
             transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl`}
-          >
+                    >
 
-            {/* Glow */}
-            <div
-              className={`absolute -top-10 -right-10 w-32 h-32 rounded-full
+                      {/* Glow */}
+                      <div
+                        className={`absolute -top-10 -right-10 w-32 h-32 rounded-full
               blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-500
               ${style.glow}`}
-            />
+                      />
 
-            {/* Image */}
-            <div className="relative overflow-hidden">
-              <img
-                src={image}
-                alt={`Gallery ${index + 1}`}
-                className="w-full h-64 md:h-72 object-cover transition-transform duration-700 group-hover:scale-110"
-              />
+                      {/* Image */}
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={image}
+                          alt={`Gallery ${index + 1}`}
+                          className="w-full h-64 md:h-72 object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
 
-              {/* Overlay */}
-              <div
-                className="absolute inset-0 bg-gradient-to-t
+                        {/* Overlay */}
+                        <div
+                          className="absolute inset-0 bg-gradient-to-t
                 from-black/50 via-black/10 to-transparent opacity-70"
-              />
+                        />
 
-              {/* Number Badge */}
-              <div
-                className="absolute top-4 left-4 px-3 py-1 rounded-full
+                        {/* Number Badge */}
+                        <div
+                          className="absolute top-4 left-4 px-3 py-1 rounded-full
                 bg-white/90 backdrop-blur-md text-[#EB6664]
                 text-xs font-bold shadow-md"
-              >
-                0{index + 1}
-              </div>
+                        >
+                          0{index + 1}
+                        </div>
 
-              {/* Bottom Text */}
-              <div className="absolute bottom-5 left-5 right-5">
+                        {/* Bottom Text */}
+                        <div className="absolute bottom-5 left-5 right-5">
 
-                <div
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full
+                          <div
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full
                   bg-white/15 backdrop-blur-md text-white text-[11px]
                   uppercase tracking-[0.18em] font-semibold mb-2"
-                >
-                  Course Moments
-                </div>
+                          >
+                            Course Moments
+                          </div>
 
-                <h3 className="text-white text-lg font-bold leading-snug">
-                  Interactive Learning Experience
-                </h3>
+                          <h3 className="text-white text-lg font-bold leading-snug">
+                            Interactive Learning Experience
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
               </div>
             </div>
-          </div>
-        );
-      })}
-
-    </div>
-  </div>
-</section>
+          </section>
 
           {/* FAQs */}
           <section id="faqs" className={`transform transition-all duration-700 delay-300 ${isVisible.faqs ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
