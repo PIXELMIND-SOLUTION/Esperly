@@ -3,13 +3,21 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import {
   ChevronRight, Phone, Mail, Play, CheckCircle,
   Award, Clock, Users, BookOpen, Sparkles,
-  Star, ArrowRight, Shield, Target, Heart, Brain
+  Star, ArrowRight, Shield, Target, Heart, Brain,
+  ChevronDown,
+  BarChart3,
+  Smile, X, ChevronLeft
 } from "lucide-react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import NavImage from "../../components/NavImage";
 import video from "../../assets/esperlyIntro.mp4"
 import SchoolBack from "../../views/schollback";
+import { AnimatePresence, motion } from "framer-motion";
+import abacus1 from "../../assets/abacus/1.png";
+import abacus2 from "../../assets/abacus/2.png";
+import abacus3 from "../../assets/abacus/3.png";
+import abacus4 from "../../assets/abacus/4.png";
 
 const COURSES = {
   Abacus: {
@@ -67,18 +75,34 @@ const COURSES = {
       points: [
         {
           title: "CUSTOMISED PROGRAM",
-          desc: "Our Abacus Training Course is designed to adapt to each child’s pace and ability. This individualized approach ensures dedicated attention to every learner, enabling steady progress with confidence while nurturing their complete potential.",
+          icon: Brain,
+          image:
+            abacus1,
+          // Child using abacus — individualized learning, hands-on practice
+          desc: "Our Abacus Training Course is designed to adapt to each child's pace and ability. This individualized approach ensures dedicated attention to every learner, enabling steady progress with confidence while nurturing their complete potential.",
         },
         {
           title: "EXPERIENCED MENTORS",
+          icon: Users,
+          image:
+            abacus2,
+          // Teacher guiding a young student one-on-one
           desc: "Our experienced abacus teachers bring strong expertise in early numeracy and child-focused learning methods. With personalized attention and continuous encouragement, they help each child build confidence, strengthen mental math skills, and progress at their own pace, while making complex calculations simple and engaging through structured techniques.",
         },
         {
           title: "PROGRESS TRACKING",
-          desc: "We follow continuous progress tracking to monitor each child’s development in abacus learning, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth. Timely guidance and personalized support are provided to every learner, ensuring consistent improvement aligned with their individual progress.",
+          icon: BarChart3,
+          image:
+            abacus3,
+          // Classroom assessment / student writing / structured learning environment
+          desc: "We follow continuous progress tracking to monitor each child's development in abacus learning, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth. Timely guidance and personalized support are provided to every learner, ensuring consistent improvement aligned with their individual progress.",
         },
         {
           title: "FRIENDLY ENVIRONMENT",
+          icon: Smile,
+          image:
+            abacus4,
+          // Happy kids learning together online / smiling child at laptop
           desc: "Our online abacus classes create a friendly and engaging virtual learning environment where children feel comfortable and connected from anywhere. Through interactive sessions and supportive guidance, we ensure every student stays confident, focused, and actively involved in learning.",
         },
       ],
@@ -139,6 +163,9 @@ const COURSES = {
       "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
       "https://i.pinimg.com/1200x/b3/22/e1/b322e16b709acc359a063a2e7552762b.jpg",
       "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+      "https://i.pinimg.com/1200x/b3/22/e1/b322e16b709acc359a063a2e7552762b.jpg",
+      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
     ],
   },
   "Phonics Classes": {
@@ -192,19 +219,31 @@ const COURSES = {
       points: [
         {
           title: "CUSTOMISED PROGRAM",
+          icon: Brain,
+          image:
+            "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop",
           desc: "Our Abacus Training Course is designed to adapt to each child’s pace and ability. This individualized approach ensures dedicated attention to every learner, enabling steady progress with confidence while nurturing their complete potential.",
         },
         {
           title: "EXPERIENCED MENTORS",
+          icon: Users,
+          image:
+            "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
           desc: "Our experienced abacus teachers bring strong expertise in early numeracy and child-focused learning methods. With personalized attention and continuous encouragement, they help each child build confidence, strengthen mental math skills, and progress at their own pace, while making complex calculations simple and engaging through structured techniques.",
         },
         {
-          title: "FRIENDLY ENVIRONMENT",
-          desc: "Our online abacus classes create a friendly and engaging virtual learning environment where children feel comfortable and connected from anywhere. Through interactive sessions and supportive guidance, we ensure every student stays confident, focused, and actively involved in learning.",
+          title: "PROGRESS TRACKING",
+          icon: BarChart3,
+          image:
+            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1400&auto=format&fit=crop",
+          desc: "We follow continuous progress tracking to monitor each child’s development in abacus learning, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth. Timely guidance and personalized support are provided to every learner, ensuring consistent improvement aligned with their individual progress.",
         },
         {
-          title: "PROGRESS TRACKING",
-          desc: "We follow continuous progress tracking to monitor each child’s development in abacus learning, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth. Timely guidance and personalized support are provided to every learner, ensuring consistent improvement aligned with their individual progress.",
+          title: "FRIENDLY ENVIRONMENT",
+          icon: Smile,
+          image:
+            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop",
+          desc: "Our online abacus classes create a friendly and engaging virtual learning environment where children feel comfortable and connected from anywhere. Through interactive sessions and supportive guidance, we ensure every student stays confident, focused, and actively involved in learning.",
         },
       ],
     },
@@ -684,6 +723,16 @@ export default function ShortTermCourseDetails() {
 
   const [activeTab, setActiveTab] = useState(0);
 
+  const [activeTabApproach, setActiveTabApproach] = useState(0);
+
+  /* STATES */
+  const [showAllGallery, setShowAllGallery] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  /* SHOW ONLY 3 INITIALLY */
+  const visibleImages = showAllGallery
+    ? course.gallery
+    : course.gallery.slice(0, 3);
 
   // Update URL when selected changes
   useEffect(() => {
@@ -1274,172 +1323,455 @@ export default function ShortTermCourseDetails() {
             </div>
           </section>
 
-          <section className="bg-[transparent] py-12 px-4 md:px-10">
-            <div className="max-w-7xl mx-auto">
+          <section className="relative py-10 md:py-12 px-3 sm:px-4 md:px-6 overflow-hidden">
+
+            {/* Background Glow */}
+            <div className="absolute top-0 left-0 w-52 md:w-72 h-52 md:h-72 bg-[#EB6664]/10 blur-3xl rounded-full" />
+            <div className="absolute bottom-0 right-0 w-52 md:w-72 h-52 md:h-72 bg-orange-200/20 blur-3xl rounded-full" />
+
+            <div className="max-w-7xl mx-auto relative z-10">
 
               {/* Heading */}
-              <h2 className="text-center text-2xl md:text-3xl font-bold mb-8 text-[#EB6664]">
-                {course.approach.title}
-              </h2>
+              <div className="text-center mb-7 md:mb-10">
 
-              {/* Desktop Tabs */}
-              <div className="hidden md:block bg-white shadow-lg rounded-md overflow-hidden border">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#EB6664]/10 text-[#EB6664] text-[10px] sm:text-xs font-semibold mb-3 tracking-wide">
+                  OUR LEARNING METHOD
+                </span>
 
-                {/* Tabs */}
-                <div className="flex border-b">
-                  {course.approach.points.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveTab(index)}
-                      className={`flex-1 px-4 py-3 text-sm font-semibold transition-all
-                  ${activeTab === index
-                          ? "bg-[#EB6664] text-white"
-                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                        }`}
-                    >
-                      {item.title}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <p className="text-gray-700 leading-relaxed">
-                    {course.approach.points[activeTab].desc}
-                  </p>
-                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight max-w-3xl mx-auto">
+                  {course.approach.title}
+                </h2>
               </div>
 
-              {/* Mobile Accordion */}
-              <div className="md:hidden bg-white shadow-lg rounded-md overflow-hidden border">
+              {/* Desktop Layout */}
+              <div className="hidden lg:grid grid-cols-[1fr_0.9fr] gap-5 xl:gap-7 items-start">
 
-                {course.approach.points.map((item, index) => {
-                  const isActive = activeTab === index;
+                {/* LEFT IMAGE */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTabApproach}
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.35 }}
+                    className="sticky top-24"
+                  >
+                    <div className="relative overflow-hidden rounded-[26px] shadow-xl border border-gray-200 bg-white">
 
-                  return (
-                    <div key={index} className="border-b last:border-none">
+                      <img
+                        src={
+                          course.approach.points[activeTabApproach].image ||
+                          "https://via.placeholder.com/700x500"
+                        }
+                        alt={course.approach.points[activeTabApproach].title}
+                        className="w-full h-[480px] xl:h-[520px] object-cover"
+                      />
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
 
-                      {/* Header */}
-                      <button
-                        onClick={() => setActiveTab(index)}
-                        className={`w-full text-left px-4 py-3 font-semibold transition-all
-                    ${isActive
-                            ? "bg-[#EB6664] text-white"
-                            : "bg-gray-100 text-gray-900"
+                {/* RIGHT ACCORDION */}
+                <div className="space-y-3">
+
+                  {course.approach.points.map((item, index) => {
+
+                    const Icon = item.icon || Brain;
+                    const isActive = activeTabApproach === index;
+
+                    return (
+                      <motion.div
+                        key={index}
+                        layout
+                        className={`rounded-2xl border overflow-hidden transition-all duration-300
+              ${isActive
+                            ? "bg-[#EB6664] border-[#EB6664] shadow-lg shadow-[#EB6664]/15"
+                            : "bg-white border-gray-200 hover:border-[#EB6664]/30"
                           }`}
                       >
-                        {item.title}
-                      </button>
 
-                      {/* Content */}
-                      <div
-                        className={`transition-all duration-300 overflow-hidden
-                    ${isActive ? "max-h-40 p-4" : "max-h-0"}
-                  `}
-                      >
-                        <p className="text-gray-700 text-sm leading-relaxed">
-                          {item.desc}
-                        </p>
-                      </div>
+                        {/* Header */}
+                        <button
+                          onClick={() => setActiveTabApproach(index)}
+                          className="w-full px-4 xl:px-5 py-4 flex items-center justify-between gap-3 text-left"
+                        >
 
-                    </div>
-                  );
-                })}
+                          <div className="flex items-center gap-3 min-w-0">
+
+                            {/* Icon */}
+                            <div
+                              className={`w-11 h-11 xl:w-12 xl:h-12 rounded-xl flex items-center justify-center flex-shrink-0
+                    ${isActive
+                                  ? "bg-white/20 text-white"
+                                  : "bg-[#EB6664]/10 text-[#EB6664]"
+                                }`}
+                            >
+                              <Icon size={20} />
+                            </div>
+
+                            {/* Text */}
+                            <div className="min-w-0">
+
+                              <h3
+                                className={`font-bold text-sm xl:text-base leading-snug truncate
+                      ${isActive
+                                    ? "text-white"
+                                    : "text-gray-900"
+                                  }`}
+                              >
+                                {item.title}
+                              </h3>
+
+                              <p
+                                className={`text-xs mt-1
+                      ${isActive
+                                    ? "text-white/80"
+                                    : "text-gray-500"
+                                  }`}
+                              >
+                                Tap to explore
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Arrow */}
+                          <motion.div
+                            animate={{ rotate: isActive ? 180 : 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="flex-shrink-0"
+                          >
+                            <ChevronDown
+                              size={18}
+                              className={
+                                isActive
+                                  ? "text-white"
+                                  : "text-gray-500"
+                              }
+                            />
+                          </motion.div>
+                        </button>
+
+                        {/* Content */}
+                        <AnimatePresence>
+                          {isActive && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="px-4 xl:px-5 pb-4">
+
+                                <div className="h-px bg-white/20 mb-3" />
+
+                                <p className="text-sm leading-relaxed text-white">
+                                  {item.desc}
+                                </p>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
 
+              {/* MOBILE + TABLET */}
+              <div className="lg:hidden">
+
+                {/* Active Image */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTabApproach}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="overflow-hidden rounded-[24px] shadow-lg mb-4 border border-gray-200"
+                  >
+                    <img
+                      src={
+                        course.approach.points[activeTabApproach].image ||
+                        "https://via.placeholder.com/700x500"
+                      }
+                      alt=""
+                      className="w-full h-[220px] sm:h-[300px] object-cover"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Accordion */}
+                <div className="space-y-3">
+
+                  {course.approach.points.map((item, index) => {
+
+                    const Icon = item.icon || Brain;
+                    const isActive = activeTabApproach === index;
+
+                    return (
+                      <div
+                        key={index}
+                        className={`rounded-2xl overflow-hidden border transition-all duration-300
+              ${isActive
+                            ? "bg-[#EB6664] border-[#EB6664] shadow-lg shadow-[#EB6664]/15"
+                            : "bg-white border-gray-200"
+                          }`}
+                      >
+
+                        {/* Header */}
+                        <button
+                          onClick={() => setActiveTabApproach(index)}
+                          className="w-full px-4 py-3.5 flex items-center justify-between gap-3 text-left"
+                        >
+
+                          <div className="flex items-center gap-3 min-w-0">
+
+                            {/* Icon */}
+                            <div
+                              className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0
+                    ${isActive
+                                  ? "bg-white/20 text-white"
+                                  : "bg-[#EB6664]/10 text-[#EB6664]"
+                                }`}
+                            >
+                              <Icon size={18} />
+                            </div>
+
+                            {/* Title */}
+                            <h3
+                              className={`font-bold text-sm sm:text-[15px] leading-snug
+                    ${isActive
+                                  ? "text-white"
+                                  : "text-gray-900"
+                                }`}
+                            >
+                              {item.title}
+                            </h3>
+                          </div>
+
+                          {/* Arrow */}
+                          <ChevronDown
+                            size={18}
+                            className={`transition-transform duration-300 flex-shrink-0
+                  ${isActive
+                                ? "rotate-180 text-white"
+                                : "text-gray-500"
+                              }`}
+                          />
+                        </button>
+
+                        {/* Content */}
+                        <div
+                          className={`transition-all duration-300 overflow-hidden
+                ${isActive
+                              ? "max-h-96 opacity-100"
+                              : "max-h-0 opacity-0"
+                            }`}
+                        >
+                          <div className="px-4 pb-4">
+
+                            <div className="h-px bg-white/20 mb-3" />
+
+                            <p className="text-sm leading-relaxed text-white">
+                              {item.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </section>
 
-          <section className="bg-transparent py-14 px-4 md:px-10 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+          <section className="bg-transparent py-10 md:py-14 px-3 sm:px-4 md:px-6 overflow-hidden">
 
-        {/* Heading */}
-        <h2 className="text-center text-3xl md:text-4xl font-bold text-[#EB6664] mb-12">
-          Hear from Happy Parents
-        </h2>
-
-        {/* Fade edges */}
-        <div className="relative">
-          
-
-          {/* Scrolling track */}
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-hidden"
-            style={{ scrollBehavior: "auto" }}
-          >
-            {/* Render twice for seamless loop */}
-            {[...course.testimonials, ...course.testimonials].map((item, i) => (
-              <div
-                key={i}
-                className={`${item.bg} rounded-2xl p-6 text-center shadow-md flex-shrink-0 w-[300px]`}
-              >
-                <h3 className="font-bold text-lg mb-3">{item.title}</h3>
-
-                <p className="text-sm text-gray-800 leading-relaxed mb-5">
-                  {item.desc}
-                </p>
-
-                <div className="flex items-center gap-3 justify-center">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="text-left">
-                    <p className="font-semibold text-sm">{item.name}</p>
-                    <p className="text-xs text-gray-700">{item.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-          {/* Gallery Section */}
-          <section className="py-12 md:py-16 px-4 md:px-10 bg-transparent">
             <div className="max-w-7xl mx-auto">
 
               {/* Heading */}
-              <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#EB6664] tracking-tight">
-                  Gallery
+              <div className="text-center mb-8 md:mb-12">
+
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EB6664]/10 text-[#EB6664] text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase mb-4">
+                  Testimonials
+                </span>
+
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#EB6664] leading-tight">
+                  Hear from Happy Parents
                 </h2>
 
                 <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto">
-                  Explore moments, classrooms, activities, and engaging learning
-                  experiences from our program.
+                  Real experiences shared by parents whose children transformed through our learning programs.
+                </p>
+              </div>
+
+              {/* Slider Wrapper */}
+              <div className="relative">
+
+                {/* Left Fade */}
+                <div className="absolute left-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+
+                {/* Right Fade */}
+                <div className="absolute right-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+                {/* Scrolling Track */}
+                <div
+                  ref={scrollRef}
+                  className="flex gap-4 md:gap-6 overflow-x-hidden py-2"
+                  style={{ scrollBehavior: "auto" }}
+                >
+
+                  {[...course.testimonials, ...course.testimonials].map((item, i) => {
+
+                    const colors = [
+                      {
+                        bg: "bg-[#e8f5e9]",
+                        border: "border-[#66BB6A]/25",
+                        shadow: "shadow-[#66BB6A]/10",
+                        title: "text-[#2e7d32]",
+                      },
+                      {
+                        bg: "bg-[#e3f2fd]",
+                        border: "border-[#1E88E5]/25",
+                        shadow: "shadow-[#1E88E5]/10",
+                        title: "text-[#1565c0]",
+                      },
+                      {
+                        bg: "bg-[#fff8e1]",
+                        border: "border-[#FFA726]/25",
+                        shadow: "shadow-[#FFA726]/10",
+                        title: "text-[#ef6c00]",
+                      },
+                      {
+                        bg: "bg-[#f3e5f5]",
+                        border: "border-[#9C27B0]/25",
+                        shadow: "shadow-[#9C27B0]/10",
+                        title: "text-[#7b1fa2]",
+                      },
+                    ];
+
+                    const style = colors[i % colors.length];
+
+                    return (
+                      <div
+                        key={i}
+                        className={`
+                ${style.bg}
+                ${style.border}
+                ${style.shadow}
+                relative border rounded-[28px]
+                p-5 md:p-6
+                flex-shrink-0
+                w-[280px]
+                sm:w-[320px]
+                md:w-[360px]
+                min-h-[260px]
+                md:min-h-[280px]
+                flex flex-col justify-between
+                shadow-lg
+                transition-all duration-300
+                hover:-translate-y-1 hover:shadow-2xl
+              `}
+                      >
+
+                        {/* Quote Icon */}
+                        <div className="absolute top-5 right-5 text-5xl font-black text-black/5 leading-none">
+                          "
+                        </div>
+
+                        {/* Top */}
+                        <div>
+
+                          <h3 className={`font-extrabold text-lg md:text-xl mb-3 ${style.title}`}>
+                            {item.title}
+                          </h3>
+
+                          <p className="text-sm md:text-[15px] text-gray-700 leading-relaxed line-clamp-6">
+                            {item.desc}
+                          </p>
+                        </div>
+
+                        {/* Bottom User */}
+                        <div className="flex items-center gap-3 pt-5 mt-5 border-t border-black/5">
+
+                          {/* Avatar */}
+                          <div className="relative flex-shrink-0">
+
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
+                            />
+
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white" />
+                          </div>
+
+                          {/* User Info */}
+                          <div className="min-w-0">
+
+                            <p className="font-bold text-sm md:text-base text-gray-900 truncate">
+                              {item.name}
+                            </p>
+
+                            <p className="text-xs md:text-sm text-gray-500 truncate">
+                              {item.location}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+          {/* Gallery Section */}
+          <section className="py-10 md:py-14 px-3 sm:px-4 md:px-6 bg-transparent overflow-hidden">
+
+            <div className="max-w-7xl mx-auto">
+
+              {/* Heading */}
+              <div className="text-center mb-8 md:mb-10">
+
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EB6664]/10 text-[#EB6664] text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase mb-4">
+                  Photo Gallery
+                </span>
+
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#EB6664] tracking-tight">
+                  Gallery
+                </h2>
+
+                <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto leading-relaxed">
+                  Explore classrooms, activities, and engaging learning experiences from our programs.
                 </p>
               </div>
 
               {/* Gallery Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
 
-                {course.gallery.map((image, index) => {
+                {visibleImages.map((image, index) => {
 
                   const colors = [
                     {
-                      border: "border-[#66BB6A]/30",
-                      shadow: "shadow-[#66BB6A]/15",
+                      border: "border-[#66BB6A]/25",
+                      shadow: "shadow-[#66BB6A]/10",
                       glow: "bg-[#66BB6A]/20",
                     },
                     {
-                      border: "border-[#1E88E5]/30",
-                      shadow: "shadow-[#1E88E5]/15",
+                      border: "border-[#1E88E5]/25",
+                      shadow: "shadow-[#1E88E5]/10",
                       glow: "bg-[#1E88E5]/20",
                     },
                     {
-                      border: "border-[#FFA726]/30",
-                      shadow: "shadow-[#FFA726]/15",
+                      border: "border-[#FFA726]/25",
+                      shadow: "shadow-[#FFA726]/10",
                       glow: "bg-[#FFA726]/20",
                     },
                     {
-                      border: "border-[#9C27B0]/30",
-                      shadow: "shadow-[#9C27B0]/15",
+                      border: "border-[#9C27B0]/25",
+                      shadow: "shadow-[#9C27B0]/10",
                       glow: "bg-[#9C27B0]/20",
                     },
                   ];
@@ -1449,10 +1781,15 @@ export default function ShortTermCourseDetails() {
                   return (
                     <div
                       key={index}
-                      className={`group relative overflow-hidden rounded-[2rem]
-            border ${style.border}
-            shadow-xl ${style.shadow}
-            transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl`}
+                      onClick={() => setSelectedImage(index)}
+                      className={`
+              group relative overflow-hidden rounded-[28px]
+              border ${style.border}
+              shadow-xl ${style.shadow}
+              cursor-pointer
+              transition-all duration-500
+              hover:-translate-y-1 hover:shadow-2xl
+            `}
                     >
 
                       {/* Glow */}
@@ -1464,49 +1801,111 @@ export default function ShortTermCourseDetails() {
 
                       {/* Image */}
                       <div className="relative overflow-hidden">
+
                         <img
                           src={image}
                           alt={`Gallery ${index + 1}`}
-                          className="w-full h-64 md:h-72 object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-[240px] sm:h-[260px] md:h-[280px] object-cover transition-transform duration-700 group-hover:scale-110"
                         />
 
                         {/* Overlay */}
-                        <div
-                          className="absolute inset-0 bg-gradient-to-t
-                from-black/50 via-black/10 to-transparent opacity-70"
-                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
 
-                        {/* Number Badge */}
-                        <div
+                        {/* Number */}
+                        {/* <div
                           className="absolute top-4 left-4 px-3 py-1 rounded-full
                 bg-white/90 backdrop-blur-md text-[#EB6664]
                 text-xs font-bold shadow-md"
                         >
                           0{index + 1}
-                        </div>
-
-                        {/* Bottom Text */}
-                        <div className="absolute bottom-5 left-5 right-5">
-
-                          <div
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full
-                  bg-white/15 backdrop-blur-md text-white text-[11px]
-                  uppercase tracking-[0.18em] font-semibold mb-2"
-                          >
-                            Course Moments
-                          </div>
-
-                          <h3 className="text-white text-lg font-bold leading-snug">
-                            Interactive Learning Experience
-                          </h3>
-                        </div>
+                        </div>                         */}
                       </div>
                     </div>
                   );
                 })}
-
               </div>
+
+              {/* View More */}
+              {course.gallery.length > 3 && (
+                <div className="flex justify-center mt-8">
+
+                  <button
+                    onClick={() => setShowAllGallery(!showAllGallery)}
+                    className="group relative overflow-hidden rounded-full px-7 py-3.5
+          bg-[#EB6664] text-white font-bold text-sm tracking-wide
+          shadow-lg shadow-[#EB6664]/20
+          transition-all duration-300 hover:scale-105"
+                  >
+
+                    <span className="relative z-10">
+                      {showAllGallery ? "Show Less" : "View All Images"}
+                    </span>
+
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#EB6664] to-[#ff8c8a] opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* GALLERY MODAL */}
+            {selectedImage !== null && (
+              <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+
+                {/* Close */}
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20
+        flex items-center justify-center text-white transition-all z-50"
+                >
+                  <X size={22} />
+                </button>
+
+                {/* Prev */}
+                <button
+                  onClick={() =>
+                    setSelectedImage(
+                      selectedImage === 0
+                        ? visibleImages.length - 1
+                        : selectedImage - 1
+                    )
+                  }
+                  className="absolute left-3 md:left-6 w-11 h-11 md:w-14 md:h-14 rounded-full
+        bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+
+                {/* Image */}
+                <div className="max-w-6xl w-full flex items-center justify-center">
+
+                  <img
+                    src={visibleImages[selectedImage]}
+                    alt=""
+                    className="max-h-[85vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl"
+                  />
+                </div>
+
+                {/* Next */}
+                <button
+                  onClick={() =>
+                    setSelectedImage(
+                      selectedImage === visibleImages.length - 1
+                        ? 0
+                        : selectedImage + 1
+                    )
+                  }
+                  className="absolute right-3 md:right-6 w-11 h-11 md:w-14 md:h-14 rounded-full
+        bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
+                >
+                  <ChevronRight size={28} />
+                </button>
+
+                {/* Count */}
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm font-semibold">
+                  {selectedImage + 1} / {visibleImages.length}
+                </div>
+              </div>
+            )}
           </section>
 
           {/* FAQs */}
