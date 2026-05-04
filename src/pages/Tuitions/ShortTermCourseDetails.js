@@ -133,32 +133,36 @@ const COURSES = {
         bg: "bg-[#b7c7e8]",
       },
     ],
-    faqs: [
-      {
-        q: "How will my child stay engaged in an online abacus class?",
-        a: "Classes are highly interactive with games, visuals, storytelling methods, and real-time teacher participation to keep children engaged and attentive throughout the session. Activities are designed to make learning fun and reduce screen fatigue.",
-      },
-      {
-        q: "What kind of practice is given at home?",
-        a: "Mental math exercises and short daily worksheets are shared to strengthen speed, accuracy, and visualization skills. Regular practice helps children build confidence and improve calculation ability step by step.",
-      },
-      {
-        q: "What if my child misses a class?",
-        a: "Recorded support or a makeup session is usually provided so the child can catch up easily without missing any learning progress or concept continuity.",
-      },
-      {
-        q: "Do children need any special materials for learning the abacus online?",
-        a: "Yes, a physical abacus kit and basic stationery are provided or recommended for daily practice at home to support hands-on learning along with online sessions.",
-      },
-      {
-        q: "How do parents track each child’s progress online?",
-        a: "Teachers monitor performance through live sessions, regular tests, assignments, and periodic assessments, along with detailed feedback shared with parents for clear progress tracking.",
-      },
-      {
-        q: "Can abacus learning help in school exams?",
-        a: "Yes, it improves calculation speed, concentration, memory, and accuracy, which directly helps children perform better in school mathematics exams and competitive learning tasks.",
-      },
-    ],
+    faqs: {
+      title: "Frequently Asked Questions",
+      image: "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+      faqs: [
+        {
+          q: "How will my child stay engaged in an online abacus class?",
+          a: "Classes are highly interactive with games, visuals, storytelling methods, and real-time teacher participation to keep children engaged and attentive throughout the session. Activities are designed to make learning fun and reduce screen fatigue.",
+        },
+        {
+          q: "What kind of practice is given at home?",
+          a: "Mental math exercises and short daily worksheets are shared to strengthen speed, accuracy, and visualization skills. Regular practice helps children build confidence and improve calculation ability step by step.",
+        },
+        {
+          q: "What if my child misses a class?",
+          a: "Recorded support or a makeup session is usually provided so the child can catch up easily without missing any learning progress or concept continuity.",
+        },
+        {
+          q: "Do children need any special materials for learning the abacus online?",
+          a: "Yes, a physical abacus kit and basic stationery are provided or recommended for daily practice at home to support hands-on learning along with online sessions.",
+        },
+        {
+          q: "How do parents track each child’s progress online?",
+          a: "Teachers monitor performance through live sessions, regular tests, assignments, and periodic assessments, along with detailed feedback shared with parents for clear progress tracking.",
+        },
+        {
+          q: "Can abacus learning help in school exams?",
+          a: "Yes, it improves calculation speed, concentration, memory, and accuracy, which directly helps children perform better in school mathematics exams and competitive learning tasks.",
+        },
+      ],
+    },
     gallery: [
       "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
       "https://i.pinimg.com/1200x/b3/22/e1/b322e16b709acc359a063a2e7552762b.jpg",
@@ -273,11 +277,15 @@ const COURSES = {
         bg: "bg-[#b7c7e8]",
       },
     ],
-    faqs: [
-      { q: "What age is best for phonics?", a: "Ages 3-7 is the ideal window for phonics instruction." },
-      { q: "How is phonics different from whole language?", a: "Phonics teaches decoding skills vs memorizing whole words." },
-      { q: "Can phonics help with dyslexia?", a: "Yes, systematic phonics is proven to help dyslexic learners." },
-    ],
+    faqs: {
+      title: "Frequently Asked Questions",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      faqs: [
+        { q: "What age is best for phonics?", a: "Ages 3-7 is the ideal window for phonics instruction." },
+        { q: "How is phonics different from whole language?", a: "Phonics teaches decoding skills vs memorizing whole words." },
+        { q: "Can phonics help with dyslexia?", a: "Yes, systematic phonics is proven to help dyslexic learners." },
+      ],
+    },
     gallery: [
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
       "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
@@ -377,11 +385,15 @@ const COURSES = {
         bg: "bg-[#b7c7e8]",
       },
     ],
-    faqs: [
-      { q: "Can shy kids learn public speaking?", a: "Absolutely! Our program is designed for introverts." },
-      { q: "How soon will I see improvement?", a: "Most students show confidence gains within 4 weeks." },
-      { q: "Are there competitions?", a: "Yes, we organize regular speaking contests." },
-    ],
+    faqs: {
+      title: "Frequently Asked Questions",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      faqs: [
+        { q: "Can shy kids learn public speaking?", a: "Absolutely! Our program is designed for introverts." },
+        { q: "How soon will I see improvement?", a: "Most students show confidence gains within 4 weeks." },
+        { q: "Are there competitions?", a: "Yes, we organize regular speaking contests." },
+      ],
+    },
     gallery: [
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
       "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
@@ -481,11 +493,15 @@ const COURSES = {
         bg: "bg-[#b7c7e8]",
       },
     ],
-    faqs: [
-      { q: "What age is this for?", a: "Designed for children aged 6-16 years." },
-      { q: "Can it help with school performance?", a: "Yes, confidence improves classroom participation." },
-      { q: "How long is the program?", a: "Typically 6-8 months for complete transformation." },
-    ],
+    faqs: {
+      title: "Frequently Asked Questions",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      faqs: [
+        { q: "What age is this for?", a: "Designed for children aged 6-16 years." },
+        { q: "Can it help with school performance?", a: "Yes, confidence improves classroom participation." },
+        { q: "How long is the program?", a: "Typically 6-8 months for complete transformation." },
+      ],
+    },
     gallery: [
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
       "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
@@ -585,11 +601,15 @@ const COURSES = {
         bg: "bg-[#b7c7e8]",
       },
     ],
-    faqs: [
-      { q: "Is Vedic Maths different from school math?", a: "It complements and enhances school mathematics." },
-      { q: "Will it confuse my child?", a: "No, it provides alternative, simpler methods." },
-      { q: "How soon will results show?", a: "Speed improvements visible within 4 weeks." },
-    ],
+    faqs: {
+      title: "Frequently Asked Questions",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      faqs: [
+        { q: "Is Vedic Maths different from school math?", a: "It complements and enhances school mathematics." },
+        { q: "Will it confuse my child?", a: "No, it provides alternative, simpler methods." },
+        { q: "How soon will results show?", a: "Speed improvements visible within 4 weeks." },
+      ],
+    },
     gallery: [
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
       "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
@@ -689,11 +709,15 @@ const COURSES = {
         bg: "bg-[#b7c7e8]",
       },
     ],
-    faqs: [
-      { q: "Is this for non-native speakers?", a: "Perfect for ESL learners of all levels." },
-      { q: "How does it help with school?", a: "Directly improves essay and test scores." },
-      { q: "Can it help with IELTS?", a: "Yes, comprehensive exam preparation included." },
-    ],
+    faqs: {
+      title: "Frequently Asked Questions",
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
+      faqs: [
+        { q: "Is this for non-native speakers?", a: "Perfect for ESL learners of all levels." },
+        { q: "How does it help with school?", a: "Directly improves essay and test scores." },
+        { q: "Can it help with IELTS?", a: "Yes, comprehensive exam preparation included." },
+      ],
+    },
     gallery: [
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
       "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
@@ -1609,10 +1633,10 @@ export default function ShortTermCourseDetails() {
               <div className="relative">
 
                 {/* Left Fade */}
-                <div className="absolute left-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                {/* <div className="absolute left-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" /> */}
 
                 {/* Right Fade */}
-                <div className="absolute right-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                {/* <div className="absolute right-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" /> */}
 
                 {/* Scrolling Track */}
                 <div
@@ -1911,49 +1935,144 @@ export default function ShortTermCourseDetails() {
           {/* FAQs */}
           <section id="faqs" className={`transform transition-all duration-700 delay-300 ${isVisible.faqs ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-[#EB6664] mb-4">Frequently Asked Questions</h2>
+              <h2 className="text-3xl font-bold mb-4" style={{ color: course.hero.accent }}>
+                {course.faqs.title}
+              </h2>
               <p className="text-gray-500">Got questions? We've got answers</p>
             </div>
-            <div className="max-w-5xl mx-auto space-y-4">
-              {course.faqs.map((faq, idx) => (
-                <div key={idx} className="group bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300">
-                  <details className="group">
-                    <summary className="flex items-center justify-between cursor-pointer p-5">
-                      <span className="font-semibold text-gray-900 pr-4">{faq.q}</span>
-                      <ChevronRight size={18} className="text-gray-400 group-open:rotate-90 transition-transform" style={{ color: course.hero.accent }} />
-                    </summary>
-                    <div className="px-5 pb-5">
-                      <p className="text-gray-600 border-t border-gray-100 pt-4">{faq.a}</p>
-                    </div>
-                  </details>
+
+            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10 items-start">
+
+              {/* Left — FAQs */}
+              <div className="flex-1 space-y-4">
+                {course.faqs.faqs.map((faq, idx) => (
+                  <div key={idx} className="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300">
+                    <details className="group">
+                      <summary className="flex items-center justify-between cursor-pointer p-5">
+                        <span className="font-semibold text-gray-900 pr-4">{faq.q}</span>
+                        <ChevronRight
+                          size={18}
+                          className="flex-shrink-0 group-open:rotate-90 transition-transform duration-300"
+                          style={{ color: course.hero.accent }}
+                        />
+                      </summary>
+                      <div className="px-5 pb-5">
+                        <p className="text-gray-600 border-t border-gray-100 pt-4 text-sm leading-relaxed">
+                          {faq.a}
+                        </p>
+                      </div>
+                    </details>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right — Sticky image card */}
+              <div className="lg:w-80 xl:w-96 lg:sticky lg:top-24 flex-shrink-0">
+                <div className="relative rounded-3xl overflow-hidden shadow-xl">
+                  <img
+                    src={course.faqs.image}
+                    alt="Abacus learning"
+                    className="w-full h-[480px] object-cover object-center"
+                  />
+                  {/* Gradient overlay at bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                  {/* Bottom text on image */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <p className="text-sm font-semibold tracking-wide uppercase opacity-80 mb-1">
+                      Still have questions?
+                    </p>
+                    <p className="text-lg font-bold leading-snug mb-4">
+                      Talk to our team — we're happy to help!
+                    </p>
+                    <button
+                      onClick={handleBookDemo}
+                      className="w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-105"
+                      style={{ backgroundColor: course.hero.accent, color: "#fff" }}
+                    >
+                      Contact Us
+                    </button>
+                  </div>
                 </div>
-              ))}
+
+                {/* Small stat pills below image */}
+                {/* <div className="flex gap-3 mt-4">
+                  <div className="flex-1 bg-white rounded-2xl border border-gray-100 px-4 py-3 text-center shadow-sm">
+                    <p className="text-xl font-bold" style={{ color: course.hero.accent }}>500+</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Happy Students</p>
+                  </div>
+                  <div className="flex-1 bg-white rounded-2xl border border-gray-100 px-4 py-3 text-center shadow-sm">
+                    <p className="text-xl font-bold" style={{ color: course.hero.accent }}>98%</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Parent Satisfaction</p>
+                  </div>
+                </div> */}
+              </div>
+
             </div>
           </section>
 
           {/* CTA Section */}
           <section className="relative overflow-hidden rounded-3xl">
-            <div className={`absolute inset-0 bg-[#EB6664]`} />
-            <div className="absolute inset-0 bg-black/0" />
+            {/* Background image */}
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${course.hero.image})` }}
+            />
+            {/* Overlay using hero accent */}
+            <div
+              className="absolute inset-0"
+              style={{ backgroundColor: course.hero.accent, opacity: 0.88 }}
+            />
+            {/* Subtle radial glow for depth */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/20" />
+
             <div className="relative py-16 px-8 text-center text-white">
-              <div className="text-6xl mb-4">{course.hero.icon}</div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Ready to Start Your {selected} Journey?
+              {/* Icon badge */}
+              <div
+                className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-5 text-4xl"
+                style={{ backgroundColor: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)" }}
+              >
+                {course.hero.icon}
+              </div>
+
+              {/* Tagline pill */}
+              <div className="flex justify-center mb-3">
+                <span
+                  className="text-xs font-semibold tracking-widest uppercase px-4 py-1 rounded-full"
+                  style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.95)" }}
+                >
+                  {course.hero.tagline}
+                </span>
+              </div>
+
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                Ready to Start Your{" "}
+                <span className="underline decoration-white/40 underline-offset-4">{selected}</span>{" "}
+                Journey?
               </h2>
-              <p className="text-white/90 mb-8 max-w-md mx-auto">
+
+              <p className="text-white/80 mb-10 max-w-md mx-auto text-base leading-relaxed">
                 Book a free demo class today and see the difference expert-led learning can make for your child.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
+
+              <div className="flex flex-wrap gap-3 justify-center">
                 <button
                   onClick={handleBookDemo}
-                  className="bg-white text-[#EB6664] font-bold py-3 px-8 rounded-xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+                  className="flex items-center gap-2 bg-white font-bold py-3 px-8 rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300 text-sm"
+                  style={{ color: course.hero.accent }}
                 >
-                  <Play size={18} />
+                  <Play size={16} />
                   Book Free Demo
                 </button>
                 <button
                   onClick={handleExploreOther}
-                  className="border-2 border-white/60 text-white font-bold py-3 px-8 rounded-xl hover:bg-white/10 transition-all duration-300"
+                  className="flex items-center gap-2 font-semibold py-3 px-8 rounded-xl transition-all duration-300 text-sm text-white"
+                  style={{
+                    border: "2px solid rgba(255,255,255,0.4)",
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.18)")}
+                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)")}
                 >
                   Explore Other Courses
                 </button>
