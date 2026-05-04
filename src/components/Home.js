@@ -43,8 +43,8 @@ const Home = () => {
             {/* <OnboardingJourney/> */}
             {/* <StaircaseChart3D /> */}
             <ExperianceCount />
-            <MeetImg />
-            {/* <MeetVideo/> */}
+            {/* <MeetImg /> */}
+            <MeetVideo/>
             <TrustAndSupport />
             <ScrollBanner />
             <Testimonioals />
