@@ -26,6 +26,7 @@ import BlogDetails from "./pages/Blogs/BlogDetails";
 import MathsBack from "./views/MathsBack";
 import FloatingButtons from "./views/Brochure";
 import DownloadBrochureButton from "./views/Brochure";
+import ImageBack from "./views/ImageBack";
 
 /* ── helpers ── */
 const fromSession = (key) => {
@@ -70,6 +71,7 @@ const App = () => {
       <DownloadBrochureButton />
       <WhatsAppButton />
       {/* <SideScroller /> */}
+      <ImageBack>
       {/* <SchoolBack> */}
       {/* <MathsBack> */}
         <Routes>
@@ -92,6 +94,7 @@ const App = () => {
         </Routes>
       {/* </MathsBack> */}
       {/* </SchoolBack> */}
+      </ImageBack>
     </div>
   );
 };

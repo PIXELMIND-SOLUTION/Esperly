@@ -188,7 +188,7 @@ export default function ExperienceCount() {
       <div className="relative z-10 text-center mb-6 sm:mb-8 md:mb-10">
         <span
           className="block text-[12px] sm:text-sm md:text-base 
-          text-[#7A6E5A] tracking-[0.18em] uppercase italic 
+          text-[#000] tracking-[0.18em] uppercase font-bold 
           border-b border-[#D6CEBA] pb-1 w-fit mx-auto"
           style={{ fontFamily: "Fraunces, Georgia, serif" }}
         >

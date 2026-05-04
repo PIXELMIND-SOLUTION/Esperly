@@ -132,10 +132,10 @@ export function TrustedSection() {
                 maxWidth: 480,
               }}
             >
-              Trusted by families and educators alike, Esperly delivers a learning experience that truly
-              makes a difference. Our personalized approach, expert mentors, and consistent results have
-              earned the confidence of parents and teachers who want the{" "}
-              <Highlight>best for every child.</Highlight>
+              <Highlight> Trusted by families and educators alike, Esperly delivers a learning experience that truly
+                makes a difference. Our personalized approach, expert mentors, and consistent results have
+                earned the confidence of parents and teachers who want the{" "}
+                best for every child.</Highlight>
             </p>
           </SlideIn>
 
@@ -246,10 +246,10 @@ export function SupportSection() {
                 marginBottom: "clamp(20px,3vw,36px)",
               }}
             >
-              At Esperly, you're never alone in the learning journey. Our dedicated support team is always
+              <HighlightBlue>At Esperly, you're never alone in the learning journey. Our dedicated support team is always
               ready to assist with guidance, queries, and continuous encouragement—ensuring a{" "}
-              <HighlightBlue>smooth and stress-free experience</HighlightBlue>
-              {" "}for both students and parents.
+              smooth and stress-free experience
+              {" "}for both students and parents.</HighlightBlue>
             </p>
           </SlideIn>
 

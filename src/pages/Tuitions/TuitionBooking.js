@@ -195,18 +195,18 @@ export default function TuitionBooking() {
 
     if (submitted) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50 flex items-center justify-center p-6">
+            <div className="min-h-screen bg-[transparent] flex items-center justify-center p-6">
                 <div className="text-center max-w-md">
                     <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}>
                         <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-800 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h2 className="text-3xl font-bold text-black mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                         You're all set!
                     </h2>
                     <p className="text-gray-500 mb-2">Booking confirmed for <span className="font-semibold text-gray-700">{matchedItem}</span></p>
-                    <p className="text-gray-500 mb-8">Our team will reach out to <span className="font-semibold" style={{ color: "#EB6664" }}>{formData.mobile}</span> within 24 hours.</p>
+                    <p className="text-gray-500 mb-8">Our team will reach out to <span className="font-semibold" style={{ color: "#EB6664" }}>+{formData.mobile}</span> within 24 hours.</p>
                     <div className="bg-white rounded-2xl border border-rose-100 p-5 mb-8 text-left shadow-sm">
                         <div className="grid grid-cols-2 gap-4 text-sm">
                             <div><p className="text-gray-400 text-xs mb-1">Board</p><p className="font-semibold text-gray-700">{boards.find(b => b.id === selectedBoard)?.name}</p></div>
@@ -230,7 +230,7 @@ export default function TuitionBooking() {
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-orange-50" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <div className="min-h-screen bg-[transparent]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
                 {/* Header */}
@@ -269,13 +269,13 @@ export default function TuitionBooking() {
                                     onClick={() => handleBoardSelect(b.id)}
                                     className={`group text-left p-5 rounded-2xl border-2 transition-all duration-300 ${selectedBoard === b.id
                                         ? "border-transparent shadow-lg scale-[1.02]"
-                                        : "border-rose-100 bg-white hover:border-rose-300 hover:shadow-md"
+                                        : "border-black bg-white hover:border-rose-300 hover:shadow-md"
                                         }`}
                                     style={selectedBoard === b.id ? { background: "linear-gradient(135deg, #EB6664, #F4956A)", color: "white" } : {}}
                                 >
                                     <div className="text-3xl mb-3">{b.icon}</div>
-                                    <p className={`font-bold text-lg mb-1 ${selectedBoard === b.id ? "text-white" : "text-gray-800"}`}>{b.name}</p>
-                                    <p className={`text-xs leading-relaxed ${selectedBoard === b.id ? "text-rose-100" : "text-gray-400"}`}>{b.desc}</p>
+                                    <p className={`font-bold text-lg mb-1 ${selectedBoard === b.id ? "text-white" : "text-black"}`}>{b.name}</p>
+                                    <p className={`text-xs leading-relaxed ${selectedBoard === b.id ? "text-rose-100" : "text-gray-700"}`}>{b.desc}</p>
                                     {selectedBoard === b.id && (
                                         <div className="mt-3 flex items-center gap-1 text-white text-xs font-medium">
                                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
@@ -295,8 +295,8 @@ export default function TuitionBooking() {
                                 {Object.entries(subjectGroups).map(([groupName, { subtitle, subjects }]) => (
                                     <div key={groupName}>
                                         <div className="mb-4">
-                                            <p className="text-sm font-semibold text-gray-700 uppercase tracking-widest">{groupName}</p>
-                                            <p className="text-xs text-gray-400 mt-0.5 italic">{subtitle}</p>
+                                            <p className="text-sm font-semibold text-black uppercase tracking-widest">{groupName}</p>
+                                            <p className="text-xs text-gray-700 mt-0.5 italic">{subtitle}</p>
                                         </div>
                                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                             {subjects.map((s) => {
@@ -305,7 +305,7 @@ export default function TuitionBooking() {
                                                     <button
                                                         key={`${groupName}-${s}`}
                                                         onClick={() => toggleSubject(s)}
-                                                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-200 text-left ${checked ? "border-transparent shadow-md" : "border-gray-100 bg-white hover:border-rose-200"}`}
+                                                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-200 text-left ${checked ? "border-transparent shadow-md" : "border-black bg-white hover:border-rose-700"}`}
                                                         style={checked ? { background: "linear-gradient(135deg, #FFF1F1, #FFF3EE)", borderColor: "#EB6664" } : {}}
                                                     >
                                                         <div
@@ -314,7 +314,7 @@ export default function TuitionBooking() {
                                                         >
                                                             {checked && <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
                                                         </div>
-                                                        <span className={`text-sm font-medium ${checked ? "text-rose-700" : "text-gray-600"}`}>{s}</span>
+                                                        <span className={`text-sm font-medium ${checked ? "text-rose-700" : "text-black hover:text-rose-700"}`}>{s}</span>
                                                     </button>
                                                 );
                                             })}
@@ -343,7 +343,7 @@ export default function TuitionBooking() {
                             <StepHeader number={3} title="Set your Schedule" active={step === 3} />
                             <div className="mt-6 space-y-8">
                                 <div>
-                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-4">How many days per week?</p>
+                                    <p className="text-sm font-semibold text-black uppercase tracking-widest mb-4">How many days per week?</p>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                         {daysOptions.map((d) => (
                                             <RadioCard key={d} label={d} selected={selectedDays === d} onClick={() => setSelectedDays(d)} />
@@ -351,7 +351,7 @@ export default function TuitionBooking() {
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-4">When would you like to start?</p>
+                                    <p className="text-sm font-semibold text-black uppercase tracking-widest mb-4">When would you like to start?</p>
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                         {startOptions.map((s) => (
                                             <RadioCard key={s} label={s} selected={selectedStart === s} onClick={() => setSelectedStart(s)} />
@@ -359,7 +359,7 @@ export default function TuitionBooking() {
                                     </div>
                                 </div>
                             </div>
-                            <NextButton onClick={handleScheduleNext} disabled={!selectedDays || !selectedStart} label="Continue to Contact Info" />
+                            <NextButton onClick={handleScheduleNext}  label="Continue to Contact Info" />
                         </section>
                     )}
 
@@ -367,7 +367,7 @@ export default function TuitionBooking() {
                     {step >= 4 && (
                         <section ref={contactRef} style={{ scrollMarginTop: "100px" }}>
                             <StepHeader number={4} title="Your Details" subtitle="We'll use this to confirm your booking" active={step === 4} />
-                            <div className="mt-6 bg-white rounded-2xl border border-rose-100 p-6 space-y-5 shadow-sm">
+                            <div className="mt-6 bg-white rounded-2xl border border-black p-6 space-y-5 shadow-sm">
                                 <InputField
                                     label="Student Full Name"
                                     placeholder="e.g. Rahul Sharma"
@@ -386,7 +386,7 @@ export default function TuitionBooking() {
                                     type="email"
                                 />
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-600 mb-2">
+                                    <label className="block text-sm font-semibold text-black mb-2">
                                         Mobile Number <span className="text-red-500">*</span>
                                     </label>
 
@@ -402,8 +402,8 @@ export default function TuitionBooking() {
                                             }}
                                             enableSearch
                                             preferredCountries={["in", "us", "gb", "au", "ca"]}
-                                            inputClass="!w-full !h-[50px] !pl-[60px] !bg-gray-50 !border-2 !border-gray-100 !rounded-xl !text-sm focus:!border-rose-300"
-                                            buttonClass="!bg-gray-50 !border-2 !border-gray-100 !rounded-l-xl"
+                                            inputClass="!w-full !h-[50px] !pl-[60px] !bg-gray-50 !border-2 !border-black !rounded-xl !text-sm focus:!border-rose-300"
+                                            buttonClass="!bg-gray-50 !border-2 !border-black !rounded-l-xl"
                                             containerClass="!w-full"
                                         />
                                     </div>
@@ -461,7 +461,7 @@ export default function TuitionBooking() {
                                         value={otpDigits[idx]}
                                         onChange={(e) => handleOtpDigit(e.target.value, idx)}
                                         onKeyDown={(e) => handleOtpKeyDown(e, idx)}
-                                        className="w-11 h-12 text-center text-xl font-bold rounded-xl border-2 focus:outline-none transition-all"
+                                        className="w-11 h-12 text-center text-xl font-bold rounded-xl border-2 border-black focus:outline-none transition-all"
                                         style={{
                                             borderColor: otpDigits[idx] ? "#EB6664" : "#e5e7eb",
                                             background: otpDigits[idx] ? "#FFF1F1" : "#f9fafb",
@@ -481,7 +481,7 @@ export default function TuitionBooking() {
                             >
                                 Verify & Confirm Booking
                             </button>
-                            <button onClick={() => setShowOtp(false)} className="w-full mt-3 py-3 text-sm text-gray-400 hover:text-gray-600 transition-colors">
+                            <button onClick={() => setShowOtp(false)} className="w-full mt-3 py-3 text-sm text-black hover:text-gray-600 transition-colors">
                                 Cancel
                             </button>
                         </div>
@@ -503,8 +503,8 @@ function StepHeader({ number, title, subtitle, active }) {
                 {number}
             </div>
             <div>
-                <h2 className="text-xl font-bold text-gray-800" style={{ fontFamily: "'Playfair Display', serif" }}>{title}</h2>
-                {subtitle && <p className="text-sm italic text-gray-400 mt-0.5">{subtitle}</p>}
+                <h2 className="text-xl font-bold text-black" style={{ fontFamily: "'Playfair Display', serif" }}>{title}</h2>
+                {subtitle && <p className="text-sm italic text-gray-700 mt-0.5">{subtitle}</p>}
             </div>
         </div>
     );
@@ -514,7 +514,7 @@ function RadioCard({ label, selected, onClick }) {
     return (
         <button
             onClick={onClick}
-            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-200 text-left w-full ${selected ? "shadow-md border-transparent" : "border-gray-100 bg-white hover:border-rose-200"}`}
+            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 border-black transition-all duration-200 text-left w-full ${selected ? "shadow-md border-transparent" : "border-gray-100 bg-white hover:border-rose-200"}`}
             style={selected ? { background: "linear-gradient(135deg, #FFF1F1, #FFF3EE)", borderColor: "#EB6664" } : {}}
         >
             <div
@@ -523,7 +523,7 @@ function RadioCard({ label, selected, onClick }) {
             >
                 {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
             </div>
-            <span className={`text-sm font-medium ${selected ? "text-rose-700" : "text-gray-600"}`}>{label}</span>
+            <span className={`text-sm font-medium ${selected ? "text-rose-700" : "text-black hover:text-rose-700"}`}>{label}</span>
         </button>
     );
 }
@@ -544,15 +544,15 @@ function NextButton({ onClick, disabled, label }) {
 function InputField({ label, placeholder, value, onChange, error, icon, type = "text" }) {
     return (
         <div>
-            <label className="block text-sm font-semibold text-gray-600 mb-2">{label}</label>
+            <label className="block text-sm font-semibold text-black mb-2">{label}</label>
             <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">{icon}</div>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-black">{icon}</div>
                 <input
                     type={type}
                     placeholder={placeholder}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className={`w-full pl-11 pr-4 py-3.5 rounded-xl border-2 text-sm focus:outline-none transition-colors ${error ? "border-red-300 bg-red-50" : "border-gray-100 bg-gray-50 focus:border-rose-300"}`}
+                    className={`w-full pl-11 pr-4 py-3.5 rounded-xl border-2 border-black text-sm focus:outline-none transition-colors ${error ? "border-red-300 bg-red-50" : "border-gray-100 bg-gray-50 focus:border-rose-300"}`}
                 />
             </div>
             {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
