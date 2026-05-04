@@ -1097,7 +1097,7 @@ export default function ShortTermCourseDetails() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-16 space-y-20">
+        <div className="max-w-7xl mx-auto px-4 py-16 space-y-10">
 
           {/* What Is Section */}
           <section
@@ -1941,10 +1941,10 @@ export default function ShortTermCourseDetails() {
               <p className="text-gray-500">Got questions? We've got answers</p>
             </div>
 
-            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10 items-start">
+            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10"> {/*  items-center lg:items-start */}
 
               {/* Left — FAQs */}
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 space-y-2">
                 {course.faqs.faqs.map((faq, idx) => (
                   <div key={idx} className="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300">
                     <details className="group">
