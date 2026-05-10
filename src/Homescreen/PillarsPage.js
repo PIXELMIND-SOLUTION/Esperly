@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
+import image from "../assets/slider1.jpg"; // Replace with your actual image path
 
 const RED = "#EB6664";
 const BLUE = "#3B6FA0";
@@ -228,10 +229,23 @@ const PillarCard = ({ p, index }) => {
 
 export default function PillarsSection() {
   return (
-    <section className="relative overflow-hidden bg-[transparent] py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
+    <section className="relative overflow-hidden py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${image})`, // Replace with your image path
+          }}
+        />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/30" /> {/* Adjust opacity (30% = 0.30) */}
+        {/* Or use a light overlay: */}
+        {/* <div className="absolute inset-0 bg-white/50" /> */}
+      </div>
 
       {/* Decorative blobs */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-[1]">
         <div
           className="absolute rounded-full w-[150px] sm:w-[220px] lg:w-[300px] h-[150px] sm:h-[220px] lg:h-[300px] top-[10%] right-[5%]"
           style={{
@@ -259,12 +273,9 @@ export default function PillarsSection() {
         ))}
       </div>
 
-      {/* Decorative wave */}
-      <div className="absolute top-0 right-0 pointer-events-none opacity-15">
-        <svg
-          className="w-[120px] sm:w-[200px] lg:w-[300px] h-auto"
-          viewBox="0 0 300 200"
-        >
+      {/* Rest of your component remains the same */}
+      <div className="absolute top-0 right-0 pointer-events-none opacity-15 z-[1]">
+        <svg className="w-[120px] sm:w-[200px] lg:w-[300px] h-auto" viewBox="0 0 300 200">
           <path
             d="M300 0 C220 40, 140 30, 80 90 C40 130, 15 165, 0 200"
             stroke={RED}
@@ -276,17 +287,15 @@ export default function PillarsSection() {
         </svg>
       </div>
 
-      {/* Pencil — hidden on mobile */}
-      <div className="absolute top-6 right-6 opacity-15 hidden sm:block" aria-hidden>
+      <div className="absolute top-6 right-6 opacity-15 hidden sm:block z-[1]" aria-hidden>
         <PencilSVG size={160} rotate={5} />
       </div>
 
-      {/* Section content */}
       <div className="max-w-7xl mx-auto relative z-[2]">
         <FadeUp>
           <h2
             className="font-black leading-[1.05] mb-1 tracking-[-0.02em] text-[clamp(24px,5vw,52px)]"
-            style={{ fontFamily: "Fraunces, Georgia, serif", color: INK }}
+            style={{ fontFamily: "Fraunces, Georgia, serif", color: "#fff" }}
           >
             The Four Pillars of{" "}
             <Highlight color="#FFEB3B">
@@ -296,7 +305,7 @@ export default function PillarsSection() {
 
           <p
             className="leading-[1.6] italic mb-2 sm:mb-3 text-sm sm:text-base lg:text-[17px]"
-            style={{ fontFamily: '"DM Serif Display", Georgia, serif', color: FADED }}
+            style={{ fontFamily: '"DM Serif Display", Georgia, serif', color: "#ccc" }}
           >
             Designed to support every student's unique learning journey
           </p>
@@ -310,7 +319,6 @@ export default function PillarsSection() {
           />
         </FadeUp>
 
-        {/* Cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-7 pt-2">
           {pillars.map((p, i) => (
             <PillarCard p={p} index={i} key={p.id} />

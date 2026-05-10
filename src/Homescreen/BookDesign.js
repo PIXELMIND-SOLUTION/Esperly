@@ -862,7 +862,19 @@ const BookSection = () => {
         rel="stylesheet"
       />
 
-      <section className="relative overflow-hidden py-10 px-4 sm:py-12 sm:px-5 md:py-14 md:px-6 bg-[transparent]">
+      <section className="relative overflow-hidden py-10 px-4 sm:py-12 sm:px-5 md:py-14 md:px-6">
+        <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/ban.png')`, // Replace with your image path
+          }}
+        />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/30" /> {/* Adjust opacity (30% = 0.30) */}
+        {/* Or use a light overlay: */}
+        {/* <div className="absolute inset-0 bg-white/50" /> */}
+      </div>
         <div className="absolute inset-0 pointer-events-none">
           <div
             className="absolute rounded-full w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[250px] md:h-[250px] lg:w-[300px] lg:h-[300px] blur-[80px] top-[10%] right-[5%]"
@@ -900,7 +912,7 @@ const BookSection = () => {
 
         <div className="max-w-7xl mx-auto relative z-[2]">
           <FadeUp>
-            <p className="leading-relaxed font-bold mb-1 font-['DMSerifDisplay',Georgia,serif] text-2xl text-black">
+            <p className="leading-relaxed font-bold mb-1 font-['DMSerifDisplay',Georgia,serif] text-2xl text-white">
               At{" "}
               <Highlight color="#FFEB3B">
                 <span className="text-[#EB6664] italic">Esperly</span>
