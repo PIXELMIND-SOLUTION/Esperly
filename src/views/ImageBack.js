@@ -71,7 +71,7 @@ export default function ImageBack({ children }) {
 
     return (
         // Important: Changed from relative to block, and added isolation context
-        <div className="w-full min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 overflow-x-hidden" style={{ isolation: "isolate" }}>
+        <div className="w-full min-h-screen bg-[gradient-to-br from-slate-50 via-white to-blue-50/30] overflow-x-hidden" style={{ isolation: "isolate" }}>
             
             {/* Background images - lowest z-index */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>

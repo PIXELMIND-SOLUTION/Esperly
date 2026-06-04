@@ -864,12 +864,12 @@ const BookSection = () => {
 
       <section className="relative overflow-hidden py-10 px-4 sm:py-12 sm:px-5 md:py-14 md:px-6">
         <div className="absolute inset-0 z-0">
-        <div
+        {/* <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('/ban.png')`, // Replace with your image path
           }}
-        />
+        /> */}
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/30" /> {/* Adjust opacity (30% = 0.30) */}
         {/* Or use a light overlay: */}

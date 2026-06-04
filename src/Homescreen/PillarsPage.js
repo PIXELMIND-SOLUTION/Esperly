@@ -232,12 +232,12 @@ export default function PillarsSection() {
     <section className="relative overflow-hidden py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <div
+        {/* <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url(${image})`, // Replace with your image path
           }}
-        />
+        /> */}
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/30" /> {/* Adjust opacity (30% = 0.30) */}
         {/* Or use a light overlay: */}

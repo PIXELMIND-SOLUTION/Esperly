@@ -80,7 +80,7 @@ const HighlightBlue = ({ children }) => (
 export function TrustedSection() {
   return (
     <section
-      className="relative overflow-hidden border-t border-[#D6CEBA] font-sans"
+      className="relative overflow-hidden font-sans"
       style={{ background: "transparent", padding: "clamp(40px,6vw,80px) clamp(20px,5vw,64px)" }}
     >
       {/* Glow blobs */}
