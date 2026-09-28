@@ -29,6 +29,12 @@ import MeetVideo from "../Homescreen/MeetVideo";
 import OnboardingJourney from "../Homescreen/JourneyPage";
 import NewHero from "../Homescreen/NewHero";
 import Header from "./Header";
+import WordOfLearning from "../Homescreen/WordOfLearning";
+import StepsToSuccess from "../Homescreen/StepsToSuccess";
+import Impact from "../Homescreen/Impact";
+import TeacherTestimonials from "../Homescreen/TeacherTestimonials";
+import ParentTestimonials from "../Homescreen/ParentTestimonials";
+import TrustSupport from "../Homescreen/ExpertTrack";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -42,17 +48,22 @@ const Home = () => {
                 {/* <HeroPage /> */}
                 <NewHero />
                 <PillarsPage />
-                <BookDesign />
+                <WordOfLearning />
+                {/* <BookDesign /> */}
                 <FlashBanner />
-                <StepsImage />
+                <StepsToSuccess />
+                {/* <StepsImage /> */}
                 {/* <OnboardingJourney/> */}
                 {/* <StaircaseChart3D /> */}
-                <ExperianceCount />
+                <Impact />
+                {/* <ExperianceCount /> */}
                 {/* <MeetImg /> */}
-                <MeetVideo />
-                <TrustAndSupport />
+                {/* <MeetVideo /> */}
+                <TrustSupport />
                 <ScrollBanner />
-                <Testimonioals />
+                <TeacherTestimonials />
+                <ParentTestimonials />
+                {/* <Testimonioals /> */}
                 {/* <MeetScreen/> */}
                 {/* <WhatWeTeach />
             <ZoomDesign/>

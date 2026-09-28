@@ -1,227 +1,127 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import image from "../assets/slider1.jpg"; // Replace with your actual image path
+import { UserRound, Target, Lightbulb, TrendingUp } from "lucide-react";
+
+// Replace these with your actual image paths
+import mentorshipImg from "../assets/Hero.png";
+import personalizedImg from "../assets/Hero.png";
+import masteryImg from "../assets/Hero.png";
+import trackingImg from "../assets/Hero.png";
 
 const RED = "#EB6664";
-const BLUE = "#3B6FA0";
-const PENCIL = "#8C7B6B";
-const INK = "#1C1209";
-const FADED = "#111111";
-const TAPE = "rgba(200,195,170,0.55)";
 
-const WashiTape = ({ rotate = -2 }) => (
-  <div
-    className="absolute -top-2 left-1/2 h-4 w-[52px] border-l border-r"
-    style={{
-      background: TAPE,
-      borderColor: "rgba(180,170,140,0.3)",
-      transform: `translateX(-50%) rotate(${rotate}deg)`,
-    }}
-  />
-);
-
-const ScribbleUnderline = ({
-  color = RED,
-  className = "",
-  style = {},
-}) => (
-  <svg
-    viewBox="0 0 200 12"
-    preserveAspectRatio="none"
-    className={className}
-    style={{ height: 12, display: "block", ...style }}
-  >
-    <path
-      d="M2 8 C30 4, 60 11, 100 7 C140 3, 170 10, 198 6"
-      stroke={color}
-      strokeWidth="2.5"
-      fill="none"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const Highlight = ({
-  children,
-  color = "#FFEB3B",
-}) => (
-  <span
-    style={{
-      background: `linear-gradient(180deg, transparent 40%, ${color}88 40%)`,
-      paddingBottom: 2,
-    }}
-  >
-    {children}
-  </span>
-);
-
-const Bubble = ({ style: s }) => (
-  <motion.div
-    className="absolute rounded-full pointer-events-none"
-    style={{
-      width: s.size,
-      height: s.size,
-      background: s.fill,
-      left: s.left,
-      top: s.top,
-      filter: "blur(1px)",
-      zIndex: 0,
-    }}
-    animate={{
-      y: ["0px", s.floatY || "-30px", "0px"],
-      x: [0, s.floatX || 10, 0],
-      opacity: [s.opacity || 0.4, (s.opacity || 0.4) + 0.12, s.opacity || 0.4],
-      scale: [1, 1.07, 1],
-    }}
-    transition={{
-      duration: s.dur || 6,
-      repeat: Infinity,
-      delay: s.delay || 0,
-      ease: "easeInOut",
-    }}
-  />
-);
-
-const heroBubbles = [
-  { size: "180px", fill: "rgba(166,25,46,0.09)", left: "3%", top: "8%", floatY: "-22px", floatX: 12, dur: 7, delay: 0, opacity: 0.4 },
-  { size: "120px", fill: "rgba(166,25,46,0.06)", left: "78%", top: "4%", floatY: "-28px", floatX: -10, dur: 8.5, delay: 1, opacity: 0.35 },
-  { size: "85px", fill: "rgba(166,25,46,0.11)", left: "58%", top: "65%", floatY: "-16px", floatX: 8, dur: 6, delay: 2, opacity: 0.45 },
-  { size: "60px", fill: "rgba(166,25,46,0.08)", left: "18%", top: "70%", floatY: "-12px", floatX: -6, dur: 5, delay: 0.5, opacity: 0.4 },
+const pillars = [
+  {
+    id: "01",
+    icon: UserRound,
+    title: "Dedication Mentorship",
+    body: "Every student receives personalized guidance from experienced mentors who provide continuous support, motivation, and academic direction throughout their learning journey.",
+    cardBg: "#DCE9FB",
+    badgeBg: "#1E3A8A",
+    iconBg: "#A9C6EE",
+    iconColor: "#1E3A8A",
+    image: mentorshipImg,
+  },
+  {
+    id: "02",
+    icon: Target,
+    title: "Personalized Learning",
+    body: "One-on-one guidance from expert mentors to help students stay focused, confident, and on track toward their goals.",
+    cardBg: "#E9E4FB",
+    badgeBg: "#6D4FC4",
+    iconBg: "#C6B8F5",
+    iconColor: "#5B3FB0",
+    image: personalizedImg,
+  },
+  {
+    id: "03",
+    icon: Lightbulb,
+    title: "Concept Mastery",
+    body: "Our mentors work closely with students, offering personalized support, regular feedback, and strategic guidance for lasting academic success.",
+    cardBg: "#FBE7D6",
+    badgeBg: "#E8752A",
+    iconBg: "#F9CFA0",
+    iconColor: "#C2620F",
+    image: masteryImg,
+  },
+  {
+    id: "04",
+    icon: TrendingUp,
+    title: "Structured Progress Tracking",
+    body: "Expert mentors provide individualized guidance, helping students overcome challenges, build confidence, and achieve their full potential.",
+    cardBg: "#DEF3E5",
+    badgeBg: "#1F7A3D",
+    iconBg: "#A8E0BA",
+    iconColor: "#1F7A3D",
+    image: trackingImg,
+  },
 ];
 
-const PencilSVG = ({ size = 160, rotate = 5 }) => (
-  <svg
-    width={size}
-    height={size * 0.18}
-    viewBox="0 0 200 36"
-    fill="none"
-    style={{ transform: `rotate(${rotate}deg)` }}
-  >
-    <rect x="20" y="8" width="148" height="20" rx="2" fill="#F5D87A" />
-    <rect x="20" y="8" width="148" height="20" rx="2" stroke="#C8A820" strokeWidth="1" />
-    <line x1="20" y1="14" x2="168" y2="14" stroke="#C8A820" strokeWidth="0.5" opacity="0.4" />
-    <line x1="20" y1="22" x2="168" y2="22" stroke="#C8A820" strokeWidth="0.5" opacity="0.4" />
-    <rect x="158" y="9" width="24" height="18" rx="2" fill="#F4A7A7" />
-    <rect x="158" y="9" width="24" height="18" rx="2" stroke="#D46060" strokeWidth="0.8" />
-    <rect x="153" y="8" width="8" height="20" fill={PENCIL} stroke="#BDBDBD" strokeWidth="0.5" />
-    <line x1="155" y1="8" x2="155" y2="28" stroke="#BDBDBD" strokeWidth="0.5" />
-    <line x1="158" y1="8" x2="158" y2="28" stroke="#BDBDBD" strokeWidth="0.5" />
-    <polygon points="20,8 20,28 2,18" fill="#E8C06A" />
-    <polygon points="6,12 6,24 2,18" fill="#2A1F0E" />
-    <line x1="20" y1="8" x2="2" y2="18" stroke="#C8A820" strokeWidth="0.8" />
-    <line x1="20" y1="28" x2="2" y2="18" stroke="#C8A820" strokeWidth="0.8" />
-    <text x="70" y="22" fontFamily="monospace" fontSize="7" fill="#C8A820" opacity="0.7">ESPERLY No.2</text>
-  </svg>
-);
-
-const FadeUp = ({
-  children,
-  delay = 0,
-  className = "",
-}) => {
+const FadeUp = ({ children, delay = 0, className = "" }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-8% 0px" });
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
   );
 };
 
-const pillars = [
-  {
-    id: "01",
-    icon: "🧑‍🏫",
-    title: "Dedicated Mentorship",
-    body: "At Esperly, every student is paired with a mentor who truly understands their learning journey. Beyond teaching, our mentors guide, motivate, and build confidence — ensuring students feel supported at every step.",
-    accent: RED,
-    noteBg: "#FFFDE7",
-  },
-  {
-    id: "02",
-    icon: "🎯",
-    title: "Personalized Learning",
-    body: "We believe learning should adapt to the student, not the other way around. Our sessions are thoughtfully tailored to individual learning styles, pace, and goals — creating a more engaging and effective experience.",
-    accent: RED,
-    noteBg: "#E3F0FF",
-  },
-  {
-    id: "03",
-    icon: "💡",
-    title: "Concept Mastery",
-    body: "Strong foundations lead to lasting success. We go beyond memorization, helping students deeply understand concepts, apply them with clarity, and develop the confidence to tackle any challenge.",
-    accent: RED,
-    noteBg: "#E8F5E9",
-  },
-  {
-    id: "04",
-    icon: "📈",
-    title: "Structured Progress Tracking",
-    body: "Growth is best achieved with the right direction. Through regular assessments and detailed feedback, we track progress closely — keeping students and parents informed, involved, and confident in the journey.",
-    accent: RED,
-    noteBg: "#FFF3E0",
-  },
-];
-
 const PillarCard = ({ p, index }) => {
-  const [hovered, setHovered] = useState(false);
+  const Icon = p.icon;
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-8% 0px" });
-  const rotates = [-2, 1.5, -1, 2.5];
-  const rot = rotates[index % rotates.length];
 
   return (
     <motion.div
       ref={ref}
-      className="relative rounded-sm cursor-default overflow-visible transition-shadow duration-300"
-      style={{
-        background: p.noteBg,
-        boxShadow: hovered
-          ? `4px 8px 32px ${p.accent}30, 0 1px 0 rgba(255,255,255,0.8) inset`
-          : "3px 5px 16px rgba(0,0,0,0.13), 0 1px 0 rgba(255,255,255,0.7) inset",
-      }}
-      initial={{ opacity: 0, y: 48, rotate: rot - 4 }}
-      animate={inView ? { opacity: 1, y: 0, rotate: hovered ? 0 : rot } : {}}
-      transition={{ duration: 0.65, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="relative rounded-2xl sm:rounded-3xl p-5 sm:p-6"
+      style={{ backgroundColor: p.cardBg }}
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
-      <WashiTape rotate={index % 2 === 0 ? -3 : 3} />
-
-      {/* Card number */}
-      <div
-        className="absolute top-2.5 right-3 font-mono text-[11px] tracking-[0.1em] opacity-45"
-        style={{ color: p.accent }}
+      {/* Number badge */}
+      <span
+        className="absolute top-3 left-3 sm:top-4 sm:left-4 flex h-6 w-6 items-center justify-center rounded-md text-[10px] font-bold text-white sm:h-7 sm:w-7 sm:text-xs"
+        style={{ backgroundColor: p.badgeBg }}
       >
-        #{p.id}
+        {p.id}
+      </span>
+
+      {/* Icon avatar */}
+      <div className="flex justify-center pt-4 sm:pt-2">
+        <div
+          className="flex h-16 w-16 items-center justify-center rounded-full sm:h-20 sm:w-20"
+          style={{ backgroundColor: p.iconBg }}
+        >
+          <Icon size={30} color={p.iconColor} />
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="p-5 sm:p-6 lg:p-7 relative z-10">
-        <div className="flex items-start gap-2 mb-2">
-          <div className="text-2xl sm:text-3xl leading-none shrink-0">{p.icon}</div>
-          <h3
-            className="font-bold leading-snug text-base sm:text-lg lg:text-xl"
-            style={{ fontFamily: "Fraunces, Georgia, serif", color: INK }}
-          >
-            {p.title}
-          </h3>
-        </div>
+      {/* Title */}
+      <h3 className="mt-4 text-center text-base font-extrabold leading-snug text-gray-900 sm:mt-5 sm:text-lg">
+        {p.title}
+      </h3>
 
-        <ScribbleUnderline color={p.accent} style={{ width: "80%", marginBottom: 10 }} />
+      {/* Body */}
+      <p className="mt-2 text-center text-xs leading-relaxed text-gray-700 sm:mt-3 sm:text-sm">
+        {p.body}
+      </p>
 
-        <p
-          className="leading-[1.6] sm:leading-[1.7] md:leading-[1.8] lg:leading-[1.9] text-[11px] sm:text-xs lg:text-[13px]"
-          style={{ fontFamily: '"DM Serif Display", Georgia, serif', color: FADED }}
-        >
-          {p.body}
-        </p>
+      {/* Illustration */}
+      <div className="mt-5 overflow-hidden rounded-xl sm:mt-6 sm:rounded-2xl">
+        <img
+          src={p.image}
+          alt={p.title}
+          className="h-28 w-full object-cover sm:h-32 lg:h-36"
+        />
       </div>
     </motion.div>
   );
@@ -229,97 +129,35 @@ const PillarCard = ({ p, index }) => {
 
 export default function PillarsSection() {
   return (
-    <section className="relative overflow-hidden py-10 sm:py-14 lg:py-20 px-4 sm:px-8 lg:px-12">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        {/* <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(${image})`, // Replace with your image path
-          }}
-        /> */}
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/0" /> {/* Adjust opacity (30% = 0.30) */}
-        {/* Or use a light overlay: */}
-        {/* <div className="absolute inset-0 bg-white/50" /> */}
-      </div>
-
-      {/* Decorative blobs */}
-      <div className="absolute inset-0 pointer-events-none z-[1]">
-        <div
-          className="absolute rounded-full w-[150px] sm:w-[220px] lg:w-[300px] h-[150px] sm:h-[220px] lg:h-[300px] top-[10%] right-[5%]"
-          style={{
-            filter: "blur(80px)",
-            background: `radial-gradient(circle, ${RED}12, transparent)`,
-          }}
-        />
-        <div
-          className="absolute rounded-full w-[100px] sm:w-[150px] lg:w-[200px] h-[100px] sm:h-[150px] lg:h-[200px] bottom-[15%] left-[8%]"
-          style={{
-            filter: "blur(60px)",
-            background: `radial-gradient(circle, ${BLUE}10, transparent)`,
-          }}
-        />
-        {heroBubbles.map((b, i) => (
-          <Bubble
-            key={i}
-            style={{
-              ...b,
-              opacity: (b.opacity || 0.4) * 0.5,
-              top: `${20 + i * 18}%`,
-              left: `${10 + i * 22}%`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Rest of your component remains the same */}
-      <div className="absolute top-0 right-0 pointer-events-none opacity-15 z-[1]">
-        <svg className="w-[120px] sm:w-[200px] lg:w-[300px] h-auto" viewBox="0 0 300 200">
-          <path
-            d="M300 0 C220 40, 140 30, 80 90 C40 130, 15 165, 0 200"
-            stroke={RED}
-            strokeWidth="2"
-            fill="none"
-          />
-          <circle cx="160" cy="70" r="5" fill={RED} opacity="0.5" />
-          <circle cx="100" cy="115" r="3" fill={RED} opacity="0.4" />
-        </svg>
-      </div>
-
-      <div className="absolute top-6 right-6 opacity-15 hidden sm:block z-[1]" aria-hidden>
-        <PencilSVG size={160} rotate={5} />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-[2]">
-        <FadeUp>
-          <h2
-            className="font-black leading-[1.05] mb-1 tracking-[-0.02em] text-[clamp(24px,5vw,52px)]"
-            style={{ fontFamily: "Fraunces, Georgia, serif", color: "#fff" }}
-          >
-            The Four Pillars of{" "}
-            <Highlight color="#FFEB3B">
-              <span style={{ color: RED, fontStyle: "italic" }}>Esperly</span>
-            </Highlight>
+    <section className="relative overflow-hidden bg-[#fdf1e9] px-4 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <div className="mx-auto max-w-7xl">
+        <FadeUp className="text-center">
+          <h2 className="text-3xl font-extrabold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            The Four Pillars of
           </h2>
 
-          <p
-            className="leading-[1.6] italic mb-2 sm:mb-3 text-sm sm:text-base lg:text-[17px]"
-            style={{ fontFamily: '"DM Serif Display", Georgia, serif', color: "#ccc" }}
-          >
-            Designed to support every student's unique learning journey
-          </p>
+          <span className="mt-2 inline-flex items-center gap-3">
+            <span className="hidden h-px w-8 rotate-[-8deg] bg-[#EB6664]/60 sm:block" />
+            <span
+              className="rounded-lg px-4 py-1.5 text-2xl font-extrabold italic sm:text-3xl lg:text-4xl"
+              style={{ backgroundColor: "#FCE98A", color: RED }}
+            >
+              Esperly
+            </span>
+            <span className="hidden h-px w-8 rotate-[8deg] bg-[#EB6664]/60 sm:block" />
+          </span>
 
-          <ScribbleUnderline
-            color={RED}
-            style={{
-              width: "clamp(140px, 30vw, 320px)",
-              marginBottom: "clamp(24px, 4vw, 48px)",
-            }}
-          />
+          <h3 className="mt-6 text-xl font-extrabold text-gray-900 sm:mt-8 sm:text-2xl lg:text-3xl">
+            The Esperly Learning Framework
+          </h3>
+
+          <p className="mx-auto mt-3 max-w-2xl text-sm italic text-gray-600 sm:mt-4 sm:text-base">
+            "A complete learning ecosystem built to help every student learn,
+            grow, and succeed with confidence."
+          </p>
         </FadeUp>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-7 pt-2">
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-7">
           {pillars.map((p, i) => (
             <PillarCard p={p} index={i} key={p.id} />
           ))}
