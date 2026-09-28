@@ -27,39 +27,45 @@ import ScrollBanner from "../Homescreen/ScrolleBanner";
 import FlashBanner from "../Homescreen/FlashBanner";
 import MeetVideo from "../Homescreen/MeetVideo";
 import OnboardingJourney from "../Homescreen/JourneyPage";
+import NewHero from "../Homescreen/NewHero";
+import Header from "./Header";
 
 const Home = () => {
     const [openModal, setOpenModal] = useState(false);
     return (
         <>
-            <Navbar />
-            {/* <NavImage /> */}
-            {/* <Hero /> */}
-            <HeroPage />
-            <PillarsPage />
-            <BookDesign />
-            <FlashBanner />
-            <StepsImage />
-            {/* <OnboardingJourney/> */}
-            {/* <StaircaseChart3D /> */}
-            <ExperianceCount />
-            {/* <MeetImg /> */}
-            <MeetVideo/>
-            <TrustAndSupport />
-            <ScrollBanner />
-            <Testimonioals />
-            {/* <MeetScreen/> */}
-            {/* <WhatWeTeach />
+            <Header />
+            <main className="pt-[70px]">
+                {/* <Navbar /> */}
+                {/* <NavImage /> */}
+                {/* <Hero /> */}
+                {/* <HeroPage /> */}
+                <NewHero />
+                <PillarsPage />
+                <BookDesign />
+                <FlashBanner />
+                <StepsImage />
+                {/* <OnboardingJourney/> */}
+                {/* <StaircaseChart3D /> */}
+                <ExperianceCount />
+                {/* <MeetImg /> */}
+                <MeetVideo />
+                <TrustAndSupport />
+                <ScrollBanner />
+                <Testimonioals />
+                {/* <MeetScreen/> */}
+                {/* <WhatWeTeach />
             <ZoomDesign/>
             <AdScroller />
             <ExperienceSection />
             <PillarsSection />
             <TracksSection /> */}
-            {/* <StoriesSection /> */}
-            {/* <EsperlyExperience /> */}
-            {/* <StudentJourney /> */}
-            {/* <WhatYouLookingFor/> */}
-            <Footer />
+                {/* <StoriesSection /> */}
+                {/* <EsperlyExperience /> */}
+                {/* <StudentJourney /> */}
+                {/* <WhatYouLookingFor/> */}
+                <Footer />
+            </main>
 
 
 

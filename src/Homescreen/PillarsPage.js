@@ -239,7 +239,7 @@ export default function PillarsSection() {
           }}
         /> */}
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/30" /> {/* Adjust opacity (30% = 0.30) */}
+        <div className="absolute inset-0 bg-black/0" /> {/* Adjust opacity (30% = 0.30) */}
         {/* Or use a light overlay: */}
         {/* <div className="absolute inset-0 bg-white/50" /> */}
       </div>
