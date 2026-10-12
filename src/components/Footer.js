@@ -2,130 +2,151 @@ import React from "react";
 import { BsFacebook, BsInstagram, BsLinkedin } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-/* ───────── SOCIAL BUTTON (BRAND HOVER) ───────── */
-const SocialBtn = ({ icon: Icon, type }) => {
-  const colors = {
-    facebook: "hover:bg-[#1877F2]",
-    instagram: "hover:bg-gradient-to-tr hover:from-pink-500 hover:to-yellow-500",
-    linkedin: "hover:bg-[#0077B5]",
-  };
+const CORAL = "#EB6664";
 
-  return (
-    <a
-      href="#"
-      className={`w-10 h-10 flex items-center justify-center rounded-md 
-      bg-white/10 border border-white/20 text-white 
-      transition-all duration-300 ${colors[type]}`}
-    >
-      <Icon size={16} />
-    </a>
-  );
-};
+/* ───────── SOCIAL BUTTON ───────── */
+const SocialBtn = ({ icon: Icon, label }) => (
+  <a
+    href="#"
+    aria-label={label}
+    className="w-10 h-10 flex items-center justify-center rounded-lg
+               bg-[#EB6664]/15 text-[#EB6664]
+               transition-all duration-300
+               hover:bg-[#EB6664] hover:text-white"
+  >
+    <Icon size={16} />
+  </a>
+);
 
-/* ───────── LINK ───────── */
+/* ───────── FOOTER LINK ───────── */
 const FooterLink = ({ children }) => (
-  <a href="#" className="block text-white/70 hover:text-white text-sm mb-2 transition">
+  <a
+    href="#"
+    className="block text-[13px] text-gray-800 mb-4 transition-colors hover:text-[#EB6664]"
+  >
     {children}
   </a>
 );
+
+/* ───────── COLUMN ───────── */
+const Column = ({ title, links }) => (
+  <div>
+    <h4 className="text-[13px] font-medium uppercase tracking-wide text-gray-900 mb-5">
+      {title}
+    </h4>
+    {links.map((l) => (
+      <FooterLink key={l}>{l}</FooterLink>
+    ))}
+  </div>
+);
+
+const columns = [
+  {
+    title: "The Company",
+    links: ["Who we are", "In the media", "Partners", "Privacy & Legal"],
+  },
+  {
+    title: "Private Tuition",
+    links: ["What we do", "How we recruit tutors", "Special needs", "FAQs"],
+  },
+  {
+    title: "Client Experience",
+    links: ["Testimonials", "Case studies", "Placements", "Refer a friend"],
+  },
+  {
+    title: "For Clients",
+    links: [
+      "Make an enquiry",
+      "Contact details",
+      "Our site for tutors",
+      "Current vacancies",
+    ],
+  },
+];
 
 /* ───────── MAIN FOOTER ───────── */
 const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className="text-white" style={{ backgroundColor: "#EB6664" }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-12">
-
-        {/* EVEN GRID */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-
-          {/* COLUMN 1 (BRAND) */}
-          <div>
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-              <div className="w-9 h-9 rounded-lg overflow-hidden">
-                <img src="/logo4.png" alt="logo" />
+    <footer className="w-full bg-white">
+      {/* ── TOP (WHITE) SECTION ── */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-12 pb-6 md:pb-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10">
+          {/* BRAND */}
+          <div className="col-span-2 md:col-span-3 lg:col-span-1">
+            <div
+              className="inline-flex flex-col cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0">
+                  <img
+                    src="/logo1.png"
+                    alt="Esperly logo"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span
+                  className="text-2xl font-semibold leading-none"
+                  style={{ color: CORAL }}
+                >
+                  Esperly
+                </span>
               </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-xl text-white font-semibold">Esperly</span>
-                <span className="text-[10px] text-white/80">Think. Learn. Excel.</span>
-              </div>
+              <span className="text-[10px] text-gray-800 mt-1">
+                Think. Learn. Excel.
+              </span>
             </div>
 
-            <div className="flex gap-3 mb-6 mt-2">
-              <SocialBtn icon={BsFacebook} type="facebook" />
-              <SocialBtn icon={BsInstagram} type="instagram" />
-              <SocialBtn icon={BsLinkedin} type="linkedin" />
+            <div className="flex gap-3 mt-5">
+              <SocialBtn icon={BsFacebook} label="Facebook" />
+              <SocialBtn icon={BsInstagram} label="Instagram" />
+              <SocialBtn icon={BsLinkedin} label="LinkedIn" />
             </div>
-
-            <p className="text-sm text-white/70 leading-relaxed">
-              © 2026 Esperly <br />
-              Hyderabad, India
-            </p>
           </div>
 
-          {/* COLUMN 2 */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">THE COMPANY</h4>
-            <FooterLink>Who we are</FooterLink>
-            <FooterLink>In the media</FooterLink>
-            <FooterLink>Partners</FooterLink>
-            <FooterLink>Privacy & Legal</FooterLink>
-          </div>
-
-          {/* COLUMN 3 */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">PRIVATE TUITION</h4>
-            <FooterLink>What we do</FooterLink>
-            <FooterLink>How we recruit tutors</FooterLink>
-            <FooterLink>Special needs</FooterLink>
-            <FooterLink>FAQs</FooterLink>
-          </div>
-
-          {/* COLUMN 4 */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">CLIENT EXPERIENCE</h4>
-            <FooterLink>Testimonials</FooterLink>
-            <FooterLink>Case studies</FooterLink>
-            <FooterLink>Placements</FooterLink>
-            <FooterLink>Refer a friend</FooterLink>
-          </div>
-
-          {/* COLUMN 5 */}
-          <div>
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wide">FOR CLIENTS</h4>
-            <FooterLink>Make an enquiry</FooterLink>
-            <FooterLink>Contact details</FooterLink>
-            <FooterLink>Our site for tutors</FooterLink>
-            <FooterLink>Current vacancies</FooterLink>
-          </div>
-
+          {/* LINK COLUMNS */}
+          {columns.map((c) => (
+            <Column key={c.title} title={c.title} links={c.links} />
+          ))}
         </div>
       </div>
 
-      {/* BOTTOM BAR */}
-      <div className="border-t border-white/20">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-4 flex flex-col items-center gap-2">
+      {/* ── CURVED WAVE ── */}
+      <div className="relative -mt-px leading-[0]">
+        <svg
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          className="block w-full h-[50px] sm:h-[80px] md:h-[110px]"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,0 C380,130 1060,130 1440,0 L1440,121 L0,121 Z"
+            fill={CORAL}
+          />
+        </svg>
+      </div>
 
-          {/* Row 1 — policy links */}
-          <div className="flex items-center gap-1 flex-wrap justify-center">
-            <a href="#" className="text-xs text-white/60 hover:text-white transition">Privacy Policy</a>
-            <span className="text-white/30 text-xs">·</span>
-            <a href="#" className="text-xs text-white/60 hover:text-white transition">Terms & Conditions</a>
-            <span className="text-white/30 text-xs">·</span>
-            <a href="#" className="text-xs text-white/60 hover:text-white transition">Cookie Policy</a>
-            <span className="text-white/30 text-xs">·</span>
-            <a href="#" className="text-xs text-white/60 hover:text-white transition">Support</a>
-          </div>
-
-          <span className="text-white/30 text-xs">·</span>
-
-          {/* Row 2 — licence */}
-          <p className="text-xs text-white/50 text-center">
-            Licensed by Esperly. All rights reserved.
-          </p>
-
+      {/* ── BOTTOM (CORAL) SECTION ── */}
+      <div
+        className="px-6 pb-8 -mt-px text-center text-white"
+        style={{ backgroundColor: CORAL }}
+      >
+        <div className="flex flex-wrap items-center justify-center gap-x-1 text-[11px] text-white/90">
+          <a href="#" className="hover:text-white hover:underline">Privacy Policy</a>
+          <span>·</span>
+          <a href="#" className="hover:text-white hover:underline">Terms &amp; Conditions</a>
+          <span>·</span>
+          <a href="#" className="hover:text-white hover:underline">Cookie Policy</a>
+          <span>·</span>
+          <a href="#" className="hover:text-white hover:underline">Support</a>
+          <span>.</span>
         </div>
+
+        <p className="mt-4 text-[11px] text-white/90">
+          Licence by Esperly · All rights reserved.
+        </p>
       </div>
     </footer>
   );

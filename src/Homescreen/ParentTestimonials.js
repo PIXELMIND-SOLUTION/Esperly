@@ -1,5 +1,6 @@
 import React from "react";
 import ParentImage from "../assets/parent.png";
+import { BsQuote } from "react-icons/bs";
 const testimonials = [
   {
     id: 1,
@@ -55,7 +56,7 @@ const ParentTestimonials = () => {
       className="w-full bg-[#fdf1e9] px-4 py-10 font-['Poppins',sans-serif] sm:px-8 sm:py-14 lg:px-16 lg:py-16"
       aria-labelledby="parent-testimonials-heading"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         {/* Heading */}
         <div className="flex flex-col items-center">
           <h2
@@ -65,38 +66,53 @@ const ParentTestimonials = () => {
             “From improved grades to greater confidence…”
           </h2>
 
-          <p className="mt-5 max-w-[520px] text-left text-base leading-relaxed text-black sm:mt-6 sm:text-lg lg:text-xl">
+          <p className="mt-5 max-w-7xl text-left text-base leading-relaxed text-black sm:mt-6 sm:text-lg lg:text-xl">
             From improved grades to greater confidence, see how Esperly is
             making a positive impact on students and families.
           </p>
         </div>
 
-        {/* Cards */}
+
         <div className="mt-10 grid grid-cols-1 gap-5 sm:mt-12 md:grid-cols-3 lg:gap-6">
           {testimonials.map((item) => (
             <article
               key={item.id}
-              className="mx-auto flex w-full max-w-md flex-col rounded-2xl bg-[#FDE0DD] px-5 pb-6 pt-6 md:max-w-none lg:px-7"
+              className="group mx-auto flex w-full max-w-md flex-col rounded-2xl border border-[#EB6664]/20
+                 bg-[#FDE0DD] p-5 shadow-sm transition-all duration-300
+                 hover:-translate-y-1 hover:shadow-lg sm:p-6 md:max-w-none"
             >
-              <img
-                src={item.image}
-                alt={item.name}
-                loading="lazy"
-                className="mx-auto h-[100px] w-[100px] rounded-2xl object-cover sm:h-[106px] sm:w-[106px]"
-              />
-
-              <div className="mt-5">
-                <Stars />
+              {/* Top row: quote badge + rating */}
+              <div className="flex items-center justify-between">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#EB6664] text-white">
+                  <BsQuote className="h-6 w-6" aria-hidden="true" />
+                </span>
+                <Stars rating={item.rating ?? 5} />
               </div>
 
-              <p className="mt-4 flex-1 text-left text-[13px] leading-[1.7] text-[#1a1a1a] sm:text-sm">
+              {/* Quote */}
+              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-black/80 sm:text-[15px]">
                 “{item.text}”
-              </p>
+              </blockquote>
 
-              <p className="mt-6 flex items-center justify-end gap-2 text-base font-normal text-black sm:text-lg lg:text-xl">
-                <span aria-hidden="true">•</span>
-                {item.name}
-              </p>
+              {/* Author */}
+              <div className="mt-5 flex items-center gap-3 border-t border-[#EB6664]/20 pt-4">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  loading="lazy"
+                  className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white sm:h-14 sm:w-14"
+                />
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-black sm:text-base">
+                    {item.name}
+                  </p>
+                  {item.role && (
+                    <p className="truncate text-xs text-black/60 sm:text-sm">
+                      {item.role}
+                    </p>
+                  )}
+                </div>
+              </div>
             </article>
           ))}
         </div>

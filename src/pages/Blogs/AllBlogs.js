@@ -1,28 +1,42 @@
-import React, { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import { FiSearch, FiStar, FiArrowRight } from "react-icons/fi";
 import LoginModal from "../../modals/LoginModal";
 import Footer from "../../components/Footer";
-import NavImage from "../../components/NavImage";
 import Header from "../../components/Header";
+import HERO_IMG from "../../assets/Blogs/Bloghero.png";
+import F_BLOG from "../../assets/Blogs/fblog.png";
+import BLOG_1 from "../../assets/Blogs/blog1.png";
+import BLOG_2 from "../../assets/Blogs/blog2.png";
+import BLOG_3 from "../../assets/Blogs/blog3.png";
+import BLOG_4 from "../../assets/Blogs/blog4.png";
+import BLOG_5 from "../../assets/Blogs/blog5.png";
+import AUTHOR from "../../assets/Blogs/author.png";
 
-// ─── Mock Data ───────────────────────────────────────────────────────────────
-const CATEGORIES = ["All", "Learning Tips", "Tutoring", "Career", "Technology", "Parenting"];
+/* ───────── DATA ───────── */
+const CATEGORIES = [
+  "All",
+  "Study Tips",
+  "Exam Prep",
+  "Parent Guides",
+  "Student Success",
+  "Career Guidance",
+];
 
 const BLOGS = [
   {
     id: 1,
     slug: "how-to-choose-the-right-tutor",
-    title: "How to Choose the Right Tutor for Your Child",
+    title: "How to choose the right tutorial for your child",
     excerpt:
-      "Finding the perfect tutor can feel overwhelming. Here's a step-by-step guide to help you make the right choice for your child's learning journey.",
+      "Practical strategies, study techniques, and insights designed to support every student's learning journey.",
     category: "Tutoring",
+    topics: ["Parent Guides", "Student Success"],
     author: "Priya Sharma",
     authorRole: "Education Consultant",
-    date: "May 12, 2025",
-    readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800&q=80",
+    authorImg: AUTHOR,
+    image: F_BLOG,
     featured: true,
   },
   {
@@ -32,12 +46,8 @@ const BLOGS = [
     excerpt:
       "From spaced repetition to the Pomodoro technique, discover science-backed strategies that can transform how students learn and retain information.",
     category: "Learning Tips",
-    author: "Rahul Verma",
-    authorRole: "Cognitive Psychologist",
-    date: "April 28, 2025",
-    readTime: "7 min read",
-    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80",
-    featured: false,
+    topics: ["Study Tips", "Exam Prep"],
+    image: BLOG_1,
   },
   {
     id: 3,
@@ -46,26 +56,18 @@ const BLOGS = [
     excerpt:
       "Artificial intelligence is reshaping the classroom. Explore how adaptive learning platforms are making education more personal and effective than ever before.",
     category: "Technology",
-    author: "Ananya Singh",
-    authorRole: "EdTech Researcher",
-    date: "April 15, 2025",
-    readTime: "6 min read",
-    image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80",
-    featured: false,
+    topics: ["Student Success"],
+    image: BLOG_2,
   },
   {
     id: 4,
     slug: "career-paths-after-12th",
     title: "Best Career Paths to Explore After Class 12",
     excerpt:
-      "Unsure what to do after school? We break down the most rewarding career options across science, commerce, and arts streams for 2025 graduates.",
+      "Unsure what to do after school? We break down the most rewarding career options across science, commerce, and arts streams for students.",
     category: "Career",
-    author: "Vikram Nair",
-    authorRole: "Career Counsellor",
-    date: "March 30, 2025",
-    readTime: "8 min read",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-    featured: false,
+    topics: ["Career Guidance", "Exam Prep"],
+    image: BLOG_3,
   },
   {
     id: 5,
@@ -74,287 +76,273 @@ const BLOGS = [
     excerpt:
       "The home environment plays a crucial role in academic success. Practical tips for parents to nurture curiosity and build good study habits.",
     category: "Parenting",
-    author: "Meera Iyer",
-    authorRole: "Child Development Specialist",
-    date: "March 18, 2025",
-    readTime: "4 min read",
-    image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
-    featured: false,
+    topics: ["Parent Guides"],
+    image: BLOG_4,
   },
   {
     id: 6,
     slug: "online-vs-offline-tutoring",
     title: "Online vs Offline Tutoring: Which Is Right for You?",
     excerpt:
-      "Both formats have their merits. We compare the benefits and limitations of online and in-person tutoring to help you decide what suits your child best.",
+      "Both formats have their merits. We compare the benefits and limitations of online and in-person tutoring to help parents choose the best option.",
     category: "Tutoring",
-    author: "Priya Sharma",
-    authorRole: "Education Consultant",
-    date: "March 5, 2025",
-    readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
-    featured: false,
+    topics: ["Parent Guides", "Student Success"],
+    image: BLOG_5,
   },
 ];
 
-// ─── Blog Card ────────────────────────────────────────────────────────────────
-const BlogCard = ({ blog, index, onClick }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-5% 0px" });
+/* ───────── FADE-IN WRAPPER ───────── */
+const Reveal = ({ children, delay = 0, className = "" }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-5% 0px" }}
+    transition={{ duration: 0.5, delay }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
-  return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 36 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.08 }}
+/* ───────── FEATURED CARD ───────── */
+const FeaturedCard = ({ blog, onClick }) => (
+  <Reveal>
+    <article
+      role="link"
+      tabIndex={0}
       onClick={() => onClick(blog.slug)}
-      className="group cursor-pointer bg-[#FCFAF5] border border-[#EB6664]/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col"
+      onKeyDown={(e) => e.key === "Enter" && onClick(blog.slug)}
+      className="group cursor-pointer rounded-2xl border border-[#EB6664] bg-[#F7C8C4]
+                 p-3 sm:p-4 grid grid-cols-1 md:grid-cols-[minmax(0,300px)_1fr]
+                 lg:grid-cols-[minmax(0,360px)_1fr] gap-4 md:gap-5
+                 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB6664]/60"
     >
-      {/* Image */}
-      <div className="relative overflow-hidden h-44 sm:h-48">
+      <div className="overflow-hidden rounded-xl h-[190px] sm:h-[240px] md:h-full md:min-h-[210px]">
         <img
           src={blog.image}
           alt={blog.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        <span className="absolute top-3 left-3 bg-[#EB6664] text-white text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full">
-          {blog.category}
-        </span>
       </div>
 
-      {/* Body */}
-      <div className="flex flex-col flex-1 p-5 sm:p-6">
-        <div className="flex items-center gap-2 text-[10px] sm:text-xs text-[#7A6E5A] mb-3">
-          <span>{blog.date}</span>
-          <span className="w-1 h-1 rounded-full bg-[#EB6664]/40 inline-block" />
-          <span>{blog.readTime}</span>
-        </div>
-
-        <h3 className="text-base sm:text-lg font-bold text-[#1C1209] leading-snug mb-2 group-hover:text-[#EB6664] transition-colors line-clamp-2">
-          {blog.title}
-        </h3>
-
-        <p className="text-xs sm:text-sm text-[#7A6E5A] leading-relaxed flex-1 line-clamp-3">
-          {blog.excerpt}
-        </p>
-
-        {/* Author + CTA */}
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#EB6664]/10">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-[#EB6664]/15 flex items-center justify-center text-xs font-bold text-[#EB6664]">
-              {blog.author.charAt(0)}
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-[#1C1209] leading-none">{blog.author}</p>
-              <p className="text-[10px] text-[#7A6E5A]">{blog.authorRole}</p>
-            </div>
-          </div>
-          <span className="text-xs font-semibold text-[#EB6664] flex items-center gap-1 group-hover:gap-2 transition-all">
-            Read <span>→</span>
+      <div className="flex flex-col min-w-0">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span className="inline-flex items-center gap-1.5 text-sm md:text-base font-semibold text-[#EB6664]">
+            <FiStar className="w-3.5 h-3.5 fill-current" />
+            Featured
+          </span>
+          <span className="text-xs md:text-sm text-[#EB6664]/80">
+            {blog.category}
           </span>
         </div>
-      </div>
-    </motion.article>
-  );
-};
 
-// ─── Featured Card ────────────────────────────────────────────────────────────
-const FeaturedCard = ({ blog, onClick }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-5% 0px" });
-
-  return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7 }}
-      onClick={() => onClick(blog.slug)}
-      className="group cursor-pointer bg-[#FCFAF5] border border-[#EB6664]/10 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 grid grid-cols-1 lg:grid-cols-2"
-    >
-      <div className="relative overflow-hidden h-52 sm:h-64 lg:h-full">
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        <span className="absolute top-4 left-4 bg-[#EB6664] text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full">
-          ⭐ Featured · {blog.category}
-        </span>
-      </div>
-
-      <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-        <div className="flex items-center gap-2 text-xs text-[#7A6E5A] mb-3">
-          <span>{blog.date}</span>
-          <span className="w-1 h-1 rounded-full bg-[#EB6664]/40 inline-block" />
-          <span>{blog.readTime}</span>
-        </div>
-
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1C1209] leading-tight mb-3 group-hover:text-[#EB6664] transition-colors">
+        <h2 className="mt-2 text-lg sm:text-xl lg:text-[22px] font-semibold text-black leading-snug max-w-lg">
           {blog.title}
         </h2>
 
-        <p className="text-sm text-[#7A6E5A] leading-relaxed mb-6">{blog.excerpt}</p>
+        <p className="mt-2 text-sm md:text-base text-black/80 leading-relaxed max-w-2xl">
+          {blog.excerpt}
+        </p>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#EB6664]/15 flex items-center justify-center text-sm font-bold text-[#EB6664]">
-              {blog.author.charAt(0)}
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-[#1C1209]">{blog.author}</p>
-              <p className="text-xs text-[#7A6E5A]">{blog.authorRole}</p>
+        <div className="mt-5 md:mt-auto pt-2 flex flex-wrap items-end justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <img
+              src={blog.authorImg}
+              alt={blog.author}
+              className="w-9 h-9 rounded-full object-cover bg-[#EB6664]/20"
+            />
+            <div className="leading-tight">
+              <p className="text-sm font-medium text-black">{blog.author}</p>
+              <p className="text-xs text-black/70">{blog.authorRole}</p>
             </div>
           </div>
-          <button className="bg-[#EB6664] text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl hover:bg-[#EB6664]/90 transition-colors flex items-center gap-1.5">
-            Read Article <span>→</span>
-          </button>
+
+          <span className="inline-flex items-center gap-1.5 text-sm md:text-base font-semibold text-[#EB6664] whitespace-nowrap transition-all group-hover:gap-2.5">
+            Read Article <FiArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+          </span>
         </div>
       </div>
-    </motion.article>
-  );
-};
+    </article>
+  </Reveal>
+);
 
-// ─── Blogs Page ───────────────────────────────────────────────────────────────
+/* ───────── BLOG CARD ───────── */
+const BlogCard = ({ blog, index, onClick }) => (
+  <Reveal delay={(index % 3) * 0.08} className="h-full">
+    <article
+      role="link"
+      tabIndex={0}
+      onClick={() => onClick(blog.slug)}
+      onKeyDown={(e) => e.key === "Enter" && onClick(blog.slug)}
+      className="group cursor-pointer h-full flex flex-col overflow-hidden rounded-2xl bg-[#EAE5E2]
+                 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5
+                 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB6664]/60"
+    >
+      <div className="overflow-hidden h-[160px] sm:h-[170px] lg:h-[180px]">
+        <img
+          src={blog.image}
+          alt={blog.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+
+      <span className="self-start ml-0.5 mt-0.5 rounded-md bg-[#F8D5D1] px-2.5 py-0.5 text-xs text-[#EB6664] font-medium">
+        {blog.category}
+      </span>
+
+      <div className="flex flex-col flex-1 px-5 lg:px-6 pt-3 pb-4">
+        <h3 className="text-base lg:text-[17px] font-semibold leading-snug text-black transition-colors group-hover:text-[#EB6664] line-clamp-2">
+          {blog.title}
+        </h3>
+
+        <p className="mt-2 text-[13px] lg:text-sm leading-relaxed text-black/75 line-clamp-4">
+          {blog.excerpt}
+        </p>
+
+        <span className="mt-auto pt-3 self-end inline-flex items-center gap-1.5 text-sm md:text-base font-semibold text-[#EB6664] transition-all group-hover:gap-2.5">
+          Read <FiArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+        </span>
+      </div>
+    </article>
+  </Reveal>
+);
+
+/* ───────── PAGE ───────── */
 const AllBlogs = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const headerRef = useRef(null);
-  const inView = useInView(headerRef, { once: true, margin: "-8% 0px" });
+  const q = searchQuery.trim().toLowerCase();
 
-  const featured = BLOGS.find((b) => b.featured);
-  const rest = BLOGS.filter((b) => !b.featured);
-
-  const filtered = rest.filter((b) => {
-    const matchCat = activeCategory === "All" || b.category === activeCategory;
+  const matches = (b) => {
+    const matchCat = activeCategory === "All" || b.topics.includes(activeCategory);
     const matchSearch =
-      b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      !q ||
+      b.title.toLowerCase().includes(q) ||
+      b.excerpt.toLowerCase().includes(q);
     return matchCat && matchSearch;
-  });
+  };
+
+  const featured = BLOGS.find((b) => b.featured && matches(b));
+  const filtered = BLOGS.filter((b) => !b.featured && matches(b));
+  const hasResults = Boolean(featured) || filtered.length > 0;
 
   const handleNavigate = (slug) => navigate(`/blogs/${slug}`);
 
   return (
     <>
       <Header onOpenModal={() => setOpenModal(true)} />
-      <NavImage />
 
-      <section className="relative overflow-hidden bg-transparent py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
-        {/* Decorative blobs */}
-        <div className="hidden sm:block absolute top-20 right-10 w-32 h-32 rounded-full bg-[#EB6664]/5 blur-3xl pointer-events-none" />
-        <div className="hidden sm:block absolute bottom-20 left-10 w-40 h-40 rounded-full bg-[#3B6FA0]/5 blur-3xl pointer-events-none" />
-        <div className="hidden lg:block absolute top-1/2 right-1/4 w-24 h-24 rounded-full bg-[#2E7D52]/5 blur-3xl pointer-events-none" />
+      <main className="font-['Poppins',sans-serif] bg-[#FCF4F0] overflow-x-hidden">
+        {/* ═════════ HERO ═════════ */}
+        <section className="relative w-full flex items-end overflow-hidden h-[90vh]">
+          <img
+            src={HERO_IMG}
+            alt="Student learning online with headphones"
+            className="absolute inset-0 w-full h-full object-cover object-[75%_center] sm:object-center"
+          />
+          {/* soft light overlay keeps the dark text readable on the photo */}
+          <div className="absolute inset-0 bg-white/40 sm:bg-gradient-to-r sm:from-white/70 sm:via-white/30 sm:to-transparent" />
 
-        <div className="max-w-6xl mx-auto relative z-10">
-
-          {/* ── Header ── */}
-          <motion.div
-            ref={headerRef}
-            initial={{ opacity: 0, y: 32 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-            className="text-center mb-8 sm:mb-12 lg:mb-16"
-          >
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-6 sm:w-8 h-px bg-[#EB6664]/50" />
-              <span className="text-xs sm:text-sm font-semibold text-[#EB6664] tracking-wider uppercase">
-                Our Blog
+          <div className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 pt-24 pb-8 sm:pb-12 lg:pb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="inline-flex items-center rounded-full bg-white px-3.5 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-sm font-medium text-[#EB6664] shadow-sm">
+                Our Blogs
               </span>
-              <div className="w-6 sm:w-8 h-px bg-[#EB6664]/50" />
-            </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1C1209] mb-3 sm:mb-4 px-4">
-              Insights &{" "}
-              <span className="text-[#EB6664] italic">Stories</span>
-            </h2>
+              <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight text-black">
+                &quot;<span className="text-[#EB6664]">Learning</span> Insights&quot;
+              </h1>
 
-            <p className="text-sm sm:text-base text-[#7A6E5A] max-w-2xl mx-auto px-4">
-              Tips, guides, and stories from our educators and experts — designed to help
-              learners, parents, and tutors thrive together.
-            </p>
-          </motion.div>
+              <p className="mt-3 text-sm sm:text-base text-black/70 max-w-xl leading-relaxed">
+                Helpful tips, learning strategies, and resources to support every
+                student&apos;s academic journey.
+              </p>
 
-          {/* ── Search + Filter ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex flex-col sm:flex-row gap-4 mb-8 sm:mb-10 items-center"
+              <div className="mt-5 relative w-full max-w-[560px]">
+                <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-black/70" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search learning resources"
+                  aria-label="Search learning resources"
+                  className="w-full h-11 pl-10 sm:pl-11 pr-4 rounded-lg bg-white text-sm text-black shadow-sm
+                             outline-none placeholder:text-black/50 focus:ring-2 focus:ring-[#EB6664]/40"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          {/* ═════════ CATEGORY PILLS ═════════ */}
+          <div
+            className="pt-8 md:pt-12 -mx-4 px-4 sm:mx-0 sm:px-0 flex gap-2.5 overflow-x-auto sm:flex-wrap sm:overflow-visible
+                       [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {/* Search */}
-            <div className="relative w-full sm:max-w-xs">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#EB6664]/50 text-sm">🔍</span>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search articles..."
-                className="w-full pl-9 pr-4 py-2.5 text-sm bg-[#FCFAF5] border border-[#EB6664]/20 rounded-xl text-[#1C1209] outline-none focus:border-[#EB6664]/60 transition-all placeholder:text-[#7A6E5A]/60"
-              />
-            </div>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`shrink-0 whitespace-nowrap rounded-lg border border-[#EB6664] px-4 py-1.5
+                            text-sm md:text-base font-medium transition-colors ${
+                              activeCategory === cat
+                                ? "bg-[#EB6664] text-white"
+                                : "bg-transparent text-black hover:bg-[#F8D5D1]"
+                            }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
-                    activeCategory === cat
-                      ? "bg-[#EB6664] text-white border-[#EB6664]"
-                      : "bg-[#FCFAF5] text-[#7A6E5A] border-[#EB6664]/20 hover:border-[#EB6664]/50"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* ── Featured Post ── */}
-          {featured && activeCategory === "All" && !searchQuery && (
-            <div className="mb-8 sm:mb-10">
+          {/* ═════════ FEATURED ═════════ */}
+          {featured && (
+            <div className="mt-6 md:mt-8">
               <FeaturedCard blog={featured} onClick={handleNavigate} />
             </div>
           )}
 
-          {/* ── Grid ── */}
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {/* ═════════ GRID ═════════ */}
+          {filtered.length > 0 && (
+            <div className="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((blog, i) => (
                 <BlogCard key={blog.id} blog={blog} index={i} onClick={handleNavigate} />
               ))}
             </div>
-          ) : (
-            <div className="text-center py-20 text-[#7A6E5A]">
-              <p className="text-4xl mb-3">📭</p>
-              <p className="text-base font-semibold text-[#1C1209]">No articles found</p>
-              <p className="text-sm mt-1">Try a different search term or category.</p>
+          )}
+
+          {/* ═════════ EMPTY STATE ═════════ */}
+          {!hasResults && (
+            <div className="text-center py-20">
+              <p className="text-base font-semibold text-black">No articles found</p>
+              <p className="text-sm mt-1 text-black/70">
+                Try a different search term or category.
+              </p>
             </div>
           )}
 
-          {/* ── Load More (Static UI) ── */}
-          {filtered.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-center mt-10 sm:mt-14"
-            >
-              <button className="inline-flex items-center gap-2 border border-[#EB6664]/30 text-[#EB6664] font-semibold text-sm px-6 py-3 rounded-xl hover:bg-[#EB6664]/5 transition-all">
-                Load More Articles <span>↓</span>
+          {/* ═════════ VIEW MORE ═════════ */}
+          {hasResults && (
+            <div className="mt-8 md:mt-12 pb-10 md:pb-14 flex justify-center">
+              <button
+                className="inline-flex items-center gap-2 rounded-lg bg-[#EB6664] text-white
+                           px-5 py-2.5 text-sm md:text-base font-semibold shadow-sm
+                           transition hover:bg-[#d95755]"
+              >
+                View More Articles <FiArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
-      </section>
+      </main>
 
       <Footer />
       <LoginModal isOpen={openModal} onClose={() => setOpenModal(false)} />
