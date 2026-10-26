@@ -1,2086 +1,764 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
-  ChevronRight, Phone, Mail, Play, CheckCircle,
-  Award, Clock, Users, BookOpen, Sparkles,
-  Star, ArrowRight, Shield, Target, Heart, Brain,
-  ChevronDown,
-  BarChart3,
-  Smile, X, ChevronLeft
+  Phone, Mail, Check, ChevronDown, Sparkles, Heart, Pencil, GraduationCap,
+  MousePointerClick, BookOpen, Volume2, Trophy, Brain, Users, BarChart3, Smile,
+  Mic, Lightbulb, Star, MessageCircle, Calculator, Zap, Target,
 } from "lucide-react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import NavImage from "../../components/NavImage";
-import video from "../../assets/esperlyIntro.mp4"
-import SchoolBack from "../../views/schollback";
-import { AnimatePresence, motion } from "framer-motion";
 import abacus1 from "../../assets/abacus/1.png";
 import abacus2 from "../../assets/abacus/2.png";
 import abacus3 from "../../assets/abacus/3.png";
 import abacus4 from "../../assets/abacus/4.png";
 
+/* ================================================================== */
+/*  HELPERS                                                            */
+/* ================================================================== */
+const u = (id, w = 1200) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+const av = (n) => `https://i.pravatar.cc/80?img=${n}`;
+
+/* Placeholder photos — replace with your own assets */
+const P = {
+  shelf: u("1507842217343-583bb7270b66", 1800),
+  kidBook: u("1503454537195-1dcabb73ffb9", 1000),
+  kidLaptop: u("1588072432836-e10032774350", 900),
+  blocks: u("1596464716127-f2a82984de30", 900),
+  girls: u("1497633762265-9d179a990aa6", 1400),
+  g1: u("1456735190827-d1262f71b8a3", 900),
+  g2: u("1517842645767-c639042777db", 900),
+  g3: u("1513542789411-b6a5d4f31634", 900),
+  classroom: u("1509062522246-3755977927d7"),
+  students: u("1522202176988-66273c2fd55f", 1400),
+  stage: u("1504384308090-c894fdcc538d", 1470),
+  books: u("1524995997946-a1c2e315a42f", 1470),
+  kids: u("1503676260728-1c00da094a0b", 1470),
+  smile: u("1516321318423-f06f85e504b3", 1400),
+  desk: u("1454165804606-c3d57bc86b40", 1400),
+};
+
+const CONTACT = { phone: "+91 9876543210", email: "support@esperly.com" };
+const MODES = ["Online Classes (One-on-One)", "Group Batch"];
+
+/* ================================================================== */
+/*  COURSES — every course feeds the same page design                  */
+/* ================================================================== */
 const COURSES = {
   Abacus: {
-    hero: {
-      tagline: "Mental Math Mastery",
-      gradient: "from-[#EB6664] via-[#EB6664] to-[#EB6664]",
-      accent: "#EB6664",
-      darkAccent: "#EB6664",
-      lightBg: "bg-[#EB6664]/5",
-      badge: "bg-[#EB6664]/10 text-[#EB6664]",
-      icon: "🧮",
-      image: "https://i.pinimg.com/736x/82/e4/dd/82e4dd99794717f18052f971ff21de1a.jpg",
-    },
-    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
-    duration: 'Depending on Level',
-    ageGroup: '5 to 12 Years',
-    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
-    phone: '+91 9876543210',
-    email: 'support@esperly.com',
-    description: "Transform your child's mathematical ability with ancient abacus techniques that build lightning-fast mental calculation skills.",
-    stats: [
-      { icon: Brain, label: "Brain Development", value: "2x Faster" },
-      { icon: Target, label: "Accuracy", value: "99%" },
-      { icon: Star, label: "Student Rating", value: "4.9/5" },
+    ...CONTACT,
+    heroImage: "https://i.pinimg.com/736x/82/e4/dd/82e4dd99794717f18052f971ff21de1a.jpg",
+    tagline: "Mental Math Mastery",
+    trainingModes: MODES,
+    duration: "Depending on Level",
+    ageGroup: "5 to 12 Years",
+    topics: ["Addition", "Subtraction", "Multiplication", "Division", "Abacus Techniques", "Mental Math Development"],
+    short: "Abacus",
+    powerSub: "Building Lightning-Fast Mental Math",
+    power: [
+      "Builds Fast Mental Calculation Skills",
+      "Improves Focus, Accuracy and Concentration",
+      "Strengthens Number Sense and Memory",
+      "Builds Confidence in Mathematics",
     ],
-    whatIs: {
-      title: "What is an Abacus?",
-      points: [
-        "Traditional manual tool used for calculations",
-        "Made of a frame with rods/wires and movable beads",
-        "Beads represent different place values",
-        "Calculations are done by moving beads",
-        "Supports addition, subtraction, multiplication, and division",
-        "Develops mental arithmetic and numerical understanding",
-        "Improves focus, accuracy, and concentration",
-        "Still widely used in basic math education today"
-      ],
-    },
-    benefits: {
-      title: "Benefits of Abacus Training",
-      subtitle: "Abacus learning is a powerful method that helps children build a strong foundation in mathematics and cognitive skills from an early age.",
-      benefits: [
-        { title: "Brain Development Focus" },
-        { title: "Hands-on Learning Method" },
-        { title: "Fast Mental Calculation Training" },
-        { title: "Concept-Based Structured Learning" },
-        { title: "Strong Focus on the Basics of Mathematics" },
-        { title: "Improves Concentration & Memory" },
-        { title: "Boosts Speed & Accuracy" },
-        { title: "Confidence Building Program" },
-      ],
-    },
-    approach: {
-      title: "Our Unique Approach at ESPERLY",
-      points: [
-        {
-          title: "CUSTOMISED PROGRAM",
-          icon: Brain,
-          image:
-            abacus1,
-          // Child using abacus — individualized learning, hands-on practice
-          desc: "Our Abacus Training Course is designed to adapt to each child's pace and ability. This individualized approach ensures dedicated attention to every learner, enabling steady progress with confidence while nurturing their complete potential.",
-        },
-        {
-          title: "EXPERIENCED MENTORS",
-          icon: Users,
-          image:
-            abacus2,
-          // Teacher guiding a young student one-on-one
-          desc: "Our experienced abacus teachers bring strong expertise in early numeracy and child-focused learning methods. With personalized attention and continuous encouragement, they help each child build confidence, strengthen mental math skills, and progress at their own pace, while making complex calculations simple and engaging through structured techniques.",
-        },
-        {
-          title: "PROGRESS TRACKING",
-          icon: BarChart3,
-          image:
-            abacus3,
-          // Classroom assessment / student writing / structured learning environment
-          desc: "We follow continuous progress tracking to monitor each child's development in abacus learning, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth. Timely guidance and personalized support are provided to every learner, ensuring consistent improvement aligned with their individual progress.",
-        },
-        {
-          title: "FRIENDLY ENVIRONMENT",
-          icon: Smile,
-          image:
-            abacus4,
-          // Happy kids learning together online / smiling child at laptop
-          desc: "Our online abacus classes create a friendly and engaging virtual learning environment where children feel comfortable and connected from anywhere. Through interactive sessions and supportive guidance, we ensure every student stays confident, focused, and actively involved in learning.",
-        },
-      ],
-    },
+    powerImg: abacus1,
+    whyB: "Abacus Training?",
+    whyIntro:
+      "Abacus learning is a powerful method that helps children build a strong foundation in mathematics and cognitive skills from an early age.",
+    why: [
+      "Brain development focus",
+      "Hands-on learning method",
+      "Fast mental calculation training",
+      "Concept-based structured learning",
+      "Strong focus on the basics of mathematics",
+      "Improves concentration and memory",
+      "Boosts speed and accuracy",
+      "Confidence building program",
+    ],
+    whyImg1: abacus2,
+    whyImg2: abacus3,
+    approachTitle: "Our Unique Approach",
+    approachIntro: "Personal attention, structured techniques, and regular assessments help every child progress at their own pace.",
+    approachImg: abacus1,
+    tabs: [
+      { title: "Customised Program", icon: Brain, image: abacus1, desc: "Our Abacus Training Course is designed to adapt to each child's pace and ability. This individualized approach ensures dedicated attention to every learner, enabling steady progress with confidence while nurturing their complete potential." },
+      { title: "Experienced Mentors", icon: Users, image: abacus2, desc: "Our experienced abacus teachers bring strong expertise in early numeracy and child-focused learning methods. With personalized attention and continuous encouragement, they help each child build confidence and progress at their own pace." },
+      { title: "Progress Tracking", icon: BarChart3, image: abacus3, desc: "We follow continuous progress tracking to monitor each child's development, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth." },
+      { title: "Friendly Environment", icon: Smile, image: abacus4, desc: "Our online abacus classes create a friendly and engaging virtual learning environment where children feel comfortable and connected from anywhere, staying confident, focused, and actively involved." },
+    ],
+    testimonialsTitle: "Building Confident Young Mathematicians",
+    testimonialsSub: "Hear from parents whose children improved their calculation speed, focus, and confidence through our abacus journey.",
     testimonials: [
-      {
-        title: "Very Organised",
-        desc: "I got to know about HomeShiksha from a parent and I thought of giving a try for my kid's tuition. It's very organised and they gave 3 teachers for demo and I chose the best amongst the three. The team is approachable and provide updates on time.",
-        name: "Geetha Sridhara",
-        location: "Bangalore, India",
-        image: "https://i.pravatar.cc/40?img=1",
-        bg: "bg-[#e9a6ad]",
-      },
-      {
-        title: "Very Good Personal Tutor",
-        desc: "Really very happy with this institution as I could get a very good personal tutor for my daughter. We could see a difference within a month in our daughter's learning curve.",
-        name: "KanchyKanz",
-        location: "Mumbai, India",
-        image: "https://i.pravatar.cc/40?img=2",
-        bg: "bg-[#c9c9e8]",
-      },
-      {
-        title: "Friendly Staff",
-        desc: "Very good institute and friendly staff. We recently hired a shadow teacher and she has very good knowledge and idea about what she need to work on based on the child needs.",
-        name: "Sowjanya Balireddy",
-        location: "Hyderabad, India",
-        image: "https://i.pravatar.cc/40?img=3",
-        bg: "bg-[#b7c7e8]",
-      },
+      { title: "Faster Calculations", text: "My daughter now solves sums in her head faster than I can on a calculator. Her confidence in maths has completely changed within a few months.", name: "Ananya Sharma", loc: "Hyderabad, India", img: av(47) },
+      { title: "Better Focus", text: "The structured levels and daily practice sheets helped my son concentrate for longer. His school maths scores have improved noticeably.", name: "Priya Reddy", loc: "Bangalore, India", img: av(45) },
+      { title: "Clear Progress", text: "Regular assessments and feedback let us see exactly how our child is improving in speed and accuracy after every level.", name: "Rahul Verma", loc: "Mumbai, India", img: av(12) },
     ],
-    faqs: {
-      title: "Frequently Asked Questions",
-      image: "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
-      faqs: [
-        {
-          q: "How will my child stay engaged in an online abacus class?",
-          a: "Classes are highly interactive with games, visuals, storytelling methods, and real-time teacher participation to keep children engaged and attentive throughout the session. Activities are designed to make learning fun and reduce screen fatigue.",
-        },
-        {
-          q: "What kind of practice is given at home?",
-          a: "Mental math exercises and short daily worksheets are shared to strengthen speed, accuracy, and visualization skills. Regular practice helps children build confidence and improve calculation ability step by step.",
-        },
-        {
-          q: "What if my child misses a class?",
-          a: "Recorded support or a makeup session is usually provided so the child can catch up easily without missing any learning progress or concept continuity.",
-        },
-        {
-          q: "Do children need any special materials for learning the abacus online?",
-          a: "Yes, a physical abacus kit and basic stationery are provided or recommended for daily practice at home to support hands-on learning along with online sessions.",
-        },
-        {
-          q: "How do parents track each child’s progress online?",
-          a: "Teachers monitor performance through live sessions, regular tests, assignments, and periodic assessments, along with detailed feedback shared with parents for clear progress tracking.",
-        },
-        {
-          q: "Can abacus learning help in school exams?",
-          a: "Yes, it improves calculation speed, concentration, memory, and accuracy, which directly helps children perform better in school mathematics exams and competitive learning tasks.",
-        },
-      ],
-    },
     gallery: [
       "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
       "https://i.pinimg.com/1200x/b3/22/e1/b322e16b709acc359a063a2e7552762b.jpg",
-      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
-      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
-      "https://i.pinimg.com/1200x/b3/22/e1/b322e16b709acc359a063a2e7552762b.jpg",
-      "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+      abacus4,
     ],
+    gallerySub: "Explore engaging abacus sessions, practice activities, and joyful moments as children build strong mental math skills.",
+    faqTitleB: "About Abacus",
+    faqSub: "Get quick answers to frequently asked questions about our abacus classes.",
+    faqImg: "https://i.pinimg.com/1200x/fe/8b/79/fe8b79cd30fe0e65f91e98cac7458771.jpg",
+    faqs: [
+      { q: "How will my child stay engaged in an online abacus class?", a: "Classes are highly interactive with games, visuals, storytelling methods, and real-time teacher participation to keep children engaged. Activities are designed to make learning fun and reduce screen fatigue." },
+      { q: "What kind of practice is given at home?", a: "Mental math exercises and short daily worksheets are shared to strengthen speed, accuracy, and visualization skills." },
+      { q: "What if my child misses a class?", a: "Recorded support or a makeup session is usually provided so the child can catch up without missing any concept continuity." },
+      { q: "Do children need any special materials?", a: "A physical abacus kit and basic stationery are provided or recommended for daily practice at home." },
+      { q: "How do parents track each child's progress?", a: "Teachers monitor performance through live sessions, regular tests, and assignments, with detailed feedback shared with parents." },
+      { q: "Can abacus learning help in school exams?", a: "Yes, it improves calculation speed, concentration, memory, and accuracy, which directly helps in school mathematics." },
+    ],
+    ctaPill: "Start Calculating With Confidence",
+    ctaTitle: "Ready to Begin Your Abacus Journey?",
+    ctaText: "Help your child build lightning-fast mental math skills through engaging abacus lessons.",
   },
+
   "Phonics Classes": {
-    hero: {
-      tagline: "Read Like a Pro",
-      gradient: "from-[#EB6664] via-[#EB6664] to-[#EB6664]",
-      accent: "#EB6664",
-      darkAccent: "#EB6664",
-      lightBg: "bg-[#EB6664]/5",
-      badge: "bg-[#EB6664]/10 text-[#EB6664]",
-      icon: "🔤",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-    },
-    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
-    duration: 'Depending on Level',
-    ageGroup: '5 to 12 Years',
-    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
-    phone: '+91 9876543210',
-    email: 'support@esperly.com',
-    description: "Master the art of reading through scientific phonics methods that make learning to read natural and fun.",
-    stats: [
-      { icon: BookOpen, label: "Reading Level", value: "2x Grade" },
-      { icon: Users, label: "Success Rate", value: "98%" },
-      { icon: Star, label: "Parent Rating", value: "4.9/5" },
+    ...CONTACT,
+    heroImage: P.shelf,
+    tagline: "Build Strong Reading & Speaking Skills",
+    trainingModes: MODES,
+    duration: "3 to 6 Months (Based on Learning Level)",
+    ageGroup: "4 to 8 Years",
+    topics: ["Letter Recognition", "Phonics Sounds", "Sound Blending", "Sight Words", "Reading Fluency", "Pronunciation Practice", "Vocabulary Building", "Sentence Reading"],
+    short: "Phonics",
+    powerSub: "Helping Children Read With Confidence",
+    power: [
+      "Develops Strong Letter & Sound Recognition",
+      "Improves Reading Fluency and Pronunciation",
+      "Strengthens Spelling and Vocabulary Skills",
+      "Builds Confidence in Reading and Communication",
     ],
-    whatIs: {
-      title: "What are Phonics Classes?",
-      points: [
-        "Scientific method of teaching reading through sound-letter relationships",
-        "Builds decoding skills for unfamiliar words",
-        "Develops strong spelling and writing abilities",
-        "Creates confident, fluent readers",
-      ],
-    },
-    benefits: {
-      title: "Benefits of Phonics Training",
-      subtitle: "Phonics learning is a powerful method that helps children build a strong foundation in reading and literacy skills from an early age.",
-      benefits: [
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-      ],
-    },
-    approach: {
-      title: "Our Unique Approach at ESPERLY",
-      points: [
-        {
-          title: "CUSTOMISED PROGRAM",
-          icon: Brain,
-          image:
-            "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop",
-          desc: "Our Abacus Training Course is designed to adapt to each child’s pace and ability. This individualized approach ensures dedicated attention to every learner, enabling steady progress with confidence while nurturing their complete potential.",
-        },
-        {
-          title: "EXPERIENCED MENTORS",
-          icon: Users,
-          image:
-            "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
-          desc: "Our experienced abacus teachers bring strong expertise in early numeracy and child-focused learning methods. With personalized attention and continuous encouragement, they help each child build confidence, strengthen mental math skills, and progress at their own pace, while making complex calculations simple and engaging through structured techniques.",
-        },
-        {
-          title: "PROGRESS TRACKING",
-          icon: BarChart3,
-          image:
-            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1400&auto=format&fit=crop",
-          desc: "We follow continuous progress tracking to monitor each child’s development in abacus learning, with regular assessments of speed, accuracy, and mental math skills to ensure steady and structured growth. Timely guidance and personalized support are provided to every learner, ensuring consistent improvement aligned with their individual progress.",
-        },
-        {
-          title: "FRIENDLY ENVIRONMENT",
-          icon: Smile,
-          image:
-            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop",
-          desc: "Our online abacus classes create a friendly and engaging virtual learning environment where children feel comfortable and connected from anywhere. Through interactive sessions and supportive guidance, we ensure every student stays confident, focused, and actively involved in learning.",
-        },
-      ],
-    },
+    powerImg: P.kidBook,
+    whyB: "Phonics Learning?",
+    whyIntro:
+      "Phonics gives children the tools they need to read independently, communicate clearly, and enjoy learning with confidence.",
+    why: [
+      "Improves reading fluency and word recognition",
+      "Enhances pronunciation and speaking confidence",
+      "Strengthens spelling and writing abilities",
+      "Expands vocabulary and language understanding",
+      "Develops listening and comprehension skills",
+      "Encourages independent reading habits",
+      "Builds confidence in classroom participation",
+      "Creates a strong foundation for future learning",
+    ],
+    whyImg1: P.kidLaptop,
+    whyImg2: P.blocks,
+    approachTitle: "Interactive Learning",
+    approachIntro: "Through stories, word games, activities, and engaging exercises, children learn phonics in a fun and memorable way.",
+    approachImg: P.girls,
+    tabs: [
+      { title: "Interactive Activities", icon: MousePointerClick, desc: "Hands-on games and sound-matching activities keep children curious while they practise letters, sounds, and blending." },
+      { title: "Story-Based Learning", icon: BookOpen, desc: "Short, colourful stories introduce new sounds and words in context, so children remember what they read." },
+      { title: "Speaking & Reading Practice", icon: Volume2, desc: "Guided read-aloud sessions build clear pronunciation, fluency, and the confidence to speak up." },
+      { title: "Progress & Encouragement", icon: Trophy, heading: "Strong Reading Foundation", desc: "We focus on building essential phonics skills that help children recognize sounds, blend words, and read fluently, creating a solid foundation for lifelong learning." },
+    ],
+    testimonialsTitle: "Building Confident Young Readers",
+    testimonialsSub: "Hear from parents whose children improved their reading abilities, language skills, and confidence through our phonics learning journey.",
     testimonials: [
-      {
-        title: "Very Organised",
-        desc: "I got to know about HomeShiksha from a parent and I thought of giving a try for my kid's tuition. It's very organised and they gave 3 teachers for demo and I chose the best amongst the three. The team is approachable and provide updates on time.",
-        name: "Geetha Sridhara",
-        location: "Bangalore, India",
-        image: "https://i.pravatar.cc/40?img=1",
-        bg: "bg-[#e9a6ad]",
-      },
-      {
-        title: "Very Good Personal Tutor",
-        desc: "Really very happy with this institution as I could get a very good personal tutor for my daughter. We could see a difference within a month in our daughter's learning curve.",
-        name: "KanchyKanz",
-        location: "Mumbai, India",
-        image: "https://i.pravatar.cc/40?img=2",
-        bg: "bg-[#c9c9e8]",
-      },
-      {
-        title: "Friendly Staff",
-        desc: "Very good institute and friendly staff. We recently hired a shadow teacher and she has very good knowledge and idea about what she need to work on based on the child needs.",
-        name: "Sowjanya Balireddy",
-        location: "Hyderabad, India",
-        image: "https://i.pravatar.cc/40?img=3",
-        bg: "bg-[#b7c7e8]",
-      },
+      { title: "Improved Reading Confidence", text: "My son struggled with reading simple words before joining the phonics program. Within a few weeks, he started recognizing sounds confidently and now enjoys reading storybooks on his own.", name: "Ananya Sharma", loc: "Hyderabad, India", img: av(47) },
+      { title: "Fun & Engaging Classes", text: "The interactive activities and storytelling sessions kept my daughter excited for every class. She learned phonics naturally, which made a huge difference in her learning.", name: "Priya Reddy", loc: "Bangalore, India", img: av(45) },
+      { title: "Noticeable Progress", text: "We could clearly see improvements in our child's pronunciation, spelling, and reading skills. The structured approach and regular feedback helped us track every milestone.", name: "Rahul Verma", loc: "Mumbai, India", img: av(12) },
     ],
-    faqs: {
-      title: "Frequently Asked Questions",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      faqs: [
-        { q: "What age is best for phonics?", a: "Ages 3-7 is the ideal window for phonics instruction." },
-        { q: "How is phonics different from whole language?", a: "Phonics teaches decoding skills vs memorizing whole words." },
-        { q: "Can phonics help with dyslexia?", a: "Yes, systematic phonics is proven to help dyslexic learners." },
-      ],
-    },
-    gallery: [
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    gallery: [P.g1, P.g2, P.g3],
+    gallerySub: "Explore engaging phonics activities, interactive learning sessions, and joyful moments as children build strong reading and communication skills.",
+    faqTitleB: "About Phonics",
+    faqSub: "Get quick answers to frequently asked questions about our phonics classes.",
+    faqImg: P.classroom,
+    faqs: [
+      { q: "At what age can children start learning phonics?", a: "Children can begin phonics from around 4 years of age, once they show interest in letters, sounds, and stories." },
+      { q: "How long does it take to see progress in reading?", a: "Most children show clear improvement in sound recognition and blending within the first 4 to 6 weeks of regular classes." },
+      { q: "Are phonics classes suitable for beginners?", a: "Yes. Every batch starts from letter sounds, so complete beginners can join and learn at their own pace." },
+      { q: "Can phonics help with dyslexia?", a: "Systematic phonics is widely used to support learners who find reading difficult. Talk to our team about your child's needs." },
     ],
+    ctaPill: "Start Reading With Confidence",
+    ctaTitle: "Ready to Begin Your Phonics Journey?",
+    ctaText: "Help your child build strong reading and communication skills through engaging phonics lessons.",
   },
+
   "Public Speaking": {
-    hero: {
-      tagline: "Own the Stage",
-      gradient: "from-[#EB6664] via-[#EB6664] to-[#EB6664]",
-      accent: "#EB6664",
-      darkAccent: "#EB6664",
-      lightBg: "bg-[#EB6664]/5",
-      badge: "bg-[#EB6664]/10 text-[#EB6664]",
-      icon: "🎤",
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-    },
-    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
-    duration: 'Depending on Level',
-    ageGroup: '5 to 12 Years',
-    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
-    phone: '+91 9876543210',
-    email: 'support@esperly.com',
-    description: "Transform nervous speakers into confident orators who command attention and inspire audiences.",
-    stats: [
-      { icon: Users, label: "Students Trained", value: "5000+" },
-      { icon: Award, label: "Success Rate", value: "95%" },
-      { icon: Star, label: "Rating", value: "4.8/5" },
+    ...CONTACT,
+    heroImage: P.stage,
+    tagline: "Own the Stage",
+    trainingModes: MODES,
+    duration: "Depending on Level",
+    ageGroup: "5 to 12 Years",
+    topics: ["Voice Modulation", "Body Language", "Speech Structure", "Storytelling", "Stage Confidence", "Debate Basics", "Impromptu Speaking", "Vocabulary & Expression"],
+    short: "Public Speaking",
+    powerSub: "Helping Children Speak With Confidence",
+    power: [
+      "Builds Confidence On Stage and Off It",
+      "Improves Voice Modulation and Body Language",
+      "Teaches How to Structure a Speech",
+      "Overcomes Stage Fright and Anxiety",
     ],
-    whatIs: {
-      title: "What is Public Speaking Training?",
-      points: [
-        "Master the art of confident communication",
-        "Learn voice modulation and body language",
-        "Structure compelling speeches and presentations",
-        "Overcome stage fright and anxiety",
-      ],
-    },
-    benefits: {
-      title: "Benefits of Phonics Training",
-      subtitle: "Phonics learning is a powerful method that helps children build a strong foundation in reading and literacy skills from an early age.",
-      benefits: [
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-      ],
-    },
-    approach: {
-      title: "Our Unique Approach at ESPERLY",
-      points: [
-        {
-          title: "Personalized Learning Path",
-          desc: "Every child gets a customized learning plan based on their current skill level and learning pace.",
-        },
-        {
-          title: "Expert Mentors",
-          desc: "Certified abacus trainers with years of experience in child development.",
-        },
-        {
-          title: "Gamified Progress",
-          desc: "Fun challenges and rewards keep children motivated throughout the journey.",
-        },
-        {
-          title: "Real-time Analytics",
-          desc: "Track your child's speed, accuracy, and improvement with detailed reports.",
-        },
-      ],
-    },
+    powerImg: P.stage,
+    whyB: "Public Speaking Training?",
+    whyIntro:
+      "Public speaking turns nervous speakers into confident communicators who can share ideas clearly and inspire their audience.",
+    why: [
+      "Speak clearly and with confidence",
+      "Learn voice modulation and body language",
+      "Structure compelling speeches and presentations",
+      "Overcome stage fright and anxiety",
+      "Think and respond quickly on the spot",
+      "Build strong vocabulary and expression",
+      "Develop leadership and stage presence",
+      "Prepare for debates, contests and school events",
+    ],
+    whyImg1: P.students,
+    whyImg2: P.smile,
+    approachTitle: "Learning By Speaking",
+    approachIntro: "Children practise real speaking situations in a supportive setting, with feedback after every session.",
+    approachImg: P.stage,
+    tabs: [
+      { title: "Speaking Exercises", icon: Mic, desc: "Short daily speaking drills build clear delivery, steady pace, and comfortable eye contact." },
+      { title: "Storytelling Practice", icon: BookOpen, desc: "Children learn to open strongly, build a message, and close with impact through story-led speeches." },
+      { title: "Stage Presence Coaching", icon: Users, desc: "Posture, gestures, and voice control are coached step by step so children feel natural in front of an audience." },
+      { title: "Feedback & Encouragement", icon: Trophy, heading: "Strong Speaking Foundation", desc: "Every session ends with kind, specific feedback so children know what to keep doing and what to improve next." },
+    ],
+    testimonialsTitle: "Building Confident Young Speakers",
+    testimonialsSub: "Hear from parents whose children found their voice and stage confidence through our public speaking program.",
     testimonials: [
-      {
-        title: "Very Organised",
-        desc: "I got to know about HomeShiksha from a parent and I thought of giving a try for my kid's tuition. It's very organised and they gave 3 teachers for demo and I chose the best amongst the three. The team is approachable and provide updates on time.",
-        name: "Geetha Sridhara",
-        location: "Bangalore, India",
-        image: "https://i.pravatar.cc/40?img=1",
-        bg: "bg-[#e9a6ad]",
-      },
-      {
-        title: "Very Good Personal Tutor",
-        desc: "Really very happy with this institution as I could get a very good personal tutor for my daughter. We could see a difference within a month in our daughter's learning curve.",
-        name: "KanchyKanz",
-        location: "Mumbai, India",
-        image: "https://i.pravatar.cc/40?img=2",
-        bg: "bg-[#c9c9e8]",
-      },
-      {
-        title: "Friendly Staff",
-        desc: "Very good institute and friendly staff. We recently hired a shadow teacher and she has very good knowledge and idea about what she need to work on based on the child needs.",
-        name: "Sowjanya Balireddy",
-        location: "Hyderabad, India",
-        image: "https://i.pravatar.cc/40?img=3",
-        bg: "bg-[#b7c7e8]",
-      },
+      { title: "No More Stage Fear", text: "My daughter used to freeze when asked to speak in class. After a few weeks she volunteered to present at the school assembly.", name: "Meera Iyer", loc: "Hyderabad, India", img: av(44) },
+      { title: "Clear and Confident", text: "His voice, posture, and way of explaining things have improved a lot. Teachers at school have noticed the change too.", name: "Karthik Nair", loc: "Chennai, India", img: av(13) },
+      { title: "Fun Sessions", text: "The speaking games and contests keep my son motivated. He now looks forward to every class.", name: "Sneha Patel", loc: "Mumbai, India", img: av(49) },
     ],
-    faqs: {
-      title: "Frequently Asked Questions",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      faqs: [
-        { q: "Can shy kids learn public speaking?", a: "Absolutely! Our program is designed for introverts." },
-        { q: "How soon will I see improvement?", a: "Most students show confidence gains within 4 weeks." },
-        { q: "Are there competitions?", a: "Yes, we organize regular speaking contests." },
-      ],
-    },
-    gallery: [
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    gallery: [P.stage, P.students, P.smile],
+    gallerySub: "Explore speaking practice, stage activities, and proud moments as children build strong communication skills.",
+    faqTitleB: "About Public Speaking",
+    faqSub: "Get quick answers to frequently asked questions about our public speaking classes.",
+    faqImg: P.students,
+    faqs: [
+      { q: "Can shy kids learn public speaking?", a: "Absolutely! Our program is designed to support shy and introverted children at their own pace." },
+      { q: "How soon will I see improvement?", a: "Most students show confidence gains within 4 weeks of regular classes." },
+      { q: "Are there competitions?", a: "Yes, we organize regular speaking contests so children can practise in a real setting." },
+      { q: "Will my child need to prepare at home?", a: "Short practice tasks are shared after each class so children can rehearse and build the habit." },
     ],
+    ctaPill: "Start Speaking With Confidence",
+    ctaTitle: "Ready to Begin Your Public Speaking Journey?",
+    ctaText: "Help your child find their voice through engaging, supportive public speaking lessons.",
   },
+
   "Personality Development": {
-    hero: {
-      tagline: "Shine From Within",
-      gradient: "from-[#EB6664] via-[#EB6664] to-[#EB6664]",
-      accent: "#EB6664",
-      darkAccent: "#EB6664",
-      lightBg: "bg-[#EB6664]/5",
-      badge: "bg-[#EB6664]/10 text-[#EB6664]",
-      icon: "🌟",
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-    },
-    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
-    duration: 'Depending on Level',
-    ageGroup: '5 to 12 Years',
-    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
-    phone: '+91 9876543210',
-    email: 'support@esperly.com',
-    description: "Holistic development program that builds character, confidence, and social skills for lifelong success.",
-    stats: [
-      { icon: Heart, label: "Happier Kids", value: "92%" },
-      { icon: Users, label: "Better Social Skills", value: "96%" },
-      { icon: Star, label: "Parent Satisfaction", value: "4.9/5" },
+    ...CONTACT,
+    heroImage: P.stage,
+    tagline: "Shine From Within",
+    trainingModes: MODES,
+    duration: "6 to 8 Months",
+    ageGroup: "6 to 16 Years",
+    topics: ["Emotional Intelligence", "Leadership", "Teamwork", "Communication Skills", "Positive Mindset", "Etiquette", "Confidence Building", "Social Skills"],
+    short: "Personality Development",
+    powerSub: "Helping Children Grow With Confidence",
+    power: [
+      "Builds Emotional Intelligence and Empathy",
+      "Develops Leadership and Teamwork",
+      "Creates a Positive Self-Image and Mindset",
+      "Improves Social and Communication Skills",
     ],
-    whatIs: {
-      title: "What is Personality Development?",
-      points: [
-        "Holistic growth of character and soft skills",
-        "Build emotional intelligence and empathy",
-        "Develop leadership and teamwork abilities",
-        "Create a positive self-image and mindset",
-      ],
-    },
-    benefits: {
-      title: "Benefits of Phonics Training",
-      subtitle: "Phonics learning is a powerful method that helps children build a strong foundation in reading and literacy skills from an early age.",
-      benefits: [
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-      ],
-    },
-    approach: {
-      title: "Our Unique Approach at ESPERLY",
-      points: [
-        {
-          title: "Personalized Learning Path",
-          desc: "Every child gets a customized learning plan based on their current skill level and learning pace.",
-        },
-        {
-          title: "Expert Mentors",
-          desc: "Certified abacus trainers with years of experience in child development.",
-        },
-        {
-          title: "Gamified Progress",
-          desc: "Fun challenges and rewards keep children motivated throughout the journey.",
-        },
-        {
-          title: "Real-time Analytics",
-          desc: "Track your child's speed, accuracy, and improvement with detailed reports.",
-        },
-      ],
-    },
+    powerImg: P.smile,
+    whyB: "Personality Development?",
+    whyIntro:
+      "A holistic program that builds character, confidence, and social skills that children carry into school and life.",
+    why: [
+      "Grows character and soft skills together",
+      "Builds emotional intelligence and empathy",
+      "Develops leadership and teamwork abilities",
+      "Creates a positive self-image and mindset",
+      "Improves communication and social skills",
+      "Teaches good manners and etiquette",
+      "Boosts classroom participation",
+      "Prepares children for lifelong success",
+    ],
+    whyImg1: P.students,
+    whyImg2: P.kids,
+    approachTitle: "Growing Through Activity",
+    approachIntro: "Role plays, group tasks, and guided reflection help children practise the skills they are learning.",
+    approachImg: P.smile,
+    tabs: [
+      { title: "Group Activities", icon: Users, desc: "Team challenges teach cooperation, listening, and sharing responsibility." },
+      { title: "Role Play & Stories", icon: BookOpen, desc: "Children act out everyday situations to understand feelings and choose kind, confident responses." },
+      { title: "Confidence Coaching", icon: Lightbulb, desc: "Small speaking and decision-making tasks help children trust their own voice and ideas." },
+      { title: "Progress & Encouragement", icon: Trophy, heading: "Strong Personal Foundation", desc: "Regular feedback and gentle goal-setting help children see their own growth and keep going." },
+    ],
+    testimonialsTitle: "Building Confident Young Personalities",
+    testimonialsSub: "Hear from parents whose children grew in confidence, kindness, and leadership through our program.",
     testimonials: [
-      {
-        title: "Very Organised",
-        desc: "I got to know about HomeShiksha from a parent and I thought of giving a try for my kid's tuition. It's very organised and they gave 3 teachers for demo and I chose the best amongst the three. The team is approachable and provide updates on time.",
-        name: "Geetha Sridhara",
-        location: "Bangalore, India",
-        image: "https://i.pravatar.cc/40?img=1",
-        bg: "bg-[#e9a6ad]",
-      },
-      {
-        title: "Very Good Personal Tutor",
-        desc: "Really very happy with this institution as I could get a very good personal tutor for my daughter. We could see a difference within a month in our daughter's learning curve.",
-        name: "KanchyKanz",
-        location: "Mumbai, India",
-        image: "https://i.pravatar.cc/40?img=2",
-        bg: "bg-[#c9c9e8]",
-      },
-      {
-        title: "Friendly Staff",
-        desc: "Very good institute and friendly staff. We recently hired a shadow teacher and she has very good knowledge and idea about what she need to work on based on the child needs.",
-        name: "Sowjanya Balireddy",
-        location: "Hyderabad, India",
-        image: "https://i.pravatar.cc/40?img=3",
-        bg: "bg-[#b7c7e8]",
-      },
+      { title: "Happier and More Confident", text: "Our son is more open, makes friends easily, and speaks up in class. We can see the change at home too.", name: "Lakshmi Rao", loc: "Hyderabad, India", img: av(48) },
+      { title: "Better Social Skills", text: "The group activities helped my daughter learn teamwork and patience. She is far more comfortable around new people.", name: "Arjun Menon", loc: "Kochi, India", img: av(15) },
+      { title: "Visible Growth", text: "The mentors gave useful feedback after each module, which made it easy for us to support her progress.", name: "Divya Singh", loc: "Delhi, India", img: av(43) },
     ],
-    faqs: {
-      title: "Frequently Asked Questions",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      faqs: [
-        { q: "What age is this for?", a: "Designed for children aged 6-16 years." },
-        { q: "Can it help with school performance?", a: "Yes, confidence improves classroom participation." },
-        { q: "How long is the program?", a: "Typically 6-8 months for complete transformation." },
-      ],
-    },
-    gallery: [
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    gallery: [P.smile, P.students, P.kids],
+    gallerySub: "Explore group activities, role plays, and joyful moments as children grow in confidence and character.",
+    faqTitleB: "About Personality Development",
+    faqSub: "Get quick answers to frequently asked questions about our personality development program.",
+    faqImg: P.smile,
+    faqs: [
+      { q: "What age is this for?", a: "Designed for children aged 6 to 16 years, with activities adjusted to each age group." },
+      { q: "Can it help with school performance?", a: "Yes, confidence improves classroom participation and willingness to ask questions." },
+      { q: "How long is the program?", a: "Typically 6 to 8 months for a complete journey." },
+      { q: "Is it suitable for shy children?", a: "Yes. Activities start small and build up gradually so every child feels comfortable." },
     ],
+    ctaPill: "Start Growing With Confidence",
+    ctaTitle: "Ready to Begin Your Personality Journey?",
+    ctaText: "Help your child build character, confidence, and social skills through engaging lessons.",
   },
+
   "Vedic Maths": {
-    hero: {
-      tagline: "Ancient Wisdom, Modern Speed",
-      gradient: "from-[#EB6664] via-[#EB6664] to-[#EB6664]",
-      accent: "#EB6664",
-      darkAccent: "#EB6664",
-      lightBg: "bg-[#EB6664]/5",
-      badge: "bg-[#EB6664]/10 text-[#EB6664]",
-      icon: "🕉️",
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
-    },
-    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
-    duration: 'Depending on Level',
-    ageGroup: '5 to 12 Years',
-    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
-    phone: '+91 9876543210',
-    email: 'support@esperly.com',
-    description: "Discover 16 ancient sutras that make complex calculations simple and lightning-fast.",
-    stats: [
-      { icon: Clock, label: "Speed Increase", value: "10x" },
-      { icon: Target, label: "Accuracy", value: "98%" },
-      { icon: Star, label: "Student Love", value: "4.9/5" },
+    ...CONTACT,
+    heroImage: P.kids,
+    tagline: "Ancient Wisdom, Modern Speed",
+    trainingModes: MODES,
+    duration: "Depending on Level",
+    ageGroup: "5 to 12 Years",
+    topics: ["16 Vedic Sutras", "Fast Multiplication", "Quick Addition & Subtraction", "Squares & Cubes", "Division Shortcuts", "Mental Calculation", "Number Patterns", "Problem Solving"],
+    short: "Vedic Maths",
+    powerSub: "Making Calculations Simple and Fast",
+    power: [
+      "Simplifies Complex Calculations",
+      "Builds Intuitive Number Sense",
+      "Improves Speed and Accuracy",
+      "Builds Confidence in Mathematics",
     ],
-    whatIs: {
-      title: "What is Vedic Maths?",
-      points: [
-        "Ancient Indian mathematical system from Vedas",
-        "16 sutras that simplify all calculations",
-        "Mental math techniques for complex problems",
-        "Builds intuitive number sense",
-      ],
-    },
-    benefits: {
-      title: "Benefits of Phonics Training",
-      subtitle: "Phonics learning is a powerful method that helps children build a strong foundation in reading and literacy skills from an early age.",
-      benefits: [
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-      ],
-    },
-    approach: {
-      title: "Our Unique Approach at ESPERLY",
-      points: [
-        {
-          title: "Personalized Learning Path",
-          desc: "Every child gets a customized learning plan based on their current skill level and learning pace.",
-        },
-        {
-          title: "Expert Mentors",
-          desc: "Certified abacus trainers with years of experience in child development.",
-        },
-        {
-          title: "Gamified Progress",
-          desc: "Fun challenges and rewards keep children motivated throughout the journey.",
-        },
-        {
-          title: "Real-time Analytics",
-          desc: "Track your child's speed, accuracy, and improvement with detailed reports.",
-        },
-      ],
-    },
+    powerImg: P.desk,
+    whyB: "Vedic Maths?",
+    whyIntro:
+      "Vedic Maths uses 16 ancient sutras to turn long calculations into quick mental steps, so children enjoy numbers more.",
+    why: [
+      "Ancient Indian system from the Vedas",
+      "16 sutras that simplify calculations",
+      "Mental math techniques for complex problems",
+      "Builds intuitive number sense",
+      "Improves speed and accuracy",
+      "Complements school mathematics",
+      "Strengthens memory and concentration",
+      "Reduces fear of maths",
+    ],
+    whyImg1: P.kidLaptop,
+    whyImg2: P.desk,
+    approachTitle: "Learning By Doing",
+    approachIntro: "Each sutra is taught with examples, shortcuts, and practice so children understand why it works.",
+    approachImg: P.kids,
+    tabs: [
+      { title: "Sutra-Based Lessons", icon: Calculator, desc: "Each lesson introduces one sutra with clear examples and quick practice problems." },
+      { title: "Speed Practice", icon: Zap, desc: "Timed drills and games build quick recall and mental calculation habits." },
+      { title: "Problem Solving", icon: Target, desc: "Children apply shortcuts to school-style questions to see how they save time." },
+      { title: "Progress & Encouragement", icon: Trophy, heading: "Strong Maths Foundation", desc: "Regular tests and feedback show children how much faster and more accurate they are becoming." },
+    ],
+    testimonialsTitle: "Building Confident Young Mathematicians",
+    testimonialsSub: "Hear from parents whose children gained speed and confidence in maths through Vedic Maths.",
     testimonials: [
-      {
-        title: "Very Organised",
-        desc: "I got to know about HomeShiksha from a parent and I thought of giving a try for my kid's tuition. It's very organised and they gave 3 teachers for demo and I chose the best amongst the three. The team is approachable and provide updates on time.",
-        name: "Geetha Sridhara",
-        location: "Bangalore, India",
-        image: "https://i.pravatar.cc/40?img=1",
-        bg: "bg-[#e9a6ad]",
-      },
-      {
-        title: "Very Good Personal Tutor",
-        desc: "Really very happy with this institution as I could get a very good personal tutor for my daughter. We could see a difference within a month in our daughter's learning curve.",
-        name: "KanchyKanz",
-        location: "Mumbai, India",
-        image: "https://i.pravatar.cc/40?img=2",
-        bg: "bg-[#c9c9e8]",
-      },
-      {
-        title: "Friendly Staff",
-        desc: "Very good institute and friendly staff. We recently hired a shadow teacher and she has very good knowledge and idea about what she need to work on based on the child needs.",
-        name: "Sowjanya Balireddy",
-        location: "Hyderabad, India",
-        image: "https://i.pravatar.cc/40?img=3",
-        bg: "bg-[#b7c7e8]",
-      },
+      { title: "Maths Is Fun Now", text: "My son used to avoid multiplication tables. Now he races me with the shortcuts he has learnt.", name: "Suresh Kumar", loc: "Hyderabad, India", img: av(11) },
+      { title: "Faster in Exams", text: "She finishes her maths papers earlier and double-checks her answers with a different method.", name: "Pooja Desai", loc: "Pune, India", img: av(41) },
+      { title: "Clear Methods", text: "The teacher explains the logic behind each trick, so my child understands it and does not just memorise.", name: "Imran Khan", loc: "Bangalore, India", img: av(14) },
     ],
-    faqs: {
-      title: "Frequently Asked Questions",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      faqs: [
-        { q: "Is Vedic Maths different from school math?", a: "It complements and enhances school mathematics." },
-        { q: "Will it confuse my child?", a: "No, it provides alternative, simpler methods." },
-        { q: "How soon will results show?", a: "Speed improvements visible within 4 weeks." },
-      ],
-    },
-    gallery: [
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    gallery: [P.kids, P.desk, P.kidLaptop],
+    gallerySub: "Explore Vedic Maths sessions, speed drills, and joyful moments as children discover faster ways to calculate.",
+    faqTitleB: "About Vedic Maths",
+    faqSub: "Get quick answers to frequently asked questions about our Vedic Maths classes.",
+    faqImg: P.kids,
+    faqs: [
+      { q: "Is Vedic Maths different from school math?", a: "It complements and enhances school mathematics with alternative, simpler methods." },
+      { q: "Will it confuse my child?", a: "No. Children learn the school method first and use shortcuts as an additional tool." },
+      { q: "How soon will results show?", a: "Speed improvements are usually visible within 4 weeks." },
+      { q: "Do children need prior knowledge?", a: "Basic addition and subtraction are enough to begin." },
     ],
+    ctaPill: "Start Calculating Faster",
+    ctaTitle: "Ready to Begin Your Vedic Maths Journey?",
+    ctaText: "Help your child enjoy maths with simple, fast techniques from ancient wisdom.",
   },
+
   "English Grammar": {
-    hero: {
-      tagline: "Write Right, Speak Bright",
-      gradient: "from-[#EB6664] via-[#EB6664] to-[#EB6664]",
-      accent: "#EB6664",
-      darkAccent: "#EB6664",
-      lightBg: "bg-[#EB6664]/5",
-      badge: "bg-[#EB6664]/10 text-[#EB6664]",
-      icon: "📝",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-    },
-    trainingModes: ['Online Classes (One-on-One)', 'Group Batch'],
-    duration: 'Depending on Level',
-    ageGroup: '5 to 12 Years',
-    topics: ['Addition', 'Subtraction', 'Multiplication', 'Division', 'Abacus Techniques', 'Mental Math Development'],
-    phone: '+91 9876543210',
-    email: 'support@esperly.com',
-    description: "Master English grammar through engaging lessons and practical application.",
-    stats: [
-      { icon: BookOpen, label: "Grade Improvement", value: "2 Levels" },
-      { icon: Users, label: "Success Rate", value: "94%" },
-      { icon: Star, label: "Rating", value: "4.8/5" },
+    ...CONTACT,
+    heroImage: P.books,
+    tagline: "Write Right, Speak Bright",
+    trainingModes: MODES,
+    duration: "Depending on Level",
+    ageGroup: "5 to 12 Years",
+    topics: ["Parts of Speech", "Tenses", "Sentence Structure", "Punctuation", "Vocabulary", "Essay Writing", "Comprehension", "Spoken English"],
+    short: "English Grammar",
+    powerSub: "Helping Children Write and Speak With Confidence",
+    power: [
+      "Builds Strong Writing and Speaking Foundations",
+      "Improves Sentence Structure and Punctuation",
+      "Strengthens Vocabulary and Comprehension",
+      "Builds Confidence in Communication",
     ],
-    whatIs: {
-      title: "What is English Grammar Training?",
-      points: [
-        "Complete mastery of English language rules",
-        "Build strong writing and speaking foundation",
-        "Excel in school and competitive exams",
-        "Communicate with confidence and clarity",
-      ],
-    },
-    benefits: {
-      title: "Benefits of Phonics Training",
-      subtitle: "Phonics learning is a powerful method that helps children build a strong foundation in reading and literacy skills from an early age.",
-      benefits: [
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-        { title: "Brain Development Focus" },
-        { title: "Lightning Fast" },
-        { title: "Pinpoint Accuracy" },
-        { title: "Boosted Confidence" },
-      ],
-    },
-    approach: {
-      title: "Our Unique Approach at ESPERLY",
-      points: [
-        {
-          title: "Personalized Learning Path",
-          desc: "Every child gets a customized learning plan based on their current skill level and learning pace.",
-        },
-        {
-          title: "Expert Mentors",
-          desc: "Certified abacus trainers with years of experience in child development.",
-        },
-        {
-          title: "Gamified Progress",
-          desc: "Fun challenges and rewards keep children motivated throughout the journey.",
-        },
-        {
-          title: "Real-time Analytics",
-          desc: "Track your child's speed, accuracy, and improvement with detailed reports.",
-        },
-      ],
-    },
+    powerImg: P.books,
+    whyB: "English Grammar Training?",
+    whyIntro:
+      "Strong grammar helps children write clearly, speak accurately, and do better in school and competitive exams.",
+    why: [
+      "Complete mastery of English language rules",
+      "Builds a strong writing foundation",
+      "Improves spoken English accuracy",
+      "Helps in school and competitive exams",
+      "Strengthens essay and letter writing",
+      "Expands vocabulary and comprehension",
+      "Supports ESL learners of all levels",
+      "Communicate with confidence and clarity",
+    ],
+    whyImg1: P.kidLaptop,
+    whyImg2: P.blocks,
+    approachTitle: "Learning With Practice",
+    approachIntro: "Short lessons, examples, and writing tasks make grammar rules easy to understand and remember.",
+    approachImg: P.books,
+    tabs: [
+      { title: "Concept Lessons", icon: BookOpen, desc: "Each rule is explained with simple examples before children try it themselves." },
+      { title: "Writing Practice", icon: Pencil, desc: "Guided sentence, paragraph, and essay tasks turn rules into everyday writing habits." },
+      { title: "Speaking Practice", icon: MessageCircle, desc: "Children use new grammar in conversation so accuracy carries over into speech." },
+      { title: "Progress & Encouragement", icon: Star, heading: "Strong Language Foundation", desc: "Regular tests and clear feedback help children see which areas to revise and celebrate what they've mastered." },
+    ],
+    testimonialsTitle: "Building Confident Young Writers",
+    testimonialsSub: "Hear from parents whose children improved their writing, speaking, and exam scores through our grammar classes.",
     testimonials: [
-      {
-        title: "Very Organised",
-        desc: "I got to know about HomeShiksha from a parent and I thought of giving a try for my kid's tuition. It's very organised and they gave 3 teachers for demo and I chose the best amongst the three. The team is approachable and provide updates on time.",
-        name: "Geetha Sridhara",
-        location: "Bangalore, India",
-        image: "https://i.pravatar.cc/40?img=1",
-        bg: "bg-[#e9a6ad]",
-      },
-      {
-        title: "Very Good Personal Tutor",
-        desc: "Really very happy with this institution as I could get a very good personal tutor for my daughter. We could see a difference within a month in our daughter's learning curve.",
-        name: "KanchyKanz",
-        location: "Mumbai, India",
-        image: "https://i.pravatar.cc/40?img=2",
-        bg: "bg-[#c9c9e8]",
-      },
-      {
-        title: "Friendly Staff",
-        desc: "Very good institute and friendly staff. We recently hired a shadow teacher and she has very good knowledge and idea about what she need to work on based on the child needs.",
-        name: "Sowjanya Balireddy",
-        location: "Hyderabad, India",
-        image: "https://i.pravatar.cc/40?img=3",
-        bg: "bg-[#b7c7e8]",
-      },
+      { title: "Better Writing", text: "Her essays are now well structured and almost free of grammar mistakes. Her English teacher has noticed.", name: "Nisha Gupta", loc: "Hyderabad, India", img: av(46) },
+      { title: "Clear Explanations", text: "Grammar finally makes sense to my son. The examples and practice tasks are easy to follow.", name: "Vikram Joshi", loc: "Pune, India", img: av(17) },
+      { title: "Good Exam Results", text: "We saw real improvement in her school English marks within a couple of months.", name: "Farah Ali", loc: "Bangalore, India", img: av(42) },
     ],
-    faqs: {
-      title: "Frequently Asked Questions",
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      faqs: [
-        { q: "Is this for non-native speakers?", a: "Perfect for ESL learners of all levels." },
-        { q: "How does it help with school?", a: "Directly improves essay and test scores." },
-        { q: "Can it help with IELTS?", a: "Yes, comprehensive exam preparation included." },
-      ],
-    },
-    gallery: [
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1470&q=80",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80",
+    gallery: [P.books, P.g1, P.g3],
+    gallerySub: "Explore grammar lessons, writing practice, and joyful moments as children build strong English skills.",
+    faqTitleB: "About English Grammar",
+    faqSub: "Get quick answers to frequently asked questions about our English grammar classes.",
+    faqImg: P.classroom,
+    faqs: [
+      { q: "Is this for non-native speakers?", a: "Yes, it works well for ESL learners of all levels." },
+      { q: "How does it help with school?", a: "It directly improves essay writing, comprehension, and test scores." },
+      { q: "Can it help with IELTS?", a: "Yes, comprehensive exam preparation is included for older learners." },
+      { q: "How is progress tracked?", a: "Through regular tests, writing assignments, and feedback shared with parents." },
     ],
+    ctaPill: "Start Writing With Confidence",
+    ctaTitle: "Ready to Begin Your English Grammar Journey?",
+    ctaText: "Help your child build strong writing and speaking skills through engaging grammar lessons.",
   },
 };
 
-const ALL_ITEMS = Object.keys(COURSES);
+/* ================================================================== */
+/*  STYLE TOKENS                                                       */
+/* ================================================================== */
+const PASTEL = {
+  green: { bg: "bg-[#e8f5e9]", text: "text-[#2e7d32]", dot: "bg-[#66BB6A]" },
+  blue: { bg: "bg-[#e3f2fd]", text: "text-[#1E88E5]", dot: "bg-[#1E88E5]" },
+  pink: { bg: "bg-[#fce4ec]", text: "text-[#9C27B0]", dot: "bg-[#9C27B0]" },
+  yellow: { bg: "bg-[#fff8e1]", text: "text-[#FFA726]", dot: "bg-[#FFA726]" },
+};
+const POWER_BG = ["bg-[#e8f5e9]", "bg-[#e3f2fd]", "bg-[#fce4ec]", "bg-[#fff8e1]"];
+const FAQ_STYLES = [
+  { bg: "bg-[#fce4ec]", ic: "text-[#EB6664]" },
+  { bg: "bg-[#e3f2fd]", ic: "text-[#1E88E5]" },
+  { bg: "bg-[#e8f5e9]", ic: "text-[#2e7d32]" },
+  { bg: "bg-[#fff8e1]", ic: "text-[#FFA726]" },
+];
+const TITLE_COLORS = ["text-[#1E88E5]", "text-[#1E88E5]", "text-gray-900"];
 
-export default function ShortTermCourseDetails() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
+const Pill = ({ children }) => (
+  <span className="inline-block rounded-md bg-[#EB6664]/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#EB6664] sm:text-xs">
+    {children}
+  </span>
+);
 
-  // Get initial selected course from URL params
-  const initialItem = searchParams.get("item");
-  const [selected, setSelected] = useState(() => {
-    // Validate if the item from URL exists in COURSES
-    if (initialItem && COURSES[initialItem]) {
-      return initialItem;
-    }
-    return "Abacus";
-  });
+/* ================================================================== */
+/*  COURSE PAGE (single design used by every course)                   */
+/* ================================================================== */
+function CourseDetail({ name, c, onCall, onEmail, onDemo, onExplore }) {
+  const [tab, setTab] = useState(c.tabs.length - 1);
+  const [openFaq, setOpenFaq] = useState(0);
+  const active = c.tabs[tab];
 
-  const course = COURSES[selected];
-  const [isVisible, setIsVisible] = useState({});
-
-  const [activeTab, setActiveTab] = useState(0);
-
-  const [activeTabApproach, setActiveTabApproach] = useState(0);
-
-  /* STATES */
-  const [showAllGallery, setShowAllGallery] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  /* SHOW ONLY 3 INITIALLY */
-  const visibleImages = showAllGallery
-    ? course.gallery
-    : course.gallery.slice(0, 3);
-
-  // Update URL when selected changes
-  useEffect(() => {
-    const label = searchParams.get("label") || "Short Term Courses";
-    const type = searchParams.get("type") || "course";
-
-    // Update URL params
-    setSearchParams({
-      label: label,
-      type: type,
-      item: selected
-    });
-  }, [selected, setSearchParams]);
-
-  // Sync selected state with URL changes (for browser back/forward)
-  useEffect(() => {
-    const itemFromUrl = searchParams.get("item");
-    if (itemFromUrl && COURSES[itemFromUrl] && itemFromUrl !== selected) {
-      setSelected(itemFromUrl);
-    }
-  }, [searchParams]);
-
-  // Intersection Observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const sections = document.querySelectorAll("section");
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-    };
-  }, [selected]); // Re-run when selected changes to ensure sections are observed
-
-  const switchCourse = (courseName) => {
-    if (courseName === selected) return;
-
-    setSelected(courseName);
-    // Reset visibility for smooth transition
-    setIsVisible({});
-    // Scroll to top smoothly
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  // Handle navigation from other components
-  const handleCallNow = () => {
-    window.location.href = "tel:+919876543210";
-  };
-
-  const handleEmailNow = () => {
-    window.location.href = "mailto:info@esperly.com?subject=Enquiry about " + selected;
-  };
-
-  const handleBookDemo = () => {
-    navigate("/contact", { state: { course: selected, demoRequest: true } });
-  };
-
-  const handleExploreOther = () => {
-    navigate("/courses");
-  };
-
-  const scrollRef = useRef(null);
-
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    let animationId;
-    let scrollAmount = 0;
-    const speed = 0.5; // px per frame — adjust for faster/slower
-
-    const scroll = () => {
-      scrollAmount += speed;
-      // When we've scrolled half the total width, reset to 0 (seamless loop)
-      if (scrollAmount >= container.scrollWidth / 2) {
-        scrollAmount = 0;
-      }
-      container.scrollLeft = scrollAmount;
-      animationId = requestAnimationFrame(scroll);
-    };
-
-    animationId = requestAnimationFrame(scroll);
-
-    // Pause on hover
-    const pause = () => cancelAnimationFrame(animationId);
-    const resume = () => { animationId = requestAnimationFrame(scroll); };
-
-    container.addEventListener("mouseenter", pause);
-    container.addEventListener("mouseleave", resume);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      container.removeEventListener("mouseenter", pause);
-      container.removeEventListener("mouseleave", resume);
-    };
-  }, [course.testimonials]);
-
-  if (!course) return null;
+  const meta = [
+    { label: "Training Modes", value: c.trainingModes.join(" / "), c: PASTEL.green, strong: true },
+    { label: "Duration", value: c.duration, c: PASTEL.blue },
+    { label: "Age Group", value: c.ageGroup, c: PASTEL.pink },
+    { label: "Topics Covered", value: c.topics.join(" · "), c: PASTEL.yellow, strong: true },
+  ];
 
   return (
-    <>
-      <Header />
-      <NavImage />
-      <div className="min-h-screen bg-[transparent]">
+    <div className="min-h-screen bg-[#fdf5f1] text-gray-900">
+      {/* ============================ HERO ============================ */}
+      <section className="relative overflow-hidden">
+        <img src={c.heroImage} alt={name} className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-black/10" />
 
-        {/* Hero Section */}
-        <div className="relative overflow-hidden min-h-[520px] sm:min-h-[600px]">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 pb-8 pt-12 sm:px-10 sm:pt-16">
+          <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[#EB6664]">Short Term Course</p>
+          <h1 className="text-4xl font-black uppercase leading-none tracking-tight text-[#EB6664] sm:text-5xl md:text-6xl">
+            {name}
+          </h1>
+          <p className="mt-3 text-base text-white sm:text-lg">{c.tagline}</p>
 
-          {/* Background Image */}
-          <img
-            src={course.hero.image}
-            alt={selected}
-            className="absolute inset-0 w-full h-full object-cover scale-[1.02]"
-          />
-
-          {/* Overlays — lighter so image breathes */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/65 via-black/30 to-black/10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-
-          {/* Decorative accent line top */}
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#EB6664] via-[#f0a08a] to-transparent" />
-
-          {/* Container */}
-          <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 flex flex-col justify-end min-h-[520px] sm:min-h-[600px] pb-14 sm:pb-16 pt-16">
-
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#EB6664]" />
-                <div className="w-1.5 h-1.5 rounded-full bg-[#EB6664]/50" />
-                <div className="w-1.5 h-1.5 rounded-full bg-[#EB6664]/20" />
+          <div className="mt-8 flex max-w-xl flex-col gap-3 rounded-3xl bg-white/25 p-3 backdrop-blur-sm sm:gap-4">
+            {meta.map((m) => (
+              <div key={m.label} className={`rounded-2xl px-5 py-3.5 shadow-sm ${m.c.bg}`}>
+                <p className={`flex items-center gap-2 text-sm font-semibold ${m.c.text}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${m.c.dot}`} />
+                  {m.label}
+                </p>
+                <p className={`mt-1 text-sm leading-snug ${m.strong ? "font-medium text-gray-800" : m.c.text}`}>{m.value}</p>
               </div>
-              <span className="text-[#EB6664] text-[10px] font-bold uppercase tracking-[0.3em]">
-                Short Term Course
-              </span>
-            </div>
+            ))}
+          </div>
 
-            {/* Title */}
-            <h1 className="text-[3.5rem] sm:text-[3rem] md:text-[4.5rem] font-black text-white uppercase leading-none tracking-tighter mb-2">
-              {selected}
-            </h1>
-
-            {/* Tagline */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-px bg-[#EB6664]/60" />
-              <p className="text-white/60 text-sm sm:text-base font-light tracking-wide italic">
-                {course.hero.tagline}
-              </p>
-            </div>
-
-            {/* Colorful Glassy Metadata Cards */}
-            <div className="flex flex-wrap gap-3 mb-8">
-
-              {/* Training Modes — Green pastel */}
-              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#66BB6A]/40
-        backdrop-blur-md
-        shadow-lg shadow-[#66BB6A]/20">
-                <div className="absolute inset-0 bg-[#e8f5e9]" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#66BB6A]/20 via-[#66BB6A]/5 to-transparent" />
-                <span className="relative text-[#2e7d32] text-[9px] font-bold uppercase tracking-[0.22em]">
-                  Training Modes
-                </span>
-                <span className="relative text-[#1b5e20] text-sm font-bold leading-snug">
-                  {course.trainingModes.join(' / ')}
-                </span>
-              </div>
-
-              {/* Duration — Violet pastel */}
-              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#9C27B0]/40
-        backdrop-blur-md
-        shadow-lg shadow-[#9C27B0]/20">
-                <div className="absolute inset-0 bg-[#f3e5f5]" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#9C27B0]/20 via-[#9C27B0]/5 to-transparent" />
-                <span className="relative text-[#6a1b9a] text-[9px] font-bold uppercase tracking-[0.22em]">
-                  Duration
-                </span>
-                <span className="relative text-[#4a148c] text-sm font-bold leading-snug">
-                  {course.duration}
-                </span>
-              </div>
-
-              {/* Age Group — Amber pastel */}
-              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#FFA726]/40
-        backdrop-blur-md
-        shadow-lg shadow-[#FFA726]/20">
-                <div className="absolute inset-0 bg-[#fff8e1]" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FFA726]/20 via-[#FFA726]/5 to-transparent" />
-                <span className="relative text-[#e65100] text-[9px] font-bold uppercase tracking-[0.22em]">
-                  Age Group
-                </span>
-                <span className="relative text-[#bf360c] text-sm font-bold leading-snug">
-                  {course.ageGroup}
-                </span>
-              </div>
-
-              {/* Topics — Blue pastel */}
-              <div className="flex flex-col gap-1 px-5 py-3.5 rounded-2xl relative overflow-hidden
-        border border-[#1E88E5]/40
-        backdrop-blur-md
-        shadow-lg shadow-[#1E88E5]/20">
-                <div className="absolute inset-0 bg-[#e3f2fd]" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1E88E5]/20 via-[#1E88E5]/5 to-transparent" />
-                <span className="relative text-[#1565c0] text-[9px] font-bold uppercase tracking-[0.22em]">
-                  Topics Covered
-                </span>
-                <span className="relative text-[#0d47a1] text-sm font-bold leading-snug">
-                  {course.topics.join(' · ')}
-                </span>
-              </div>
-
-            </div>
-
-            {/* Premium Pastel CTA Section */}
-            <div className="w-full max-w-xl space-y-5">
-
-              {/* Call Card — Coral Pastel */}
-              <div
-                className="group relative overflow-hidden rounded-3xl border border-[#EB6664]/30
-    shadow-lg shadow-[#EB6664]/15 transition-all duration-300
-    hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#EB6664]/20"
-              >
-
-                {/* Background Layers */}
-                <div className="absolute inset-0 bg-[#fff1f0]" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#EB6664]/15 via-[#EB6664]/5 to-transparent" />
-
-                <div className="relative p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-
-                  {/* Left */}
-                  <div className="flex items-center gap-4">
-
-                    {/* Icon */}
-                    <div
-                      className="flex h-14 w-14 items-center justify-center rounded-2xl
-          bg-gradient-to-br from-[#EB6664] to-[#ff8d8b]
-          shadow-lg shadow-[#EB6664]/20"
-                    >
-                      <Phone size={20} className="text-white" />
-                    </div>
-
-                    {/* Text */}
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-[#c85b59] font-bold mb-1">
-                        Call Support
-                      </p>
-
-                      <a
-                        href={`tel:${course.phone}`}
-                        className="text-[#7a2e2c] text-base sm:text-lg font-bold hover:text-[#EB6664] transition-colors duration-200"
-                      >
-                        {course.phone}
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Button */}
-                  <button
-                    onClick={handleCallNow}
-                    className="inline-flex items-center justify-center gap-2 rounded-full
-        bg-[#EB6664] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.18em]
-        text-white shadow-lg shadow-[#EB6664]/20 transition-all duration-300
-        hover:scale-[1.03] hover:bg-[#d94d4b]"
-                  >
-                    <Phone size={14} />
-                    Call Now
-                  </button>
-                </div>
-              </div>
-
-              {/* Email Card — Blue Pastel */}
-              <div
-                className="group relative overflow-hidden rounded-3xl border border-[#1E88E5]/30
-    shadow-lg shadow-[#1E88E5]/15 transition-all duration-300
-    hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#1E88E5]/20"
-              >
-
-                {/* Background Layers */}
-                <div className="absolute inset-0 bg-[#eef7ff]" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1E88E5]/15 via-[#1E88E5]/5 to-transparent" />
-
-                <div className="relative p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-
-                  {/* Left */}
-                  <div className="flex items-center gap-4">
-
-                    {/* Icon */}
-                    <div
-                      className="flex h-14 w-14 items-center justify-center rounded-2xl
-          bg-gradient-to-br from-[#1E88E5] to-[#64B5F6]
-          shadow-lg shadow-[#1E88E5]/20"
-                    >
-                      <Mail size={20} className="text-white" />
-                    </div>
-
-                    {/* Text */}
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-[#1565c0] font-bold mb-1">
-                        Email Address
-                      </p>
-
-                      <a
-                        href={`mailto:${course.email}`}
-                        className="text-[#0d47a1] text-base sm:text-lg font-bold hover:text-[#1E88E5] transition-colors duration-200 break-all"
-                      >
-                        {course.email}
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Button */}
-                  <button
-                    onClick={handleEmailNow}
-                    className="inline-flex items-center justify-center gap-2 rounded-full
-        bg-[#1E88E5] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.18em]
-        text-white shadow-lg shadow-[#1E88E5]/20 transition-all duration-300
-        hover:scale-[1.03] hover:bg-[#1565c0]"
-                  >
-                    <Mail size={14} />
-                    Email Now
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button onClick={onCall} className="inline-flex items-center gap-2 rounded-xl bg-[#EB6664] px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#d94d4b]">
+              <Phone size={16} /> Call Now
+            </button>
+            <button onClick={onEmail} className="inline-flex items-center gap-2 rounded-xl bg-[#fce4ec] px-6 py-3 text-sm font-semibold text-[#EB6664] shadow-lg transition hover:bg-white">
+              <Mail size={16} /> EMAIL Now
+            </button>
           </div>
         </div>
+      </section>
 
-        <div className="max-w-7xl mx-auto px-4 py-16 space-y-10">
+      <div className="mx-auto max-w-7xl space-y-16 px-4 py-14 sm:px-6 md:space-y-24 md:py-20">
+        {/* ======================= THE POWER OF … ======================= */}
+        <section>
+          <div className="mb-10 text-center">
+            <h2 className="text-2xl font-extrabold uppercase tracking-tight sm:text-3xl md:text-4xl">The Power of {c.short}</h2>
+            <p className="mt-3 text-sm text-gray-700 md:text-base">{c.powerSub}</p>
+          </div>
+          <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="space-y-4">
+              {c.power.map((p, i) => (
+                <div key={p} className={`flex items-center gap-4 rounded-xl px-5 py-6 shadow-sm ${POWER_BG[i % 4]}`}>
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-[#2e7d32]">
+                    <Check size={14} className="text-white" strokeWidth={3} />
+                  </span>
+                  <p className="text-sm font-semibold text-gray-900 sm:text-[15px]">{p}</p>
+                </div>
+              ))}
+            </div>
+            <div className="overflow-hidden rounded-3xl shadow-lg">
+              <img src={c.powerImg} alt={name} className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[420px]" />
+            </div>
+          </div>
+        </section>
 
-          {/* What Is Section */}
-          <section
-            id="whatis"
-            className={`transform transition-all duration-700 ${isVisible.whatis
-              ? "translate-y-0 opacity-100"
-              : "translate-y-6 opacity-0"
-              }`}
-          >
-            {/* Section Header */}
-            <div className="flex items-center gap-3 mb-6">
-
-              {/* Icon Box */}
-              <div
-                className={`relative w-12 h-12 rounded-xl bg-gradient-to-br ${course.hero.gradient}
-      flex items-center justify-center shadow-lg shadow-[#EB6664]/15`}
-              >
-                <BookOpen size={20} className="text-white" />
+        {/* ======================= WHY CHOOSE ======================= */}
+        <section>
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <h2 className="text-2xl font-extrabold sm:text-3xl md:text-4xl">
+              Why Choose <span className="text-[#EB6664]">{c.whyB}</span>
+            </h2>
+            <p className="mt-4 text-sm font-medium text-gray-800 md:text-base">{c.whyIntro}</p>
+          </div>
+          <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr]">
+            <div className="space-y-3">
+              {c.why.map((w, i) => (
+                <div key={w} className={`flex items-center gap-4 rounded-full px-6 py-4 sm:pr-16 ${i % 2 === 0 ? "bg-[#fce4ec]" : "bg-[#e8f5e9]"}`}>
+                  <Check size={16} className="shrink-0 text-gray-900" strokeWidth={2.5} />
+                  <p className="text-sm font-medium text-gray-900">{w}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col gap-5">
+              <div className="flex justify-start lg:justify-end">
+                <button onClick={onDemo} className="rounded-xl bg-[#EB6664] px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#d94d4b]">
+                  Get Started Today
+                </button>
               </div>
+              <img src={c.whyImg1} alt="" className="h-48 w-full rounded-2xl object-cover shadow-md sm:h-56 lg:ml-4 lg:w-[88%]" />
+              <img src={c.whyImg2} alt="" className="h-48 w-full rounded-2xl object-cover shadow-md sm:h-56 lg:ml-auto lg:w-[88%]" />
+            </div>
+          </div>
+        </section>
 
-              {/* Title */}
-              <div>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-[#EB6664] tracking-tight leading-tight">
-                  {course.whatIs.title}
-                </h2>
-
-                <p className="text-gray-500 text-xs md:text-sm mt-0.5">
-                  Everything you need to know
+        {/* ======================= TEACHING APPROACH ======================= */}
+        <section>
+          <div className="mx-auto mb-10 max-w-2xl text-center">
+            <Pill>Our Teaching Approach</Pill>
+            <h2 className="mt-4 text-2xl font-extrabold uppercase tracking-tight sm:text-3xl md:text-4xl">{c.approachTitle}</h2>
+            <p className="mt-4 text-sm text-gray-800 md:text-base">{c.approachIntro}</p>
+          </div>
+          <div className="grid items-start gap-8 lg:grid-cols-[1.3fr_0.7fr]">
+            <img
+              src={active.image || c.approachImg}
+              alt={active.title}
+              className="h-[260px] w-full rounded-2xl object-cover shadow-lg sm:h-[360px] lg:h-[450px]"
+            />
+            <div className="space-y-3">
+              {c.tabs.map((a, i) => {
+                const Icon = a.icon;
+                return (
+                  <button
+                    key={a.title}
+                    onClick={() => setTab(i)}
+                    className={`flex w-full items-center gap-3 rounded-lg border px-5 py-4 text-left text-sm font-medium transition ${
+                      tab === i ? "border-[#EB6664] bg-white text-[#EB6664]" : "border-gray-400 bg-white text-gray-900 hover:border-[#EB6664]"
+                    }`}
+                  >
+                    <Icon size={16} /> {a.title}
+                  </button>
+                );
+              })}
+              <div className="mt-4 rounded-lg bg-[#fce4ec] p-5">
+                <p className="flex items-center gap-2 text-sm font-semibold uppercase text-[#EB6664]">
+                  <Sparkles size={14} /> {active.heading || active.title}
                 </p>
+                <p className="mt-3 text-xs leading-relaxed text-gray-800 sm:text-[13px]">{active.desc}</p>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Cards */}
-            <div className="grid md:grid-cols-2 gap-3 md:gap-4">
+        {/* ======================= TESTIMONIALS ======================= */}
+        <section>
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <Pill>Voice of Happy Parents</Pill>
+            <h2 className="mt-4 text-2xl font-extrabold sm:text-3xl md:text-4xl">{c.testimonialsTitle}</h2>
+            <p className="mt-3 text-xs text-gray-700 sm:text-sm">{c.testimonialsSub}</p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {c.testimonials.map((t, i) => (
+              <div key={t.name} className="flex flex-col justify-between rounded-2xl bg-[#fbd9d8] p-6 shadow-sm">
+                <div>
+                  <h3 className={`text-center text-lg font-bold ${TITLE_COLORS[i % 3]}`}>{t.title}</h3>
+                  <p className="mx-auto mt-6 max-w-xs text-xs leading-relaxed text-gray-800">&ldquo;{t.text}&rdquo;</p>
+                </div>
+                <div className="mx-auto mt-8 flex items-center gap-3">
+                  <img src={t.img} alt={t.name} className="h-10 w-10 rounded-full border-2 border-white object-cover" />
+                  <div>
+                    <p className="text-sm font-bold text-gray-900">{t.name}</p>
+                    <p className="text-xs text-gray-700">{t.loc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-              {course.whatIs.points.map((point, idx) => {
+        {/* ======================= GALLERY ======================= */}
+        <section>
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <Pill>Experience Gallery</Pill>
+            <h2 className="mt-4 text-2xl font-extrabold sm:text-3xl md:text-4xl">
+              Moments of <span className="text-[#EB6664]">Learning &amp; Growth</span>
+            </h2>
+            <p className="mt-3 text-xs text-gray-700 sm:text-sm">{c.gallerySub}</p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {c.gallery.map((src, i) => (
+              <div key={i} className="overflow-hidden rounded-3xl shadow-md">
+                <img src={src} alt={`Gallery ${i + 1}`} className="h-60 w-full object-cover transition duration-500 hover:scale-105 sm:h-72 lg:h-80" />
+              </div>
+            ))}
+          </div>
+        </section>
 
-                const styles = [
-                  {
-                    border: "border-[#66BB6A]/25",
-                    bg: "bg-[#e8f5e9]",
-                    gradient: "from-[#66BB6A]/15 via-[#66BB6A]/5 to-transparent",
-                    icon: "from-[#66BB6A] to-[#81C784]",
-                    shadow: "shadow-[#66BB6A]/10",
-                    title: "text-[#2e7d32]",
-                  },
-                  {
-                    border: "border-[#1E88E5]/25",
-                    bg: "bg-[#e3f2fd]",
-                    gradient: "from-[#1E88E5]/15 via-[#1E88E5]/5 to-transparent",
-                    icon: "from-[#1E88E5] to-[#64B5F6]",
-                    shadow: "shadow-[#1E88E5]/10",
-                    title: "text-[#1565c0]",
-                  },
-                  {
-                    border: "border-[#FFA726]/25",
-                    bg: "bg-[#fff8e1]",
-                    gradient: "from-[#FFA726]/15 via-[#FFA726]/5 to-transparent",
-                    icon: "from-[#FFA726] to-[#FFCC80]",
-                    shadow: "shadow-[#FFA726]/10",
-                    title: "text-[#ef6c00]",
-                  },
-                  {
-                    border: "border-[#9C27B0]/25",
-                    bg: "bg-[#f3e5f5]",
-                    gradient: "from-[#9C27B0]/15 via-[#9C27B0]/5 to-transparent",
-                    icon: "from-[#9C27B0] to-[#BA68C8]",
-                    shadow: "shadow-[#9C27B0]/10",
-                    title: "text-[#7b1fa2]",
-                  },
-                ];
-
-                const style = styles[idx % styles.length];
-
+        {/* ======================= FAQ ======================= */}
+        <section>
+          <div className="mx-auto mb-10 max-w-3xl text-center">
+            <Pill>Need More Information</Pill>
+            <h2 className="mt-4 text-2xl font-extrabold sm:text-3xl md:text-4xl">
+              Common Questions <span className="text-[#EB6664]">{c.faqTitleB}</span>
+            </h2>
+            <p className="mt-3 text-xs text-gray-700 sm:text-sm">{c.faqSub}</p>
+          </div>
+          <div className="grid items-center gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+            <img src={c.faqImg} alt="" className="h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80 lg:h-[420px]" />
+            <div className="space-y-4">
+              {c.faqs.map((f, i) => {
+                const open = openFaq === i;
+                const s = FAQ_STYLES[i % 4];
                 return (
-                  <div
-                    key={idx}
-                    className={`group relative overflow-hidden rounded-2xl border ${style.border}
-          shadow-md ${style.shadow} transition-all duration-300
-          hover:-translate-y-0.5 hover:shadow-lg`}
-                  >
-
-                    {/* Background */}
-                    <div className={`absolute inset-0 ${style.bg}`} />
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${style.gradient}`}
-                    />
-
-                    {/* Content */}
-                    <div className="relative p-4 flex items-start gap-3">
-
-                      {/* Icon */}
-                      <div
-                        className={`w-9 h-9 rounded-xl bg-gradient-to-br ${style.icon}
-              flex items-center justify-center flex-shrink-0
-              shadow-sm ${style.shadow}
-              transition-transform duration-300 group-hover:scale-105`}
-                      >
-                        <CheckCircle size={16} className="text-white" />
-                      </div>
-
-                      {/* Text */}
-                      <div>
-                        <p
-                          className={`leading-relaxed text-sm md:text-[15px] font-semibold ${style.title}`}
-                        >
-                          {point}
-                        </p>
+                  <div key={i} className={`overflow-hidden rounded-2xl ${s.bg}`}>
+                    <button onClick={() => setOpenFaq(open ? -1 : i)} className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left">
+                      <span className="text-sm font-semibold text-gray-900 sm:text-[15px]">{f.q}</span>
+                      <ChevronDown size={18} className={`shrink-0 transition-transform duration-300 ${s.ic} ${open ? "rotate-180" : ""}`} />
+                    </button>
+                    <div className={`grid transition-all duration-300 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                      <div className="overflow-hidden">
+                        <p className="px-5 pb-5 text-sm leading-relaxed text-gray-700">{f.a}</p>
                       </div>
                     </div>
                   </div>
                 );
               })}
-
             </div>
-          </section>
-
-          <section className="bg-[transparent] py-12 px-4 md:px-10">
-            <div className="max-w-7xl mx-auto">
-
-              {/* Heading */}
-              <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#EB6664]">
-                  {course.benefits.title}
-                </h2>
-
-                <p className="text-gray-600 mt-3 max-w-2xl mx-auto text-sm md:text-base">
-                  {course.benefits.subtitle}
-                </p>
-              </div>
-
-              {/* Content */}
-              <div className="grid md:grid-cols-2 gap-10 items-center">
-
-                {/* LEFT SIDE */}
-                <div className="flex flex-col justify-center h-full">
-                  <p className="text-gray-700 mb-6 text-sm md:text-base">
-                    Other than Mental Math, it also improves academic performance with the
-                    development of crucial life skills such as:
-                  </p>
-
-                  <div className="space-y-3">
-                    {course.benefits.benefits.map((item, i) => {
-
-                      const colors = [
-                        {
-                          bg: "bg-[#e8f5e9]",
-                          border: "border-[#66BB6A]/30",
-                          text: "text-[#2e7d32]",
-                          shadow: "shadow-[#66BB6A]/15",
-                        },
-                        {
-                          bg: "bg-[#e3f2fd]",
-                          border: "border-[#1E88E5]/30",
-                          text: "text-[#1565c0]",
-                          shadow: "shadow-[#1E88E5]/15",
-                        },
-                        {
-                          bg: "bg-[#fff8e1]",
-                          border: "border-[#FFA726]/30",
-                          text: "text-[#ef6c00]",
-                          shadow: "shadow-[#FFA726]/15",
-                        },
-                        {
-                          bg: "bg-[#f3e5f5]",
-                          border: "border-[#9C27B0]/30",
-                          text: "text-[#7b1fa2]",
-                          shadow: "shadow-[#9C27B0]/15",
-                        },
-                        {
-                          bg: "bg-[#ffebee]",
-                          border: "border-[#EF5350]/30",
-                          text: "text-[#c62828]",
-                          shadow: "shadow-[#EF5350]/15",
-                        },
-                        {
-                          bg: "bg-[#e0f7fa]",
-                          border: "border-[#00ACC1]/30",
-                          text: "text-[#00838f]",
-                          shadow: "shadow-[#00ACC1]/15",
-                        },
-                        {
-                          bg: "bg-[#f1f8e9]",
-                          border: "border-[#7CB342]/30",
-                          text: "text-[#558b2f]",
-                          shadow: "shadow-[#7CB342]/15",
-                        },
-                        {
-                          bg: "bg-[#fce4ec]",
-                          border: "border-[#EC407A]/30",
-                          text: "text-[#ad1457]",
-                          shadow: "shadow-[#EC407A]/15",
-                        },
-                      ];
-
-                      const style = colors[i % colors.length];
-
-                      return (
-                        <div
-                          key={i}
-                          className={`relative ${style.bg} ${style.border} border ${style.text}
-        font-bold px-5 py-3 rounded-xl shadow-md ${style.shadow}
-        transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg`}
-                          style={{
-                            clipPath:
-                              "polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%)",
-                          }}
-                        >
-                          {item.title}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* RIGHT SIDE */}
-                <div className="flex flex-col items-center justify-center h-full">
-
-                  <div className="relative w-full max-w-md rounded-xl overflow-hidden shadow-lg">
-
-                    <video
-                      className="w-full h-64 md:h-96 object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src={video} />
-                    </video>
-
-                    {/* Play Icon Overlay (optional) */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-14 h-14 md:w-16 md:h-16 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
-                        <div className="w-0 h-0 border-l-[14px] border-l-[#EB6664] border-y-[10px] border-y-transparent ml-1"></div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* CTA Button */}
-                  <button className="mt-6 bg-[#EB6664] hover:bg-[#EB6664] text-white font-semibold py-2.5 px-6 rounded-full shadow-md transition-all">
-                    Book a Free Demo
-                  </button>
-
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="relative py-10 md:py-12 px-3 sm:px-4 md:px-6 overflow-hidden">
-
-            {/* Background Glow */}
-            <div className="absolute top-0 left-0 w-52 md:w-72 h-52 md:h-72 bg-[#EB6664]/10 blur-3xl rounded-full" />
-            <div className="absolute bottom-0 right-0 w-52 md:w-72 h-52 md:h-72 bg-orange-200/20 blur-3xl rounded-full" />
-
-            <div className="max-w-7xl mx-auto relative z-10">
-
-              {/* Heading */}
-              <div className="text-center mb-7 md:mb-10">
-
-                <span className="inline-block px-3 py-1 rounded-full bg-[#EB6664]/10 text-[#EB6664] text-[10px] sm:text-xs font-semibold mb-3 tracking-wide">
-                  OUR LEARNING METHOD
-                </span>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight max-w-3xl mx-auto">
-                  {course.approach.title}
-                </h2>
-              </div>
-
-              {/* Desktop Layout */}
-              <div className="hidden lg:grid grid-cols-[1fr_0.9fr] gap-5 xl:gap-7 items-start">
-
-                {/* LEFT IMAGE */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTabApproach}
-                    initial={{ opacity: 0, scale: 0.97 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.97 }}
-                    transition={{ duration: 0.35 }}
-                    className="sticky top-24"
-                  >
-                    <div className="relative overflow-hidden rounded-[26px] shadow-xl border border-gray-200 bg-white">
-
-                      <img
-                        src={
-                          course.approach.points[activeTabApproach].image ||
-                          "https://via.placeholder.com/700x500"
-                        }
-                        alt={course.approach.points[activeTabApproach].title}
-                        className="w-full h-[480px] xl:h-[520px] object-cover"
-                      />
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* RIGHT ACCORDION */}
-                <div className="space-y-3">
-
-                  {course.approach.points.map((item, index) => {
-
-                    const Icon = item.icon || Brain;
-                    const isActive = activeTabApproach === index;
-
-                    return (
-                      <motion.div
-                        key={index}
-                        layout
-                        className={`rounded-2xl border overflow-hidden transition-all duration-300
-              ${isActive
-                            ? "bg-[#EB6664] border-[#EB6664] shadow-lg shadow-[#EB6664]/15"
-                            : "bg-white border-gray-200 hover:border-[#EB6664]/30"
-                          }`}
-                      >
-
-                        {/* Header */}
-                        <button
-                          onClick={() => setActiveTabApproach(index)}
-                          className="w-full px-4 xl:px-5 py-4 flex items-center justify-between gap-3 text-left"
-                        >
-
-                          <div className="flex items-center gap-3 min-w-0">
-
-                            {/* Icon */}
-                            <div
-                              className={`w-11 h-11 xl:w-12 xl:h-12 rounded-xl flex items-center justify-center flex-shrink-0
-                    ${isActive
-                                  ? "bg-white/20 text-white"
-                                  : "bg-[#EB6664]/10 text-[#EB6664]"
-                                }`}
-                            >
-                              <Icon size={20} />
-                            </div>
-
-                            {/* Text */}
-                            <div className="min-w-0">
-
-                              <h3
-                                className={`font-bold text-sm xl:text-base leading-snug truncate
-                      ${isActive
-                                    ? "text-white"
-                                    : "text-gray-900"
-                                  }`}
-                              >
-                                {item.title}
-                              </h3>
-
-                              <p
-                                className={`text-xs mt-1
-                      ${isActive
-                                    ? "text-white/80"
-                                    : "text-gray-500"
-                                  }`}
-                              >
-                                Tap to explore
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Arrow */}
-                          <motion.div
-                            animate={{ rotate: isActive ? 180 : 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="flex-shrink-0"
-                          >
-                            <ChevronDown
-                              size={18}
-                              className={
-                                isActive
-                                  ? "text-white"
-                                  : "text-gray-500"
-                              }
-                            />
-                          </motion.div>
-                        </button>
-
-                        {/* Content */}
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="px-4 xl:px-5 pb-4">
-
-                                <div className="h-px bg-white/20 mb-3" />
-
-                                <p className="text-sm leading-relaxed text-white">
-                                  {item.desc}
-                                </p>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* MOBILE + TABLET */}
-              <div className="lg:hidden">
-
-                {/* Active Image */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTabApproach}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="overflow-hidden rounded-[24px] shadow-lg mb-4 border border-gray-200"
-                  >
-                    <img
-                      src={
-                        course.approach.points[activeTabApproach].image ||
-                        "https://via.placeholder.com/700x500"
-                      }
-                      alt=""
-                      className="w-full h-[220px] sm:h-[300px] object-cover"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Accordion */}
-                <div className="space-y-3">
-
-                  {course.approach.points.map((item, index) => {
-
-                    const Icon = item.icon || Brain;
-                    const isActive = activeTabApproach === index;
-
-                    return (
-                      <div
-                        key={index}
-                        className={`rounded-2xl overflow-hidden border transition-all duration-300
-              ${isActive
-                            ? "bg-[#EB6664] border-[#EB6664] shadow-lg shadow-[#EB6664]/15"
-                            : "bg-white border-gray-200"
-                          }`}
-                      >
-
-                        {/* Header */}
-                        <button
-                          onClick={() => setActiveTabApproach(index)}
-                          className="w-full px-4 py-3.5 flex items-center justify-between gap-3 text-left"
-                        >
-
-                          <div className="flex items-center gap-3 min-w-0">
-
-                            {/* Icon */}
-                            <div
-                              className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0
-                    ${isActive
-                                  ? "bg-white/20 text-white"
-                                  : "bg-[#EB6664]/10 text-[#EB6664]"
-                                }`}
-                            >
-                              <Icon size={18} />
-                            </div>
-
-                            {/* Title */}
-                            <h3
-                              className={`font-bold text-sm sm:text-[15px] leading-snug
-                    ${isActive
-                                  ? "text-white"
-                                  : "text-gray-900"
-                                }`}
-                            >
-                              {item.title}
-                            </h3>
-                          </div>
-
-                          {/* Arrow */}
-                          <ChevronDown
-                            size={18}
-                            className={`transition-transform duration-300 flex-shrink-0
-                  ${isActive
-                                ? "rotate-180 text-white"
-                                : "text-gray-500"
-                              }`}
-                          />
-                        </button>
-
-                        {/* Content */}
-                        <div
-                          className={`transition-all duration-300 overflow-hidden
-                ${isActive
-                              ? "max-h-96 opacity-100"
-                              : "max-h-0 opacity-0"
-                            }`}
-                        >
-                          <div className="px-4 pb-4">
-
-                            <div className="h-px bg-white/20 mb-3" />
-
-                            <p className="text-sm leading-relaxed text-white">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="bg-transparent py-10 md:py-14 px-3 sm:px-4 md:px-6 overflow-hidden">
-
-            <div className="max-w-7xl mx-auto">
-
-              {/* Heading */}
-              <div className="text-center mb-8 md:mb-12">
-
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EB6664]/10 text-[#EB6664] text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase mb-4">
-                  Testimonials
-                </span>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#EB6664] leading-tight">
-                  Hear from Happy Parents
-                </h2>
-
-                <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto">
-                  Real experiences shared by parents whose children transformed through our learning programs.
-                </p>
-              </div>
-
-              {/* Slider Wrapper */}
-              <div className="relative">
-
-                {/* Left Fade */}
-                {/* <div className="absolute left-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" /> */}
-
-                {/* Right Fade */}
-                {/* <div className="absolute right-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" /> */}
-
-                {/* Scrolling Track */}
-                <div
-                  ref={scrollRef}
-                  className="flex gap-4 md:gap-6 overflow-x-hidden py-2"
-                  style={{ scrollBehavior: "auto" }}
-                >
-
-                  {[...course.testimonials, ...course.testimonials].map((item, i) => {
-
-                    const colors = [
-                      {
-                        bg: "bg-[#e8f5e9]",
-                        border: "border-[#66BB6A]/25",
-                        shadow: "shadow-[#66BB6A]/10",
-                        title: "text-[#2e7d32]",
-                      },
-                      {
-                        bg: "bg-[#e3f2fd]",
-                        border: "border-[#1E88E5]/25",
-                        shadow: "shadow-[#1E88E5]/10",
-                        title: "text-[#1565c0]",
-                      },
-                      {
-                        bg: "bg-[#fff8e1]",
-                        border: "border-[#FFA726]/25",
-                        shadow: "shadow-[#FFA726]/10",
-                        title: "text-[#ef6c00]",
-                      },
-                      {
-                        bg: "bg-[#f3e5f5]",
-                        border: "border-[#9C27B0]/25",
-                        shadow: "shadow-[#9C27B0]/10",
-                        title: "text-[#7b1fa2]",
-                      },
-                    ];
-
-                    const style = colors[i % colors.length];
-
-                    return (
-                      <div
-                        key={i}
-                        className={`
-                ${style.bg}
-                ${style.border}
-                ${style.shadow}
-                relative border rounded-[28px]
-                p-5 md:p-6
-                flex-shrink-0
-                w-[280px]
-                sm:w-[320px]
-                md:w-[360px]
-                min-h-[260px]
-                md:min-h-[280px]
-                flex flex-col justify-between
-                shadow-lg
-                transition-all duration-300
-                hover:-translate-y-1 hover:shadow-2xl
-              `}
-                      >
-
-                        {/* Quote Icon */}
-                        <div className="absolute top-5 right-5 text-5xl font-black text-black/5 leading-none">
-                          "
-                        </div>
-
-                        {/* Top */}
-                        <div>
-
-                          <h3 className={`font-extrabold text-lg md:text-xl mb-3 ${style.title}`}>
-                            {item.title}
-                          </h3>
-
-                          <p className="text-sm md:text-[15px] text-gray-700 leading-relaxed line-clamp-6">
-                            {item.desc}
-                          </p>
-                        </div>
-
-                        {/* Bottom User */}
-                        <div className="flex items-center gap-3 pt-5 mt-5 border-t border-black/5">
-
-                          {/* Avatar */}
-                          <div className="relative flex-shrink-0">
-
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
-                            />
-
-                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white" />
-                          </div>
-
-                          {/* User Info */}
-                          <div className="min-w-0">
-
-                            <p className="font-bold text-sm md:text-base text-gray-900 truncate">
-                              {item.name}
-                            </p>
-
-                            <p className="text-xs md:text-sm text-gray-500 truncate">
-                              {item.location}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-
-
-          {/* Gallery Section */}
-          <section className="py-10 md:py-14 px-3 sm:px-4 md:px-6 bg-transparent overflow-hidden">
-
-            <div className="max-w-7xl mx-auto">
-
-              {/* Heading */}
-              <div className="text-center mb-8 md:mb-10">
-
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EB6664]/10 text-[#EB6664] text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase mb-4">
-                  Photo Gallery
-                </span>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#EB6664] tracking-tight">
-                  Gallery
-                </h2>
-
-                <p className="text-gray-500 text-sm md:text-base mt-3 max-w-2xl mx-auto leading-relaxed">
-                  Explore classrooms, activities, and engaging learning experiences from our programs.
-                </p>
-              </div>
-
-              {/* Gallery Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-
-                {visibleImages.map((image, index) => {
-
-                  const colors = [
-                    {
-                      border: "border-[#66BB6A]/25",
-                      shadow: "shadow-[#66BB6A]/10",
-                      glow: "bg-[#66BB6A]/20",
-                    },
-                    {
-                      border: "border-[#1E88E5]/25",
-                      shadow: "shadow-[#1E88E5]/10",
-                      glow: "bg-[#1E88E5]/20",
-                    },
-                    {
-                      border: "border-[#FFA726]/25",
-                      shadow: "shadow-[#FFA726]/10",
-                      glow: "bg-[#FFA726]/20",
-                    },
-                    {
-                      border: "border-[#9C27B0]/25",
-                      shadow: "shadow-[#9C27B0]/10",
-                      glow: "bg-[#9C27B0]/20",
-                    },
-                  ];
-
-                  const style = colors[index % colors.length];
-
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => setSelectedImage(index)}
-                      className={`
-              group relative overflow-hidden rounded-[28px]
-              border ${style.border}
-              shadow-xl ${style.shadow}
-              cursor-pointer
-              transition-all duration-500
-              hover:-translate-y-1 hover:shadow-2xl
-            `}
-                    >
-
-                      {/* Glow */}
-                      <div
-                        className={`absolute -top-10 -right-10 w-32 h-32 rounded-full
-              blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-500
-              ${style.glow}`}
-                      />
-
-                      {/* Image */}
-                      <div className="relative overflow-hidden">
-
-                        <img
-                          src={image}
-                          alt={`Gallery ${index + 1}`}
-                          className="w-full h-[240px] sm:h-[260px] md:h-[280px] object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-
-                        {/* Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
-
-                        {/* Number */}
-                        {/* <div
-                          className="absolute top-4 left-4 px-3 py-1 rounded-full
-                bg-white/90 backdrop-blur-md text-[#EB6664]
-                text-xs font-bold shadow-md"
-                        >
-                          0{index + 1}
-                        </div>                         */}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* View More */}
-              {course.gallery.length > 3 && (
-                <div className="flex justify-center mt-8">
-
-                  <button
-                    onClick={() => setShowAllGallery(!showAllGallery)}
-                    className="group relative overflow-hidden rounded-full px-7 py-3.5
-          bg-[#EB6664] text-white font-bold text-sm tracking-wide
-          shadow-lg shadow-[#EB6664]/20
-          transition-all duration-300 hover:scale-105"
-                  >
-
-                    <span className="relative z-10">
-                      {showAllGallery ? "Show Less" : "View All Images"}
-                    </span>
-
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#EB6664] to-[#ff8c8a] opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* GALLERY MODAL */}
-            {selectedImage !== null && (
-              <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
-
-                {/* Close */}
-                <button
-                  onClick={() => setSelectedImage(null)}
-                  className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20
-        flex items-center justify-center text-white transition-all z-50"
-                >
-                  <X size={22} />
-                </button>
-
-                {/* Prev */}
-                <button
-                  onClick={() =>
-                    setSelectedImage(
-                      selectedImage === 0
-                        ? visibleImages.length - 1
-                        : selectedImage - 1
-                    )
-                  }
-                  className="absolute left-3 md:left-6 w-11 h-11 md:w-14 md:h-14 rounded-full
-        bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
-                >
-                  <ChevronLeft size={28} />
-                </button>
-
-                {/* Image */}
-                <div className="max-w-6xl w-full flex items-center justify-center">
-
-                  <img
-                    src={visibleImages[selectedImage]}
-                    alt=""
-                    className="max-h-[85vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl"
-                  />
-                </div>
-
-                {/* Next */}
-                <button
-                  onClick={() =>
-                    setSelectedImage(
-                      selectedImage === visibleImages.length - 1
-                        ? 0
-                        : selectedImage + 1
-                    )
-                  }
-                  className="absolute right-3 md:right-6 w-11 h-11 md:w-14 md:h-14 rounded-full
-        bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
-                >
-                  <ChevronRight size={28} />
-                </button>
-
-                {/* Count */}
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm font-semibold">
-                  {selectedImage + 1} / {visibleImages.length}
-                </div>
-              </div>
-            )}
-          </section>
-
-          {/* FAQs */}
-          <section id="faqs" className={`transform transition-all duration-700 delay-300 ${isVisible.faqs ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4" style={{ color: course.hero.accent }}>
-                {course.faqs.title}
-              </h2>
-              <p className="text-gray-500">Got questions? We've got answers</p>
-            </div>
-
-            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10"> {/*  items-center lg:items-start */}
-
-              {/* Left — FAQs */}
-              <div className="flex-1 space-y-2">
-                {course.faqs.faqs.map((faq, idx) => (
-                  <div key={idx} className="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300">
-                    <details className="group">
-                      <summary className="flex items-center justify-between cursor-pointer p-5">
-                        <span className="font-semibold text-gray-900 pr-4">{faq.q}</span>
-                        <ChevronRight
-                          size={18}
-                          className="flex-shrink-0 group-open:rotate-90 transition-transform duration-300"
-                          style={{ color: course.hero.accent }}
-                        />
-                      </summary>
-                      <div className="px-5 pb-5">
-                        <p className="text-gray-600 border-t border-gray-100 pt-4 text-sm leading-relaxed">
-                          {faq.a}
-                        </p>
-                      </div>
-                    </details>
-                  </div>
-                ))}
-              </div>
-
-              {/* Right — Sticky image card */}
-              <div className="lg:w-80 xl:w-96 lg:sticky lg:top-24 flex-shrink-0">
-                <div className="relative rounded-3xl overflow-hidden shadow-xl">
-                  <img
-                    src={course.faqs.image}
-                    alt="Abacus learning"
-                    className="w-full h-[480px] object-cover object-center"
-                  />
-                  {/* Gradient overlay at bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                  {/* Bottom text on image */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <p className="text-sm font-semibold tracking-wide uppercase opacity-80 mb-1">
-                      Still have questions?
-                    </p>
-                    <p className="text-lg font-bold leading-snug mb-4">
-                      Talk to our team — we're happy to help!
-                    </p>
-                    <button
-                      onClick={handleBookDemo}
-                      className="w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-105"
-                      style={{ backgroundColor: course.hero.accent, color: "#fff" }}
-                    >
-                      Contact Us
-                    </button>
-                  </div>
-                </div>
-
-                {/* Small stat pills below image */}
-                {/* <div className="flex gap-3 mt-4">
-                  <div className="flex-1 bg-white rounded-2xl border border-gray-100 px-4 py-3 text-center shadow-sm">
-                    <p className="text-xl font-bold" style={{ color: course.hero.accent }}>500+</p>
-                    <p className="text-xs text-gray-500 mt-0.5">Happy Students</p>
-                  </div>
-                  <div className="flex-1 bg-white rounded-2xl border border-gray-100 px-4 py-3 text-center shadow-sm">
-                    <p className="text-xl font-bold" style={{ color: course.hero.accent }}>98%</p>
-                    <p className="text-xs text-gray-500 mt-0.5">Parent Satisfaction</p>
-                  </div>
-                </div> */}
-              </div>
-
-            </div>
-          </section>
-
-          {/* CTA Section */}
-          <section className="relative overflow-hidden rounded-3xl">
-            {/* Background image */}
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${course.hero.image})` }}
-            />
-            {/* Overlay using hero accent */}
-            <div
-              className="absolute inset-0"
-              style={{ backgroundColor: course.hero.accent, opacity: 0.88 }}
-            />
-            {/* Subtle radial glow for depth */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/20" />
-
-            <div className="relative py-16 px-8 text-center text-white">
-              {/* Icon badge */}
-              <div
-                className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-5 text-4xl"
-                style={{ backgroundColor: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)" }}
-              >
-                {course.hero.icon}
-              </div>
-
-              {/* Tagline pill */}
-              <div className="flex justify-center mb-3">
-                <span
-                  className="text-xs font-semibold tracking-widest uppercase px-4 py-1 rounded-full"
-                  style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.95)" }}
-                >
-                  {course.hero.tagline}
-                </span>
-              </div>
-
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                Ready to Start Your{" "}
-                <span className="underline decoration-white/40 underline-offset-4">{selected}</span>{" "}
-                Journey?
-              </h2>
-
-              <p className="text-white/80 mb-10 max-w-md mx-auto text-base leading-relaxed">
-                Book a free demo class today and see the difference expert-led learning can make for your child.
-              </p>
-
-              <div className="flex flex-wrap gap-3 justify-center">
-                <button
-                  onClick={handleBookDemo}
-                  className="flex items-center gap-2 bg-white font-bold py-3 px-8 rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300 text-sm"
-                  style={{ color: course.hero.accent }}
-                >
-                  <Play size={16} />
-                  Book Free Demo
-                </button>
-                <button
-                  onClick={handleExploreOther}
-                  className="flex items-center gap-2 font-semibold py-3 px-8 rounded-xl transition-all duration-300 text-sm text-white"
-                  style={{
-                    border: "2px solid rgba(255,255,255,0.4)",
-                    backgroundColor: "rgba(255,255,255,0.08)",
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.18)")}
-                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)")}
-                >
-                  Explore Other Courses
-                </button>
-              </div>
-            </div>
-          </section>
-        </div>
+          </div>
+        </section>
+
+        {/* ======================= CTA ======================= */}
+        <section className="relative overflow-hidden rounded-2xl border-2 border-[#EB6664] bg-white/60 px-5 py-12 text-center sm:px-10 sm:py-14">
+          <Pencil size={14} className="absolute left-[8%] top-[22%] hidden -rotate-45 text-[#EB6664]/60 sm:block" />
+          <Heart size={14} className="absolute right-[6%] top-[20%] hidden fill-[#EB6664]/60 text-[#EB6664]/60 sm:block" />
+          <GraduationCap size={14} className="absolute bottom-[18%] left-[28%] hidden text-[#EB6664]/60 sm:block" />
+          <Sparkles size={14} className="absolute bottom-[14%] right-[8%] hidden text-[#EB6664]/60 sm:block" />
+
+          <span className="inline-block rounded-md bg-[#EB6664]/10 px-4 py-1.5 text-xs font-semibold text-[#EB6664]">{c.ctaPill}</span>
+          <h2 className="mx-auto mt-5 inline-block border-b-2 border-[#EB6664] pb-2 text-xl font-bold sm:text-2xl">{c.ctaTitle}</h2>
+          <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-gray-800">{c.ctaText}</p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <button onClick={onExplore} className="rounded-full bg-[#EB6664] px-8 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#d94d4b]">
+              View All Courses
+            </button>
+            <button onClick={onDemo} className="rounded-full border border-[#EB6664] bg-white px-8 py-3 text-sm font-bold text-[#EB6664] transition hover:bg-[#EB6664]/10">
+              Schedule a Free Trial
+            </button>
+          </div>
+        </section>
       </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  MAIN PAGE                                                          */
+/* ================================================================== */
+export default function ShortTermCourseDetails() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const initialItem = searchParams.get("item");
+  const [selected, setSelected] = useState(() =>
+    initialItem && COURSES[initialItem] ? initialItem : "Abacus"
+  );
+
+  // Keep the URL in sync with the selected course
+  useEffect(() => {
+    const label = searchParams.get("label") || "Short Term Courses";
+    const type = searchParams.get("type") || "course";
+    setSearchParams({ label, type, item: selected });
+  }, [selected, setSearchParams]);
+
+  // Sync state when the URL changes (browser back/forward, header links)
+  useEffect(() => {
+    const itemFromUrl = searchParams.get("item");
+    if (itemFromUrl && COURSES[itemFromUrl] && itemFromUrl !== selected) {
+      setSelected(itemFromUrl);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [searchParams]);
+
+  const course = COURSES[selected];
+  if (!course) return null;
+
+  const handleCallNow = () => {
+    window.location.href = `tel:${course.phone.replace(/\s/g, "")}`;
+  };
+  const handleEmailNow = () => {
+    window.location.href = `mailto:${course.email}?subject=Enquiry about ${selected}`;
+  };
+  const handleBookDemo = () => {
+    navigate("/contact", { state: { course: selected, demoRequest: true } });
+  };
+  const handleExploreOther = () => navigate("/courses");
+
+  return (
+    <>
+      <Header />
+      <NavImage />
+      <CourseDetail
+        key={selected}
+        name={selected}
+        c={course}
+        onCall={handleCallNow}
+        onEmail={handleEmailNow}
+        onDemo={handleBookDemo}
+        onExplore={handleExploreOther}
+      />
       <Footer />
     </>
   );
