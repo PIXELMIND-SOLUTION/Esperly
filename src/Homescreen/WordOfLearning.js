@@ -141,7 +141,11 @@ const PillarCard = ({ p, index }) => {
       style={{ backgroundColor: p.cardBg }}
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      transition={{
+        duration: 0.55,
+        delay: index * 0.08,
+        ease: [0.16, 1, 0.3, 1],
+      }}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
@@ -172,7 +176,10 @@ const PillarCard = ({ p, index }) => {
         {[colA, colB].map((col, ci) => (
           <div key={ci} className="flex flex-col gap-2">
             {col.map(([TagIcon, label], i) => (
-              <div key={i} className="flex items-center gap-1.5 text-[11px] text-gray-700 sm:text-xs">
+              <div
+                key={i}
+                className="flex items-center gap-1.5 text-[11px] text-gray-700 sm:text-xs"
+              >
                 <TagIcon size={13} className="shrink-0 text-gray-600" />
                 <span className="truncate">{label}</span>
               </div>
@@ -187,7 +194,7 @@ const PillarCard = ({ p, index }) => {
 export default function WordOfLearning() {
   return (
     <section className="relative overflow-hidden bg-[#fdf1e9] px-4 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl gap-10 px-4 sm:px-6 md:px-10 lg:gap-12">
         <FadeUp>
           <p className="text-sm font-bold sm:text-base" style={{ color: RED }}>
             A world Of Learning
@@ -216,7 +223,7 @@ export default function WordOfLearning() {
             className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-center text-xs font-bold text-white shadow-lg sm:flex md:h-20 md:w-20 md:text-sm"
             style={{ backgroundColor: RED }}
           >
-            Esperly
+            <img src="/logo3.png" alt="Logo" className="object-cover h-12 w-12" />
           </div>
         </div>
       </div>

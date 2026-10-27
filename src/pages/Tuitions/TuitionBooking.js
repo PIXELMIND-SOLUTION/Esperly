@@ -1,8 +1,33 @@
 import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "motion/react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+
+// ─── Theme (Esperly · Four Pillars) ──────────────────────────────────────────
+
+const T = {
+    coral: "#EB6664",
+    coralDark: "#C94846",
+    coralSoft: "rgba(235,102,100,0.10)",
+    peach: "#FDF1E9",
+    peachSoft: "#FFF8F3",
+    peachDeep: "#FBE3D3",
+    yellow: "#FCE98A",
+    ink: "#111827",
+    muted: "#4B5563",
+    line: "#F3D9CF",
+};
+
+const themes = [
+    { cardBg: "#DCE9FB", badgeBg: "#1E3A8A", iconBg: "#A9C6EE", iconColor: "#1E3A8A" },
+    { cardBg: "#E9E4FB", badgeBg: "#6D4FC4", iconBg: "#C6B8F5", iconColor: "#5B3FB0" },
+    { cardBg: "#FBE7D6", badgeBg: "#E8752A", iconBg: "#F9CFA0", iconColor: "#C2620F" },
+    { cardBg: "#DEF3E5", badgeBg: "#1F7A3D", iconBg: "#A8E0BA", iconColor: "#1F7A3D" },
+];
+
+// ─── Data ────────────────────────────────────────────────────────────────────
 
 const tuitionsMenu = [
     { label: "Elementary Level", items: ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5"] },
@@ -90,10 +115,10 @@ const getSubjectsByClass = (className) => {
     };
 };
 
-
-
 const daysOptions = ["1 day per week", "2 days per week", "3 days per week", "4 days per week", "5 days per week", "6 days per week", "7 days (daily)"];
 const startOptions = ["Immediately", "In a week", "In a month"];
+
+// ─── Main Component ──────────────────────────────────────────────────────────
 
 export default function TuitionBooking() {
     const params = new URLSearchParams(window.location.search);
@@ -123,7 +148,6 @@ export default function TuitionBooking() {
     const contactRef = useRef(null);
 
     const subjectGroups = getSubjectsByClass(matchedItem);
-    const allSubjects = Object.values(subjectGroups).flatMap(g => g.subjects);
 
     const scrollTo = (ref) => {
         setTimeout(() => {
@@ -193,63 +217,79 @@ export default function TuitionBooking() {
         }
     };
 
+    const fontStyle = (
+        <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+            .tb-page, .tb-page * { font-family: 'Poppins', sans-serif; }
+            .tb-page .react-tel-input .form-control { font-family: 'Poppins', sans-serif; }
+            @media (prefers-reduced-motion: reduce) { .tb-page * { transition: none !important; } }
+        `}</style>
+    );
+
+    // ── Success screen ──
     if (submitted) {
         return (
-            <div className="min-h-screen bg-[transparent] flex items-center justify-center p-6">
-                <div className="text-center max-w-md">
-                    <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}>
-                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <h2 className="text-3xl font-bold text-black mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        You're all set!
-                    </h2>
-                    <p className="text-gray-500 mb-2">Booking confirmed for <span className="font-semibold text-gray-700">{matchedItem}</span></p>
-                    <p className="text-gray-500 mb-8">Our team will reach out to <span className="font-semibold" style={{ color: "#EB6664" }}>+{formData.mobile}</span> within 24 hours.</p>
-                    <div className="bg-white rounded-2xl border border-rose-100 p-5 mb-8 text-left shadow-sm">
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div><p className="text-gray-400 text-xs mb-1">Board</p><p className="font-semibold text-gray-700">{boards.find(b => b.id === selectedBoard)?.name}</p></div>
-                            <div><p className="text-gray-400 text-xs mb-1">Class</p><p className="font-semibold text-gray-700">{matchedItem}</p></div>
-                            <div><p className="text-gray-400 text-xs mb-1">Subjects</p><p className="font-semibold text-gray-700">{selectedSubjects.join(", ")}</p></div>
-                            <div><p className="text-gray-400 text-xs mb-1">Schedule</p><p className="font-semibold text-gray-700">{selectedDays} · {selectedStart}</p></div>
+            <>
+                <Header />
+                <div className="tb-page min-h-screen flex items-center justify-center p-6" style={{ background: T.peach }}>
+                    {fontStyle}
+                    <FadeUp className="text-center max-w-md w-full">
+                        <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: themes[3].iconBg }}>
+                            <svg className="w-12 h-12" style={{ color: themes[3].iconColor }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                            </svg>
                         </div>
-                    </div>
-                    <button
-                        onClick={() => window.location.href = "/"}
-                        className="w-full py-4 rounded-2xl text-white font-semibold text-lg transition-all hover:opacity-90 active:scale-95"
-                        style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}
-                    >
-                        Back to Home
-                    </button>
+                        <h2 className="text-3xl font-extrabold mb-3" style={{ color: T.ink }}>
+                            You're{" "}
+                            <span className="rounded-lg px-3 py-0.5 italic" style={{ background: T.yellow, color: T.coral }}>all set!</span>
+                        </h2>
+                        <p className="mb-2" style={{ color: T.muted }}>Booking confirmed for <span className="font-semibold" style={{ color: T.ink }}>{matchedItem}</span></p>
+                        <p className="mb-8" style={{ color: T.muted }}>Our team will reach out to <span className="font-semibold" style={{ color: T.coral }}>+{formData.mobile}</span> within 24 hours.</p>
+                        <div className="rounded-3xl p-5 mb-8 text-left" style={{ background: themes[2].cardBg }}>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div><p className="text-xs mb-1" style={{ color: T.muted }}>Board</p><p className="font-bold" style={{ color: T.ink }}>{boards.find(b => b.id === selectedBoard)?.name}</p></div>
+                                <div><p className="text-xs mb-1" style={{ color: T.muted }}>Class</p><p className="font-bold" style={{ color: T.ink }}>{matchedItem}</p></div>
+                                <div><p className="text-xs mb-1" style={{ color: T.muted }}>Subjects</p><p className="font-bold" style={{ color: T.ink }}>{selectedSubjects.join(", ")}</p></div>
+                                <div><p className="text-xs mb-1" style={{ color: T.muted }}>Schedule</p><p className="font-bold" style={{ color: T.ink }}>{selectedDays} · {selectedStart}</p></div>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => window.location.href = "/"}
+                            className="w-full py-4 rounded-xl text-white font-bold text-base transition-all hover:opacity-90 active:scale-95 shadow-lg"
+                            style={{ background: T.coral }}
+                        >
+                            Back to home
+                        </button>
+                    </FadeUp>
                 </div>
-            </div>
+                <Footer />
+            </>
         );
     }
 
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-[transparent]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+            <div className="tb-page min-h-screen" style={{ background: T.peach }}>
+                {fontStyle}
 
-                {/* Header */}
-                <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 border-b border-rose-100 px-4 py-4">
+                {/* Sticky progress header */}
+                <div className="sticky top-0 z-40 backdrop-blur-md px-4 py-4" style={{ background: "rgba(253,241,233,0.88)", borderBottom: `1px solid ${T.line}` }}>
                     <div className="max-w-3xl mx-auto flex items-center justify-between">
                         <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-widest mb-0.5">Tuition Booking</p>
-                            <h1 className="font-bold text-gray-800 text-lg" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                {matchedItem} · {matchedMenu?.label}
+                            <p className="text-xs font-semibold mb-0.5" style={{ color: T.coral }}>Tuition booking</p>
+                            <h1 className="font-extrabold text-lg" style={{ color: T.ink }}>
+                                {matchedItem} <span className="font-medium text-sm" style={{ color: T.muted }}>· {matchedMenu?.label}</span>
                             </h1>
                         </div>
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1.5" aria-label={`Step ${step} of 4`}>
                             {[1, 2, 3, 4].map((s) => (
                                 <div
                                     key={s}
                                     className="h-2 rounded-full transition-all duration-500"
                                     style={{
                                         width: step === s ? "28px" : "8px",
-                                        background: step >= s ? "linear-gradient(90deg, #EB6664, #F4956A)" : "#e5e7eb",
+                                        background: step >= s ? T.coral : "#E7D5CB",
                                     }}
                                 />
                             ))}
@@ -257,197 +297,222 @@ export default function TuitionBooking() {
                     </div>
                 </div>
 
-                <div className="max-w-3xl mx-auto px-4 pb-24 pt-8 space-y-16">
+                <div className="max-w-3xl mx-auto px-4 pb-24 pt-10 space-y-16">
 
                     {/* Step 1 — Board Selection */}
                     <section ref={boardRef}>
-                        <StepHeader number={1} title="Boards We Offer" subtitle="A strong academic foundation across national and international curriculam." active={true} />
+                        <StepHeader number={1} title="Boards we offer" subtitle="A strong academic foundation across national and international curricula." active={true} />
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                            {boards.map((b) => (
-                                <button
-                                    key={b.id}
-                                    onClick={() => handleBoardSelect(b.id)}
-                                    className={`group text-left p-5 rounded-2xl border-2 transition-all duration-300 ${selectedBoard === b.id
-                                        ? "border-transparent shadow-lg scale-[1.02]"
-                                        : "border-black bg-white hover:border-rose-300 hover:shadow-md"
-                                        }`}
-                                    style={selectedBoard === b.id ? { background: "linear-gradient(135deg, #EB6664, #F4956A)", color: "white" } : {}}
-                                >
-                                    <div className="text-3xl mb-3">{b.icon}</div>
-                                    <p className={`font-bold text-lg mb-1 ${selectedBoard === b.id ? "text-white" : "text-black"}`}>{b.name}</p>
-                                    <p className={`text-xs leading-relaxed ${selectedBoard === b.id ? "text-rose-100" : "text-gray-700"}`}>{b.desc}</p>
-                                    {selectedBoard === b.id && (
-                                        <div className="mt-3 flex items-center gap-1 text-white text-xs font-medium">
-                                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                            Selected
-                                        </div>
-                                    )}
-                                </button>
-                            ))}
+                            {boards.map((b, i) => {
+                                const th = themes[i % themes.length];
+                                const selected = selectedBoard === b.id;
+                                return (
+                                    <motion.button
+                                        key={b.id}
+                                        onClick={() => handleBoardSelect(b.id)}
+                                        initial={{ opacity: 0, y: 24 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                                        className="relative text-left p-5 rounded-2xl sm:rounded-3xl transition-all duration-300 hover:-translate-y-1"
+                                        style={{
+                                            backgroundColor: th.cardBg,
+                                            boxShadow: selected ? `0 0 0 3px ${T.coral}, 0 12px 24px rgba(235,102,100,0.22)` : "none",
+                                        }}
+                                        aria-pressed={selected}
+                                    >
+                                        <div className="w-14 h-14 rounded-full flex items-center justify-center text-2xl mb-3" style={{ backgroundColor: th.iconBg }}>{b.icon}</div>
+                                        <p className="font-extrabold text-lg mb-1" style={{ color: T.ink }}>{b.name}</p>
+                                        <p className="text-xs leading-relaxed text-gray-700">{b.desc}</p>
+                                        {selected && (
+                                            <span className="absolute top-3 right-3 flex items-center gap-1 text-white text-xs font-bold rounded-md px-2 py-1" style={{ background: T.coral }}>
+                                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                                Selected
+                                            </span>
+                                        )}
+                                    </motion.button>
+                                );
+                            })}
                         </div>
                     </section>
 
                     {/* Step 2 — Subject Selection */}
                     {step >= 2 && (
-                        <section ref={subjectRef} style={{ scrollMarginTop: "100px" }}>
-                            <StepHeader number={2} title="Select Subjects" subtitle="Choose all subjects you need help with" active={step === 2} />
-                            <div className="mt-6 space-y-8">
-                                {Object.entries(subjectGroups).map(([groupName, { subtitle, subjects }]) => (
-                                    <div key={groupName}>
-                                        <div className="mb-4">
-                                            <p className="text-sm font-semibold text-black uppercase tracking-widest">{groupName}</p>
-                                            <p className="text-xs text-gray-700 mt-0.5 italic">{subtitle}</p>
-                                        </div>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                            {subjects.map((s) => {
-                                                const checked = selectedSubjects.includes(s);
-                                                return (
-                                                    <button
-                                                        key={`${groupName}-${s}`}
-                                                        onClick={() => toggleSubject(s)}
-                                                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 transition-all duration-200 text-left ${checked ? "border-transparent shadow-md" : "border-black bg-white hover:border-rose-700"}`}
-                                                        style={checked ? { background: "linear-gradient(135deg, #FFF1F1, #FFF3EE)", borderColor: "#EB6664" } : {}}
-                                                    >
-                                                        <div
-                                                            className="w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all"
-                                                            style={checked ? { background: "linear-gradient(135deg, #EB6664, #F4956A)", borderColor: "transparent" } : { borderColor: "#d1d5db" }}
-                                                        >
-                                                            {checked && <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
-                                                        </div>
-                                                        <span className={`text-sm font-medium ${checked ? "text-rose-700" : "text-black hover:text-rose-700"}`}>{s}</span>
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            {selectedSubjects.length > 0 && (
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    {selectedSubjects.map(s => (
-                                        <span key={s} className="text-xs px-3 py-1 rounded-full font-medium" style={{ background: "#FFEAEA", color: "#EB6664" }}>{s}</span>
-                                    ))}
+                        <FadeUp>
+                            <section ref={subjectRef} style={{ scrollMarginTop: "100px" }}>
+                                <StepHeader number={2} title="Select subjects" subtitle="Choose all subjects you need help with." active={step === 2} />
+                                <div className="mt-6 space-y-8">
+                                    {Object.entries(subjectGroups).map(([groupName, { subtitle, subjects }], gi) => {
+                                        const th = themes[gi % themes.length];
+                                        return (
+                                            <div key={groupName} className="rounded-3xl p-5 sm:p-6" style={{ background: T.peachSoft, border: `1px solid ${T.line}` }}>
+                                                <div className="mb-4 flex items-start gap-3">
+                                                    <span className="mt-1 w-1.5 h-8 rounded-full flex-shrink-0" style={{ background: th.badgeBg }}></span>
+                                                    <div>
+                                                        <p className="text-base font-extrabold" style={{ color: T.ink }}>{groupName}</p>
+                                                        {subtitle && <p className="text-xs mt-0.5 italic text-gray-700">{subtitle}</p>}
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                                    {subjects.map((s) => {
+                                                        const checked = selectedSubjects.includes(s);
+                                                        return (
+                                                            <button
+                                                                key={`${groupName}-${s}`}
+                                                                onClick={() => toggleSubject(s)}
+                                                                aria-pressed={checked}
+                                                                className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-left transition-all duration-200"
+                                                                style={checked
+                                                                    ? { background: th.cardBg, boxShadow: `0 0 0 2px ${th.badgeBg}` }
+                                                                    : { background: "#FFFFFF", boxShadow: `0 0 0 1px ${T.line}` }}
+                                                            >
+                                                                <div
+                                                                    className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center transition-all"
+                                                                    style={checked ? { background: th.badgeBg } : { boxShadow: "inset 0 0 0 2px #D1D5DB" }}
+                                                                >
+                                                                    {checked && <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
+                                                                </div>
+                                                                <span className="text-sm font-medium" style={{ color: T.ink }}>{s}</span>
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                            )}
-                            <NextButton
-                                onClick={handleSubjectsNext}
-                                disabled={selectedSubjects.length === 0}
-                                label={`Continue with ${selectedSubjects.length} subject${selectedSubjects.length !== 1 ? "s" : ""}`}
-                            />
-                        </section>
+                                {selectedSubjects.length > 0 && (
+                                    <div className="mt-5 flex flex-wrap gap-2">
+                                        {selectedSubjects.map(s => (
+                                            <span key={s} className="text-xs px-3 py-1 rounded-full font-semibold" style={{ background: T.yellow, color: T.coralDark }}>{s}</span>
+                                        ))}
+                                    </div>
+                                )}
+                                <NextButton
+                                    onClick={handleSubjectsNext}
+                                    disabled={selectedSubjects.length === 0}
+                                    label={`Continue with ${selectedSubjects.length} subject${selectedSubjects.length !== 1 ? "s" : ""}`}
+                                />
+                            </section>
+                        </FadeUp>
                     )}
 
                     {/* Step 3 — Schedule */}
                     {step >= 3 && (
-                        <section ref={scheduleRef} style={{ scrollMarginTop: "100px" }}>
-                            <StepHeader number={3} title="Set your Schedule" active={step === 3} />
-                            <div className="mt-6 space-y-8">
-                                <div>
-                                    <p className="text-sm font-semibold text-black uppercase tracking-widest mb-4">How many days per week?</p>
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                        {daysOptions.map((d) => (
-                                            <RadioCard key={d} label={d} selected={selectedDays === d} onClick={() => setSelectedDays(d)} />
-                                        ))}
+                        <FadeUp>
+                            <section ref={scheduleRef} style={{ scrollMarginTop: "100px" }}>
+                                <StepHeader number={3} title="Set your schedule" active={step === 3} />
+                                <div className="mt-6 space-y-8">
+                                    <div>
+                                        <p className="text-sm font-bold mb-4" style={{ color: T.ink }}>How many days per week?</p>
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                            {daysOptions.map((d) => (
+                                                <RadioCard key={d} label={d} selected={selectedDays === d} onClick={() => setSelectedDays(d)} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-bold mb-4" style={{ color: T.ink }}>When would you like to start?</p>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                            {startOptions.map((s) => (
+                                                <RadioCard key={s} label={s} selected={selectedStart === s} onClick={() => setSelectedStart(s)} />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <p className="text-sm font-semibold text-black uppercase tracking-widest mb-4">When would you like to start?</p>
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                        {startOptions.map((s) => (
-                                            <RadioCard key={s} label={s} selected={selectedStart === s} onClick={() => setSelectedStart(s)} />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <NextButton onClick={handleScheduleNext}  label="Continue to Contact Info" />
-                        </section>
+                                <NextButton onClick={handleScheduleNext} label="Continue to contact info" />
+                            </section>
+                        </FadeUp>
                     )}
 
                     {/* Step 4 — Contact Info */}
                     {step >= 4 && (
-                        <section ref={contactRef} style={{ scrollMarginTop: "100px" }}>
-                            <StepHeader number={4} title="Your Details" subtitle="We'll use this to confirm your booking" active={step === 4} />
-                            <div className="mt-6 bg-white rounded-2xl border border-black p-6 space-y-5 shadow-sm">
-                                <InputField
-                                    label="Student Full Name"
-                                    placeholder="e.g. Rahul Sharma"
-                                    value={formData.name}
-                                    onChange={(v) => setFormData({ ...formData, name: v })}
-                                    error={formErrors.name}
-                                    icon={<UserIcon />}
-                                />
-                                <InputField
-                                    label="Email Address"
-                                    placeholder="you@example.com"
-                                    value={formData.email}
-                                    onChange={(v) => setFormData({ ...formData, email: v })}
-                                    error={formErrors.email}
-                                    icon={<MailIcon />}
-                                    type="email"
-                                />
-                                <div>
-                                    <label className="block text-sm font-semibold text-black mb-2">
-                                        Mobile Number <span className="text-red-500">*</span>
-                                    </label>
+                        <FadeUp>
+                            <section ref={contactRef} style={{ scrollMarginTop: "100px" }}>
+                                <StepHeader number={4} title="Your details" subtitle="We'll use this to confirm your booking." active={step === 4} />
+                                <div className="mt-6 bg-white rounded-3xl p-6 space-y-5 shadow-sm" style={{ border: `1px solid ${T.line}` }}>
+                                    <InputField
+                                        label="Student full name"
+                                        placeholder="e.g. Rahul Sharma"
+                                        value={formData.name}
+                                        onChange={(v) => setFormData({ ...formData, name: v })}
+                                        error={formErrors.name}
+                                        icon={<UserIcon />}
+                                    />
+                                    <InputField
+                                        label="Email address"
+                                        placeholder="you@example.com"
+                                        value={formData.email}
+                                        onChange={(v) => setFormData({ ...formData, email: v })}
+                                        error={formErrors.email}
+                                        icon={<MailIcon />}
+                                        type="email"
+                                    />
+                                    <div>
+                                        <label className="block text-sm font-semibold mb-2" style={{ color: T.ink }}>
+                                            Mobile number <span className="text-red-500">*</span>
+                                        </label>
 
-                                    <div className={`relative ${formErrors.mobile ? "border-red-300" : ""}`}>
-                                        <PhoneInput
-                                            country={"in"}
-                                            value={formData.mobile}
-                                            onChange={(value) => {
-                                                setFormData({ ...formData, mobile: value });
-                                                if (formErrors.mobile) {
-                                                    setFormErrors({ ...formErrors, mobile: "" });
-                                                }
-                                            }}
-                                            enableSearch
-                                            preferredCountries={["in", "us", "gb", "au", "ca"]}
-                                            inputClass="!w-full !h-[50px] !pl-[60px] !bg-gray-50 !border-2 !border-black !rounded-xl !text-sm focus:!border-rose-300"
-                                            buttonClass="!bg-gray-50 !border-2 !border-black !rounded-l-xl"
-                                            containerClass="!w-full"
-                                        />
+                                        <div className="relative">
+                                            <PhoneInput
+                                                country={"in"}
+                                                value={formData.mobile}
+                                                onChange={(value) => {
+                                                    setFormData({ ...formData, mobile: value });
+                                                    if (formErrors.mobile) {
+                                                        setFormErrors({ ...formErrors, mobile: "" });
+                                                    }
+                                                }}
+                                                enableSearch
+                                                preferredCountries={["in", "us", "gb", "au", "ca"]}
+                                                inputClass={`!w-full !h-[50px] !pl-[60px] !bg-[#FDF1E9] !border-2 ${formErrors.mobile ? "!border-red-300" : "!border-transparent"} !rounded-xl !text-sm focus:!border-[#EB6664]`}
+                                                buttonClass="!bg-[#FBE3D3] !border-2 !border-transparent !rounded-l-xl"
+                                                containerClass="!w-full"
+                                            />
+                                        </div>
+
+                                        {formErrors.mobile && (
+                                            <p className="text-xs text-red-500 mt-1">{formErrors.mobile}</p>
+                                        )}
                                     </div>
-
-                                    {formErrors.mobile && (
-                                        <p className="text-xs text-red-500 mt-1">{formErrors.mobile}</p>
-                                    )}
                                 </div>
-                            </div>
 
-                            {/* Booking Summary */}
-                            <div className="mt-5 p-5 rounded-2xl text-white" style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}>
-                                <p className="text-xs font-semibold uppercase tracking-widest text-rose-100 mb-3">Booking Summary</p>
-                                <div className="grid grid-cols-2 gap-3 text-sm">
-                                    <SummaryItem label="Class" value={matchedItem} />
-                                    <SummaryItem label="Board" value={boards.find(b => b.id === selectedBoard)?.name} />
-                                    <SummaryItem label="Subjects" value={`${selectedSubjects.length} selected`} />
-                                    <SummaryItem label="Days/Week" value={selectedDays} />
-                                    <SummaryItem label="Starting" value={selectedStart} />
+                                {/* Booking Summary */}
+                                <div className="mt-5 p-6 rounded-3xl text-white" style={{ background: T.coral }}>
+                                    <p className="text-sm font-bold mb-4">Booking summary</p>
+                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                        <SummaryItem label="Class" value={matchedItem} />
+                                        <SummaryItem label="Board" value={boards.find(b => b.id === selectedBoard)?.name} />
+                                        <SummaryItem label="Subjects" value={`${selectedSubjects.length} selected`} />
+                                        <SummaryItem label="Days/week" value={selectedDays} />
+                                        <SummaryItem label="Starting" value={selectedStart} />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <NextButton onClick={handleContactNext} label="Send OTP & Confirm →" />
-                        </section>
+                                <NextButton onClick={handleContactNext} label="Send OTP & confirm" />
+                            </section>
+                        </FadeUp>
                     )}
                 </div>
 
                 {/* OTP Modal */}
                 {showOtp && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(8px)" }}>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(17,24,39,0.5)", backdropFilter: "blur(8px)" }}>
                         <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
                             <div className="text-center mb-6">
-                                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}>
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: themes[1].iconBg }}>
+                                    <svg className="w-8 h-8" style={{ color: themes[1].iconColor }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
-                                <h3 className="text-2xl font-bold text-gray-800 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>Verify your number</h3>
-                                <p className="text-gray-400 text-sm">OTP sent to {formData.countryCode} {formData.mobile}</p>
+                                <h3 className="text-2xl font-extrabold mb-1" style={{ color: T.ink }}>
+                                    Verify your <span className="rounded-lg px-2 italic" style={{ background: T.yellow, color: T.coral }}>number</span>
+                                </h3>
+                                <p className="text-sm mt-2" style={{ color: T.muted }}>OTP sent to {formData.countryCode} {formData.mobile}</p>
                             </div>
 
-                            <div className="bg-rose-50 border border-rose-200 rounded-xl p-3 mb-6 text-center">
-                                <p className="text-xs text-rose-500 font-medium mb-1">Your OTP (shown for demo)</p>
-                                <p className="text-2xl font-bold tracking-[0.3em]" style={{ color: "#EB6664" }}>{otp}</p>
+                            <div className="rounded-2xl p-3 mb-6 text-center" style={{ background: themes[2].cardBg }}>
+                                <p className="text-xs font-semibold mb-1" style={{ color: themes[2].iconColor }}>Your OTP (shown for demo)</p>
+                                <p className="text-2xl font-extrabold tracking-[0.3em]" style={{ color: T.coral }}>{otp}</p>
                             </div>
 
                             <div className="flex gap-2 justify-center mb-6">
@@ -461,11 +526,11 @@ export default function TuitionBooking() {
                                         value={otpDigits[idx]}
                                         onChange={(e) => handleOtpDigit(e.target.value, idx)}
                                         onKeyDown={(e) => handleOtpKeyDown(e, idx)}
-                                        className="w-11 h-12 text-center text-xl font-bold rounded-xl border-2 border-black focus:outline-none transition-all"
+                                        className="w-11 h-12 text-center text-xl font-bold rounded-xl border-2 focus:outline-none transition-all"
                                         style={{
-                                            borderColor: otpDigits[idx] ? "#EB6664" : "#e5e7eb",
-                                            background: otpDigits[idx] ? "#FFF1F1" : "#f9fafb",
-                                            color: "#EB6664"
+                                            borderColor: otpDigits[idx] ? T.coral : T.line,
+                                            background: otpDigits[idx] ? T.peachDeep : T.peach,
+                                            color: T.coral,
                                         }}
                                     />
                                 ))}
@@ -476,12 +541,12 @@ export default function TuitionBooking() {
                             <button
                                 onClick={verifyOtp}
                                 disabled={otpDigits.join("").length < 6}
-                                className="w-full py-4 rounded-2xl text-white font-semibold text-lg transition-all hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-                                style={{ background: "linear-gradient(135deg, #EB6664, #F4956A)" }}
+                                className="w-full py-4 rounded-xl text-white font-bold text-base transition-all hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                                style={{ background: T.coral }}
                             >
-                                Verify & Confirm Booking
+                                Verify & confirm booking
                             </button>
-                            <button onClick={() => setShowOtp(false)} className="w-full mt-3 py-3 text-sm text-black hover:text-gray-600 transition-colors">
+                            <button onClick={() => setShowOtp(false)} className="w-full mt-3 py-3 text-sm font-semibold transition-colors hover:opacity-70" style={{ color: T.muted }}>
                                 Cancel
                             </button>
                         </div>
@@ -493,18 +558,36 @@ export default function TuitionBooking() {
     );
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function FadeUp({ children, delay = 0, className = "" }) {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: "-8% 0px" });
+    return (
+        <motion.div
+            ref={ref}
+            className={className}
+            initial={{ opacity: 0, y: 28 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+        >
+            {children}
+        </motion.div>
+    );
+}
+
 function StepHeader({ number, title, subtitle, active }) {
     return (
         <div className="flex items-start gap-4">
             <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm transition-all"
-                style={active ? { background: "linear-gradient(135deg, #EB6664, #F4956A)", color: "white" } : { background: "#f3f4f6", color: "#9ca3af" }}
+                className="w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0 font-bold text-sm transition-all"
+                style={active ? { background: T.coral, color: "white" } : { background: "#E7D5CB", color: "#7B6A62" }}
             >
-                {number}
+                {String(number).padStart(2, "0")}
             </div>
             <div>
-                <h2 className="text-xl font-bold text-black" style={{ fontFamily: "'Playfair Display', serif" }}>{title}</h2>
-                {subtitle && <p className="text-sm italic text-gray-700 mt-0.5">{subtitle}</p>}
+                <h2 className="text-xl sm:text-2xl font-extrabold" style={{ color: T.ink }}>{title}</h2>
+                {subtitle && <p className="text-sm italic mt-0.5" style={{ color: T.muted }}>{subtitle}</p>}
             </div>
         </div>
     );
@@ -514,16 +597,19 @@ function RadioCard({ label, selected, onClick }) {
     return (
         <button
             onClick={onClick}
-            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 border-black transition-all duration-200 text-left w-full ${selected ? "shadow-md border-transparent" : "border-gray-100 bg-white hover:border-rose-200"}`}
-            style={selected ? { background: "linear-gradient(135deg, #FFF1F1, #FFF3EE)", borderColor: "#EB6664" } : {}}
+            aria-pressed={selected}
+            className="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 text-left w-full"
+            style={selected
+                ? { background: themes[2].cardBg, boxShadow: `0 0 0 2px ${T.coral}` }
+                : { background: "#FFFFFF", boxShadow: `0 0 0 1px ${T.line}` }}
         >
             <div
-                className="w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center"
-                style={selected ? { borderColor: "#EB6664", background: "#EB6664" } : { borderColor: "#d1d5db" }}
+                className="w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center"
+                style={selected ? { background: T.coral } : { boxShadow: "inset 0 0 0 2px #D1D5DB" }}
             >
                 {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
             </div>
-            <span className={`text-sm font-medium ${selected ? "text-rose-700" : "text-black hover:text-rose-700"}`}>{label}</span>
+            <span className="text-sm font-medium" style={{ color: T.ink }}>{label}</span>
         </button>
     );
 }
@@ -533,10 +619,12 @@ function NextButton({ onClick, disabled, label }) {
         <button
             onClick={onClick}
             disabled={disabled}
-            className="mt-8 w-full sm:w-auto px-10 py-4 rounded-2xl text-white font-semibold text-base transition-all hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: disabled ? "#e5e7eb" : "linear-gradient(135deg, #EB6664, #F4956A)", color: disabled ? "#9ca3af" : "white" }}
+            className="mt-8 w-full sm:w-auto px-10 py-4 rounded-xl font-bold text-base transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed shadow-lg"
+            style={disabled
+                ? { background: "#E7D5CB", color: "#7B6A62", boxShadow: "none" }
+                : { background: T.coral, color: "white" }}
         >
-            {label || "Continue →"}
+            {label || "Continue"}
         </button>
     );
 }
@@ -544,15 +632,16 @@ function NextButton({ onClick, disabled, label }) {
 function InputField({ label, placeholder, value, onChange, error, icon, type = "text" }) {
     return (
         <div>
-            <label className="block text-sm font-semibold text-black mb-2">{label}</label>
+            <label className="block text-sm font-semibold mb-2" style={{ color: T.ink }}>{label}</label>
             <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-black">{icon}</div>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: T.coral }}>{icon}</div>
                 <input
                     type={type}
                     placeholder={placeholder}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className={`w-full pl-11 pr-4 py-3.5 rounded-xl border-2 border-black text-sm focus:outline-none transition-colors ${error ? "border-red-300 bg-red-50" : "border-gray-100 bg-gray-50 focus:border-rose-300"}`}
+                    className={`w-full pl-11 pr-4 py-3.5 rounded-xl border-2 text-sm focus:outline-none transition-colors ${error ? "border-red-300 bg-red-50" : "border-transparent focus:border-[#EB6664]"}`}
+                    style={error ? { color: T.ink } : { background: T.peach, color: T.ink }}
                 />
             </div>
             {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
@@ -563,7 +652,7 @@ function InputField({ label, placeholder, value, onChange, error, icon, type = "
 function SummaryItem({ label, value }) {
     return (
         <div>
-            <p className="text-xs text-rose-200 mb-0.5">{label}</p>
+            <p className="text-xs text-white/80 mb-0.5">{label}</p>
             <p className="font-semibold text-white text-sm">{value}</p>
         </div>
     );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LoginModal from "../modals/LoginModal";
 import EsperlyExperience from "../pages/Home/EsperlyExperiance";
-import Hero from "../pages/Home/Hero"
+import Hero from "../pages/Home/Hero";
 import StudentJourney from "../pages/Home/StudentJourney";
 import WhatWeTeach from "../pages/Home/WhatWeTeach";
 import Navbar from "./Navbar";
@@ -19,7 +19,7 @@ import BookDesign from "../Homescreen/BookDesign";
 import MeetScreen from "../Homescreen/MeetScreen";
 import MeetImg from "../Homescreen/MeetImg";
 import StaircaseChart3D from "../Homescreen/JourneyPage";
-import StepsImage from '../Homescreen/StepImage'
+import StepsImage from "../Homescreen/StepImage";
 import ExperianceCount from "../Homescreen/ExperianceCount";
 import TrustAndSupport from "../Homescreen/ExpertTrack";
 import Testimonioals from "../Homescreen/Testimonials";
@@ -37,51 +37,48 @@ import ParentTestimonials from "../Homescreen/ParentTestimonials";
 import TrustSupport from "../Homescreen/ExpertTrack";
 
 const Home = () => {
-    const [openModal, setOpenModal] = useState(false);
-    return (
-        <>
-            <Header />
-            <main className="pt-[70px]">
-                {/* <Navbar /> */}
-                {/* <NavImage /> */}
-                {/* <Hero /> */}
-                {/* <HeroPage /> */}
-                <NewHero />
-                <PillarsPage />
-                <WordOfLearning />
-                {/* <BookDesign /> */}
-                <FlashBanner />
-                <StepsToSuccess />
-                {/* <StepsImage /> */}
-                {/* <OnboardingJourney/> */}
-                {/* <StaircaseChart3D /> */}
-                <Impact />
-                {/* <ExperianceCount /> */}
-                {/* <MeetImg /> */}
-                {/* <MeetVideo /> */}
-                <TrustSupport />
-                <ScrollBanner />
-                <TeacherTestimonials />
-                <ParentTestimonials />
-                {/* <Testimonioals /> */}
-                {/* <MeetScreen/> */}
-                {/* <WhatWeTeach />
+  const [openModal, setOpenModal] = useState(false);
+  return (
+    <>
+      <Header />
+      <main className="pt-[70px]">
+        {/* <Navbar /> */}
+        {/* <NavImage /> */}
+        {/* <Hero /> */}
+        {/* <HeroPage /> */}
+        <NewHero />
+        <PillarsPage />
+        <WordOfLearning />
+        {/* <BookDesign /> */}
+        <FlashBanner />
+        <StepsToSuccess />
+        {/* <StepsImage /> */}
+        {/* <OnboardingJourney/> */}
+        {/* <StaircaseChart3D /> */}
+        <Impact />
+        {/* <ExperianceCount /> */}
+        {/* <MeetImg /> */}
+        {/* <MeetVideo /> */}
+        <TrustSupport />
+        <ScrollBanner />
+        <TeacherTestimonials />
+        <ParentTestimonials />
+        {/* <Testimonioals /> */}
+        {/* <MeetScreen/> */}
+        {/* <WhatWeTeach />
             <ZoomDesign/>
             <AdScroller />
             <ExperienceSection />
             <PillarsSection />
             <TracksSection /> */}
-                {/* <StoriesSection /> */}
-                {/* <EsperlyExperience /> */}
-                {/* <StudentJourney /> */}
-                {/* <WhatYouLookingFor/> */}
-                <Footer />
-            </main>
-
-
-
-        </>
-    )
+        {/* <StoriesSection /> */}
+        {/* <EsperlyExperience /> */}
+        {/* <StudentJourney /> */}
+        {/* <WhatYouLookingFor/> */}
+        <Footer />
+      </main>
+    </>
+  );
 };
 
 export default Home;

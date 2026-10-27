@@ -130,7 +130,7 @@ const PillarCard = ({ p, index }) => {
 export default function PillarsSection() {
   return (
     <section className="relative overflow-hidden bg-[#fdf1e9] px-4 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl gap-10 px-4 sm:px-6 md:px-10 lg:gap-12">
         <FadeUp className="text-center">
           <h2 className="text-3xl font-extrabold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
             The Four Pillars of
